@@ -1,0 +1,17 @@
+{
+  "name": "@coderscamp2020-hk/project-fullstack",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/CodersCamp2020-HK/CodersCamp2020.Project.FullStack-Node-React"
+  },
+  "keywords": [],
+  "author": "CodersCamp2020",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CodersCamp2020-HK/CodersCamp2020.Project.FullStack-Node-React/issues"
+  },
+  "homepage": "https://github.com/CodersCamp2020-HK/CodersCamp2020.Project.FullStack-Node-React#readme"
+}
