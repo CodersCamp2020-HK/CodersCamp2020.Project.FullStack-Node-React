@@ -27,5 +27,14 @@
         "routesDir": "src/presentation/rest/generated",
         "basePath": "/api",
         "middleware": "express"
+    },
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "@domain/*": ["domain/*"],
+            "@infrastructure/*": ["infrastructure/*"],
+            "@presentation/*": ["presentation/*"],
+            "@application/*": ["application/*"]
+        }
     }
 }

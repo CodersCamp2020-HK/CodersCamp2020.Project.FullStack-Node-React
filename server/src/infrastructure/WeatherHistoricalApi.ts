@@ -1,5 +1,5 @@
-import { IWeatherHistoricalProvider } from '../application/IWeatherHistoricalProvider';
-import { Weather } from '../domain/Weather';
+import { IWeatherHistoricalProvider } from '@application/IWeatherHistoricalProvider';
+import { Weather } from '@domain/Weather';
 
 export class WeatherHistoricalApi extends IWeatherHistoricalProvider {
     getByDate(date: Date): Promise<Weather> {

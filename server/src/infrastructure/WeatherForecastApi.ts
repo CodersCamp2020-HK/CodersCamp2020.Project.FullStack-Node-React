@@ -1,5 +1,5 @@
-import { IWeatherForecastProvider } from '../application/IWeatherForecastProvider';
-import { Weather } from '../domain/Weather';
+import { IWeatherForecastProvider } from '@application/IWeatherForecastProvider';
+import { Weather } from '@domain/Weather';
 
 export class WeatherForecastApi extends IWeatherForecastProvider {
     getForDate(date: Date): Promise<Weather> {

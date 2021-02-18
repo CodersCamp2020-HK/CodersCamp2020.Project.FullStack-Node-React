@@ -4,7 +4,7 @@
         "incremental": true,
         "target": "es2017",
         "module": "commonjs",
-        "outDir": "build",
+        "outDir": "build/src",
 
         /* Strict Type-Checking Options */
         "strict": true,
@@ -24,9 +24,15 @@
 
         /* Module Resolution Options */
         "moduleResolution": "node",
-        "baseUrl": ".src/",
+        "baseUrl": "./src",
         "esModuleInterop": true,
         "resolveJsonModule": true,
+        "paths": {
+            "@domain/*": ["domain/*"],
+            "@infrastructure/*": ["infrastructure/*"],
+            "@presentation/*": ["presentation/*"],
+            "@application/*": ["application/*"]
+        },
 
         /* Experimental Options */
         "experimentalDecorators": true,
@@ -36,6 +42,6 @@
         "forceConsistentCasingInFileNames": true
     },
 
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"]
+    "include": ["src/**/*", "tests/**/*"],
+    "exclude": ["src/presentation/web"]
 }

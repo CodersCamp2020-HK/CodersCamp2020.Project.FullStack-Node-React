@@ -1,6 +1,6 @@
+import { WeatherService } from '@application/WeatherService';
+import { Weather } from '@domain/Weather';
 import { Controller, Get, Path, Route, Tags } from 'tsoa';
-import { Weather } from '../../domain/Weather';
-import { WeatherService } from '../../application/WeatherService';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Weather')

@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Path, Post, Query, Route, SuccessResponse, Tags } from 'tsoa';
-import { User } from '../../domain/User';
-import { UsersService, UserCreationParams } from '../../application/UsersService';
 import { Inject } from 'typescript-ioc';
+import { User } from '@domain/User';
+import { UserCreationParams, UsersService } from '@application/UsersService';
 
 @Tags('Users')
 @Route('users')

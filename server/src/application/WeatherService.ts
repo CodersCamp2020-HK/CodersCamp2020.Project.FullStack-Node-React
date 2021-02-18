@@ -1,7 +1,7 @@
 import { Inject } from 'typescript-ioc';
-import { Weather } from '../domain/Weather';
 import { IWeatherHistoricalProvider } from './IWeatherHistoricalProvider';
 import { IWeatherForecastProvider } from './IWeatherForecastProvider';
+import { Weather } from '@domain/Weather';
 
 export class WeatherService {
     @Inject
