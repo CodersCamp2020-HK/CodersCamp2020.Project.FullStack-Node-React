@@ -43,5 +43,5 @@
     },
 
     "include": ["src/**/*", "tests/**/*"],
-    "exclude": ["src/presentation/web"]
+    "exclude": ["src/presentation/web/**/*"]
 }

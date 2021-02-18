@@ -4,6 +4,7 @@ const config: Config.InitialOptions = {
     verbose: true,
     preset: 'ts-jest',
     testEnvironment: 'node',
+    roots: ['tests/'],
     moduleDirectories: ['node_modules', 'src'],
     moduleNameMapper: {
         '@application/(.*)': '<rootDir>/src/application/$1',
