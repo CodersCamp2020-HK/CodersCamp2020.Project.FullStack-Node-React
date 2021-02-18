@@ -14,7 +14,7 @@
     },
     "homepage": "https://github.com/CodersCamp2020-HK/CodersCamp2020.Project.FullStack-Node-React/tree/master/server#readme",
     "scripts": {
-        "dev": "concurrently \"nodemon --watch \"src/**/*Controller.ts\" --ext \"ts,js\" -x npx tsoa spec-and-routes\" \"nodemon --ignore \"src/**/*Controller.ts\" src/server.ts\"",
+        "dev": "concurrently \"nodemon --watch \"src/presentation/rest/**/*Controller.ts\" --ext \"ts,js\" -x npx tsoa spec-and-routes\" \"nodemon --ignore \"src/presentation/rest/**/*Controller.ts\" src/server.ts\"",
         "build": "tsoa spec-and-routes && tsc",
         "start": "node build/server.js",
         "test": "jest --config ./tests/jest.config.ts",
@@ -46,6 +46,7 @@
         "cors": "^2.8.5",
         "express": "^4.17.1",
         "swagger-ui-express": "^4.1.6",
-        "tsoa": "^3.5.2"
+        "tsoa": "^3.5.2",
+        "typescript-ioc": "^3.2.2"
     }
 }

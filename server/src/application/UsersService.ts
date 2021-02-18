@@ -1,7 +1,5 @@
-import { User } from './User';
-
+import { User } from '../domain/User';
 export type UserCreationParams = Pick<User, 'email' | 'name' | 'phoneNumbers'>;
-
 export class UsersService {
     public get(id: number, name?: string): User {
         return {

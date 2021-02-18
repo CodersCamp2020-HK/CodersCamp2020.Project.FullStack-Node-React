@@ -117,5 +117,5 @@ dist
 
 # 
 build/
-src/generated/*
-!src/generated/.gitkeep
+src/presentation/rest/generated/*
+!src/presentation/rest/generated/.gitkeep

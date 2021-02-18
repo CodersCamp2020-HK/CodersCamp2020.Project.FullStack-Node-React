@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { DefaultApi, User } from './client';
+import { UsersApi, User } from './client';
 
-const api = new DefaultApi({basePath : "http://localhost:8000"});
+const api = new UsersApi({basePath : "http://localhost:8000/api"});
 
 function App() {
   const [user, setUser] = useState<User | null>(null);

@@ -23,7 +23,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "tools:generate-client": "java -jar tools/generate-client/swagger-codegen-cli.jar generate -i ../server/src/generated/swagger.json -l typescript-fetch -o src/client"
+    "tools:generate-client": "java -jar tools/generate-client/swagger-codegen-cli.jar generate -i ../server/src/presentation/rest/generated/swagger.json -l typescript-fetch -o src/client"
   },
   "eslintConfig": {
     "extends": [
