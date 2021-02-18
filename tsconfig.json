@@ -5,6 +5,7 @@
         "target": "es2017",
         "module": "commonjs",
         "outDir": "build/src",
+        "sourceMap": true,
 
         /* Strict Type-Checking Options */
         "strict": true,
