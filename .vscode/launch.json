@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Node Server",
+            "type": "node",
+            "request": "attach",
+            "localRoot": "${workspaceFolder}/src",
+            "protocol": "inspector",
+            "port": 9229,
+            "restart": true,
+            "skipFiles": ["<node_internals>/**"]
+        },
+        {
+            "name": "Debug React App",
+            "type": "pwa-chrome",
+            "request": "launch",
+            "url": "http://localhost:3000",
+            "webRoot": "${workspaceFolder}/src/presentation/web/src"
+        }
+    ]
+}

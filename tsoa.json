@@ -1,0 +1,40 @@
+{
+    "entryFile": "src/server.ts",
+    "noImplicitAdditionalProperties": "throw-on-extras",
+    "controllerPathGlobs": ["src/presentation/rest/**/*Controller.ts"],
+    "spec": {
+        "outputDirectory": "src/presentation/rest/generated",
+        "specVersion": 3,
+        "version": "v1",
+        "name": "API Name",
+        "description": "API description",
+        "contact": {
+            "name": "Author Name",
+            "email": "Author Email",
+            "url": "Contact URL"
+        },
+        "license": "MIT",
+        "basePath": "/api",
+        "spec": {
+            "servers": [
+                {
+                    "url": "http://localhost:8000/api"
+                }
+            ]
+        }
+    },
+    "routes": {
+        "routesDir": "src/presentation/rest/generated",
+        "basePath": "/api",
+        "middleware": "express"
+    },
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "@domain/*": ["domain/*"],
+            "@infrastructure/*": ["infrastructure/*"],
+            "@presentation/*": ["presentation/*"],
+            "@application/*": ["application/*"]
+        }
+    }
+}
