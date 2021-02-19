@@ -32,7 +32,8 @@
         "web:test:dev": "npm run test:dev --prefix src/presentation/web",
         "build": "npm run server:build && npm run tools:generate-client-react && npm run web:build && npm run tools:web-copy",
         "dev": "concurrently \"npm run server:dev\" \"nodemon --watch\"src/presentation/rest/generated/swagger.json\" --ext \"json\" -x npm run tools:generate-client-react\" \"npm run web:dev\"",
-        "test": "npm run server:test && npm run web:test"
+        "test": "npm run server:test && npm run web:test",
+        "preinstall": "npm ci --prefix src/presentation/web"
     },
     "devDependencies": {
         "@types/cors": "^2.8.10",
