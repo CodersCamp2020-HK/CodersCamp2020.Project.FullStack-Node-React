@@ -116,3 +116,4 @@ dist
 build/
 src/presentation/rest/generated/*
 !src/presentation/rest/generated/.gitkeep
+*.env
