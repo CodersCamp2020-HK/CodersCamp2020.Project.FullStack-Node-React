@@ -113,8 +113,7 @@ dist
 .pnp.*
 
 # 
-data/postgres/
-data/pgadmin/
+data/
 build/
 src/presentation/rest/generated/*
 !src/presentation/rest/generated/.gitkeep
