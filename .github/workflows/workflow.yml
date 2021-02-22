@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - '**/*.md'
+
+jobs:
+  build-dev:
+    name: "Build production app"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - name: Installing node modules
+      - run: npm run ci && npm run preinstall
+      - name: Building app
+      - run: npm run build
+      - name: Server lint
+      - run: npm run server:lint
+      - name: Server tests
+      - run: npm run server:test:cov
+      - name: Web tests
+      - run: npm run web:test
