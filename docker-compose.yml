@@ -7,7 +7,11 @@ services:
         environment:
             POSTGRES_USER: ${POSTGRES_USER:-postgres}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme}
+<<<<<<< HEAD
             PSOTGRES_DB: schronisko_dev
+=======
+            POSTGRES_DB: ${POSTGRES_DB:-schronisko_dev}
+>>>>>>> a677c7ba929c25c728f1ee1b153c269666f4ecdd
             PGDATA: /data/postgres
         volumes:
             - ./data/postgres:/data/postgres
