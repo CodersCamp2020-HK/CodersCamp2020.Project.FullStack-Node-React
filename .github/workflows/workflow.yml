@@ -16,10 +16,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - name: Server lint
-        run: npm run server:lint
       - name: Installing node modules
         run: npm ci && npm run preinstall
+      - name: Server lint
+        run: npm run server:lint
       - name: Building app
         run: npm run build
       - name: Server tests
