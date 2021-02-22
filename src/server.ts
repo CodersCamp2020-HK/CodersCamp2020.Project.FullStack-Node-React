@@ -15,7 +15,7 @@ createConnection({
     database: process.env.POSTGRES_DB as string,
     entities: [path.resolve(__dirname, './entity/*{.ts,.js}')],
     synchronize: true,
-    logging: false,
+    logging: 'all',
 })
     .then(() => {
         console.log('Connected to database');
