@@ -117,5 +117,6 @@ data/
 build/
 src/presentation/rest/generated/*
 !src/presentation/rest/generated/.gitkeep
+/.env
 *.env
 .DS_Store
