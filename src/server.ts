@@ -9,10 +9,7 @@ import { createConnection } from 'typeorm';
 createConnection({
     type: 'postgres',
     host: process.env.POSTGRES_HOST as string,
-    port: 5432,
-    username: process.env.POSTGRES_USER as string,
-    password: process.env.POSTGRES_PASSWORD as string,
-    database: process.env.POSTGRES_DB as string,
+    url: process.env.DATABASE_URL as string,
     entities: [path.resolve(__dirname, './entity/*{.ts,.js}')],
     synchronize: true,
     logging: 'all',
