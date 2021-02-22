@@ -26,12 +26,6 @@ jobs:
         run: npm run server:test:cov
       - name: Web tests
         run: npm run web:test
-      - uses: actions/upload-artifact@v1
-        name: Upload build as artifact
-        if: always()
-        with:
-          name: dist
-          path: ./build
   
   deploy-heroku:
     name: "Deploy to heroku"
@@ -40,10 +34,7 @@ jobs:
 #     if: github.ref == 'refs/heads/master'
     needs: build-dev
     steps:
-      - uses: actions/download-artifact@v2
-        with:
-          name: dist
-          path: ./build
+      - uses: actions/checkout@v2
       - name: Login to Heroku Container registry
         env: 
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
