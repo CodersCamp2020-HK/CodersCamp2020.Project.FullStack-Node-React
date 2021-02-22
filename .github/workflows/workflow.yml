@@ -38,4 +38,4 @@ jobs:
       - name: Branhc
         run: git branch
       - name: Push to heroku
-        run: git push -f https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/coders-camp-schronisko.git ${{ GITHUB_REF }}:master
+        run: git push -f https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/coders-camp-schronisko.git ${{ github.ref }}:master
