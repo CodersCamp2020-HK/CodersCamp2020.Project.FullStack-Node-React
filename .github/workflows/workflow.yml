@@ -35,7 +35,7 @@ jobs:
     needs: build-dev
     steps:
       - uses: actions/checkout@v2
-      - name: Branhc
-        run: git branch
+      - name: Fetch
+        run: git fetch --all --unshallow
       - name: Push to heroku
         run: git push -f https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/coders-camp-schronisko.git ${{ github.ref }}:master
