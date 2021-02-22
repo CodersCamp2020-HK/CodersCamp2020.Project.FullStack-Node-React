@@ -17,7 +17,7 @@ jobs:
         with:
           node-version: 14.x
       - name: Installing node modules
-        run: npm run ci
+        run: npm ci && npm run preinstall
       - name: Building app
         run: npm run build
       - name: Server lint
