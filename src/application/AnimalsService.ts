@@ -1,10 +1,11 @@
 import { Animal } from 'entity/Animal';
-import { getConnection } from 'typeorm';
+import { Repository } from 'typeorm';
 
 export type AnimalCreationParams = Pick<Animal, 'name' | 'age'>;
 
 export class AnimalsService {
-    animalRepository = getConnection().getRepository(Animal);
+    constructor(private animalRepository: Repository<Animal>) {}
+
     public async get(id: number): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id);
         if (!animal) throw new Error('Animal not found in database');
@@ -16,5 +17,9 @@ export class AnimalsService {
         animal.name = animalCreationParams.name;
         animal.age = animalCreationParams.age;
         await this.animalRepository.save(animal);
+    }
+
+    public async update(animal: Animal): Promise<Animal> {
+        throw new Error(`Not implemented ${animal}`);
     }
 }
