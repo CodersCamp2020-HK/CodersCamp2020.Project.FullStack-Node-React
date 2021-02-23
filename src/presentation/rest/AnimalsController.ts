@@ -21,7 +21,10 @@ export class AnimalsController extends Controller {
         this.animalsService.create(requestBody);
         return;
     }
-
+    /**
+     * @param animalId This is a description for animalId
+     * @isInt  animalId
+     */
     @SuccessResponse('200')
     @Put('{animalId}')
     public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalCreationParams): Promise<Animal> {

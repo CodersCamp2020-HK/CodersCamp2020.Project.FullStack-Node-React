@@ -1,6 +1,20 @@
 import { Animal } from 'entity/Animal';
 import { Repository } from 'typeorm';
 
+// /**
+//  * @param animalId This is a description for animalId
+//  * @param requestBody This is a description for requestBody
+//  * @isDouble numberPathParam
+//  * @minimum numberPathParam 1
+//  * @maximum numberPathParam 10
+//  *
+//  * @minLength stringPathParam 1
+//  * @maxLength stringPathParam 10
+//  *
+//  * @isString stringParam Custom error message
+//  * @minLength stringParam 3
+//  * @maxLength stringParam 10
+//  */
 export type AnimalCreationParams = Pick<Animal, 'name' | 'age'>;
 
 export class AnimalsService {
