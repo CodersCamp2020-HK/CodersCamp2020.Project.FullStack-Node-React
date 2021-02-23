@@ -8,7 +8,6 @@ import { createConnection } from 'typeorm';
 
 createConnection({
     type: 'postgres',
-    host: process.env.POSTGRES_HOST as string,
     url: process.env.DATABASE_URL as string,
     entities: [path.resolve(__dirname, './entity/*{.ts,.js}')],
     synchronize: true,
