@@ -4,28 +4,18 @@ import './IocContainerSetup';
 import path from 'path';
 import 'reflect-metadata';
 import 'dotenv/config';
-import { createConnection } from 'typeorm';
+import { connectToDb } from '@infrastructure/postgres/DatabaseConnection';
 
-createConnection({
-    type: 'postgres',
-    host: process.env.POSTGRES_HOST as string,
-    port: 5432,
-    username: process.env.POSTGRES_USER as string,
-    password: process.env.POSTGRES_PASSWORD as string,
-    database: process.env.POSTGRES_DB as string,
-    entities: [path.resolve(__dirname, './entity/*{.ts,.js}')],
-    synchronize: true,
-    logging: false,
-})
-    .then(() => {
-        console.log('Connected to database');
+(async () => {
+    await connectToDb(process.env.DATABASE_URL as string);
 
-        const port = process.env.PORT || 8000;
-        const app = express();
+    console.log('Connected to database');
 
-        app.use(api);
-        app.use(express.static(path.join(__dirname, 'presentation/web/build')));
+    const port = process.env.PORT || 8000;
+    const app = express();
 
-        app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
-    })
-    .catch((error) => console.error(error));
+    app.use(api);
+    app.use(express.static(path.join(__dirname, 'presentation/web/build')));
+
+    app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`));
+})();
