@@ -1,21 +1,10 @@
-import { Animal } from 'entity/Animal';
+import { Animal } from '@infrastructure/postgres/Animal';
 import { Repository } from 'typeorm';
 
-// /**
-//  * @param animalId This is a description for animalId
-//  * @param requestBody This is a description for requestBody
-//  * @isDouble numberPathParam
-//  * @minimum numberPathParam 1
-//  * @maximum numberPathParam 10
-//  *
-//  * @minLength stringPathParam 1
-//  * @maxLength stringPathParam 10
-//  *
-//  * @isString stringParam Custom error message
-//  * @minLength stringParam 3
-//  * @maxLength stringParam 10
-//  */
-export type AnimalCreationParams = Pick<Animal, 'name' | 'age'>;
+export type AnimalCreationParams = Pick<
+    Animal,
+    'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption' | 'additional_info'
+>;
 
 export class AnimalsService {
     constructor(private animalRepository: Repository<Animal>) {}
@@ -27,9 +16,7 @@ export class AnimalsService {
     }
 
     public async create(animalCreationParams: AnimalCreationParams): Promise<void> {
-        const animal = new Animal();
-        animal.name = animalCreationParams.name;
-        animal.age = animalCreationParams.age;
+        const animal = this.animalRepository.create(animalCreationParams);
         await this.animalRepository.save(animal);
     }
 

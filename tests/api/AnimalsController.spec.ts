@@ -1,7 +1,7 @@
 import request from 'supertest';
 import { AnimalCreationParams, AnimalsService } from '../../src/application/AnimalsService';
 import { api } from '../../src/presentation/rest/Api';
-import { Animal } from '../../src/entity/Animal';
+import { Animal } from '../../src/infrastructure/postgres/Animal';
 import { mocked } from 'ts-jest/utils';
 import { Repository } from 'typeorm';
 import { Container, Scope } from 'typescript-ioc';
