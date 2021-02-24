@@ -1,11 +1,13 @@
 import { Connection, createConnection } from 'typeorm';
 import path from 'path';
+//import { Animal } from './Animal';
 
 export const connectToDb = (url: string): Promise<Connection> => {
     return createConnection({
         type: 'postgres',
         url: url,
-        entities: [path.resolve(__dirname, './entity/*{.ts,.js}')],
+        entities: [path.resolve(__dirname, './*{.ts,.js}')],
+        //entities: [Animal],
         synchronize: true,
         logging: 'all',
     });

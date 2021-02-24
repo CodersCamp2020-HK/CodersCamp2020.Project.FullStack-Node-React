@@ -1,4 +1,4 @@
-import { Animal } from 'entity/Animal';
+import { Animal } from '@infrastructure/postgres/Animal';
 import { Repository } from 'typeorm';
 
 // /**
@@ -23,6 +23,12 @@ export class AnimalsService {
     public async get(id: number): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id);
         if (!animal) throw new Error('Animal not found in database');
+        return animal;
+    }
+
+    public async getAll(): Promise<Animal[]> {
+        const animal = await this.animalRepository.find();
+        if (animal.length <= 0) throw new Error('Animals not found in database');
         return animal;
     }
 
