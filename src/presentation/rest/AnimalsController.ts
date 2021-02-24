@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Path, Post, Route, SuccessResponse, Tags } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
 import { Animal } from 'entity/Animal';
@@ -20,5 +20,15 @@ export class AnimalsController extends Controller {
         this.setStatus(201);
         this.animalsService.create(requestBody);
         return;
+    }
+    /**
+     * @param animalId This is a description for animalId
+     * @isInt  animalId
+     */
+    @SuccessResponse('200')
+    @Put('{animalId}')
+    public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalCreationParams): Promise<Animal> {
+        this.setStatus(200);
+        return this.animalsService.update({ id: animalId, ...requestBody });
     }
 }
