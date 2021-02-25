@@ -15,7 +15,7 @@ export class AnimalsController extends Controller {
     }
 
     @Get('/')
-    public async getAnimals(@Query() minAge?: number | undefined, @Query() maxAge?: number| undefined): Promise<Animal[]> {
+    public async getAnimals(@Query() minAge?: number, @Query() maxAge?: number): Promise<Animal[]> {
         return this.animalsService.getAll(minAge, maxAge);
     }
 

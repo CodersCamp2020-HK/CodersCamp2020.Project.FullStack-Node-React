@@ -20,9 +20,9 @@ export class AnimalsService {
     }
 
     public async getAll(minAge?: number, maxAge?: number): Promise<Animal[]> {
-        const animal = await this.animalRepository.createQueryBuilder('animal');
+        const animal = await this.animalRepository.createQueryBuilder('animal').where('animal.id >= :zero', {zero: 0});
         if (minAge) {
-            animal.where('animal.age >= :agemin', { agemin: minAge });
+            animal.andWhere('animal.age >= :agemin', { agemin: minAge });
         }
         if (maxAge) {
             animal.andWhere('animal.age <= :agemax', { agemax: maxAge });
