@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
-import { Animal } from 'entity/Animal';
+import { Animal } from '@infrastructure/postgres/Animal';
 
 @Tags('Animals')
 @Route('animals')
