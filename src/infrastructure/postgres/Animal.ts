@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
 import { AnimalAdditionalInfo } from './AnimalAdditionalInfo';
 
-enum AnimalSpecies {
+export enum AnimalSpecies {
     CAT = 'cat',
     DOG = 'dog',
 }
