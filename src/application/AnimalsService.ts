@@ -1,6 +1,6 @@
 import { Animal } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { Repository } from 'typeorm';
+import { getConnection, Repository, UpdateResult } from 'typeorm';
 
 export type AnimalCreationParams = Pick<
     Animal,
@@ -57,7 +57,33 @@ export class AnimalsService {
         await this.animalRepository.save(animal);
     }
 
-    public async update(animal: Animal): Promise<Animal> {
-        throw new Error(`Not implemented ${animal}`);
+    public async update(
+        id: number,
+        { name, age, specie, description, ready_for_adoption, additional_info }: AnimalCreationParams,
+    ): Promise<UpdateResult> {
+        const {
+            temporary_home,
+            need_donations,
+            virtual_adoption,
+            adoption_date,
+            admission_to_shelter,
+            accepts_kids,
+            accepts_other_animals,
+        } = additional_info;
+        const animalAdditionalInfo = this.animalAdditionalInfo.create({
+            temporary_home,
+            need_donations,
+            virtual_adoption,
+            adoption_date,
+            admission_to_shelter,
+            accepts_kids,
+            accepts_other_animals,
+        });
+        return await getConnection()
+            .createQueryBuilder()
+            .update(Animal)
+            .set({ name, age, specie, description, ready_for_adoption, additional_info: animalAdditionalInfo })
+            .where('id = :id', { id })
+            .execute();
     }
 }
