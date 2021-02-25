@@ -19,19 +19,23 @@ export class AnimalsService {
         return animal;
     }
 
-    public async getAll(minAge?: number, maxAge?: number, specie?: AnimalSpecies): Promise<Animal[]> {
+    public async getAll(minAge?: number, maxAge?: number, specie?: AnimalSpecies, readyForAdoption?: boolean): Promise<Animal[]> {
         const animal = await this.animalRepository.createQueryBuilder('animal').where('animal.id >= :zero', {zero: 0});
+
+       if (readyForAdoption !== undefined) {
+            await animal.andWhere('animal.ready_for_adoption = :isallowadoption', { isallowadoption: readyForAdoption });
+        }
+
         if (minAge) {
-            animal.andWhere('animal.age >= :agemin', { agemin: minAge });
+            await animal.andWhere('animal.age >= :agemin', { agemin: minAge });
         }
         if (maxAge) {
-            animal.andWhere('animal.age <= :agemax', { agemax: maxAge });
+            await animal.andWhere('animal.age <= :agemax', { agemax: maxAge });
         }
 
         if (specie) {
-            animal.andWhere('animal.specie = :specie', { specie: specie });
+            await animal.andWhere('animal.specie = :specie', { specie: specie });
         }
-
         return animal.getMany();
     }
 

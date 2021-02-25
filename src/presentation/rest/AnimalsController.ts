@@ -15,8 +15,8 @@ export class AnimalsController extends Controller {
     }
 
     @Get('/')
-    public async getAnimals(@Query() minAge?: number, @Query() maxAge?: number, @Query() specie?: AnimalSpecies): Promise<Animal[]> {
-        return this.animalsService.getAll(minAge, maxAge, specie);
+    public async getAnimals(@Query() minAge?: number, @Query() maxAge?: number, @Query() specie?: AnimalSpecies, @Query() readyForAdoption?: boolean): Promise<Animal[]> {
+        return this.animalsService.getAll(minAge, maxAge, specie, readyForAdoption);
     }
 
     @SuccessResponse('201', 'created')
