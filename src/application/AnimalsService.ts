@@ -19,6 +19,12 @@ export class AnimalsService {
         return animal;
     }
 
+    public async getAll(): Promise<Animal[]> {
+        const animal = await this.animalRepository.find();
+        if (!animal) throw new Error('Animal not found in database');
+        return animal;
+    }
+
     public async create({
         name,
         age,
