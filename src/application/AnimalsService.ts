@@ -19,10 +19,16 @@ export class AnimalsService {
         return animal;
     }
 
-    public async getAll(): Promise<Animal[]> {
-        const animal = await this.animalRepository.find();
-        if (!animal) throw new Error('Animal not found in database');
-        return animal;
+    public async getAll(minAge?: number, maxAge?: number): Promise<Animal[]> {
+        const animal = await this.animalRepository.createQueryBuilder('animal');
+        if (minAge) {
+            animal.where('animal.age >= :agemin', { agemin: minAge });
+        }
+        if (maxAge) {
+            animal.andWhere('animal.age <= :agemax', { agemax: maxAge });
+        }
+
+        return animal.getMany();
     }
 
     public async create({

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags, Query } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
 import { Animal } from '@infrastructure/postgres/Animal';
@@ -15,8 +15,8 @@ export class AnimalsController extends Controller {
     }
 
     @Get('/')
-    public async getAnimals(): Promise<Animal[]> {
-        return this.animalsService.getAll();
+    public async getAnimals(@Query() minAge?: number | undefined, @Query() maxAge?: number| undefined): Promise<Animal[]> {
+        return this.animalsService.getAll(minAge, maxAge);
     }
 
     @SuccessResponse('201', 'created')
