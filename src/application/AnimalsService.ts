@@ -27,9 +27,14 @@ export class AnimalsService {
     }
 
     public async getAll(): Promise<Animal[]> {
-        const animal = await this.animalRepository.find();
-        if (animal.length <= 0) throw new Error('Animals not found in database');
-        return animal;
+    //     createQueryBuilder("user")
+    // .leftJoinAndSelect("user.photos", "photo")
+    // .where("user.name = :name", { name: "Timber" })
+    // .getOne();
+        const animal = await this.animalRepository.createQueryBuilder('animal');
+        await animal.where('animal.age >= :age', { age: 3 });
+        await animal.andWhere('animal.age <= :age2', { age2: 5 });
+        return animal.getMany();
     }
 
     public async create(animalCreationParams: AnimalCreationParams): Promise<void> {
