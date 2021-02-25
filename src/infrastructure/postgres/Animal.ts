@@ -33,7 +33,7 @@ export class Animal {
     @Column()
     ready_for_adoption!: boolean;
 
-    @OneToOne(() => AnimalAdditionalInfo)
+    @OneToOne(() => AnimalAdditionalInfo, { cascade: true })
     @JoinColumn()
     additional_info!: AnimalAdditionalInfo;
 }
