@@ -7,7 +7,6 @@ export const connectToDb = (url: string): Promise<Connection> => {
         type: 'postgres',
         url: url,
         entities: [path.resolve(__dirname, './*{.ts,.js}')],
-        //entities: [Animal],
         synchronize: true,
         logging: 'all',
     });
