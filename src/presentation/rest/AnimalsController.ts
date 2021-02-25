@@ -15,8 +15,28 @@ export class AnimalsController extends Controller {
     }
 
     @Get('/')
-    public async getAnimals(@Query() minAge?: number, @Query() maxAge?: number, @Query() specie?: AnimalSpecies, @Query() readyForAdoption?: boolean): Promise<Animal[]> {
-        return this.animalsService.getAll(minAge, maxAge, specie, readyForAdoption);
+    public async getAnimals(
+        @Query() minAge?: number,
+        @Query() maxAge?: number,
+        @Query() specie?: AnimalSpecies,
+        @Query() readyForAdoption?: boolean,
+        @Query() tempHouse?: boolean,
+        @Query() needDonations?: boolean,
+        @Query() virtualAdoption?: boolean,
+        @Query() acceptsKids?: boolean,
+        @Query() acceptsOtherAnimals?: boolean,
+    ): Promise<Animal[]> {
+        return this.animalsService.getAll(
+            minAge,
+            maxAge,
+            specie,
+            readyForAdoption,
+            tempHouse,
+            needDonations,
+            virtualAdoption,
+            acceptsKids,
+            acceptsOtherAnimals,
+        );
     }
 
     @SuccessResponse('201', 'created')

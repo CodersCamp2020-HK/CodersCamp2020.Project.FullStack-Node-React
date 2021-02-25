@@ -19,11 +19,48 @@ export class AnimalsService {
         return animal;
     }
 
-    public async getAll(minAge?: number, maxAge?: number, specie?: AnimalSpecies, readyForAdoption?: boolean): Promise<Animal[]> {
-        const animal = await this.animalRepository.createQueryBuilder('animal').where('animal.id >= :zero', {zero: 0});
+    public async getAll(
+        minAge?: number,
+        maxAge?: number,
+        specie?: AnimalSpecies,
+        readyForAdoption?: boolean,
+        tempHouse?: boolean,
+        needDonations?: boolean,
+        virtualAdoption?: boolean,
+        acceptsKids?: boolean,
+        acceptsOtherAnimals?: boolean,
+    ): Promise<Animal[]> {
+        const animal = await this.animalRepository
+            .createQueryBuilder('animal')
+            .leftJoinAndSelect('animal.additional_info', 'info')
+            .where('animal.id >= :zero', { zero: 0 });
 
-       if (readyForAdoption !== undefined) {
-            await animal.andWhere('animal.ready_for_adoption = :isallowadoption', { isallowadoption: readyForAdoption });
+        if (readyForAdoption !== undefined) {
+            await animal.andWhere('animal.ready_for_adoption = :isallowadoption', {
+                isallowadoption: readyForAdoption,
+            });
+        }
+
+        if (tempHouse !== undefined) {
+            await animal.andWhere('info.temporary_home = :isTempHome', { isTempHome: tempHouse });
+        }
+
+        if (needDonations !== undefined) {
+            await animal.andWhere('info.need_donations = :needDonations', { needDonations: needDonations });
+        }
+
+        if (acceptsKids !== undefined) {
+            await animal.andWhere('info.accepts_kids = :acceptsKids', { acceptsKids: acceptsKids });
+        }
+
+        if (acceptsOtherAnimals !== undefined) {
+            await animal.andWhere('info.accepts_other_animals = :acceptsOtherAnimals', {
+                acceptsOtherAnimals: acceptsOtherAnimals,
+            });
+        }
+
+        if (virtualAdoption !== undefined) {
+            await animal.andWhere('info.virtual_adoption = :virtualAdoption', { virtualAdoption: virtualAdoption });
         }
 
         if (minAge) {
