@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags, Query } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
-import { Animal } from '@infrastructure/postgres/Animal';
+import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
 
 @Tags('Animals')
 @Route('animals')
@@ -15,8 +15,8 @@ export class AnimalsController extends Controller {
     }
 
     @Get('/')
-    public async getAnimals(@Query() minAge?: number, @Query() maxAge?: number): Promise<Animal[]> {
-        return this.animalsService.getAll(minAge, maxAge);
+    public async getAnimals(@Query() minAge?: number, @Query() maxAge?: number, @Query() specie?: AnimalSpecies): Promise<Animal[]> {
+        return this.animalsService.getAll(minAge, maxAge, specie);
     }
 
     @SuccessResponse('201', 'created')

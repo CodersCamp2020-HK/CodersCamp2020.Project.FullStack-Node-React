@@ -1,4 +1,4 @@
-import { Animal } from '@infrastructure/postgres/Animal';
+import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository } from 'typeorm';
 
@@ -19,13 +19,17 @@ export class AnimalsService {
         return animal;
     }
 
-    public async getAll(minAge?: number, maxAge?: number): Promise<Animal[]> {
+    public async getAll(minAge?: number, maxAge?: number, specie?: AnimalSpecies): Promise<Animal[]> {
         const animal = await this.animalRepository.createQueryBuilder('animal').where('animal.id >= :zero', {zero: 0});
         if (minAge) {
             animal.andWhere('animal.age >= :agemin', { agemin: minAge });
         }
         if (maxAge) {
             animal.andWhere('animal.age <= :agemax', { agemax: maxAge });
+        }
+
+        if (specie) {
+            animal.andWhere('animal.specie = :specie', { specie: specie });
         }
 
         return animal.getMany();
