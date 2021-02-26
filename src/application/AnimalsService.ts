@@ -34,24 +34,8 @@ export class AnimalsService {
             description,
             ready_for_adoption,
         });
-        const {
-            temporary_home,
-            need_donations,
-            virtual_adoption,
-            adoption_date,
-            admission_to_shelter,
-            accepts_kids,
-            accepts_other_animals,
-        } = additional_info;
-        const animalAdditionalInfo = this.animalAdditionalInfo.create({
-            temporary_home,
-            need_donations,
-            virtual_adoption,
-            adoption_date,
-            admission_to_shelter,
-            accepts_kids,
-            accepts_other_animals,
-        });
+        const { id, ...animalAdditionalInfoParams } = additional_info;
+        const animalAdditionalInfo = this.animalAdditionalInfo.create(animalAdditionalInfoParams);
         animal.additional_info = animalAdditionalInfo;
 
         await this.animalRepository.save(animal);
@@ -61,28 +45,12 @@ export class AnimalsService {
         id: number,
         { name, age, specie, description, ready_for_adoption, additional_info }: AnimalCreationParams,
     ): Promise<UpdateResult> {
-        const {
-            temporary_home,
-            need_donations,
-            virtual_adoption,
-            adoption_date,
-            admission_to_shelter,
-            accepts_kids,
-            accepts_other_animals,
-        } = additional_info;
-        const animalAdditionalInfo = this.animalAdditionalInfo.create({
-            temporary_home,
-            need_donations,
-            virtual_adoption,
-            adoption_date,
-            admission_to_shelter,
-            accepts_kids,
-            accepts_other_animals,
-        });
+        const { id, ...animalAdditionalInfoParams } = additional_info;
+        // const animalAdditionalInfo = this.animalAdditionalInfo.create(animalAdditionalInfoParams);
         return await getConnection()
             .createQueryBuilder()
             .update(Animal)
-            .set({ name, age, specie, description, ready_for_adoption, additional_info: animalAdditionalInfo })
+            .set({ name, age, specie, description, ready_for_adoption, additional_info: animalAdditionalInfoParams })
             .where('id = :id', { id })
             .execute();
     }
