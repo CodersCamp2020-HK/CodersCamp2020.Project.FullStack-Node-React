@@ -32,7 +32,7 @@ export class User {
     mail!: string;
 
     @Column({
-        length: 50,
+        length: 255,
     })
     password!: string;
 
