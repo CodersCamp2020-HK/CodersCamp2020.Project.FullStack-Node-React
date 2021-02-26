@@ -48,7 +48,7 @@ describe('PUT /animals/{id}', () => {
             },
         };
 
-        animalServiceMock.update.mockImplementationOnce((animal) => Promise.resolve(animal));
+        animalServiceMock.update.mockImplementationOnce((animal) => Promise.resolve((animal as unknown) as Animal));
 
         request(app)
             .put(`/api/animals/${id}`)
