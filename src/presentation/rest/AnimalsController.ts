@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags, Query } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags, Query, TsoaResponse, Res } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
 import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
@@ -14,29 +14,37 @@ export class AnimalsController extends Controller {
         return this.animalsService.get(animalId);
     }
 
+    @SuccessResponse('200')
     @Get('/')
     public async getAnimals(
+        @Res() notFoundResponse: TsoaResponse<404, { reason: string }>,
         @Query() minAge?: number,
         @Query() maxAge?: number,
         @Query() specie?: AnimalSpecies,
         @Query() readyForAdoption?: boolean,
-        @Query() tempHouse?: boolean,
+        @Query() temporaryHome?: boolean,
         @Query() needDonations?: boolean,
         @Query() virtualAdoption?: boolean,
         @Query() acceptsKids?: boolean,
         @Query() acceptsOtherAnimals?: boolean,
     ): Promise<Animal[]> {
-        return this.animalsService.getAll(
+        const foundedAnimals = await this.animalsService.getAll(
             minAge,
             maxAge,
             specie,
             readyForAdoption,
-            tempHouse,
+            temporaryHome,
             needDonations,
             virtualAdoption,
             acceptsKids,
             acceptsOtherAnimals,
         );
+
+        if (foundedAnimals.length <= 0) {
+            return notFoundResponse(404, { reason: 'Animals not found' });
+        }
+
+        return foundedAnimals;
     }
 
     @SuccessResponse('201', 'created')
