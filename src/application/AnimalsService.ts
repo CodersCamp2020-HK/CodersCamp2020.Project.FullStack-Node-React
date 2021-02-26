@@ -1,6 +1,7 @@
 import { Animal } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { getConnection, Repository, UpdateResult } from 'typeorm';
+import { getConnection, Repository } from 'typeorm';
+import { assign } from 'lodash';
 
 export type AnimalCreationParams = Pick<
     Animal,
@@ -45,14 +46,25 @@ export class AnimalsService {
     public async update(
         id: number,
         { name, age, specie, description, ready_for_adoption, additional_info }: AnimalCreationParams,
-    ): Promise<UpdateResult> {
+    ): Promise<Animal> {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { id: _, ...animalAdditionalInfoParams } = additional_info;
-        return await getConnection()
+        const animal = this.get(id);
+        if (!animal) throw { status: '404' };
+        const updatedAnimal = {
+            name,
+            age,
+            specie,
+            description,
+            ready_for_adoption,
+            additional_info: animalAdditionalInfoParams,
+        };
+        await getConnection()
             .createQueryBuilder()
             .update(Animal)
-            .set({ name, age, specie, description, ready_for_adoption, additional_info: animalAdditionalInfoParams })
+            .set(updatedAnimal)
             .where('id = :id', { id })
             .execute();
+        return assign(animal, this.animalAdditionalInfo);
     }
 }

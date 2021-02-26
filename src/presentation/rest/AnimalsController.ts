@@ -2,7 +2,6 @@ import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags } 
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
 import { Animal } from '@infrastructure/postgres/Animal';
-import { UpdateResult } from 'typeorm';
 
 @Tags('Animals')
 @Route('animals')
@@ -28,10 +27,7 @@ export class AnimalsController extends Controller {
      */
     @SuccessResponse('200')
     @Put('{animalId}')
-    public async updateAnimal(
-        @Path() animalId: number,
-        @Body() requestBody: AnimalCreationParams,
-    ): Promise<UpdateResult> {
+    public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalCreationParams): Promise<Animal> {
         this.setStatus(200);
         return this.animalsService.update(animalId, requestBody);
     }
