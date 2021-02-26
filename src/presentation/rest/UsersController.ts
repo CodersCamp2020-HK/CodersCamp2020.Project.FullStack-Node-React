@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Path, Post, Query, Route, SuccessResponse, Tags } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Route, SuccessResponse, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import { User } from '@domain/User';
 import { UserCreationParams, UsersService } from '@application/UsersService';
+import { User } from '@infrastructure/postgres/User';
 
 @Tags('Users')
 @Route('users')
@@ -10,11 +10,11 @@ export class UsersController extends Controller {
     private usersService!: UsersService;
 
     @Get('{userId}')
-    public async getUser(@Path() userId: number, @Query() name?: string): Promise<User> {
-        return new UsersService().get(userId, name);
+    public async getUser(@Path() userId: number): Promise<User> {
+        return this.usersService.get(userId);
     }
 
-    @SuccessResponse('201', 'Created') // Custom success response
+    @SuccessResponse('201', 'Created')
     @Post()
     public async createUser(@Body() requestBody: UserCreationParams): Promise<void> {
         this.setStatus(201); // set return status 201

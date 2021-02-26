@@ -1,22 +1,25 @@
-import { User } from '@domain/User';
+import { User } from '@infrastructure/postgres/User';
+import { Repository } from 'typeorm';
 
-export type UserCreationParams = Pick<User, 'email' | 'name' | 'phoneNumbers'>;
+export type UserCreationParams = {
+    mail: string;
+    password: string;
+    repPassword: string;
+};
+
 export class UsersService {
-    public get(id: number, name?: string): User {
-        return {
-            id,
-            email: 'jane@doe.com',
-            name: name ?? 'Jane Doe',
-            status: 'Happy',
-            phoneNumbers: [],
-        };
+    constructor(private userRepository: Repository<User>) {}
+
+    public async get(id: number): Promise<User> {
+        const user = await this.userRepository.findOne(id);
+        if (!user) throw new Error('User not found in database');
+        return user;
     }
 
-    public create(userCreationParams: UserCreationParams): User {
-        return {
-            id: Math.floor(Math.random() * 10000), // Random
-            status: 'Happy',
-            ...userCreationParams,
-        };
+    public async create(userCreationParams: UserCreationParams): Promise<void> {
+        if (userCreationParams.password != userCreationParams.repPassword) {
+            throw new Error('Passwords do not match');
+        }
+        return;
     }
 }

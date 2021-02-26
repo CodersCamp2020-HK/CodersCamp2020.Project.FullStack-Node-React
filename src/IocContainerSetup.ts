@@ -5,12 +5,17 @@ import { WeatherForecastApi } from './infrastructure/WeatherForecastApi';
 import { IWeatherHistoricalProvider } from './application/IWeatherHistoricalProvider';
 import { WeatherHistoricalApi } from './infrastructure/WeatherHistoricalApi';
 import { AnimalsService } from '@application/AnimalsService';
+import { UsersService } from '@application/UsersService';
 import { getConnection } from 'typeorm';
 import { Animal } from '@infrastructure/postgres/Animal';
+import { User } from '@infrastructure/postgres/User';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
 
 Container.bind(IWeatherForecastProvider).to(WeatherForecastApi).scope(Scope.Singleton);
 Container.bind(IWeatherHistoricalProvider).to(WeatherHistoricalApi).scope(Scope.Singleton);
+Container.bind(UsersService)
+    .factory(() => new UsersService(getConnection().getRepository(User)))
+    .scope(Scope.Local);
 Container.bind(AnimalsService)
     .factory(
         () =>
