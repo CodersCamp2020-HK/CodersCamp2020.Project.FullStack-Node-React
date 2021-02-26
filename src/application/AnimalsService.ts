@@ -34,7 +34,8 @@ export class AnimalsService {
             description,
             ready_for_adoption,
         });
-        const { id, ...animalAdditionalInfoParams } = additional_info;
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id: _, ...animalAdditionalInfoParams } = additional_info;
         const animalAdditionalInfo = this.animalAdditionalInfo.create(animalAdditionalInfoParams);
         animal.additional_info = animalAdditionalInfo;
 
@@ -45,8 +46,8 @@ export class AnimalsService {
         id: number,
         { name, age, specie, description, ready_for_adoption, additional_info }: AnimalCreationParams,
     ): Promise<UpdateResult> {
-        const { id, ...animalAdditionalInfoParams } = additional_info;
-        // const animalAdditionalInfo = this.animalAdditionalInfo.create(animalAdditionalInfoParams);
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { id: _, ...animalAdditionalInfoParams } = additional_info;
         return await getConnection()
             .createQueryBuilder()
             .update(Animal)
