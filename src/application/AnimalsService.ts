@@ -24,7 +24,7 @@ export class AnimalsService {
         maxAge?: number,
         specie?: AnimalSpecies,
         readyForAdoption?: boolean,
-        tempHouse?: boolean,
+        temporaryHome?: boolean,
         needDonations?: boolean,
         virtualAdoption?: boolean,
         acceptsKids?: boolean,
@@ -36,43 +36,45 @@ export class AnimalsService {
             .where('animal.id >= :zero', { zero: 0 });
 
         if (readyForAdoption !== undefined) {
-            await animal.andWhere('animal.ready_for_adoption = :isallowadoption', {
-                isallowadoption: readyForAdoption,
+            await animal.andWhere('animal.ready_for_adoption = :readyForAdoption', {
+                readyForAdoption,
             });
         }
 
-        if (tempHouse !== undefined) {
-            await animal.andWhere('info.temporary_home = :isTempHome', { isTempHome: tempHouse });
+        if (temporaryHome !== undefined) {
+            await animal.andWhere('info.temporary_home = :temporaryHome', { temporaryHome });
         }
 
         if (needDonations !== undefined) {
-            await animal.andWhere('info.need_donations = :needDonations', { needDonations: needDonations });
+            await animal.andWhere('info.need_donations = :needDonations', { needDonations });
         }
 
         if (acceptsKids !== undefined) {
-            await animal.andWhere('info.accepts_kids = :acceptsKids', { acceptsKids: acceptsKids });
+            await animal.andWhere('info.accepts_kids = :acceptsKids', { acceptsKids });
         }
 
         if (acceptsOtherAnimals !== undefined) {
             await animal.andWhere('info.accepts_other_animals = :acceptsOtherAnimals', {
-                acceptsOtherAnimals: acceptsOtherAnimals,
+                acceptsOtherAnimals,
             });
         }
 
         if (virtualAdoption !== undefined) {
-            await animal.andWhere('info.virtual_adoption = :virtualAdoption', { virtualAdoption: virtualAdoption });
+            await animal.andWhere('info.virtual_adoption = :virtualAdoption', { virtualAdoption });
         }
 
         if (minAge) {
-            await animal.andWhere('animal.age >= :agemin', { agemin: minAge });
+            await animal.andWhere('animal.age >= :minAge', { minAge });
         }
+
         if (maxAge) {
-            await animal.andWhere('animal.age <= :agemax', { agemax: maxAge });
+            await animal.andWhere('animal.age <= :maxAge', { maxAge });
         }
 
         if (specie) {
-            await animal.andWhere('animal.specie = :specie', { specie: specie });
+            await animal.andWhere('animal.specie = :specie', { specie });
         }
+
         return animal.getMany();
     }
 
