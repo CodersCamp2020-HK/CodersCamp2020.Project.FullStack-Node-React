@@ -29,7 +29,7 @@ export class UsersService {
 
             const currentRep = this.userRepository;
 
-            bcrypt.hash(userCreationParams.password, SALT_ROUNDS, function (err, hash) {
+            bcrypt.hash(userCreationParams.password, SALT_ROUNDS, function (err: Error, hash: string) {
                 if (err) {
                     throw err;
                 }
@@ -40,8 +40,7 @@ export class UsersService {
 
                 currentRep.save(user);
             });
-        }
-        else {
+        } else {
             throw new Error('User with this email exists');
         }
 
