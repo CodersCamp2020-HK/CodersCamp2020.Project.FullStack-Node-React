@@ -27,6 +27,7 @@ export class AnimalsController extends Controller {
      * @param animalId This is a description for animalId
      * @isInt  animalId
      */
+    @Response(500, 'Internal Server Error')
     @SuccessResponse('200')
     @Put('{animalId}')
     public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalCreationParams): Promise<Animal> {
