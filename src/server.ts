@@ -1,10 +1,13 @@
 import express from 'express';
+//import errorHandler from 'api-error-handler';
+//import express, { Response as ExResponse, NextFunction } from 'express';
 import { api } from './presentation/rest';
 import './IocContainerSetup';
 import path from 'path';
 import 'reflect-metadata';
 import 'dotenv/config';
 import { connectToDb } from '@infrastructure/postgres/DatabaseConnection';
+//import ApiError from '@infrastructure/ApiError';
 
 (async () => {
     await connectToDb();

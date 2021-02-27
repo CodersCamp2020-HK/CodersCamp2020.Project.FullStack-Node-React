@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Response, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
 import { Animal } from '@infrastructure/postgres/Animal';
+import ApiError from '@infrastructure/ApiError';
 
 @Tags('Animals')
 @Route('animals')
@@ -9,6 +10,7 @@ export class AnimalsController extends Controller {
     @Inject
     private animalsService!: AnimalsService;
 
+    @Response<ApiError>(404, 'Animal not found')
     @Get('{animalId}')
     public async getAnimal(@Path() animalId: number): Promise<Animal> {
         return this.animalsService.get(animalId);
