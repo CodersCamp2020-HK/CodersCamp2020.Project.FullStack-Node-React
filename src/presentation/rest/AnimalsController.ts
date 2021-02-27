@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags } from 'tsoa';
+import { Body, Controller, Delete, Get, Path, Post, Put, Route, SuccessResponse, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
 import { Animal } from '@infrastructure/postgres/Animal';
+import { DeleteResult } from 'typeorm';
 
 @Tags('Animals')
 @Route('animals')
@@ -12,6 +13,15 @@ export class AnimalsController extends Controller {
     @Get('{animalId}')
     public async getAnimal(@Path() animalId: number): Promise<Animal> {
         return this.animalsService.get(animalId);
+    }
+
+    /**
+     * Supply the unique animal ID and delete the animal with corresponding id from database
+     *  @param animalId The animal's identifier
+     */
+    @Delete('{animalId}')
+    public async deleteAnimal(@Path() animalId: number): Promise<DeleteResult> {
+        return this.animalsService.delete(animalId);
     }
 
     @SuccessResponse('201', 'created')

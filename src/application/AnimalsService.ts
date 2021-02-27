@@ -1,6 +1,6 @@
 import { Animal } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 
 export type AnimalCreationParams = Pick<
     Animal,
@@ -17,6 +17,12 @@ export class AnimalsService {
         const animal = await this.animalRepository.findOne(id);
         if (!animal) throw new Error('Animal not found in database');
         return animal;
+    }
+
+    public async delete(id: number): Promise<DeleteResult> {
+        const animal = await this.animalRepository.findOne(id);
+        if (!animal) throw new Error(`Animal with id: ${id} does not exist`);
+        return await this.animalRepository.delete(id);
     }
 
     public async create({
