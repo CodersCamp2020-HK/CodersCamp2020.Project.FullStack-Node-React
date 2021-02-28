@@ -17,7 +17,7 @@ export class AnimalsService {
     public async get(id: number): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id);
         if (!animal) throw new ApiError('Not Found', 404, 'Animal not found in database');
-        //if (!animal) throw new Error('Animal not found in database');
+        //if (!animal) throw new Error('Animal not found in db');
         return animal;
     }
 

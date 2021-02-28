@@ -1,4 +1,5 @@
 import express from 'express';
+require('express-async-errors');
 import { api } from './presentation/rest';
 import './IocContainerSetup';
 import path from 'path';
