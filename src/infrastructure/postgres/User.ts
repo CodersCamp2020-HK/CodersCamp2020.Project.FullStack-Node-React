@@ -1,5 +1,12 @@
 import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn } from 'typeorm';
 
+export enum UserType {
+    ADMIN = 'admin',
+    EMPLOYEE = 'employee',
+    NORMAL = 'normal',
+    VOLUNTEER = 'volunteer',
+}
+
 @Entity()
 export class User {
     @PrimaryGeneratedColumn()
@@ -18,6 +25,13 @@ export class User {
         default: null,
     })
     surname!: string;
+
+    @Column({
+        type: 'enum',
+        enum: UserType,
+        default: UserType.NORMAL,
+    })
+    type!: UserType;
 
     @Column({
         nullable: true,
