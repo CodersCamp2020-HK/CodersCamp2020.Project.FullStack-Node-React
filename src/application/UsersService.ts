@@ -20,9 +20,21 @@ export class UsersService {
     }
 
     public async create(userCreationParams: UserCreationParams): Promise<void> {
-        const potentialExistingUser = await this.userRepository.findOne({ where: { mail: userCreationParams.mail } });
+        const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!emailRegExp.test(userCreationParams.mail)) {
+            throw new Error('Invalid e-mail format');
+        }
 
+        const potentialExistingUser = await this.userRepository.findOne({ where: { mail: userCreationParams.mail } });
         if (!potentialExistingUser) {
+
+            //Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
+            const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+            if (!passwordRegExp.test(userCreationParams.password)) {
+                throw new Error('Failed password requirements');
+            }
+
             if (userCreationParams.password != userCreationParams.repPassword) {
                 throw new Error('Passwords do not match');
             }
