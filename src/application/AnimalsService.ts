@@ -1,6 +1,6 @@
 import { Animal } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { DeleteResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 
 export type AnimalCreationParams = Pick<
     Animal,
