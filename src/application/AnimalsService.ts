@@ -1,6 +1,6 @@
 import { Animal } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { getConnection, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { assign } from 'lodash';
 
 export type AnimalCreationParams = Pick<
@@ -43,23 +43,11 @@ export class AnimalsService {
         await this.animalRepository.save(animal);
     }
 
-    public async update(
-        id: number,
-        { name, age, specie, description, ready_for_adoption, additional_info }: AnimalCreationParams,
-    ): Promise<Animal> {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { id: _, ...animalAdditionalInfoParams } = additional_info;
-        const animal = this.get(id);
+    public async update(id: number, updatedAnimal: Partial<AnimalCreationParams>): Promise<Animal> {
+        const animal = await this.get(id);
         if (!animal) throw { status: 404, message: `Animal with id: ${id} not found!` };
-        const updatedAnimal = {
-            name,
-            age,
-            specie,
-            description,
-            ready_for_adoption,
-            additional_info: animalAdditionalInfoParams,
-        };
-        await getConnection()
+        if (updatedAnimal.additional_info) updatedAnimal.additional_info.id = animal.additional_info.id;
+        await this.animalRepository
             .createQueryBuilder()
             .update(Animal)
             .set(updatedAnimal)
