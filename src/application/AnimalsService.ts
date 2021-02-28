@@ -1,6 +1,7 @@
 import { Animal } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository } from 'typeorm';
+import { arePropertiesUndefined } from 'utils/ArePropertiesUndefined';
 
 type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption'>;
 type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
@@ -30,6 +31,7 @@ export class AnimalsService {
     public async update(id: number, { additionalInfo, ...animalParams }: AnimalUpdateParams): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id, { relations: ['additional_info'] });
         if (!animal) throw { status: 404, message: `Animal with id: ${id} not found!` };
+        if (arePropertiesUndefined({ additionalInfo, ...animalParams })) throw { status: 400, message: 'No data' };
         const updatedAnimal = {
             ...animal,
             ...animalParams,

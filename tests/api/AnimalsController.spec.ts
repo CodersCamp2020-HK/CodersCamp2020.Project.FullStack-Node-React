@@ -36,8 +36,7 @@ describe('PUT /animals/{id}', () => {
             specie: AnimalSpecies.CAT,
             description: 'desc',
             ready_for_adoption: true,
-            additional_info: {
-                id: 100,
+            additionalInfo: {
                 accepts_kids: true,
                 accepts_other_animals: true,
                 admission_to_shelter: new Date(),
@@ -73,8 +72,7 @@ describe('PUT /animals/{id}', () => {
             specie: AnimalSpecies.CAT,
             description: 'desc',
             ready_for_adoption: true,
-            additional_info: {
-                id: 100,
+            additionalInfo: {
                 accepts_kids: true,
                 accepts_other_animals: true,
                 admission_to_shelter: new Date(),
