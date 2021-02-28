@@ -8,7 +8,7 @@ export type AnimalCreationParams = Pick<
     'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption' | 'additional_info'
 >;
 
-type Primitive<T> = T extends object ? never : T;
+type Primitive<T> = T extends Record<string, unknown> ? never : T;
 
 class OptionalWhereSelectQueryBuilder<T> {
     constructor(
