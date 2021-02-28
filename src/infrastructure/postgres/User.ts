@@ -51,12 +51,12 @@ export class User {
     password!: string;
 
     @CreateDateColumn()
-    registerDate!: Date;
+    registrationDate!: Date;
 
     @Column({ default: false })
     activated!: boolean;
 
     @Column()
     @Generated('uuid')
-    uuid!: string;
+    activationLinkUuid!: string;
 }
