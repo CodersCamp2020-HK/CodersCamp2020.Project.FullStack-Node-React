@@ -20,7 +20,7 @@ export class AnimalsController extends Controller {
      *  @param animalId The animal's identifier
      */
     @Delete('{animalId}')
-    public async deleteAnimal(@Path() animalId: number): Promise<DeleteResult> {
+    public async deleteAnimal(@Path() animalId: number): Promise<Animal> {
         return this.animalsService.delete(animalId);
     }
 

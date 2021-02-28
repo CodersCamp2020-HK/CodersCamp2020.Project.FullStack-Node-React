@@ -19,10 +19,11 @@ export class AnimalsService {
         return animal;
     }
 
-    public async delete(id: number): Promise<DeleteResult> {
+    public async delete(id: number): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id);
         if (!animal) throw new Error(`Animal with id: ${id} does not exist`);
-        return await this.animalRepository.delete(id);
+        await this.animalRepository.delete(id);
+        return animal;
     }
 
     public async create({
