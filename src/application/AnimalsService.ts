@@ -6,7 +6,7 @@ import { assign } from 'lodash';
 type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption'>;
 type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
 export type AnimalCreationParams = AnimalParams & AnimalAdditionalInfoParams;
-export type AnimalUpdateParams = Partial<AnimalCreationParams & AnimalAdditionalInfoParams>;
+export type AnimalUpdateParams = Partial<AnimalParams & AnimalAdditionalInfoParams>;
 
 export class AnimalsService {
     constructor(
