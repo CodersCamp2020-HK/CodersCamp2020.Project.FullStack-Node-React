@@ -2,6 +2,7 @@ import { Animal } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository } from 'typeorm';
 import { arePropertiesUndefined } from 'utils/ArePropertiesUndefined';
+import ApiError from '@infrastructure/ApiError';
 
 type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption'>;
 type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
@@ -16,7 +17,8 @@ export class AnimalsService {
 
     public async get(id: number): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id);
-        if (!animal) throw new Error('Animal not found in database');
+        if (!animal) throw new ApiError('Not Found', 404, 'Animal not found in database');
+
         return animal;
     }
 
@@ -31,7 +33,8 @@ export class AnimalsService {
     public async update(id: number, { additionalInfo, ...animalParams }: AnimalUpdateParams): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id, { relations: ['additional_info'] });
         if (!animal) throw { status: 404, message: `Animal with id: ${id} not found!` };
-        if (arePropertiesUndefined({ additionalInfo, ...animalParams })) throw { status: 400, message: 'No data' };
+        if (arePropertiesUndefined({ additionalInfo, ...animalParams }))
+            throw new ApiError('Bad Request', 400, 'No data provided');
         const updatedAnimal = {
             ...animal,
             ...animalParams,
