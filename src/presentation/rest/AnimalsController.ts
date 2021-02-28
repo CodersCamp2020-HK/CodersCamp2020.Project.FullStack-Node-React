@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
+import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@application/AnimalsService';
 import { Animal } from '@infrastructure/postgres/Animal';
 
 @Tags('Animals')
@@ -27,7 +27,7 @@ export class AnimalsController extends Controller {
      */
     @SuccessResponse('200')
     @Put('{animalId}')
-    public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalCreationParams): Promise<Animal> {
+    public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalUpdateParams): Promise<Animal> {
         this.setStatus(200);
         return this.animalsService.update(animalId, requestBody);
     }

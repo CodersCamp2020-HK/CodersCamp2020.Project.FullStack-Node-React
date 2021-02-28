@@ -3,10 +3,10 @@ import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalI
 import { Repository } from 'typeorm';
 import { assign } from 'lodash';
 
-export type AnimalCreationParams = Pick<
-    Animal,
-    'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption' | 'additional_info'
->;
+type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption'>;
+type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
+export type AnimalCreationParams = AnimalParams & AnimalAdditionalInfoParams;
+export type AnimalUpdateParams = Partial<AnimalCreationParams & AnimalAdditionalInfoParams>;
 
 export class AnimalsService {
     constructor(
@@ -26,7 +26,7 @@ export class AnimalsService {
         specie,
         description,
         ready_for_adoption,
-        additional_info,
+        ...additional_info
     }: AnimalCreationParams): Promise<void> {
         const animal = this.animalRepository.create({
             name,
@@ -35,24 +35,24 @@ export class AnimalsService {
             description,
             ready_for_adoption,
         });
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { id: _, ...animalAdditionalInfoParams } = additional_info;
-        const animalAdditionalInfo = this.animalAdditionalInfo.create(animalAdditionalInfoParams);
+        const animalAdditionalInfo = this.animalAdditionalInfo.create(additional_info);
         animal.additional_info = animalAdditionalInfo;
 
         await this.animalRepository.save(animal);
     }
 
-    public async update(id: number, updatedAnimal: Partial<AnimalCreationParams>): Promise<Animal> {
+    public async update(id: number, updateParams: AnimalUpdateParams): Promise<Animal> {
         const animal = await this.get(id);
         if (!animal) throw { status: 404, message: `Animal with id: ${id} not found!` };
-        if (updatedAnimal.additional_info) updatedAnimal.additional_info.id = animal.additional_info.id;
+        const updatedAnimal = assign(animal, updateParams);
+        console.log(updatedAnimal);
         await this.animalRepository
             .createQueryBuilder()
             .update(Animal)
             .set(updatedAnimal)
             .where('id = :id', { id })
             .execute();
-        return assign(animal, this.animalAdditionalInfo);
+        console.log(updatedAnimal);
+        return updatedAnimal;
     }
 }
