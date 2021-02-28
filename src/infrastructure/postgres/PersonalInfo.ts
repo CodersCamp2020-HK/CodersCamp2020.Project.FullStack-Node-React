@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class CatAddoptionForm {
+export class PersonalInfo {
     @PrimaryGeneratedColumn()
     id!: number;
 
