@@ -1,11 +1,31 @@
 import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 export type AnimalCreationParams = Pick<
     Animal,
     'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption' | 'additional_info'
 >;
+
+type Primitive<T> = T extends object ? never : T;
+
+class OptionalWhereSelectQueryBuilder<T> {
+    constructor(
+        public selectQueryBuilder: SelectQueryBuilder<T>,
+        private count: number = 0,
+        private uuid: string = uuidv4(),
+    ) {}
+
+    optAndWhere<P>(condition: string, param: Primitive<P>): OptionalWhereSelectQueryBuilder<T> {
+        if (param !== undefined && param !== null) {
+            const key = `${this.uuid}_${this.count++}`;
+            const query = `${condition} :${key}`;
+            this.selectQueryBuilder = this.selectQueryBuilder.andWhere(query, { [key]: param });
+        }
+        return this;
+    }
+}
 
 export class AnimalsService {
     constructor(
@@ -30,52 +50,22 @@ export class AnimalsService {
         acceptsKids?: boolean,
         acceptsOtherAnimals?: boolean,
     ): Promise<Animal[]> {
-        const animal = await this.animalRepository
-            .createQueryBuilder('animal')
-            .leftJoinAndSelect('animal.additional_info', 'info')
-            .where('animal.id >= :zero', { zero: 0 });
-
-        if (readyForAdoption !== undefined) {
-            await animal.andWhere('animal.ready_for_adoption = :readyForAdoption', {
-                readyForAdoption,
-            });
-        }
-
-        if (temporaryHome !== undefined) {
-            await animal.andWhere('info.temporary_home = :temporaryHome', { temporaryHome });
-        }
-
-        if (needDonations !== undefined) {
-            await animal.andWhere('info.need_donations = :needDonations', { needDonations });
-        }
-
-        if (acceptsKids !== undefined) {
-            await animal.andWhere('info.accepts_kids = :acceptsKids', { acceptsKids });
-        }
-
-        if (acceptsOtherAnimals !== undefined) {
-            await animal.andWhere('info.accepts_other_animals = :acceptsOtherAnimals', {
-                acceptsOtherAnimals,
-            });
-        }
-
-        if (virtualAdoption !== undefined) {
-            await animal.andWhere('info.virtual_adoption = :virtualAdoption', { virtualAdoption });
-        }
-
-        if (minAge) {
-            await animal.andWhere('animal.age >= :minAge', { minAge });
-        }
-
-        if (maxAge) {
-            await animal.andWhere('animal.age <= :maxAge', { maxAge });
-        }
-
-        if (specie) {
-            await animal.andWhere('animal.specie = :specie', { specie });
-        }
-
-        return animal.getMany();
+        return new OptionalWhereSelectQueryBuilder(
+            this.animalRepository
+                .createQueryBuilder('animal')
+                .leftJoinAndSelect('animal.additional_info', 'info')
+                .where('animal.id >= :zero', { zero: 0 }),
+        )
+            .optAndWhere('animal.ready_for_adoption = ', readyForAdoption)
+            .optAndWhere('info.temporary_home = ', temporaryHome)
+            .optAndWhere('info.need_donations = ', needDonations)
+            .optAndWhere('info.accepts_kids = ', acceptsKids)
+            .optAndWhere('info.accepts_other_animals = ', acceptsOtherAnimals)
+            .optAndWhere('info.virtual_adoption = ', virtualAdoption)
+            .optAndWhere('animal.age >= ', minAge)
+            .optAndWhere('animal.age <= ', maxAge)
+            .optAndWhere('animal.specie = ', specie)
+            .selectQueryBuilder.getMany();
     }
 
     public async create({
