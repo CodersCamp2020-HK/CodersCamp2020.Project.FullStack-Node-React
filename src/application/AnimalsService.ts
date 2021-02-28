@@ -32,9 +32,10 @@ export class AnimalsService {
 
     public async update(id: number, { additionalInfo, ...animalParams }: AnimalUpdateParams): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id, { relations: ['additional_info'] });
-        if (!animal) throw { status: 404, message: `Animal with id: ${id} not found!` };
+        if (!animal) throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
+        if (id % 1 !== 0) throw new ApiError('Bad Request', 400, 'Id cannot be floating point number!');
         if (arePropertiesUndefined({ additionalInfo, ...animalParams }))
-            throw new ApiError('Bad Request', 400, 'No data provided');
+            throw new ApiError('Bad Request', 400, 'No data provided!');
         const updatedAnimal = {
             ...animal,
             ...animalParams,

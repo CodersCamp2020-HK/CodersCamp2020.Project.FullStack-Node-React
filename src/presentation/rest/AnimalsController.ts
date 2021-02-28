@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Path, Post, Put, Res, Route, SuccessResponse, Response, Tags } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Response, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@application/AnimalsService';
 import { Animal } from '@infrastructure/postgres/Animal';
