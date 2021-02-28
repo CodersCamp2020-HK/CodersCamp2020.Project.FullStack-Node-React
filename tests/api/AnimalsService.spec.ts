@@ -28,13 +28,15 @@ describe('Given: AnimalsService object', () => {
         specie: AnimalSpecies.CAT,
         description: 'desc',
         ready_for_adoption: true,
-        accepts_kids: true,
-        accepts_other_animals: true,
-        admission_to_shelter: new Date(),
-        adoption_date: new Date(),
-        need_donations: false,
-        temporary_home: false,
-        virtual_adoption: true,
+        additionalInfo: {
+            accepts_kids: true,
+            accepts_other_animals: true,
+            admission_to_shelter: new Date(),
+            adoption_date: new Date(),
+            need_donations: false,
+            temporary_home: false,
+            virtual_adoption: true,
+        },
     };
     describe(`When: update with correct data is invoked`, () => {
         it('Then: updated data should be returned', () => {
