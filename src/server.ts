@@ -7,7 +7,7 @@ import 'dotenv/config';
 import { connectToDb } from '@infrastructure/postgres/DatabaseConnection';
 
 (async () => {
-    await connectToDb(process.env.DATABASE_URL as string);
+    await connectToDb();
 
     console.log('Connected to database');
 
