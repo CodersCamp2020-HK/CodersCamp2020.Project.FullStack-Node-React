@@ -50,7 +50,7 @@ export class AnimalsService {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const { id: _, ...animalAdditionalInfoParams } = additional_info;
         const animal = this.get(id);
-        if (!animal) throw { status: '404' };
+        if (!animal) throw { status: 404, message: `Animal with id: ${id} not found!` };
         const updatedAnimal = {
             name,
             age,
