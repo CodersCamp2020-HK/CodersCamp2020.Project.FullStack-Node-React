@@ -2,7 +2,6 @@ import { Body, Controller, Delete, Get, Path, Post, Put, Route, SuccessResponse,
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
 import { Animal } from '@infrastructure/postgres/Animal';
-import { DeleteResult } from 'typeorm';
 
 @Tags('Animals')
 @Route('animals')
