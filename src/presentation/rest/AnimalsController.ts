@@ -28,7 +28,7 @@ export class AnimalsController extends Controller {
         @Query() acceptsKids?: boolean,
         @Query() acceptsOtherAnimals?: boolean,
     ): Promise<Animal[]> {
-        const foundedAnimals = await this.animalsService.getAll(
+        const foundedAnimals = await this.animalsService.getAll({
             minAge,
             maxAge,
             specie,
@@ -38,7 +38,7 @@ export class AnimalsController extends Controller {
             virtualAdoption,
             acceptsKids,
             acceptsOtherAnimals,
-        );
+        });
 
         if (foundedAnimals.length <= 0) {
             return notFoundResponse(404, { reason: 'Animals not found' });

@@ -8,6 +8,18 @@ export type AnimalCreationParams = Pick<
     'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption' | 'additional_info'
 >;
 
+interface AnimalQueryParams {
+    minAge?: number;
+    maxAge?: number;
+    specie?: AnimalSpecies;
+    readyForAdoption?: boolean;
+    temporaryHome?: boolean;
+    needDonations?: boolean;
+    virtualAdoption?: boolean;
+    acceptsKids?: boolean;
+    acceptsOtherAnimals?: boolean;
+}
+
 type Primitive<T> = T extends Record<string, unknown> ? never : T;
 
 class OptionalWhereSelectQueryBuilder<T> {
@@ -39,32 +51,22 @@ export class AnimalsService {
         return animal;
     }
 
-    public async getAll(
-        minAge?: number,
-        maxAge?: number,
-        specie?: AnimalSpecies,
-        readyForAdoption?: boolean,
-        temporaryHome?: boolean,
-        needDonations?: boolean,
-        virtualAdoption?: boolean,
-        acceptsKids?: boolean,
-        acceptsOtherAnimals?: boolean,
-    ): Promise<Animal[]> {
+    public async getAll(queryParams: AnimalQueryParams): Promise<Animal[]> {
         return new OptionalWhereSelectQueryBuilder(
             this.animalRepository
                 .createQueryBuilder('animal')
                 .leftJoinAndSelect('animal.additional_info', 'info')
                 .where('animal.id >= :zero', { zero: 0 }),
         )
-            .optAndWhere('animal.ready_for_adoption = ', readyForAdoption)
-            .optAndWhere('info.temporary_home = ', temporaryHome)
-            .optAndWhere('info.need_donations = ', needDonations)
-            .optAndWhere('info.accepts_kids = ', acceptsKids)
-            .optAndWhere('info.accepts_other_animals = ', acceptsOtherAnimals)
-            .optAndWhere('info.virtual_adoption = ', virtualAdoption)
-            .optAndWhere('animal.age >= ', minAge)
-            .optAndWhere('animal.age <= ', maxAge)
-            .optAndWhere('animal.specie = ', specie)
+            .optAndWhere('animal.ready_for_adoption = ', queryParams.readyForAdoption)
+            .optAndWhere('info.temporary_home = ', queryParams.temporaryHome)
+            .optAndWhere('info.need_donations = ', queryParams.needDonations)
+            .optAndWhere('info.accepts_kids = ', queryParams.acceptsKids)
+            .optAndWhere('info.accepts_other_animals = ', queryParams.acceptsOtherAnimals)
+            .optAndWhere('info.virtual_adoption = ', queryParams.virtualAdoption)
+            .optAndWhere('animal.age >= ', queryParams.minAge)
+            .optAndWhere('animal.age <= ', queryParams.maxAge)
+            .optAndWhere('animal.specie = ', queryParams.specie)
             .selectQueryBuilder.getMany();
     }
 
