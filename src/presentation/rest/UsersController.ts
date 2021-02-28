@@ -1,6 +1,12 @@
-import { Body, Controller, Get, Path, Post, Route, SuccessResponse, Tags } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Route, SuccessResponse, Tags, Res, TsoaResponse } from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import { UserCreationParams, UsersService } from '@application/UsersService';
+import {
+    UserCreationParams,
+    UsersService,
+    UniqueUserEmailError,
+    InvalidEmailFormatError,
+    PasswordRequirementsError,
+} from '@application/UsersService';
 import { User } from '@infrastructure/postgres/User';
 
 @Tags('Users')
@@ -16,9 +22,25 @@ export class UsersController extends Controller {
 
     @SuccessResponse('201', 'Created')
     @Post()
-    public async createUser(@Body() requestBody: UserCreationParams): Promise<void> {
-        this.setStatus(201); // set return status 201
-        this.usersService.create(requestBody);
+    public async createUser(
+        @Body() requestBody: UserCreationParams,
+        @Res() badRequestResponse: TsoaResponse<400, { reason: string }>,
+    ): Promise<void> {
+        try {
+            this.usersService.create(requestBody);
+            this.setStatus(201);
+        } catch (error) {
+            if (
+                error instanceof UniqueUserEmailError ||
+                error instanceof PasswordRequirementsError ||
+                error instanceof InvalidEmailFormatError
+            ) {
+                return badRequestResponse(400, { reason: error.message });
+            } else {
+                throw error;
+            }
+        }
+
         return;
     }
 }

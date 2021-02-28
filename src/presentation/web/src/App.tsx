@@ -23,7 +23,7 @@ function App() {
         </a>
         <div>
           <p>{user?.id}</p>
-          <p>{user?.email}</p>
+          <p>{user?.mail}</p>
           <p>{user?.name}</p>
         </div>
       </header>

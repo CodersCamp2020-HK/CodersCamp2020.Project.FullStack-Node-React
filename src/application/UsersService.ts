@@ -10,6 +10,24 @@ export type UserCreationParams = {
     repPassword: string;
 };
 
+export class InvalidEmailFormatError extends Error {
+    constructor() {
+        super(`Invalid e-mail format`);
+    }
+}
+
+export class UniqueUserEmailError extends Error {
+    constructor(email: string) {
+        super(`User with (email:  ${email}) already exists`);
+    }
+}
+
+export class PasswordRequirementsError extends Error {
+    constructor(reason: string) {
+        super(reason);
+    }
+}
+
 export class UsersService {
     constructor(private userRepository: Repository<User>) {}
 
@@ -22,38 +40,32 @@ export class UsersService {
     public async create(userCreationParams: UserCreationParams): Promise<void> {
         const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!emailRegExp.test(userCreationParams.mail)) {
-            throw new Error('Invalid e-mail format');
+            throw new InvalidEmailFormatError();
         }
 
         const potentialExistingUser = await this.userRepository.findOne({ where: { mail: userCreationParams.mail } });
         if (!potentialExistingUser) {
-
             //Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
             const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
             if (!passwordRegExp.test(userCreationParams.password)) {
-                throw new Error('Failed password requirements');
+                throw new PasswordRequirementsError('Failed password requirements');
             }
 
             if (userCreationParams.password != userCreationParams.repPassword) {
-                throw new Error('Passwords do not match');
+                throw new PasswordRequirementsError('Passwords do not match');
             }
 
-            const currentRep = this.userRepository;
+            const hash = await bcrypt.hash(userCreationParams.password, SALT_ROUNDS);
 
-            bcrypt.hash(userCreationParams.password, SALT_ROUNDS, function (err: Error, hash: string) {
-                if (err) {
-                    throw err;
-                }
-                const user = currentRep.create({
-                    mail: userCreationParams.mail,
-                    password: hash,
-                });
-
-                currentRep.save(user);
+            const user = this.userRepository.create({
+                mail: userCreationParams.mail,
+                password: hash,
             });
+
+            this.userRepository.save(user);
         } else {
-            throw new Error('User with this email exists');
+            throw new UniqueUserEmailError(userCreationParams.mail);
         }
 
         return;
