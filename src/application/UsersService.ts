@@ -10,11 +10,11 @@ export class UsersService {
 
     public async login(userLoginParams: UserLoginParams): Promise<string> {
         const user = await this.userRepository.findOne({ where: { mail: userLoginParams.mail } });
-        if (!user) throw new ApiError('Bad Request', 400, `Wrong email and password!`);
+        if (!user) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
 
         const match = await bcrypt.compare(userLoginParams.password, user.password);
-        if (match) return 'JWT będzie tu';
+        if (!match) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
 
-        return 'Niedobrze';
+        return 'JWT będzie tu';
     }
 }
