@@ -1,7 +1,7 @@
 import { Animal } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository } from 'typeorm';
-import { arePropertiesUndefined } from 'utils/ArePropertiesUndefined';
+import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
 import ApiError from '@infrastructure/ApiError';
 
 type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption'>;
@@ -33,8 +33,7 @@ export class AnimalsService {
     public async update(id: number, { additionalInfo, ...animalParams }: AnimalUpdateParams): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id, { relations: ['additional_info'] });
         if (!animal) throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
-        if (id % 1 !== 0) throw new ApiError('Bad Request', 400, 'Id cannot be floating point number!');
-        if (arePropertiesUndefined({ additionalInfo, ...animalParams }))
+        if (areAllPropertiesUndefined({ additionalInfo, ...animalParams }))
             throw new ApiError('Bad Request', 400, 'No data provided!');
         const updatedAnimal = {
             ...animal,
