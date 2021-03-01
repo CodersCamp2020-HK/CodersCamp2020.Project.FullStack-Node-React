@@ -1,12 +1,7 @@
 import { Body, Controller, Get, Path, Post, Route, SuccessResponse, Tags, Res, TsoaResponse } from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import {
-    UserCreationParams,
-    UsersService,
-    UniqueUserEmailError,
-    InvalidEmailFormatError,
-    PasswordRequirementsError,
-} from '@application/UsersService';
+import { UserCreationParams, UsersService } from '@application/UsersService';
+import { UniqueUserEmailError, InvalidEmailFormatError, PasswordRequirementsError } from '@application/UsersErrors';
 import { User } from '@infrastructure/postgres/User';
 
 @Tags('Users')

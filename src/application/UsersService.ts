@@ -1,4 +1,5 @@
 import { User } from '@infrastructure/postgres/User';
+import { InvalidEmailFormatError, PasswordRequirementsError, UniqueUserEmailError } from './UsersErrors';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 
@@ -9,24 +10,6 @@ export type UserCreationParams = {
     password: string;
     repPassword: string;
 };
-
-export class InvalidEmailFormatError extends Error {
-    constructor() {
-        super(`Invalid e-mail format`);
-    }
-}
-
-export class UniqueUserEmailError extends Error {
-    constructor(email: string) {
-        super(`User with (email:  ${email}) already exists`);
-    }
-}
-
-export class PasswordRequirementsError extends Error {
-    constructor(reason: string) {
-        super(reason);
-    }
-}
 
 export class UsersService {
     constructor(private userRepository: Repository<User>) {}
