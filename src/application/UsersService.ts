@@ -2,6 +2,10 @@ import ApiError from '@infrastructure/ApiError';
 import { User } from '@infrastructure/postgres/User';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export type UserLoginParams = Pick<User, 'mail' | 'password'>;
 
@@ -15,6 +19,14 @@ export class UsersService {
         const match = await bcrypt.compare(userLoginParams.password, user.password);
         if (!match) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
 
-        return 'JWT będzie tu';
+        if (!process.env.JWT_KEY) throw new ApiError('Internal server error', 500, 'JWT private key not found!');
+        const token = jwt.sign(
+            {
+                role: user.type,
+            },
+            process.env.JWT_KEY,
+        );
+
+        return token;
     }
 }
