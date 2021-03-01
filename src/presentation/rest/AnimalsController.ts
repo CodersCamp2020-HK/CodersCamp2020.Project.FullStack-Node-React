@@ -31,6 +31,7 @@ export class AnimalsController extends Controller {
      */
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(400, 'Bad Reqest')
+    @Response<ApiError>(404, 'Not Found')
     @SuccessResponse('200')
     @Put('{animalId}')
     public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalUpdateParams): Promise<Animal> {
