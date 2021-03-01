@@ -21,12 +21,25 @@
                     "url": "http://localhost:8000/api"
                 }
             ]
+        },
+        "securityDefinitions": {
+            "jwt": {
+                "type": "jwt",
+                "scopes": {
+                    "admin": "manage shelter",
+                    "user": "visit shelter",
+                    "employee": "works in shelter",
+                    "volunteer": "helps to shelter"
+
+                }
+            }
         }
     },
     "routes": {
         "routesDir": "src/presentation/rest/generated",
         "basePath": "/api",
-        "middleware": "express"
+        "middleware": "express",
+        "authenticationModule": "src/infrastructure/authentication"
     },
     "compilerOptions": {
         "baseUrl": "./src",
