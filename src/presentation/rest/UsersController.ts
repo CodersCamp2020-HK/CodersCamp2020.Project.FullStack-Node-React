@@ -1,7 +1,6 @@
-import { Body, Controller, Get, Path, Post, Query, Route, SuccessResponse, Tags } from 'tsoa';
+import { Controller, Delete, Path, Route, SuccessResponse, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import { User } from '@domain/User';
-import { UserCreationParams, UsersService } from '@application/UsersService';
+import { UsersService } from '@application/UsersService';
 
 @Tags('Users')
 @Route('users')
@@ -9,16 +8,11 @@ export class UsersController extends Controller {
     @Inject
     private usersService!: UsersService;
 
-    @Get('{userId}')
-    public async getUser(@Path() userId: number, @Query() name?: string): Promise<User> {
-        return new UsersService().get(userId, name);
-    }
-
-    @SuccessResponse('201', 'Created') // Custom success response
-    @Post()
-    public async createUser(@Body() requestBody: UserCreationParams): Promise<void> {
-        this.setStatus(201); // set return status 201
-        this.usersService.create(requestBody);
+    @SuccessResponse('201', 'Deleted') // Custom success response
+    @Delete('{userId}')
+    public async deleteUser(@Path() userId: number): Promise<void> {
+        this.usersService.delete(userId);
+        this.setStatus(201);
         return;
     }
 }

@@ -8,6 +8,8 @@ import { AnimalsService } from '@application/AnimalsService';
 import { getConnection } from 'typeorm';
 import { Animal } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
+import { UsersService } from '@application/UsersService';
+import { User } from '@infrastructure/postgres/User';
 
 Container.bind(IWeatherForecastProvider).to(WeatherForecastApi).scope(Scope.Singleton);
 Container.bind(IWeatherHistoricalProvider).to(WeatherHistoricalApi).scope(Scope.Singleton);
@@ -19,4 +21,8 @@ Container.bind(AnimalsService)
                 getConnection().getRepository(AnimalAdditionalInfo),
             ),
     )
+    .scope(Scope.Local);
+
+Container.bind(UsersService)
+    .factory(() => new UsersService(getConnection().getRepository(User)))
     .scope(Scope.Local);
