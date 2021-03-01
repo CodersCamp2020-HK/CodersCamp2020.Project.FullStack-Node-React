@@ -22,7 +22,7 @@ export class UsersController extends Controller {
         @Res() badRequestResponse: TsoaResponse<400, { reason: string }>,
     ): Promise<void> {
         try {
-            this.usersService.create(requestBody);
+            await this.usersService.create(requestBody);
             this.setStatus(201);
         } catch (error) {
             if (
