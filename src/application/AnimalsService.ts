@@ -2,6 +2,7 @@ import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo, AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+import ApiError from '@infrastructure/ApiError';
 
 export type AnimalCreationParams = Pick<
     Animal,
@@ -49,7 +50,8 @@ export class AnimalsService {
 
     public async get(id: number): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id);
-        if (!animal) throw new Error('Animal not found in database');
+        if (!animal) throw new ApiError('Not Found', 404, 'Animal not found in database');
+        //if (!animal) throw new Error('Animal not found in db');
         return animal;
     }
 
