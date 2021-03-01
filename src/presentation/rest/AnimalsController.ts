@@ -2,6 +2,7 @@ import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags, Q
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
 import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
+import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 
 @Tags('Animals')
 @Route('animals')
@@ -27,6 +28,8 @@ export class AnimalsController extends Controller {
         @Query() virtualAdoption?: boolean,
         @Query() acceptsKids?: boolean,
         @Query() acceptsOtherAnimals?: boolean,
+        @Query() activeLevel?: AnimalActiveLevel,
+        @Query() size?: AnimalSize,
     ): Promise<Animal[]> {
         const foundedAnimals = await this.animalsService.getAll({
             minAge,
@@ -38,6 +41,8 @@ export class AnimalsController extends Controller {
             virtualAdoption,
             acceptsKids,
             acceptsOtherAnimals,
+            size,
+            activeLevel,
         });
 
         if (foundedAnimals.length <= 0) {

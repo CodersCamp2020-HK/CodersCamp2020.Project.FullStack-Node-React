@@ -1,5 +1,5 @@
 import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
-import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
+import { AnimalAdditionalInfo, AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -18,6 +18,8 @@ interface AnimalQueryParams {
     virtualAdoption?: boolean;
     acceptsKids?: boolean;
     acceptsOtherAnimals?: boolean;
+    size?: AnimalSize;
+    activeLevel?: AnimalActiveLevel;
 }
 
 type Primitive<T> = T extends Record<string, unknown> ? never : T;
@@ -64,6 +66,8 @@ export class AnimalsService {
             .optAndWhere('info.accepts_kids = ', queryParams.acceptsKids)
             .optAndWhere('info.accepts_other_animals = ', queryParams.acceptsOtherAnimals)
             .optAndWhere('info.virtual_adoption = ', queryParams.virtualAdoption)
+            .optAndWhere('info.size = ', queryParams.size)
+            .optAndWhere('info.active_level = ', queryParams.activeLevel)
             .optAndWhere('animal.age >= ', queryParams.minAge)
             .optAndWhere('animal.age <= ', queryParams.maxAge)
             .optAndWhere('animal.specie = ', queryParams.specie)
