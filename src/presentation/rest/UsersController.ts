@@ -10,7 +10,7 @@ export class UsersController extends Controller {
     private usersService!: UsersService;
 
     @Response<ApiError>(400, 'Bad Request')
-    @Post()
+    @Post('auth')
     public async loginUser(@Body() requestBody: UserLoginParams): Promise<string> {
         this.setStatus(200);
         return this.usersService.login(requestBody);
