@@ -17,7 +17,9 @@ export class AnimalsController extends Controller {
         return this.animalsService.get(animalId);
     }
 
-    @Security('jwt', ['admin'])
+    @Security('jwt', ['admin', 'employee'])
+    @Response<ApiError>(400, 'Bad Request')
+    @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('201', 'created')
     @Post()
@@ -26,10 +28,14 @@ export class AnimalsController extends Controller {
         this.animalsService.create(requestBody);
         return;
     }
+
     /**
      * @param animalId This is a description for animalId
-     * @isInt  animalId
+     * @isInt animalId
      */
+    @Security('jwt', ['admin', 'employee'])
+    @Response<ApiError>(400, 'Bad Request')
+    @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('200')
     @Put('{animalId}')
