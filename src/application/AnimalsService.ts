@@ -1,6 +1,7 @@
 import { Animal } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository } from 'typeorm';
+import ApiError from '@infrastructure/ApiError';
 
 export type AnimalCreationParams = Pick<
     Animal,
@@ -15,13 +16,14 @@ export class AnimalsService {
 
     public async get(id: number): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id);
-        if (!animal) throw new Error('Animal not found in database');
+        if (!animal) throw new ApiError('Not Found', 404, 'Animal not found in database');
+        //if (!animal) throw new Error('Animal not found in db');
         return animal;
     }
 
     public async delete(id: number): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id);
-        if (!animal) throw new Error(`Animal with id: ${id} does not exist`);
+        if (!animal) throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
         await this.animalRepository.delete(id);
         return animal;
     }
