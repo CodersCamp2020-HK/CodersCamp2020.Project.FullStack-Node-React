@@ -1,14 +1,14 @@
-import { User } from '@infrastructure/postgres/User';
-import { InvalidEmailFormatError, PasswordRequirementsError, UniqueUserEmailError } from './UsersErrors';
+import { User, Email, Password } from '@infrastructure/postgres/User';
+import { PasswordRequirementsError, UniqueUserEmailError } from './UsersErrors';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 
 const SALT_ROUNDS = 10;
 
 export type UserCreationParams = {
-    mail: string;
-    password: string;
-    repPassword: string;
+    mail: Email;
+    password: Password;
+    repPassword: Password;
 };
 
 export class UsersService {
@@ -21,19 +21,19 @@ export class UsersService {
     }
 
     public async create(userCreationParams: UserCreationParams): Promise<void> {
-        const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        if (!emailRegExp.test(userCreationParams.mail)) {
-            throw new InvalidEmailFormatError();
-        }
+        // const emailRegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        // if (!emailRegExp.test(userCreationParams.mail)) {
+        //     throw new InvalidEmailFormatError();
+        // }
 
         const potentialExistingUser = await this.userRepository.findOne({ where: { mail: userCreationParams.mail } });
         if (!potentialExistingUser) {
-            //Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
-            const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            // //Minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character:
+            // const passwordRegExp = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-            if (!passwordRegExp.test(userCreationParams.password)) {
-                throw new PasswordRequirementsError('Failed password requirements');
-            }
+            // if (!passwordRegExp.test(userCreationParams.password)) {
+            //     throw new PasswordRequirementsError('Failed password requirements');
+            // }
 
             if (userCreationParams.password != userCreationParams.repPassword) {
                 throw new PasswordRequirementsError('Passwords do not match');
