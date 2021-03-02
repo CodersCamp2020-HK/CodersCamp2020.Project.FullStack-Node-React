@@ -21,12 +21,20 @@
                     "url": "http://localhost:8000/api"
                 }
             ]
+        },
+        "securityDefinitions": {
+            "jwt": {
+                "type": "apiKey",
+                "name": "access_token",
+                "in": "header"
+            }
         }
     },
     "routes": {
         "routesDir": "src/presentation/rest/generated",
         "basePath": "/api",
-        "middleware": "express"
+        "middleware": "express",
+        "authenticationModule": "src/infrastructure/Auth.ts"
     },
     "compilerOptions": {
         "baseUrl": "./src",

@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Response, Tags } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Response, Tags, Security } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
 import { Animal } from '@infrastructure/postgres/Animal';
@@ -17,6 +17,7 @@ export class AnimalsController extends Controller {
         return this.animalsService.get(animalId);
     }
 
+    @Security('jwt', ['admin'])
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('201', 'created')
     @Post()
