@@ -1,7 +1,12 @@
-import { Body, Controller, Get, Path, Post, Route, SuccessResponse, Tags, Res, TsoaResponse } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Route, SuccessResponse, Tags, Res, TsoaResponse, Response } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { UserCreationParams, UsersService } from '@application/UsersService';
-import { UniqueUserEmailError, InvalidEmailFormatError, PasswordRequirementsError } from '@application/UsersErrors';
+import {
+    ValidateErrorJSON,
+    UniqueUserEmailError,
+    InvalidEmailFormatError,
+    PasswordRequirementsError,
+} from '@application/UsersErrors';
 import { User } from '@infrastructure/postgres/User';
 
 @Tags('Users')
@@ -15,6 +20,7 @@ export class UsersController extends Controller {
         return this.usersService.get(userId);
     }
 
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @SuccessResponse('201', 'Created')
     @Post()
     public async createUser(
