@@ -18,7 +18,7 @@ export async function expressAuthentication(
     request: IAuthUserInfoRequest,
     securityName: string,
     scopes?: string[],
-): Promise<any> {
+): Promise<void> {
     if (securityName === 'jwt') {
         try {
             const token = request.header('access_token');
@@ -29,10 +29,10 @@ export async function expressAuthentication(
                 throw new ApiError('Unathorized', 401, 'Authorization failed');
             const repository = getConnection().getRepository(User);
             const user = await repository.findOne(decoded.id);
-            if (!user) throw new ApiError('Unauthorized', 401, 'This user no longer exists');
+            if (!user) throw new ApiError('Unauthorized', 401, 'This user does not exist');
             if (user.type !== decoded.role) throw new ApiError('Bad Request', 400, 'Invalid token');
         } catch (error) {
-            if (error instanceof JsonWebTokenError) throw new ApiError('Bad Request', 400, 'Cannot authorize');
+            if (error instanceof JsonWebTokenError) throw new ApiError('Bad Request', 400, 'Invalid token');
             throw error;
         }
     } else {
