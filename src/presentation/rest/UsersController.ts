@@ -1,6 +1,6 @@
 import { Body, Controller, Post, Route, Tags, Response } from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import { UserLoginParams, UsersService } from '@application/UsersService';
+import { ApiKey, UserLoginParams, UsersService } from '@application/UsersService';
 import ApiError from '@infrastructure/ApiError';
 
 @Tags('Users')
@@ -11,7 +11,7 @@ export class UsersController extends Controller {
 
     @Response<ApiError>(400, 'Bad Request')
     @Post('auth')
-    public async loginUser(@Body() requestBody: UserLoginParams): Promise<string> {
+    public async loginUser(@Body() requestBody: UserLoginParams): Promise<ApiKey> {
         this.setStatus(200);
         return this.usersService.login(requestBody);
     }
