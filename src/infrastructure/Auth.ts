@@ -4,7 +4,7 @@ import { getConnection } from 'typeorm';
 import ApiError from './ApiError';
 import { User, UserType } from './postgres/User';
 
-interface IUserInfo {
+export interface IUserInfo {
     role: UserType;
     id: number;
     iat: number;
@@ -31,6 +31,7 @@ export async function expressAuthentication(
             const user = await repository.findOne(decoded.id);
             if (!user) throw new ApiError('Unauthorized', 401, 'This user does not exist');
             if (user.type !== decoded.role) throw new ApiError('Bad Request', 400, 'Invalid token');
+            request.body.currentUser = decoded;
         } catch (error) {
             if (error instanceof JsonWebTokenError) throw new ApiError('Bad Request', 400, 'Invalid token');
             throw error;

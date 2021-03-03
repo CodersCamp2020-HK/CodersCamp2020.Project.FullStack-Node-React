@@ -1,10 +1,7 @@
-import { Controller, Delete, Path, Route, SuccessResponse, Tags, Security, Request } from 'tsoa';
+import { Controller, Delete, Path, Route, SuccessResponse, Tags, Security, Request, Response } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { UsersService } from '@application/UsersService';
-//import { Request as ExRequest } from 'express';
-
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { IAuthUserInfoRequest } from '@infrastructure/Auth';
 
 @Tags('Users')
 @Route('users')
@@ -15,12 +12,13 @@ export class UsersController extends Controller {
     /**
      * @isInt userId
      */
-    @SuccessResponse('201', 'Deleted') // Custom success response
-    @Security('jwt', ['admin'])
+    @Response('401', 'Unauthorized')
+    @SuccessResponse('200', 'Deleted') // Custom success response
+    @Security('jwt', ['admin', 'normal', 'volunteer', 'employee'])
     @Delete('{userId}')
-    public async deleteUser(@Path() userId: number, @Request() request: any): Promise<void> {
-        this.usersService.delete(userId, request);
-        this.setStatus(201);
+    public async deleteUser(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {
+        this.setStatus(200);
+        await this.usersService.delete(userId, request);
         return;
     }
 }
