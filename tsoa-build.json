@@ -1,0 +1,48 @@
+{
+    "entryFile": "src/server.ts",
+    "noImplicitAdditionalProperties": "throw-on-extras",
+    "controllerPathGlobs": ["src/presentation/rest/**/*Controller.ts"],
+    "spec": {
+        "outputDirectory": "src/presentation/rest/generated",
+        "specVersion": 3,
+        "version": "v1",
+        "name": "API Name",
+        "description": "API description",
+        "contact": {
+            "name": "Author Name",
+            "email": "Author Email",
+            "url": "Contact URL"
+        },
+        "license": "MIT",
+        "basePath": "/api",
+        "spec": {
+            "servers": [
+                {
+                    "url": "https://coders-camp-schronisko.herokuapp.com/api/"
+                }
+            ]
+        },
+        "securityDefinitions": {
+            "jwt": {
+                "type": "apiKey",
+                "name": "access_token",
+                "in": "header"
+            }
+        }
+    },
+    "routes": {
+        "routesDir": "src/presentation/rest/generated",
+        "basePath": "/api",
+        "middleware": "express",
+        "authenticationModule": "src/infrastructure/Auth.ts"
+    },
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "@domain/*": ["domain/*"],
+            "@infrastructure/*": ["infrastructure/*"],
+            "@presentation/*": ["presentation/*"],
+            "@application/*": ["application/*"]
+        }
+    }
+}
