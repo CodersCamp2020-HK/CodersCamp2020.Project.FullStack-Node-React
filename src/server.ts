@@ -4,9 +4,9 @@ import { api } from './presentation/rest';
 import './IocContainerSetup';
 import path from 'path';
 import 'reflect-metadata';
-import 'dotenv/config';
+import dotenv from 'dotenv';
 import { connectToDb } from '@infrastructure/postgres/DatabaseConnection';
-
+dotenv.config();
 (async () => {
     await connectToDb();
 

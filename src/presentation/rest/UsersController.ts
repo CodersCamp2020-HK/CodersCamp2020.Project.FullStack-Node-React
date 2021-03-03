@@ -12,6 +12,9 @@ export class UsersController extends Controller {
     @Inject
     private usersService!: UsersService;
 
+    /**
+     * @isInt userId
+     */
     @SuccessResponse('201', 'Deleted') // Custom success response
     @Security('jwt', ['admin'])
     @Delete('{userId}')

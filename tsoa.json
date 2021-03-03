@@ -24,14 +24,9 @@
         },
         "securityDefinitions": {
             "jwt": {
-                "type": "jwt",
-                "scopes": {
-                    "admin": "manage shelter",
-                    "user": "visit shelter",
-                    "employee": "works in shelter",
-                    "volunteer": "helps to shelter"
-
-                }
+                "type": "apiKey",
+                "name": "access_token",
+                "in": "header"
             }
         }
     },
@@ -39,7 +34,7 @@
         "routesDir": "src/presentation/rest/generated",
         "basePath": "/api",
         "middleware": "express",
-        "authenticationModule": "src/infrastructure/authentication"
+        "authenticationModule": "src/infrastructure/Auth.ts"
     },
     "compilerOptions": {
         "baseUrl": "./src",
