@@ -1,5 +1,4 @@
 import express, { Response, Request, NextFunction } from 'express';
-require('express-async-errors');
 import ApiError from '../../infrastructure/ApiError';
 import { RegisterRoutes } from './generated/routes';
 import { useSwagger } from './Swagger';
