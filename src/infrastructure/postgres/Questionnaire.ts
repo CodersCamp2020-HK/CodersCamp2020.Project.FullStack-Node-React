@@ -10,25 +10,7 @@ export class Questionnaire {
 
     @OneToMany(() => QuestionnaireQuestion, (question) => question.questionnaire, { cascade: true })
     questions!: QuestionnaireQuestion[];
-
-    // czy auktualna, jaki ma typ, ...
 }
-
-// type RequireType<T> = T extends { type: string } ? T : never;
-
-// interface TextAnswer1 {
-//     type: 'TextAnswer1';
-//     placeholder: string;
-// }
-
-// interface EnumAnswer1 {
-//     type: 'EnumAnswer';
-//     values: string[];
-// }
-
-// interface Foo {}
-
-// type Form1 = RequireType<TextAnswer1 | EnumAnswer1 | Foo>;
 
 interface TextAnswer {
     placeholder: string;
@@ -57,7 +39,7 @@ export class QuestionnaireQuestion {
     question!: string;
 
     @Column({
-        type: 'jsonb',
+        type: 'json',
     })
     form!: Form;
 }
