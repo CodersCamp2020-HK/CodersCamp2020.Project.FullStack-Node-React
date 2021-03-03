@@ -1,5 +1,4 @@
 import express, { Response, Request, NextFunction } from 'express';
-require('express-async-errors');
 import ApiError from '../../infrastructure/ApiError';
 import { RegisterRoutes } from './generated/routes';
 import { useSwagger } from './Swagger';
@@ -24,8 +23,6 @@ api.use((err: ApiError | Error, req: Request, res: Response, _next: NextFunction
         console.warn(`Internal Server Error for ${req.path}:`, err.message);
         return res.status(500).json({ name: err.name, message: err.message });
     }
-
-    _next(err);
 });
 
 api.use('/api', ...useSwagger());

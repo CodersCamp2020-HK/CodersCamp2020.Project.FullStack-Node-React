@@ -1,12 +1,47 @@
-import { Animal } from '@infrastructure/postgres/Animal';
-import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { Repository } from 'typeorm';
+import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
+import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
+import { AnimalAdditionalInfo, AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
+import { Repository, SelectQueryBuilder } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 import ApiError from '@infrastructure/ApiError';
 
-export type AnimalCreationParams = Pick<
-    Animal,
-    'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption' | 'additional_info'
->;
+type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption'>;
+type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
+export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
+export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
+
+interface AnimalQueryParams {
+    minAge?: number;
+    maxAge?: number;
+    specie?: AnimalSpecies;
+    readyForAdoption?: boolean;
+    temporaryHome?: boolean;
+    needDonations?: boolean;
+    virtualAdoption?: boolean;
+    acceptsKids?: boolean;
+    acceptsOtherAnimals?: boolean;
+    size?: AnimalSize;
+    activeLevel?: AnimalActiveLevel;
+}
+
+type Primitive<T> = T extends Record<string, unknown> ? never : T;
+
+class OptionalWhereSelectQueryBuilder<T> {
+    constructor(
+        public selectQueryBuilder: SelectQueryBuilder<T>,
+        private count: number = 0,
+        private uuid: string = uuidv4(),
+    ) {}
+
+    optAndWhere<P>(condition: string, param: Primitive<P>): OptionalWhereSelectQueryBuilder<T> {
+        if (param !== undefined && param !== null) {
+            const key = `${this.uuid}_${this.count++}`;
+            const query = `${condition} :${key}`;
+            this.selectQueryBuilder = this.selectQueryBuilder.andWhere(query, { [key]: param });
+        }
+        return this;
+    }
+}
 
 export class AnimalsService {
     constructor(
@@ -17,8 +52,16 @@ export class AnimalsService {
     public async get(id: number): Promise<Animal> {
         const animal = await this.animalRepository.findOne(id);
         if (!animal) throw new ApiError('Not Found', 404, 'Animal not found in database');
-        //if (!animal) throw new Error('Animal not found in db');
+
         return animal;
+    }
+
+    public async create({ additionalInfo, ...animalParams }: AnimalCreationParams): Promise<void> {
+        const animal = this.animalRepository.create(animalParams);
+        const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
+        animal.additional_info = animalAdditionalInfo;
+
+        await this.animalRepository.save(animal);
     }
 
     public async delete(id: number): Promise<Animal> {
@@ -28,45 +71,38 @@ export class AnimalsService {
         return animal;
     }
 
-    public async create({
-        name,
-        age,
-        specie,
-        description,
-        ready_for_adoption,
-        additional_info,
-    }: AnimalCreationParams): Promise<void> {
-        const animal = this.animalRepository.create({
-            name,
-            age,
-            specie,
-            description,
-            ready_for_adoption,
-        });
-        const {
-            temporary_home,
-            need_donations,
-            virtual_adoption,
-            adoption_date,
-            admission_to_shelter,
-            accepts_kids,
-            accepts_other_animals,
-        } = additional_info;
-        const animalAdditionalInfo = this.animalAdditionalInfo.create({
-            temporary_home,
-            need_donations,
-            virtual_adoption,
-            adoption_date,
-            admission_to_shelter,
-            accepts_kids,
-            accepts_other_animals,
-        });
-        animal.additional_info = animalAdditionalInfo;
-
-        await this.animalRepository.save(animal);
+    public async getAll(queryParams: AnimalQueryParams): Promise<Animal[]> {
+        return new OptionalWhereSelectQueryBuilder(
+            this.animalRepository
+                .createQueryBuilder('animal')
+                .leftJoinAndSelect('animal.additional_info', 'info')
+                .where('animal.id >= :zero', { zero: 0 }),
+        )
+            .optAndWhere('animal.ready_for_adoption = ', queryParams.readyForAdoption)
+            .optAndWhere('info.temporary_home = ', queryParams.temporaryHome)
+            .optAndWhere('info.need_donations = ', queryParams.needDonations)
+            .optAndWhere('info.accepts_kids = ', queryParams.acceptsKids)
+            .optAndWhere('info.accepts_other_animals = ', queryParams.acceptsOtherAnimals)
+            .optAndWhere('info.virtual_adoption = ', queryParams.virtualAdoption)
+            .optAndWhere('info.size = ', queryParams.size)
+            .optAndWhere('info.active_level = ', queryParams.activeLevel)
+            .optAndWhere('animal.age >= ', queryParams.minAge)
+            .optAndWhere('animal.age <= ', queryParams.maxAge)
+            .optAndWhere('animal.specie = ', queryParams.specie)
+            .selectQueryBuilder.getMany();
     }
 
-    public async update(animal: Animal): Promise<Animal> {
-        throw new Error(`Not implemented ${animal}`);
+    public async update(id: number, { additionalInfo, ...animalParams }: AnimalUpdateParams): Promise<Animal> {
+        const animal = await this.animalRepository.findOne(id, { relations: ['additional_info'] });
+        if (!animal) throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
+        if (areAllPropertiesUndefined({ additionalInfo, ...animalParams }))
+            throw new ApiError('Bad Request', 400, 'No data provided!');
+        const updatedAnimal = {
+            ...animal,
+            ...animalParams,
+            additional_info: { ...animal.additional_info, ...additionalInfo },
+        };
+
+        return await this.animalRepository.save(updatedAnimal);
     }
 }
