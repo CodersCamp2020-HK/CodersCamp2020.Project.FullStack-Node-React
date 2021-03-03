@@ -1,10 +1,23 @@
-import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags, Query, TsoaResponse, Response, Res } from 'tsoa';
+import {
+    Body,
+    Controller,
+    Get,
+    Path,
+    Post,
+    Put,
+    Route,
+    SuccessResponse,
+    Tags,
+    Query,
+    TsoaResponse,
+    Response,
+    Res,
+} from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
+import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@application/AnimalsService';
 import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
 import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import ApiError from '@infrastructure/ApiError';
-
 
 @Tags('Animals')
 @Route('animals')
@@ -62,17 +75,19 @@ export class AnimalsController extends Controller {
     public async createAnimal(@Body() requestBody: AnimalCreationParams): Promise<void> {
         this.setStatus(201);
         this.animalsService.create(requestBody);
-        return;
     }
+
     /**
      * @param animalId This is a description for animalId
      * @isInt  animalId
      */
     @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(400, 'Bad Reqest')
+    @Response<ApiError>(404, 'Not Found')
     @SuccessResponse('200')
     @Put('{animalId}')
-    public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalCreationParams): Promise<Animal> {
+    public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalUpdateParams): Promise<Animal> {
         this.setStatus(200);
-        return this.animalsService.update({ id: animalId, ...requestBody });
+        return this.animalsService.update(animalId, requestBody);
     }
 }
