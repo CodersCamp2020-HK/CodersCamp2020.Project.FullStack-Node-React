@@ -13,7 +13,8 @@ export class UsersController extends Controller {
      * @isInt userId
      */
     @Response('401', 'Unauthorized')
-    @SuccessResponse('200', 'Deleted') // Custom success response
+    @Response('404', 'User not found')
+    @SuccessResponse('200', ' User deleted') // Custom success response
     @Security('jwt', ['admin', 'normal', 'volunteer', 'employee'])
     @Delete('{userId}')
     public async deleteUser(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {

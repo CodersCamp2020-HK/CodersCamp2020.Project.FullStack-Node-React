@@ -7,6 +7,11 @@ export class UsersService {
     constructor(private userRepository: Repository<User>) {}
 
     public async delete(userId: number, request: IAuthUserInfoRequest): Promise<void> {
+        const user = await this.userRepository.findOne(userId);
+        if (!user) {
+            throw new ApiError('Not found', 404, 'User does not exist');
+        }
+
         const currentUser = request.body.currentUser as IUserInfo;
 
         if (currentUser.role == UserType.ADMIN || currentUser.id == userId) {
