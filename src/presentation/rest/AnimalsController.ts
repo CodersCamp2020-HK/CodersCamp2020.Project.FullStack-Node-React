@@ -1,8 +1,10 @@
-import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Response, Tags } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Put, Route, SuccessResponse, Tags, Query, TsoaResponse, Response, Res } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService } from '@application/AnimalsService';
-import { Animal } from '@infrastructure/postgres/Animal';
+import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
+import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import ApiError from '@infrastructure/ApiError';
+
 
 @Tags('Animals')
 @Route('animals')
@@ -15,6 +17,43 @@ export class AnimalsController extends Controller {
     @Get('{animalId}')
     public async getAnimal(@Path() animalId: number): Promise<Animal> {
         return this.animalsService.get(animalId);
+    }
+
+    @SuccessResponse('200')
+    @Get('/')
+    public async getAnimals(
+        @Res() notFoundResponse: TsoaResponse<404, { reason: string }>,
+        @Query() minAge?: number,
+        @Query() maxAge?: number,
+        @Query() specie?: AnimalSpecies,
+        @Query() readyForAdoption?: boolean,
+        @Query() temporaryHome?: boolean,
+        @Query() needDonations?: boolean,
+        @Query() virtualAdoption?: boolean,
+        @Query() acceptsKids?: boolean,
+        @Query() acceptsOtherAnimals?: boolean,
+        @Query() activeLevel?: AnimalActiveLevel,
+        @Query() size?: AnimalSize,
+    ): Promise<Animal[]> {
+        const foundedAnimals = await this.animalsService.getAll({
+            minAge,
+            maxAge,
+            specie,
+            readyForAdoption,
+            temporaryHome,
+            needDonations,
+            virtualAdoption,
+            acceptsKids,
+            acceptsOtherAnimals,
+            size,
+            activeLevel,
+        });
+
+        if (foundedAnimals.length <= 0) {
+            return notFoundResponse(404, { reason: 'Animals not found' });
+        }
+
+        return foundedAnimals;
     }
 
     @Response<Error>(500, 'Internal Server Error')
