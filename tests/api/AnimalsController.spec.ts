@@ -6,7 +6,7 @@ import { mocked } from 'ts-jest/utils';
 import { Repository } from 'typeorm';
 import { Container, Scope } from 'typescript-ioc';
 import express from 'express';
-import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
+import { AnimalActiveLevel, AnimalAdditionalInfo, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 
 jest.mock('../../src/application/AnimalsService');
 
@@ -44,6 +44,10 @@ describe('PUT /animals/{id}', () => {
                 need_donations: false,
                 temporary_home: false,
                 virtual_adoption: true,
+                active_level: AnimalActiveLevel.MEDIUM,
+                size: AnimalSize.SMALL,
+                special_diet: 'Banany',
+                comments: 'Truskawki',
             },
         };
 
