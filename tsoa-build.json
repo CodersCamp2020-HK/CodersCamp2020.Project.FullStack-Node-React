@@ -33,8 +33,7 @@
     "routes": {
         "routesDir": "src/presentation/rest/generated",
         "basePath": "/api",
-        "middleware": "express",
-        "authenticationModule": "src/infrastructure/Auth.ts"
+        "middleware": "express"
     },
     "compilerOptions": {
         "baseUrl": "./src",
