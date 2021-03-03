@@ -18,6 +18,7 @@ export class UsersService {
         if (!user) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
 
         const match = await bcrypt.compare(userLoginParams.password, user.password);
+        console.log(await bcrypt.hash(userLoginParams.password, 10));
         if (!match) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
 
         if (!process.env.JWT_KEY) throw new ApiError('Internal server error', 500, 'JWT private key not found!');
