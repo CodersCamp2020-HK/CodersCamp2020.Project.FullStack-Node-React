@@ -1,4 +1,6 @@
 import * as nodemailer from 'nodemailer';
+
+//Example usage await this.emailService.sendActivationEmail('sidney.kshlerin17@ethereal.email', request.get('host') + '/api/users/activate/' + generatedUUID);
 export class EmailService {
     public async sendActivationEmail(targetEmail: string, activationLink: string): Promise<void> {
         //FOR PRODUCTION

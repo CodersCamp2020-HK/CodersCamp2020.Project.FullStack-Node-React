@@ -1,37 +1,34 @@
-import { Body, Controller, Get, Path, Post, Query, Route, SuccessResponse, Tags, Request } from 'tsoa';
+import { Controller, Path, Post, Route, SuccessResponse, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import { User } from '@domain/User';
-import { UserCreationParams, UsersService } from '@application/UsersService';
-import { EmailService } from '@application/EmailService';
-import { Request as ExRequest } from 'express';
+import { UsersService } from '@application/UsersService';
 
-const mailserv = new EmailService();
+const sampleUsers = [
+    {
+        id: 1,
+        email: 'asd@asd.asd',
+        UUID: 'secretuuid',
+    },
+];
 
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
     @Inject
     private usersService!: UsersService;
-    private emailService: EmailService = mailserv;
-
-    @Get('{userId}')
-    public async getUser(@Path() userId: number, @Query() name?: string): Promise<User> {
-        return new UsersService().get(userId, name);
-    }
-
-    @SuccessResponse('201', 'Created') // Custom success response
-    @Post()
-    public async createUser(@Body() requestBody: UserCreationParams): Promise<void> {
-        this.setStatus(201); // set return status 201
-        this.usersService.create(requestBody);
-        return;
-    }
 
     @Post('activate/{generatedUUID}')
-    @SuccessResponse('201', 'Created')
-    public async sendEmail(@Path() generatedUUID: string, @Request() request: ExRequest): Promise<void> {
-        this.setStatus(201);
-        await this.emailService.sendActivationEmail('sidney.kshlerin17@ethereal.email', request.get('host') + '/api/users/activate/' + generatedUUID);
+    @SuccessResponse('200', 'User Activated')
+    public async sendEmail(@Path() generatedUUID: string): Promise<void> {
+        const foundedUser = sampleUsers.find((el) => {
+            return el.UUID == generatedUUID;
+        });
+
+        if (foundedUser) {
+            await this.usersService.activateUser(foundedUser.id);
+            this.setStatus(200);
+        } else {
+            throw new Error('User not found');
+        }
         return;
     }
 }
