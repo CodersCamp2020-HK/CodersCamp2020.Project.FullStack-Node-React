@@ -1,7 +1,7 @@
-import { Body, Controller, Get, Path, Post, Query, Route, SuccessResponse, Tags } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Put, Query, Route, SuccessResponse, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { User } from '@domain/User';
-import { UserCreationParams, UsersService } from '@application/UsersService';
+import { UserCreationParams, UsersService, UserUpdateParams } from '@application/UsersService';
 
 @Tags('Users')
 @Route('users')
@@ -20,5 +20,11 @@ export class UsersController extends Controller {
         this.setStatus(201); // set return status 201
         this.usersService.create(requestBody);
         return;
+    }
+
+    @Put('{UserId}')
+    public async updateUser(@Path() userId: number, @Body() requestBody: UserUpdateParams): Promise<User> {
+        this.setStatus(200);
+        return this.usersService.update(userId, requestBody);
     }
 }
