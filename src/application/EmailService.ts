@@ -1,9 +1,20 @@
 import * as nodemailer from 'nodemailer';
 export class EmailService {
     public async sendActivationEmail(targetEmail: string, activationLink: string): Promise<void> {
-        console.log(targetEmail, activationLink);
-        const testAccount = await nodemailer.createTestAccount();
+        //FOR PRODUCTION
+        // if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSOWRD) {
+        //     throw new Error('Email sender does not exist');
+        // }
+        // const transporter = nodemailer.createTransport({
+        //     service: 'SendGrid',
+        //     auth: {
+        //         user: process.env.EMAIL_USER,
+        //         pass: process.env.EMAIL_PASSWORD,
+        //     },
+        // });
 
+        //FOR DEVELOPMENT
+        const testAccount = await nodemailer.createTestAccount();
         const transporter = nodemailer.createTransport({
             host: 'smtp.ethereal.email',
             port: 587,
