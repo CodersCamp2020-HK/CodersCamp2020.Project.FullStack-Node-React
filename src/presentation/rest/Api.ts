@@ -31,8 +31,6 @@ api.use((err: ApiError | ValidateError | Error, req: Request, res: Response, _ne
         console.warn(`Internal Server Error for ${req.path}:`, err.message);
         return res.status(500).json({ name: err.name, message: err.message });
     }
-
-    _next(err);
 });
 
 api.use('/api', ...useSwagger());
