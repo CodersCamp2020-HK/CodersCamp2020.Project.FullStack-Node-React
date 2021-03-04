@@ -64,6 +64,13 @@ export class AnimalsService {
         await this.animalRepository.save(animal);
     }
 
+    public async delete(id: number): Promise<Animal> {
+        const animal = await this.animalRepository.findOne(id);
+        if (!animal) throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
+        await this.animalRepository.delete(id);
+        return animal;
+    }
+
     public async getAll(queryParams: AnimalQueryParams): Promise<Animal[]> {
         return new OptionalWhereSelectQueryBuilder(
             this.animalRepository
