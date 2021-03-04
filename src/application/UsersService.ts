@@ -8,10 +8,6 @@ export type UserResetPasswordParams = {
     password: Password;
 };
 
-function isUserInfo(obj: string | IUserInfo): obj is IUserInfo {
-    return (obj as IUserInfo).id !== undefined;
-}
-
 const SALT_ROUNDS = 10;
 
 export class UsersService {
@@ -25,13 +21,11 @@ export class UsersService {
         const user = await this.userRepostiory.findOne(id);
         if (!user) throw new ApiError('Not Found', 404, `User with id: ${id} doesn't exist!`);
 
-        const currentUser = request.body.user;
+        const currentUser = request.body.currentUser as IUserInfo;
         console.log(currentUser);
-        if (isUserInfo(currentUser)) {
-            if (currentUser.id !== id) throw new ApiError('Bad Request', 400, `You can not delete user with id: ${id}`);
-            const hash = await bcrypt.hash(password, SALT_ROUNDS);
-            user.password = hash;
-            this.userRepostiory.save(user);
-        }
+        if (currentUser.id !== id) throw new ApiError('Bad Request', 400, `You can not delete user with id: ${id}`);
+        const hash = await bcrypt.hash(password, SALT_ROUNDS);
+        user.password = hash;
+        this.userRepostiory.save(user);
     }
 }
