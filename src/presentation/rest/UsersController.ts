@@ -1,8 +1,9 @@
-import { Body, Controller, Get, Path, Post, Query, Route, SuccessResponse, Tags } from 'tsoa';
+import { Body, Controller, Get, Path, Post, Query, Route, SuccessResponse, Tags, Request } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { User } from '@domain/User';
 import { UserCreationParams, UsersService } from '@application/UsersService';
 import { EmailService } from '@application/EmailService';
+import { Request as ExRequest } from 'express';
 
 const mailserv = new EmailService();
 
@@ -28,9 +29,9 @@ export class UsersController extends Controller {
 
     @Post('activate/{UUID}')
     @SuccessResponse('201', 'Created')
-    public async sendEmail(@Path() UUID: string) : Promise<void> {
+    public async sendEmail(@Path() generatedUUID: string, @Request() request: ExRequest): Promise<void> {
         this.setStatus(201);
-        await this.emailService.sendActivationEmail('sidney.kshlerin17@ethereal.email', 'secretlink' + UUID);
+        await this.emailService.sendActivationEmail('sidney.kshlerin17@ethereal.email', request.get('host') + '/api/users/activate/' + generatedUUID);
         return;
     }
 }

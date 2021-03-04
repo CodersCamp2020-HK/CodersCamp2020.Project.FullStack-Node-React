@@ -14,14 +14,29 @@ export class EmailService {
             },
             tls: {
                 rejectUnauthorized: false,
-            }
+            },
         });
 
         const info = await transporter.sendMail({
-            from: '"Fred Foo 👻" <foo@example.com>',
+            from: 'Animal shelter 🐈 <activation@animal-shelter.com>',
             to: targetEmail,
-            subject: 'Your Activation Link',
-            text: 'Your activation link here: ' + activationLink,
+            subject: 'Animal Shelter Your Activation Link',
+            text: 'Animal Shelter: Thank you for registration! Here is your activation link: ' + activationLink,
+            html: `<div style="text-align: center;">
+                    <div style="width: 100%; background-color: green; padding: 5px">
+                     <h1>Animal Shelter</h1>
+                    </div>
+                    <div>
+                        <h2> Thank you for registration! Below is activation link for your account</h2>
+                        <div style="border: 1px solid black; padding: 5px; margin-bottom: 10px;">
+                            <h3>Activation link: </h3>
+                            <h3><a href="${activationLink}">Click here</a></h3>
+                        </div>
+                    </div>
+                    <div style="width: 100%; background-color: green; padding: 5px">
+                        <h4>Animal Shelter &copy All right reserved </h4>
+                    </div>
+                   </div>`,
         });
 
         console.log('Message sent: %s', info.messageId);
