@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import { useGetUser } from './client';
 
 function App() {
-  const { data : user } = useGetUser({ userId: 1, base: "http://localhost:8000/api" });
 
   return (
     <div className="App">
@@ -21,11 +19,6 @@ function App() {
         >
           Learn React
         </a>
-        <div>
-          <p>{user?.id}</p>
-          <p>{user?.email}</p>
-          <p>{user?.name}</p>
-        </div>
       </header>
     </div>
   );
