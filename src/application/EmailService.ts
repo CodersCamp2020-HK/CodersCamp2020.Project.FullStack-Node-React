@@ -1,6 +1,7 @@
 import * as nodemailer from 'nodemailer';
 export class EmailService {
     public async sendActivationEmail(targetEmail: string, activationLink: string): Promise<void> {
+        console.log(targetEmail, activationLink);
         const testAccount = await nodemailer.createTestAccount();
 
         const transporter = nodemailer.createTransport({
@@ -8,16 +9,19 @@ export class EmailService {
             port: 587,
             secure: false, // true for 465, false for other ports
             auth: {
-                user: testAccount.user, // generated ethereal user
-                pass: testAccount.pass, // generated ethereal password
+                user: testAccount.user,
+                pass: testAccount.pass,
             },
+            tls: {
+                rejectUnauthorized: false,
+            }
         });
 
         const info = await transporter.sendMail({
-            from: '"Fred Foo 👻" <foo@example.com>', // sender address
+            from: '"Fred Foo 👻" <foo@example.com>',
             to: targetEmail,
             subject: 'Your Activation Link',
-            text: activationLink, // plain text body
+            text: 'Your activation link here: ' + activationLink,
         });
 
         console.log('Message sent: %s', info.messageId);
