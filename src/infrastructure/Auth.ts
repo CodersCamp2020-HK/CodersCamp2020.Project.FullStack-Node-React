@@ -31,7 +31,7 @@ export async function expressAuthentication(
             const user = await repository.findOne(decoded.id);
             if (!user) throw new ApiError('Unauthorized', 401, 'This user does not exist');
             if (user.type !== decoded.role) throw new ApiError('Bad Request', 400, 'Invalid token');
-            request.user = decoded;
+            request.body.user = decoded;
         } catch (error) {
             if (error instanceof JsonWebTokenError) throw new ApiError('Bad Request', 400, 'Invalid token');
             throw error;
