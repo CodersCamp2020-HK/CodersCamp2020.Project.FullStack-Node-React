@@ -27,7 +27,7 @@ export class UsersController extends Controller {
         return;
     }
 
-    @Post('activate/{UUID}')
+    @Post('activate/{generatedUUID}')
     @SuccessResponse('201', 'Created')
     public async sendEmail(@Path() generatedUUID: string, @Request() request: ExRequest): Promise<void> {
         this.setStatus(201);
