@@ -7,10 +7,11 @@ import {
     Put,
     Route,
     SuccessResponse,
+    Response,
     Tags,
+    Delete,
     Query,
     TsoaResponse,
-    Response,
     Res,
     Security,
 } from 'tsoa';
@@ -33,9 +34,21 @@ export class AnimalsController extends Controller {
         return this.animalsService.get(animalId);
     }
 
+    /**
+     * Supply the unique animal ID and delete the animal with corresponding id from database
+     *  @param animalId The animal's identifier
+     *  @isInt  animalId
+     */
     @Security('jwt', ['admin', 'employee'])
     @Response<ApiError>(400, 'Bad Request')
     @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
+    @Delete('{animalId}')
+    public async deleteAnimal(@Path() animalId: number): Promise<Animal> {
+        return this.animalsService.delete(animalId);
+    }
+
     @SuccessResponse('200')
     @Get('/')
     public async getAnimals(
