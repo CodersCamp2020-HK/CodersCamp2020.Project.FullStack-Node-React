@@ -1,4 +1,4 @@
-import { Body, Controller, Path, Put, Response, Route, SuccessResponse, Tags } from 'tsoa';
+import { Body, Controller, Path, Put, Response, Route, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { User } from '@infrastructure/postgres/User';
 import { UsersService, UserUpdateParams } from '@application/UsersService';
