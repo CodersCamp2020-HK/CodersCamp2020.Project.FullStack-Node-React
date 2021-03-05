@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Path, Post, Put, Query, Route, SuccessResponse, Tags } from 'tsoa';
+import { Body, Controller, Path, Put, Response, Route, SuccessResponse, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import { User } from '@domain/User';
-import { UserCreationParams, UsersService, UserUpdateParams } from '@application/UsersService';
+import { User } from '@infrastructure/postgres/User';
+import { UsersService, UserUpdateParams } from '@application/UsersService';
+import ApiError from '@infrastructure/ApiError';
 
 @Tags('Users')
 @Route('users')
@@ -9,19 +10,8 @@ export class UsersController extends Controller {
     @Inject
     private usersService!: UsersService;
 
-    @Get('{userId}')
-    public async getUser(@Path() userId: number, @Query() name?: string): Promise<User> {
-        return new UsersService().get(userId, name);
-    }
-
-    @SuccessResponse('201', 'Created') // Custom success response
-    @Post()
-    public async createUser(@Body() requestBody: UserCreationParams): Promise<void> {
-        this.setStatus(201); // set return status 201
-        this.usersService.create(requestBody);
-        return;
-    }
-
+    @Response<ApiError>(404, 'User not found')
+    @Response<User>(200, 'User updated')
     @Put('{UserId}')
     public async updateUser(@Path() userId: number, @Body() requestBody: UserUpdateParams): Promise<User> {
         this.setStatus(200);
