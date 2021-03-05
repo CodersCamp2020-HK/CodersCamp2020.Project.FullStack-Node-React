@@ -12,7 +12,7 @@ export class UsersController extends Controller {
 
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
-    @Put('{UserId}')
+    @Put('{userId}')
     public async updateUser(@Path() userId: number, @Body() requestBody: UserUpdateParams): Promise<User> {
         this.setStatus(200);
         return this.usersService.update(userId, requestBody);
