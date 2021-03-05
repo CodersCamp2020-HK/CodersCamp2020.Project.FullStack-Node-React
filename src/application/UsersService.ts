@@ -12,7 +12,8 @@ export class UsersService {
             throw new ApiError('Not found', 404, 'User does not exist');
         }
 
-        const currentUser = request.body.currentUser as IUserInfo;
+        const currentUser = request.user as IUserInfo;
+        console.log(currentUser);
 
         if (currentUser.role == UserType.ADMIN || currentUser.id == userId) {
             await this.userRepository
