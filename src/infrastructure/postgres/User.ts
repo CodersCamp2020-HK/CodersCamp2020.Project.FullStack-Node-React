@@ -21,7 +21,7 @@ export type Email = string;
 /**
  * User Password.
  * Password is used to registration and login.
- * Passowrd requirements: minimum eight characters, at least one uppercase letter, one lowercase letter, one number and one special character
+ * Passowrd requirements: minimum eight characters, at least one uppercase letter, one lowercase letter and one number
  * @pattern ^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{8,}$
  */
 export type Password = string;

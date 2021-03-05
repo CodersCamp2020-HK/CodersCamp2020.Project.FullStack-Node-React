@@ -21,9 +21,9 @@ export class UsersService {
         const user = await this.userRepostiory.findOne(id);
         if (!user) throw new ApiError('Not Found', 404, `User with id: ${id} doesn't exist!`);
 
-        const currentUser = request.body.currentUser as IUserInfo;
-        console.log(currentUser);
-        if (currentUser.id !== id) throw new ApiError('Bad Request', 400, `You can not delete user with id: ${id}`);
+        const currentUser = request.user as IUserInfo;
+        if (currentUser.id !== id)
+            throw new ApiError('Bad Request', 400, `You can not change password for user with id: ${id}`);
         const hash = await bcrypt.hash(password, SALT_ROUNDS);
         user.password = hash;
         this.userRepostiory.save(user);

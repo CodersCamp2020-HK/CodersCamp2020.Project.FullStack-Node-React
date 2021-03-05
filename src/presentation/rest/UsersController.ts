@@ -24,7 +24,6 @@ export class UsersController extends Controller {
         @Body() password: UserResetPasswordParams,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
-        console.log(request.user);
         this.setStatus(200);
         return this.usersService.updatePassword(userId, password, request);
     }
