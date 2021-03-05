@@ -2,7 +2,7 @@ import ApiError from '@infrastructure/ApiError';
 import { Password, User } from '@infrastructure/postgres/User';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
-import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import { IUserInfo } from '@infrastructure/Auth';
 
 export type UserResetPasswordParams = {
     password: Password;
@@ -16,12 +16,11 @@ export class UsersService {
     public async updatePassword(
         id: number,
         { password }: UserResetPasswordParams,
-        request: IAuthUserInfoRequest,
+        currentUser: IUserInfo,
     ): Promise<void> {
         const user = await this.userRepostiory.findOne(id);
         if (!user) throw new ApiError('Not Found', 404, `User with id: ${id} doesn't exist!`);
 
-        const currentUser = request.user as IUserInfo;
         if (currentUser.id !== id)
             throw new ApiError('Bad Request', 400, `You can not change password for user with id: ${id}`);
         const hash = await bcrypt.hash(password, SALT_ROUNDS);

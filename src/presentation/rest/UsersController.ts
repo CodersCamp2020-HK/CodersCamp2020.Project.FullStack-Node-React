@@ -1,6 +1,6 @@
 import { UserResetPasswordParams, UsersService } from '@application/UsersService';
 import ApiError from '@infrastructure/ApiError';
-import { IAuthUserInfoRequest } from '@infrastructure/Auth';
+import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
 import { Controller, Route, Tags, Response, Path, Patch, Body, SuccessResponse, Security, Request } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
@@ -25,6 +25,6 @@ export class UsersController extends Controller {
         @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
         this.setStatus(200);
-        return this.usersService.updatePassword(userId, password, request);
+        return this.usersService.updatePassword(userId, password, request.user as IUserInfo);
     }
 }
