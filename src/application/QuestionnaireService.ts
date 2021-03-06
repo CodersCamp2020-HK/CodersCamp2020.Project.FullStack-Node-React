@@ -16,13 +16,13 @@ export class QuestionnaireService {
     }
 
     public async get(id: number): Promise<Questionnaire> {
-        const surveyQuestionnaire = await this.questionnaireRepository.findOne(id);
+        const surveyQuestionnaire = await this.questionnaireRepository.findOne(id, { relations: ['questions'] });
         if (!surveyQuestionnaire) throw new ApiError('Not Found', 404, 'Survey not found in database');
         return surveyQuestionnaire;
     }
 
     public async getAll(): Promise<Questionnaire[]> {
-        const surveyQuestionnaire = await this.questionnaireRepository.find();
+        const surveyQuestionnaire = await this.questionnaireRepository.find({ relations: ['questions'] });
         if (!surveyQuestionnaire) throw new ApiError('Not Found', 404, 'Surveys not found in database');
         return surveyQuestionnaire;
     }
