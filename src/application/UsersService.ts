@@ -1,9 +1,18 @@
 import ApiError from '@infrastructure/ApiError';
-import { Password, User, UserType } from '@infrastructure/postgres/User';
+import { Email, Password, User, UserType } from '@infrastructure/postgres/User';
+import { PasswordRequirementsError, UniqueUserEmailError } from './UsersErrors';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+
+const SALT_ROUNDS = 10;
+
+export type UserCreationParams = {
+    mail: Email;
+    password: Password;
+    repPassword: Password;
+};
 
 export type UserLoginParams = Pick<User, 'mail' | 'password'>;
 
@@ -14,10 +23,35 @@ export type UserResetPasswordParams = {
     password: Password;
 };
 
-const SALT_ROUNDS = 10;
-
 export class UsersService {
     constructor(private userRepository: Repository<User>) {}
+
+    public async get(id: number): Promise<User> {
+        const user = await this.userRepository.findOne(id);
+        if (!user) throw new Error('User not found in database');
+        return user;
+    }
+
+    public async create(userCreationParams: UserCreationParams): Promise<void> {
+        const potentialExistingUser = await this.userRepository.findOne({ where: { mail: userCreationParams.mail } });
+        if (!potentialExistingUser) {
+            if (userCreationParams.password != userCreationParams.repPassword) {
+                throw new PasswordRequirementsError('Passwords do not match');
+            }
+
+            const hash = await bcrypt.hash(userCreationParams.password, SALT_ROUNDS);
+
+            const user = this.userRepository.create({
+                mail: userCreationParams.mail,
+                password: hash,
+            });
+
+            this.userRepository.save(user);
+        } else {
+            throw new UniqueUserEmailError(userCreationParams.mail);
+        }
+        return;
+    }
 
     public async updatePassword(
         id: number,
