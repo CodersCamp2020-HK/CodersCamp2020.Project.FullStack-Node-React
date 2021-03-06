@@ -4,8 +4,6 @@ import { AnimalsService } from '@application/AnimalsService';
 import { getConnection } from 'typeorm';
 import { Animal } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { UsersService } from '@application/UsersService';
-import { User } from '@infrastructure/postgres/User';
 import { QuestionnaireService } from '@application/QuestionnaireService';
 import { Questionnaire } from '@infrastructure/postgres/Questionnaire';
 import { UsersService } from '@application/UsersService';
