@@ -1,5 +1,6 @@
 import { Questionnaire, QuestionnaireQuestion } from '@infrastructure/postgres/Questionnaire';
 import { Repository } from 'typeorm';
+import ApiError from '@infrastructure/ApiError';
 
 export interface QuestionnaireCreationParams {
     name: string;
@@ -12,5 +13,17 @@ export class QuestionnaireService {
     public async create(questionnaireCreationParams: QuestionnaireCreationParams): Promise<void> {
         const questionnaire = this.questionnaireRepository.create(questionnaireCreationParams);
         await this.questionnaireRepository.save(questionnaire);
+    }
+
+    public async get(id: number): Promise<Questionnaire> {
+        const surveyQuestionnaire = await this.questionnaireRepository.findOne(id);
+        if (!surveyQuestionnaire) throw new ApiError('Not Found', 404, 'Survey not found in database');
+        return surveyQuestionnaire;
+    }
+
+    public async getAll(): Promise<Questionnaire[]> {
+        const surveyQuestionnaire = await this.questionnaireRepository.find();
+        if (!surveyQuestionnaire) throw new ApiError('Not Found', 404, 'Surveys not found in database');
+        return surveyQuestionnaire;
     }
 }
