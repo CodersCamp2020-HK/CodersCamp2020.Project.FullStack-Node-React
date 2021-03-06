@@ -13,6 +13,7 @@ import {
     Query,
     TsoaResponse,
     Res,
+    Security,
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@application/AnimalsService';
@@ -38,6 +39,9 @@ export class AnimalsController extends Controller {
      *  @param animalId The animal's identifier
      *  @isInt  animalId
      */
+    @Security('jwt', ['admin', 'employee'])
+    @Response<ApiError>(400, 'Bad Request')
+    @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
     @Delete('{animalId}')
@@ -92,8 +96,11 @@ export class AnimalsController extends Controller {
 
     /**
      * @param animalId This is a description for animalId
-     * @isInt  animalId
+     * @isInt animalId
      */
+    @Security('jwt', ['admin', 'employee'])
+    @Response<ApiError>(400, 'Bad Request')
+    @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(400, 'Bad Reqest')
     @Response<ApiError>(404, 'Not Found')
