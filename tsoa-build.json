@@ -18,7 +18,7 @@
         "spec": {
             "servers": [
                 {
-                    "url": "http://localhost:8000/api"
+                    "url": "https://coders-camp-schronisko.herokuapp.com/api/"
                 }
             ]
         },

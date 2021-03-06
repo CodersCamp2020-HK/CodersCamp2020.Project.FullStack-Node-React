@@ -1,12 +1,13 @@
 import express from 'express';
-require('express-async-errors');
 import { api } from './presentation/rest';
 import './IocContainerSetup';
 import path from 'path';
 import 'reflect-metadata';
-import dotenv from 'dotenv';
 import { connectToDb } from '@infrastructure/postgres/DatabaseConnection';
+import dotenv from 'dotenv';
+
 dotenv.config();
+
 (async () => {
     await connectToDb();
 

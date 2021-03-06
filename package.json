@@ -18,6 +18,7 @@
         "server:dev": "concurrently \"nodemon --watch src/presentation/rest/**/*Controller.ts --ext ts,js -x npx tsoa spec-and-routes\" \"nodemon --ignore src/presentation/web/ --ignore src/presentation/rest/**/*Controller.ts -r tsconfig-paths/register src/server.ts\"",
         "server:dev:debug": "concurrently \"nodemon --watch \"src/presentation/rest/**/*Controller.ts\" --ext \"ts,js\" -x npx tsoa spec-and-routes\" \"nodemon --ignore \"src/presentation/rest/**/*Controller.ts\" --ignore \"src/presentation/web/\" --exec node --inspect-brk=9229 -r ts-node/register -r tsconfig-paths/register src/server.ts\"",
         "server:build": "npm run prebuild && tsoa spec-and-routes && tsc -p tsconfig-build.json && shx cp ./tsconfig*.json ./build/",
+        "server:build:production": "npm run prebuild && tsoa spec-and-routes -c tsoa-build.json && tsc -p tsconfig-build.json && shx cp ./tsconfig*.json ./build/",
         "server:start": "cross-env TS_NODE_PROJECT=build/tsconfig-build.json node -r tsconfig-paths/register ./build/src/server.js",
         "server:test": "jest",
         "server:test:cov": "jest --coverage",
@@ -30,13 +31,15 @@
         "web:build": "npm run build --prefix src/presentation/web",
         "web:test": "npm run test --prefix src/presentation/web",
         "web:test:dev": "npm run test:dev --prefix src/presentation/web",
-        "build": "npm run server:build && npm run tools:generate-client-react && npm run web:build && npm run tools:web-copy",
+        "build:dev": "npm run server:build && npm run tools:generate-client-react && npm run web:build && npm run tools:web-copy",
+        "build": "npm run server:build:production && npm run tools:generate-client-react && npm run web:build && npm run tools:web-copy",
         "dev": "concurrently \"npm run server:dev\" \"nodemon --watch\"src/presentation/rest/generated/swagger.json\" --ext \"json\" -x npm run tools:generate-client-react\" \"npm run web:dev\"",
         "test": "npm run server:test && npm run web:test",
         "preinstall": "npm ci --prefix src/presentation/web"
     },
     "devDependencies": {
         "@types/api-error-handler": "^1.0.32",
+        "@types/bcrypt": "^3.0.0",
         "@types/cors": "^2.8.10",
         "@types/express": "^4.17.11",
         "@types/http-errors": "^1.8.0",
@@ -45,6 +48,7 @@
         "@types/pg": "^7.14.10",
         "@types/supertest": "^2.0.10",
         "@types/swagger-ui-express": "^4.1.2",
+        "@types/uuid": "^8.3.0",
         "@typescript-eslint/eslint-plugin": "^4.15.1",
         "@typescript-eslint/parser": "^4.15.1",
         "concurrently": "^5.3.0",
@@ -62,6 +66,7 @@
         "typescript": "^4.1.5"
     },
     "dependencies": {
+        "bcrypt": "^5.0.1",
         "cors": "^2.8.5",
         "cross-env": "^7.0.3",
         "dotenv": "^8.2.0",
@@ -75,6 +80,7 @@
         "tsconfig-paths": "^3.9.0",
         "tsoa": "^3.5.2",
         "typeorm": "^0.2.31",
-        "typescript-ioc": "^3.2.2"
+        "typescript-ioc": "^3.2.2",
+        "uuid": "^8.3.2"
     }
 }
