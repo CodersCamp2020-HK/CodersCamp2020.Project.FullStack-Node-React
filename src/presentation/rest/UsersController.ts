@@ -1,15 +1,9 @@
 import { Controller, Path, Post, Route, SuccessResponse, Tags } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { UsersService } from '@application/UsersService';
-import { TemporaryLinksStore } from '@application/TemporaryLinksStore';
+import { TemporaryUserActivationInfoStore } from '@application/TemporaryUserActivationInfoStore';
 
-const linksStore = new TemporaryLinksStore(1);
-linksStore.addLink({
-    id: 1,
-    email: 'asd@asd.asd',
-    linkUUID: 'secretuuid',
-});
-
+const linksStore = new TemporaryUserActivationInfoStore(30);
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {

@@ -3,7 +3,7 @@ interface UserActivationInfo {
     email: string;
     linkUUID: string;
 }
-export class TemporaryLinksStore {
+export class TemporaryUserActivationInfoStore {
     constructor(deletionTimeInMinutes: number) {
         this.deletionTimeInMinutes = deletionTimeInMinutes;
     }
