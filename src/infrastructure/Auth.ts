@@ -33,7 +33,7 @@ export async function expressAuthentication(
             if (!token) throw new ApiError('Bad Request', 400, 'No token provided');
             if (!process.env.JWT_KEY) throw new ApiError('Internal server error', 500, 'JWT private key not found!');
             const decoded = jwt.verify(token, process.env.JWT_KEY);
-            if (!isUserInfo(decoded)) throw new ApiError('Bad Request', 400, 'WOOOO Token');
+            if (!isUserInfo(decoded)) throw new ApiError('Bad Request', 400, 'Invalid Token');
             if (scopes && !scopes.includes(decoded.role))
                 throw new ApiError('Unathorized', 401, 'Authorization failed');
             const repository = getConnection().getRepository(User);
