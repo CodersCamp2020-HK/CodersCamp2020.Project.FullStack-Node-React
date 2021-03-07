@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Entity, Entity, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany, Entity, Entity, ManyToOne, Index } from 'typeorm';
 import { Animal } from './Animal';
 import { Organization } from './Organization';
 import { User } from './User';
@@ -44,6 +44,7 @@ export class OrganizationDonation {
 }
 
 @Entity()
+@Index(['organization'], { unique: true })
 export class Goal {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -59,8 +60,14 @@ export class Goal {
     })
     amount!: number;
 
-    @OneToMany(() => Animal, (animal) => animal.goal, { cascade: true })
+    @OneToMany(() => Animal, (animal) => animal.goal, {
+        cascade: true,
+        nullable: true,
+    })
     animal!: Animal;
+
+    @OneToMany(() => Organization, (organization) => organization.goal)
+    organization!: Organization;
 }
 
 @Entity()

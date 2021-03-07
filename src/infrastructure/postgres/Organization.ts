@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
-import { OrganizationDonation } from './Donation';
+import { Goal, OrganizationDonation } from './Donation';
 
 @Entity()
 export class Organization {
@@ -31,4 +31,7 @@ export class Organization {
         cascade: true,
     })
     organizatonDonation!: OrganizationDonation;
+
+    @ManyToOne(() => Goal, (goal) => goal.organization)
+    goal!: Goal;
 }
