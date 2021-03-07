@@ -2,6 +2,7 @@ import { Goal, OrganizationDonation } from './Donation';
 import { Localization } from './Localization';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
+import QuestionnaireSubmission from './QuestionaireSubmission';
 
 @Entity()
 export class Organization {
@@ -41,4 +42,7 @@ export class Organization {
     localization!: Localization;
     @OneToMany(() => AdoptionStep, (step) => step.organization)
     step!: AdoptionStep;
+
+    @OneToMany(() => QuestionnaireSubmission, (submission) => submission.organization)
+    submission!: QuestionnaireSubmission;
 }

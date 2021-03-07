@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, ManyToOne, OneToMany } from 'typeorm';
 import { AnimalDonation, GoalDonation, OrganizationDonation } from './Donation';
 import { Localization } from './Localization';
+import QuestionnaireSubmission from './QuestionaireSubmission';
 
 /**
  * User Type
@@ -99,4 +100,11 @@ export class User {
 
     @ManyToOne(() => Localization, (localization) => localization.user)
     localization!: Localization;
+
+    @OneToMany(() => QuestionnaireSubmission, (submission) => submission.applicant)
+    submission!: QuestionnaireSubmission;
+
+    @Column({ nullable: true })
+    @ManyToOne(() => QuestionnaireSubmission, (submission) => submission.reviewer)
+    submissionReview!: QuestionnaireSubmission;
 }

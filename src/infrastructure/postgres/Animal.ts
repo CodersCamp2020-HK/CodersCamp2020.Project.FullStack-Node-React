@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 import { AnimalAdditionalInfo } from './AnimalAdditionalInfo';
 import { AnimalDonation, Goal } from './Donation';
+import QuestionnaireSubmission from './QuestionaireSubmission';
 
 export enum AnimalSpecies {
     CAT = 'cat',
@@ -62,4 +63,7 @@ export class Animal {
 
     @ManyToOne(() => Goal, (goal) => goal.animal)
     goal!: Goal;
+
+    @OneToMany(() => QuestionnaireSubmission, (submission) => submission.animal)
+    submission!: QuestionnaireSubmission;
 }
