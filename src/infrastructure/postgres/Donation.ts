@@ -60,10 +60,7 @@ export class Goal {
     })
     amount!: number;
 
-    @OneToMany(() => Animal, (animal) => animal.goal, {
-        cascade: true,
-        nullable: true,
-    })
+    @OneToMany(() => Animal, (animal) => animal.animalDonation, { cascade: true })
     animal!: Animal;
 
     @OneToMany(() => Organization, (organization) => organization.goal)

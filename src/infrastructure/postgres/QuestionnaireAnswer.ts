@@ -1,4 +1,4 @@
-import { Column, Entity, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, ManyToOne } from 'typeorm';
 import QuestionnaireSubmission from './QuestionaireSubmission';
 import QuestionnaireQuestion from './QuestionnaireQuestion';
 
@@ -7,6 +7,7 @@ export interface Question {
 }
 
 @Entity()
+@Index(['submission', 'question'], { unique: true })
 export default class QuestionnaireAnswer {
     @ManyToOne(() => QuestionnaireSubmission, (submission) => submission.answers)
     submission!: QuestionnaireSubmission;
