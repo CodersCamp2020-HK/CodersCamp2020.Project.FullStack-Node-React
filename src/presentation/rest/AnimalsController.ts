@@ -14,12 +14,23 @@ import {
     TsoaResponse,
     Res,
     Security,
+    Request,
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@application/AnimalsService';
 import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
 import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import ApiError from '@infrastructure/ApiError';
+import { Request as ExRequest } from 'express';
+import express from 'express';
+import multer from 'multer';
+
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+interface PhotosRequest extends ExRequest {
+    photos: any;
+}
 
 @Tags('Animals')
 @Route('animals')
@@ -109,5 +120,25 @@ export class AnimalsController extends Controller {
     public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalUpdateParams): Promise<Animal> {
         this.setStatus(200);
         return this.animalsService.update(animalId, requestBody);
+    }
+
+    @Post('/photos-upload')
+    @Response<ApiError>(201, 'Saved')
+    public async addPhotos(@Request() request: PhotosRequest): Promise<void> {
+        await this.photosUpload(request);
+        console.log(request.files);
+        this.setStatus(201);
+    }
+
+    private async photosUpload(request: express.Request): Promise<void> {
+        const multerMulti = multer().array('photos');
+        return new Promise((resolve, reject) => {
+            multerMulti(request, undefined!, async (error: any) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve();
+            });
+        });
     }
 }

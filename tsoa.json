@@ -15,13 +15,31 @@
         },
         "license": "MIT",
         "basePath": "/api",
+        "specMerging": "recursive",
         "spec": {
             "servers": [
                 {
                     "url": "http://localhost:8000/api"
                 }
-            ]
-        },
+            ],
+            "paths": {
+                "/animals/photos-upload": {
+                  "post": {
+                    "consumes": [
+                      "multipart/form-data"
+                    ],
+                    "parameters": [
+                      {
+                        "in": "formData",
+                        "name": "photos",
+                        "type": "file",
+                        "required": true
+                      }
+                    ]
+                  }
+                }
+        }
+    },
         "securityDefinitions": {
             "jwt": {
                 "type": "apiKey",
