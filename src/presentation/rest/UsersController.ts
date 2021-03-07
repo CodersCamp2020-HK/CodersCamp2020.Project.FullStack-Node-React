@@ -129,9 +129,24 @@ export class UsersController extends Controller {
     @Response<ApiError>(400, 'Bad Request')
     @SuccessResponse('200', 'Email send')
     @Post('reset')
-    public async resetUserPassword(@Body() { email }: EmailResetPassword): Promise<void> {
+    public async snedResetPasswordMail(@Body() { email }: EmailResetPassword): Promise<void> {
         const link = await this.usersService.sendResetPasswordLink({ email });
         this.emailService.sendResetPasswordLink(email, link.link);
+        this.setStatus(200);
+    }
+
+    /**
+     * Supply the reset password linkto reset the password
+     */
+    @Response<ApiError>(404, 'User not found')
+    @Response<ApiError>(400, 'Bad Request')
+    @SuccessResponse('200', 'Password set')
+    @Post('reset/{userResetUUID}')
+    public async resetUserPassword(
+        @Path() userResetUUID: string,
+        @Body() userResetPasswords: UserResetPasswordParams,
+    ): Promise<void> {
+        this.usersService.resetPassword(userResetUUID, userResetPasswords);
         this.setStatus(200);
     }
 }

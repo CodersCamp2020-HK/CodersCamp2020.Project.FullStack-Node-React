@@ -87,7 +87,6 @@ export class UsersService {
         if (!user) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
 
         const match = await bcrypt.compare(userLoginParams.password, user.password);
-        console.log(await bcrypt.hash(userLoginParams.password, 10));
         if (!match) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
 
         if (!process.env.JWT_KEY) throw new ApiError('Internal server error', 500, 'JWT private key not found!');
@@ -111,7 +110,6 @@ export class UsersService {
         }
 
         const currentUser = request.user as IUserInfo;
-        console.log(currentUser);
 
         if (currentUser.role == UserType.ADMIN || currentUser.id == userId) {
             await this.userRepository
@@ -134,10 +132,10 @@ export class UsersService {
         return { link: user.resetPasswordLink };
     }
 
-    public async resetPassword(id: number, { password, repPassword }: UserResetPasswordParams): Promise<void> {
-        const user = await this.userRepository.findOne(id);
+    public async resetPassword(userResetUUID: UUID, { password, repPassword }: UserResetPasswordParams): Promise<void> {
+        const user = await this.userRepository.findOne({ where: { resetPasswordLink: userResetUUID } });
 
-        if (!user) throw new ApiError('Not Found', 404, `User with id: ${id} doesn't exist!`);
+        if (!user) throw new ApiError('Not Found', 404, `User with uuid: ${userResetUUID} doesn't exist!`);
         if (password !== repPassword) throw new ApiError('Bad Request', 400, `Passwords don't match.`);
 
         const hash = await bcrypt.hash(password, SALT_ROUNDS);
