@@ -1,5 +1,6 @@
 import {
     ApiKey,
+    EmailResetPassword,
     UserCreationParams,
     UserLoginParams,
     UserResetPasswordParams,
@@ -8,7 +9,7 @@ import {
 } from '@application/UsersService';
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
-import { Email, User } from '@infrastructure/postgres/User';
+import { User } from '@infrastructure/postgres/User';
 import {
     Body,
     Controller,
@@ -127,10 +128,10 @@ export class UsersController extends Controller {
     @Response<ApiError>(404, 'User not found')
     @Response<ApiError>(400, 'Bad Request')
     @SuccessResponse('200', 'Email send')
-    @Post()
-    public async resetUserPassword(@Body() mail: Email): Promise<void> {
-        const link = await this.usersService.sendResetPasswordLink(mail);
-        this.emailService.sendResetPasswordLink(mail, link.link);
+    @Post('reset')
+    public async resetUserPassword(@Body() { email }: EmailResetPassword): Promise<void> {
+        const link = await this.usersService.sendResetPasswordLink({ email });
+        this.emailService.sendResetPasswordLink(email, link.link);
         this.setStatus(200);
     }
 }

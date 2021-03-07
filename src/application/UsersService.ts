@@ -20,6 +20,10 @@ export interface ApiKey {
     apiKey: string;
 }
 
+export interface EmailResetPassword {
+    email: Email;
+}
+
 export interface ResetPasswordLink {
     link: UUID;
 }
@@ -122,8 +126,8 @@ export class UsersService {
         throw new ApiError('Unauthorized', 401, 'Only admin can delete other accounts');
     }
 
-    public async sendResetPasswordLink(mail: Email): Promise<ResetPasswordLink> {
-        const user = await this.userRepository.findOne({ where: { mail } });
+    public async sendResetPasswordLink({ email }: EmailResetPassword): Promise<ResetPasswordLink> {
+        const user = await this.userRepository.findOne({ where: { mail: email } });
 
         if (!user) throw new ApiError('Not Found', 404, `Wrong email`);
 
