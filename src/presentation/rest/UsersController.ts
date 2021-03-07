@@ -47,7 +47,7 @@ export class UsersController extends Controller {
     @Inject
     private emailService!: EmailService;
 
-    @Post('activate/{generatedUUID}')
+    @Get('activate/{generatedUUID}')
     @SuccessResponse('200', 'User Activated')
     public async sendEmail(@Path() generatedUUID: string): Promise<void> {
         const foundedUser = linksStore.getAllLinks().find((el) => {
@@ -62,6 +62,7 @@ export class UsersController extends Controller {
             throw new Error('Link is not valid or expired');
         }
     }
+
     @Get('{userId}')
     public async getUser(@Path() userId: number): Promise<User> {
         return this.usersService.get(userId);
@@ -106,6 +107,34 @@ export class UsersController extends Controller {
 
         return;
     }
+
+    @Post('{userId}/sendactivationlink')
+    @SuccessResponse('200', 'Sended')
+    public async sendLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
+        try {
+            const createdUser = await this.usersService.get(userId);
+
+            const generatedUUID = uuidv4();
+
+            linksStore.addLink({
+                email: createdUser.mail,
+                id: createdUser.id,
+                linkUUID: generatedUUID,
+            });
+
+            await this.emailService.sendActivationEmail(
+                createdUser.mail,
+                request.get('host') + `/api/users/activate/${generatedUUID}`,
+            );
+
+            this.setStatus(200);
+        } catch (error) {
+            throw error;
+        }
+
+        return;
+    }
+
     /** Supply the unique user ID and delete user with corresponding id from database
      *  @param userId The user's identifier
      *  @isInt  userId
