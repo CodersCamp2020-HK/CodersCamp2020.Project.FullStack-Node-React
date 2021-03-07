@@ -32,7 +32,7 @@ import {
     UniqueUserEmailError,
     ValidateErrorJSON,
 } from '@application/UsersErrors';
-import { TemporaryUserLinkInfoStore } from '@application/TemporaryUserActivationInfoStore';
+import { TemporaryUserLinkInfoStore } from '@application/TemporaryUserLinkInfoStore';
 import { EmailService } from '@application/EmailService';
 import { v4 as uuidv4 } from 'uuid';
 import { Request as ExRequest } from 'express';
