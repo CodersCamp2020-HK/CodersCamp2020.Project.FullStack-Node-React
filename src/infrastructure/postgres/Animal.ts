@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne } from 'typeorm';
 import { AnimalAdditionalInfo } from './AnimalAdditionalInfo';
+import { AnimalDonation } from './Donation';
 
 export enum AnimalSpecies {
     CAT = 'cat',
@@ -55,4 +56,7 @@ export class Animal {
     @OneToOne(() => AnimalAdditionalInfo, { cascade: true })
     @JoinColumn()
     additional_info!: AnimalAdditionalInfo;
+
+    @ManyToOne(() => AnimalDonation, (animalDonation) => animalDonation.animal, { cascade: true })
+    animalDonation!: AnimalDonation;
 }

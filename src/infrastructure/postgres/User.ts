@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, ManyToOne } from 'typeorm';
+import { AnimalDonation, GoalDonation, OrganizationDonation } from './Donation';
 
 /**
  * User Type
@@ -85,4 +86,13 @@ export class User {
     @Column()
     @Generated('uuid')
     activationLinkUuid!: UUID;
+
+    @ManyToOne(() => AnimalDonation, (animalDonation) => animalDonation.user, { cascade: true })
+    animalDonation!: AnimalDonation;
+
+    @ManyToOne(() => OrganizationDonation, (organizationDonation) => organizationDonation.user, { cascade: true })
+    organizationDonation!: OrganizationDonation;
+
+    @ManyToOne(() => GoalDonation, (goalDonation) => goalDonation.user, { cascade: true })
+    goalDonation!: GoalDonation;
 }
