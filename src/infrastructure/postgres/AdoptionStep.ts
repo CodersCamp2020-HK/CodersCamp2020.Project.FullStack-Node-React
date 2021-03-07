@@ -1,4 +1,5 @@
 import { Column, Entity, Index, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Organization } from './Organization';
 import { Questionnaire } from './Questionnaire';
 import Specie from './Specie';
 
@@ -6,7 +7,8 @@ import Specie from './Specie';
 @Index(['organization', 'specie', 'number'], { unique: true })
 export default class AdoptionStep {
     @PrimaryColumn()
-    organization!: number;
+    @ManyToOne(() => Organization, (organization) => organization.step)
+    organization!: Organization;
 
     @PrimaryColumn()
     @ManyToOne(() => Specie, (specie) => specie.id)
