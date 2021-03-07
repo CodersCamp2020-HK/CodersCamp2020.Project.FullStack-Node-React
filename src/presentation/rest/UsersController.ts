@@ -65,7 +65,7 @@ export class UsersController extends Controller {
 
             const generatedUUID = uuidv4();
 
-            activationLinksStore.addLink({
+            activationLinksStore.addUserLinkInfo({
                 email: createdUser.mail,
                 id: createdUser.id,
                 linkUUID: generatedUUID,
@@ -96,13 +96,11 @@ export class UsersController extends Controller {
     @SuccessResponse('200', 'User Activated')
     @Response('404', 'Link is not valid or expired')
     public async sendEmail(@Path() generatedUUID: string): Promise<void> {
-        const foundedUserActivationInfo = activationLinksStore.getAllLinks().find((el) => {
-            return el.linkUUID == generatedUUID;
-        });
+        const foundedUserActivationInfo = activationLinksStore.getUserLinkInfo(generatedUUID);
 
         if (foundedUserActivationInfo) {
             await this.usersService.activateUser(foundedUserActivationInfo.id);
-            activationLinksStore.deleteLink(foundedUserActivationInfo);
+            activationLinksStore.deleteUserLinkInfo(foundedUserActivationInfo);
             this.setStatus(200);
         } else {
             throw new ApiError('Not found', 404, 'Link is not valid or expired');
@@ -119,7 +117,7 @@ export class UsersController extends Controller {
                 throw new Error('User is already activated');
             }
 
-            const foundedUserActivationInfo = activationLinksStore.getAllLinks().find((el) => {
+            const foundedUserActivationInfo = activationLinksStore.getAllUserLinksInfo().find((el) => {
                 return el.id == userId;
             });
 
@@ -134,7 +132,7 @@ export class UsersController extends Controller {
 
             const generatedUUID = uuidv4();
 
-            activationLinksStore.addLink({
+            activationLinksStore.addUserLinkInfo({
                 email: createdUser.mail,
                 id: createdUser.id,
                 linkUUID: generatedUUID,

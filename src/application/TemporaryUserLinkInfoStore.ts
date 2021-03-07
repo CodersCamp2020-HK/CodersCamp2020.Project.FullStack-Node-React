@@ -2,32 +2,45 @@ interface UserLinkInfo {
     id: number;
     email: string;
     linkUUID: string;
+    timeout?: NodeJS.Timeout;
 }
 export class TemporaryUserLinkInfoStore {
     constructor(deletionTimeInMinutes: number) {
         this.deletionTimeInMinutes = deletionTimeInMinutes;
     }
     private deletionTimeInMinutes: number;
-    private usersActivationInfo: UserLinkInfo[] = [];
-    addLink(userLinkInfo: UserLinkInfo): void {
-        this.usersActivationInfo.push(userLinkInfo);
+    private allUserLinksInfo: UserLinkInfo[] = [];
+    addUserLinkInfo(userLinkInfo: UserLinkInfo): void {
+        if (this.getUserLinkInfo(userLinkInfo.linkUUID)) {
+            return;
+        }
 
-        setTimeout(() => {
+        const deletionTimeout = setTimeout(() => {
             if (
-                this.usersActivationInfo.find(
-                    (userLinkInfoToFind) => userLinkInfoToFind.linkUUID == userLinkInfo.linkUUID,
-                )
+                this.allUserLinksInfo.find((userLinkInfoToFind) => userLinkInfoToFind.linkUUID == userLinkInfo.linkUUID)
             ) {
-                this.deleteLink(userLinkInfo);
+                this.deleteUserLinkInfo(userLinkInfo);
             }
         }, this.deletionTimeInMinutes * 1000 * 60);
+
+        userLinkInfo.timeout = deletionTimeout;
+        this.allUserLinksInfo.push(userLinkInfo);
     }
-    deleteLink(userLinkInfo: UserLinkInfo): void {
-        this.usersActivationInfo = this.usersActivationInfo.filter((userLinkInfoToDelete) => {
+    deleteUserLinkInfo(userLinkInfo: UserLinkInfo): void {
+        if (userLinkInfo.timeout) {
+            clearTimeout(userLinkInfo.timeout);
+        }
+        this.allUserLinksInfo = this.allUserLinksInfo.filter((userLinkInfoToDelete) => {
             userLinkInfoToDelete.linkUUID != userLinkInfo.linkUUID;
         });
     }
-    getAllLinks(): UserLinkInfo[] {
-        return this.usersActivationInfo;
+    getAllUserLinksInfo(): UserLinkInfo[] {
+        return this.allUserLinksInfo;
+    }
+
+    getUserLinkInfo(linkUUID: string): UserLinkInfo | undefined {
+        return this.getAllUserLinksInfo().find((el) => {
+            return el.linkUUID == linkUUID;
+        });
     }
 }
