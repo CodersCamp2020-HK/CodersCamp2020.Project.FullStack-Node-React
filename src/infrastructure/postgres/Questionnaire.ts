@@ -1,4 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import AdoptionStep from './AdoptionStep';
 
 @Entity()
 export class Questionnaire {
@@ -10,6 +11,9 @@ export class Questionnaire {
 
     @OneToMany(() => QuestionnaireQuestion, (question) => question.questionnaire, { cascade: true })
     questions!: QuestionnaireQuestion[];
+
+    @ManyToOne(() => AdoptionStep, (adoption) => adoption.form)
+    step!: AdoptionStep;
 }
 
 interface TextAnswer {
