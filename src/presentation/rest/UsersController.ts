@@ -8,7 +8,7 @@ import {
 } from '@application/UsersService';
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
-import { User } from '@infrastructure/postgres/User';
+import { Email, User } from '@infrastructure/postgres/User';
 import {
     Body,
     Controller,
@@ -34,12 +34,15 @@ import {
     UniqueUserEmailError,
     ValidateErrorJSON,
 } from '@application/UsersErrors';
+import { EmailService } from '@infrastructure/EmailService';
 
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
     @Inject
     private usersService!: UsersService;
+    @Inject
+    private emailService!: EmailService;
 
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
@@ -99,6 +102,7 @@ export class UsersController extends Controller {
         this.setStatus(200);
         return this.usersService.login(requestBody);
     }
+
     /**
      * Supply the unique user ID and update user password with corresponding id from database
      *  @param userId The user's identifier
@@ -115,5 +119,18 @@ export class UsersController extends Controller {
     ): Promise<void> {
         this.setStatus(200);
         return this.usersService.updatePassword(userId, password, request.user as IUserInfo);
+    }
+
+    /**
+     * Supply the email address in body, then link to reset the password will be sent for that user
+     */
+    @Response<ApiError>(404, 'User not found')
+    @Response<ApiError>(400, 'Bad Request')
+    @SuccessResponse('200', 'Email send')
+    @Post()
+    public async resetUserPassword(@Body() mail: Email): Promise<void> {
+        const link = await this.usersService.sendResetPasswordLink(mail);
+        this.emailService.sendResetPasswordLink(mail, link.link);
+        this.setStatus(200);
     }
 }

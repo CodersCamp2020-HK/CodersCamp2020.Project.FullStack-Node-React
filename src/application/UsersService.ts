@@ -26,7 +26,7 @@ export interface ResetPasswordLink {
 
 export type UserResetPasswordParams = {
     password: Password;
-    confirmPassword: Password;
+    repPassword: Password;
 };
 
 export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname'>;
@@ -63,7 +63,7 @@ export class UsersService {
 
     public async updatePassword(
         id: number,
-        { password, confirmPassword }: UserResetPasswordParams,
+        { password, repPassword: confirmPassword }: UserResetPasswordParams,
         currentUser: IUserInfo,
     ): Promise<void> {
         const user = await this.userRepository.findOne(id);
@@ -130,11 +130,11 @@ export class UsersService {
         return { link: user.resetPasswordLink };
     }
 
-    public async resetPassword(id: number, { password, confirmPassword }: UserResetPasswordParams): Promise<void> {
+    public async resetPassword(id: number, { password, repPassword }: UserResetPasswordParams): Promise<void> {
         const user = await this.userRepository.findOne(id);
 
         if (!user) throw new ApiError('Not Found', 404, `User with id: ${id} doesn't exist!`);
-        if (password !== confirmPassword) throw new ApiError('Bad Request', 400, `Passwords don't match.`);
+        if (password !== repPassword) throw new ApiError('Bad Request', 400, `Passwords don't match.`);
 
         const hash = await bcrypt.hash(password, SALT_ROUNDS);
         user.password = hash;
