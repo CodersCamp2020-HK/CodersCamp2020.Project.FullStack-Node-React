@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import { Goal, OrganizationDonation } from './Donation';
+import { Localization } from './Localization';
 
 @Entity()
 export class Organization {
@@ -34,4 +35,7 @@ export class Organization {
 
     @ManyToOne(() => Goal, (goal) => goal.organization)
     goal!: Goal;
+
+    @ManyToOne(() => Localization, (localization) => localization.organization)
+    localization!: Localization;
 }

@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, ManyToOne } from 'typeorm';
 import { AnimalDonation, GoalDonation, OrganizationDonation } from './Donation';
+import { Localization } from './Localization';
 
 /**
  * User Type
@@ -95,4 +96,7 @@ export class User {
 
     @ManyToOne(() => GoalDonation, (goalDonation) => goalDonation.user, { cascade: true })
     goalDonation!: GoalDonation;
+
+    @ManyToOne(() => Localization, (localization) => localization.user)
+    localization!: Localization;
 }
