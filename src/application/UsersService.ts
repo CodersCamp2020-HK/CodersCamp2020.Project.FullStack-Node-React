@@ -44,7 +44,7 @@ export class UsersService {
         return;
     }
 
-    public async create(userCreationParams: UserCreationParams): Promise<void> {
+    public async create(userCreationParams: UserCreationParams): Promise<User> {
         const potentialExistingUser = await this.userRepository.findOne({ where: { mail: userCreationParams.mail } });
         if (!potentialExistingUser) {
             if (userCreationParams.password != userCreationParams.repPassword) {
@@ -58,11 +58,10 @@ export class UsersService {
                 password: hash,
             });
 
-            this.userRepository.save(user);
+            return this.userRepository.save(user);
         } else {
             throw new UniqueUserEmailError(userCreationParams.mail);
         }
-        return;
     }
 
     public async updatePassword(

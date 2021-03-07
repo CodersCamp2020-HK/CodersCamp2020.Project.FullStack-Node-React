@@ -33,6 +33,9 @@ import {
     ValidateErrorJSON,
 } from '@application/UsersErrors';
 import { TemporaryUserActivationInfoStore } from '@application/TemporaryUserActivationInfoStore';
+import { EmailService } from '@application/EmailService';
+import { v4 as uuidv4 } from 'uuid';
+import { Request as ExRequest } from 'express';
 
 const linksStore = new TemporaryUserActivationInfoStore(30);
 @Tags('Users')
@@ -40,6 +43,9 @@ const linksStore = new TemporaryUserActivationInfoStore(30);
 export class UsersController extends Controller {
     @Inject
     private usersService!: UsersService;
+
+    @Inject
+    private emailService!: EmailService;
 
     @Post('activate/{generatedUUID}')
     @SuccessResponse('200', 'User Activated')
@@ -67,9 +73,24 @@ export class UsersController extends Controller {
     public async createUser(
         @Body() requestBody: UserCreationParams,
         @Res() badRequestResponse: TsoaResponse<400, { reason: string }>,
+        @Request() request: ExRequest,
     ): Promise<void> {
         try {
-            await this.usersService.create(requestBody);
+            const createdUser = await this.usersService.create(requestBody);
+
+            const generatedUUID = uuidv4();
+
+            linksStore.addLink({
+                email: createdUser.mail,
+                id: createdUser.id,
+                linkUUID: generatedUUID,
+            });
+
+            await this.emailService.sendActivationEmail(
+                createdUser.mail,
+                request.get('host') + `/api/users/activate/${generatedUUID}`,
+            );
+
             this.setStatus(201);
         } catch (error) {
             if (
