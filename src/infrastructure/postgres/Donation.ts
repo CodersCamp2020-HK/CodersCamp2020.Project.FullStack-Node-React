@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, Index } from 'typeorm';
-import { Animal } from './Animal';
+import Animal from './Animal';
 import { Organization } from './Organization';
 import { User } from './User';
 

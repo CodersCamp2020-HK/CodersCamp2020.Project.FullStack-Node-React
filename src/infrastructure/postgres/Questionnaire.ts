@@ -1,5 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
+import QuestionnaireQuestion from './QuestionnaireQuestion';
 
 @Entity()
 export class Questionnaire {
@@ -26,24 +27,7 @@ interface EnumAnswer {
 
 type FormType = 'TextAnswer' | 'EnumAnswer';
 
-interface Form {
+export interface Form {
     type: FormType;
     data: TextAnswer | EnumAnswer;
-}
-
-@Entity()
-export class QuestionnaireQuestion {
-    @PrimaryGeneratedColumn()
-    id!: number;
-
-    @ManyToOne(() => Questionnaire, (questionnaire) => questionnaire.questions)
-    questionnaire!: Questionnaire;
-
-    @Column()
-    question!: string;
-
-    @Column({
-        type: 'json',
-    })
-    form!: Form;
 }

@@ -1,5 +1,5 @@
 import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
-import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
+import Animal, { AnimalSpecies } from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo, AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';

@@ -9,7 +9,7 @@ export enum AnimalSpecies {
 }
 
 @Entity()
-export class Animal {
+export default class Animal {
     @PrimaryGeneratedColumn()
     id!: number;
 

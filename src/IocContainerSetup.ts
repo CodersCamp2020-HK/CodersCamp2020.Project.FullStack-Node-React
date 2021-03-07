@@ -3,7 +3,7 @@ import { Container, Scope } from 'typescript-ioc';
 import { AnimalsService } from '@application/AnimalsService';
 import { UsersService } from '@application/UsersService';
 import { getConnection } from 'typeorm';
-import { Animal } from '@infrastructure/postgres/Animal';
+import Animal from '@infrastructure/postgres/Animal';
 import { User } from '@infrastructure/postgres/User';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { QuestionnaireService } from '@application/QuestionnaireService';

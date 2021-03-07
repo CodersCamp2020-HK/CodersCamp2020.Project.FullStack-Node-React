@@ -1,7 +1,8 @@
 import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
-import { Animal } from './Animal';
+import Animal from './Animal';
 import { Organization } from './Organization';
+import QuestionnaireAnswer from './QuestionnaireAnswer';
 import { User } from './User';
 
 @Entity()
@@ -24,4 +25,7 @@ export default class QuestionnaireSubmission {
 
     @OneToMany(() => User, (user) => user.submissionReview)
     reviewer!: User;
+
+    @OneToMany(() => QuestionnaireAnswer, (answers) => answers.submission)
+    answers!: QuestionnaireAnswer;
 }

@@ -17,7 +17,7 @@ import {
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@application/AnimalsService';
-import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
+import Animal, { AnimalSpecies } from '@infrastructure/postgres/Animal';
 import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import ApiError from '@infrastructure/ApiError';
 
