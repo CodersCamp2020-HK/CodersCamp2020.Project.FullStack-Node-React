@@ -10,6 +10,7 @@ export class TemporaryUserLinkInfoStore {
     }
     private deletionTimeInMinutes: number;
     private allUserLinksInfo: UserLinkInfo[] = [];
+
     addUserLinkInfo(userLinkInfo: UserLinkInfo): void {
         if (this.getUserLinkInfo(userLinkInfo.linkUUID)) {
             return;
@@ -26,6 +27,7 @@ export class TemporaryUserLinkInfoStore {
         userLinkInfo.timeout = deletionTimeout;
         this.allUserLinksInfo.push(userLinkInfo);
     }
+
     deleteUserLinkInfo(userLinkInfo: UserLinkInfo): void {
         if (userLinkInfo.timeout) {
             clearTimeout(userLinkInfo.timeout);
@@ -34,6 +36,7 @@ export class TemporaryUserLinkInfoStore {
             userLinkInfoToDelete.linkUUID != userLinkInfo.linkUUID;
         });
     }
+
     getAllUserLinksInfo(): UserLinkInfo[] {
         return this.allUserLinksInfo;
     }

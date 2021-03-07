@@ -37,7 +37,7 @@ import { EmailService } from '@application/EmailService';
 import { v4 as uuidv4 } from 'uuid';
 import { Request as ExRequest } from 'express';
 
-const activationLinksStore = new TemporaryUserLinkInfoStore(30);
+const activationLinksStore = new TemporaryUserLinkInfoStore(1);
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
