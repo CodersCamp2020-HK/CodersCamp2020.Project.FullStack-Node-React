@@ -21,6 +21,7 @@ export interface ApiKey {
 }
 export type UserResetPasswordParams = {
     password: Password;
+    confirmPassword: Password;
 };
 
 export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname'>;
@@ -57,14 +58,16 @@ export class UsersService {
 
     public async updatePassword(
         id: number,
-        { password }: UserResetPasswordParams,
+        { password, confirmPassword }: UserResetPasswordParams,
         currentUser: IUserInfo,
     ): Promise<void> {
         const user = await this.userRepository.findOne(id);
-        if (!user) throw new ApiError('Not Found', 404, `User with id: ${id} doesn't exist!`);
 
+        if (!user) throw new ApiError('Not Found', 404, `User with id: ${id} doesn't exist!`);
         if (currentUser.id !== id)
             throw new ApiError('Bad Request', 400, `You can not change password for user with id: ${id}`);
+        if (password !== confirmPassword) throw new ApiError('Bad Request', 400, `Passwords don't match.`);
+
         const hash = await bcrypt.hash(password, SALT_ROUNDS);
         user.password = hash;
         this.userRepository.save(user);
@@ -113,4 +116,6 @@ export class UsersService {
 
         throw new ApiError('Unauthorized', 401, 'Only admin can delete other accounts');
     }
+
+    public async resetPassword(userId: number);
 }
