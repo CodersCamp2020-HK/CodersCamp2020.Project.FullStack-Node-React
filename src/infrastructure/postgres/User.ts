@@ -85,4 +85,8 @@ export class User {
     @Column()
     @Generated('uuid')
     activationLinkUuid!: UUID;
+
+    @Column()
+    @Generated('uuid')
+    resetPasswordLink!: UUID;
 }

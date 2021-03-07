@@ -1,5 +1,5 @@
 import ApiError from '@infrastructure/ApiError';
-import { Email, Password, User, UserType } from '@infrastructure/postgres/User';
+import { Email, Password, User, UserType, UUID } from '@infrastructure/postgres/User';
 import { PasswordRequirementsError, UniqueUserEmailError } from './UsersErrors';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
@@ -19,6 +19,11 @@ export type UserLoginParams = Pick<User, 'mail' | 'password'>;
 export interface ApiKey {
     apiKey: string;
 }
+
+export interface ResetPasswordLink {
+    link: UUID;
+}
+
 export type UserResetPasswordParams = {
     password: Password;
     confirmPassword: Password;
@@ -117,5 +122,22 @@ export class UsersService {
         throw new ApiError('Unauthorized', 401, 'Only admin can delete other accounts');
     }
 
-    public async resetPassword(userId: number);
+    public async sendResetPasswordLink(mail: Email): Promise<ResetPasswordLink> {
+        const user = await this.userRepository.findOne({ where: { mail } });
+
+        if (!user) throw new ApiError('Not Found', 404, `Wrong email`);
+
+        return { link: user.resetPasswordLink };
+    }
+
+    public async resetPassword(id: number, { password, confirmPassword }: UserResetPasswordParams): Promise<void> {
+        const user = await this.userRepository.findOne(id);
+
+        if (!user) throw new ApiError('Not Found', 404, `User with id: ${id} doesn't exist!`);
+        if (password !== confirmPassword) throw new ApiError('Bad Request', 400, `Passwords don't match.`);
+
+        const hash = await bcrypt.hash(password, SALT_ROUNDS);
+        user.password = hash;
+        this.userRepository.save(user);
+    }
 }
