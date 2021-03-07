@@ -32,12 +32,12 @@ import {
     UniqueUserEmailError,
     ValidateErrorJSON,
 } from '@application/UsersErrors';
-import { TemporaryUserActivationInfoStore } from '@application/TemporaryUserActivationInfoStore';
+import { TemporaryUserLinkInfoStore } from '@application/TemporaryUserActivationInfoStore';
 import { EmailService } from '@application/EmailService';
 import { v4 as uuidv4 } from 'uuid';
 import { Request as ExRequest } from 'express';
 
-const linksStore = new TemporaryUserActivationInfoStore(30);
+const activationLinksStore = new TemporaryUserLinkInfoStore(30);
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
@@ -46,22 +46,6 @@ export class UsersController extends Controller {
 
     @Inject
     private emailService!: EmailService;
-
-    @Get('activate/{generatedUUID}')
-    @SuccessResponse('200', 'User Activated')
-    public async sendEmail(@Path() generatedUUID: string): Promise<void> {
-        const foundedUser = linksStore.getAllLinks().find((el) => {
-            return el.linkUUID == generatedUUID;
-        });
-
-        if (foundedUser) {
-            await this.usersService.activateUser(foundedUser.id);
-            linksStore.deleteLink(foundedUser);
-            this.setStatus(200);
-        } else {
-            throw new Error('Link is not valid or expired');
-        }
-    }
 
     @Get('{userId}')
     public async getUser(@Path() userId: number): Promise<User> {
@@ -81,7 +65,7 @@ export class UsersController extends Controller {
 
             const generatedUUID = uuidv4();
 
-            linksStore.addLink({
+            activationLinksStore.addLink({
                 email: createdUser.mail,
                 id: createdUser.id,
                 linkUUID: generatedUUID,
@@ -108,15 +92,49 @@ export class UsersController extends Controller {
         return;
     }
 
+    @Get('activate/{generatedUUID}')
+    @SuccessResponse('200', 'User Activated')
+    @Response('404', 'Link is not valid or expired')
+    public async sendEmail(@Path() generatedUUID: string): Promise<void> {
+        const foundedUserActivationInfo = activationLinksStore.getAllLinks().find((el) => {
+            return el.linkUUID == generatedUUID;
+        });
+
+        if (foundedUserActivationInfo) {
+            await this.usersService.activateUser(foundedUserActivationInfo.id);
+            activationLinksStore.deleteLink(foundedUserActivationInfo);
+            this.setStatus(200);
+        } else {
+            throw new ApiError('Not found', 404, 'Link is not valid or expired');
+        }
+    }
+
     @Post('{userId}/sendactivationlink')
     @SuccessResponse('200', 'Sended')
     public async sendLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
         try {
             const createdUser = await this.usersService.get(userId);
 
+            if (createdUser.activated) {
+                throw new Error('User is already activated');
+            }
+
+            const foundedUserActivationInfo = activationLinksStore.getAllLinks().find((el) => {
+                return el.id == userId;
+            });
+
+            if (foundedUserActivationInfo) {
+                await this.emailService.sendActivationEmail(
+                    createdUser.mail,
+                    request.get('host') + `/api/users/activate/${foundedUserActivationInfo.linkUUID}`,
+                );
+                this.setStatus(200);
+                return;
+            }
+
             const generatedUUID = uuidv4();
 
-            linksStore.addLink({
+            activationLinksStore.addLink({
                 email: createdUser.mail,
                 id: createdUser.id,
                 linkUUID: generatedUUID,

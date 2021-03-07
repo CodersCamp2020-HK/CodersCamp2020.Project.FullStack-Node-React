@@ -1,15 +1,15 @@
-interface UserActivationInfo {
+interface UserLinkInfo {
     id: number;
     email: string;
     linkUUID: string;
 }
-export class TemporaryUserActivationInfoStore {
+export class TemporaryUserLinkInfoStore {
     constructor(deletionTimeInMinutes: number) {
         this.deletionTimeInMinutes = deletionTimeInMinutes;
     }
     private deletionTimeInMinutes: number;
-    private usersActivationInfo: UserActivationInfo[] = [];
-    addLink(user: UserActivationInfo): void {
+    private usersActivationInfo: UserLinkInfo[] = [];
+    addLink(user: UserLinkInfo): void {
         this.usersActivationInfo.push(user);
 
         setTimeout(() => {
@@ -18,12 +18,12 @@ export class TemporaryUserActivationInfoStore {
             }
         }, this.deletionTimeInMinutes * 1000 * 60);
     }
-    deleteLink(user: UserActivationInfo): void {
+    deleteLink(user: UserLinkInfo): void {
         this.usersActivationInfo = this.usersActivationInfo.filter((userToDelete) => {
             userToDelete.linkUUID != user.linkUUID;
         });
     }
-    getAllLinks(): UserActivationInfo[] {
+    getAllLinks(): UserLinkInfo[] {
         return this.usersActivationInfo;
     }
 }
