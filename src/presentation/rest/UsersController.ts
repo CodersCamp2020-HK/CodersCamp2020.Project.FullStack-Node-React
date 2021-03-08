@@ -130,8 +130,8 @@ export class UsersController extends Controller {
     @SuccessResponse('200', 'Email send')
     @Post('reset')
     public async snedResetPasswordMail(@Body() { email }: EmailResetPassword): Promise<void> {
-        const link = await this.usersService.sendResetPasswordLink({ email });
-        this.emailService.sendResetPasswordLink(email, link.link);
+        const { link } = await this.usersService.sendResetPasswordLink({ email });
+        this.emailService.sendResetPasswordLink(email, link);
         this.setStatus(200);
     }
 
