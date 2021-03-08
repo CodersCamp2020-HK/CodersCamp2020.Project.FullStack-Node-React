@@ -107,22 +107,22 @@ export class AnimalsService {
         return await this.animalRepository.save(updatedAnimal);
     }
 
-    public async savePhotos(id: number, base64Images: string[]): Promise<void> {
+    public async savePhotos(id: number, photosBuffer: Buffer[]): Promise<void> {
         const animal = await this.animalRepository.findOne(id, { relations: ['photos', 'thumbnail'] });
         if (animal) {
             const photos = new AnimalPhotos();
-            photos.base64array = base64Images;
+            photos.bufferArray = photosBuffer;
 
             animal.photos = photos;
             this.animalRepository.save(animal);
         }
     }
 
-    public async saveThumbnail(id: number, base64Image: string): Promise<void> {
+    public async saveThumbnail(id: number, photoBuffer: Buffer): Promise<void> {
         const animal = await this.animalRepository.findOne(id, { relations: ['photos', 'thumbnail'] });
         if (animal) {
             const photo = new AnimalThumbnailPhoto();
-            photo.base64 = base64Image;
+            photo.buffer = photoBuffer;
 
             animal.thumbnail = photo;
             this.animalRepository.save(animal);

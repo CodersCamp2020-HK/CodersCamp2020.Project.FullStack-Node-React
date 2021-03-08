@@ -133,11 +133,11 @@ export class AnimalsController extends Controller {
         await this.photosUpload(request);
         console.log(request.files);
         const gettedFiles = request.files as Express.Multer.File[];
-        const base64Images = gettedFiles.map((file: FileFields) => {
-            const base64String = file.buffer.toString('base64');
-            return base64String;
+        const photosBuffer = gettedFiles.map((file: FileFields) => {
+            const photoBuffer = file.buffer;
+            return photoBuffer;
         });
-        await this.animalsService.savePhotos(animalId, base64Images);
+        await this.animalsService.savePhotos(animalId, photosBuffer);
         this.setStatus(201);
     }
 
@@ -147,8 +147,8 @@ export class AnimalsController extends Controller {
         await this.thumbnailUpload(request);
         console.log(request.files);
         const gettedFile = request.file as Express.Multer.File;
-        const base64Image = gettedFile.buffer.toString('base64');
-        await this.animalsService.saveThumbnail(animalId, base64Image);
+        const photoBuffer = gettedFile.buffer;
+        await this.animalsService.saveThumbnail(animalId, photoBuffer);
         this.setStatus(201);
     }
 

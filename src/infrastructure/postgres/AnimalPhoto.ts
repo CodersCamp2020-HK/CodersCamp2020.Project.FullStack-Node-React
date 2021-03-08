@@ -5,8 +5,8 @@ export class AnimalPhotos {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column('text', { array: true, default: {} })
-    base64array!: string[];
+    @Column('bytea', { array: true, default: {} })
+    bufferArray!: Buffer[];
 }
 
 @Entity()
@@ -14,6 +14,6 @@ export class AnimalThumbnailPhoto {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
-    base64!: string;
+    @Column('bytea')
+    buffer!: Buffer;
 }
