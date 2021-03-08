@@ -1,5 +1,6 @@
 import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
 import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
+import { AnimalPhotos, AnimalThumbnailPhoto } from '@infrastructure/postgres/AnimalPhoto';
 import { AnimalAdditionalInfo, AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
@@ -104,5 +105,27 @@ export class AnimalsService {
         };
 
         return await this.animalRepository.save(updatedAnimal);
+    }
+
+    public async savePhotos(id: number, base64Images: string[]): Promise<void> {
+        const animal = await this.animalRepository.findOne(id, { relations: ['photos', 'thumbnail'] });
+        if (animal) {
+            const photos = new AnimalPhotos();
+            photos.base64array = base64Images;
+
+            animal.photos = photos;
+            this.animalRepository.save(animal);
+        }
+    }
+
+    public async saveThumbnail(id: number, base64Image: string): Promise<void> {
+        const animal = await this.animalRepository.findOne(id, { relations: ['photos', 'thumbnail'] });
+        if (animal) {
+            const photo = new AnimalThumbnailPhoto();
+            photo.base64 = base64Image;
+
+            animal.thumbnail = photo;
+            this.animalRepository.save(animal);
+        }
     }
 }

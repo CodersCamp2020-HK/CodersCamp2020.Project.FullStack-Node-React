@@ -23,12 +23,18 @@
                 }
             ],
             "paths": {
-                "/animals/photos-upload": {
+                "/animals/{animalId}/photos-upload": {
                   "post": {
                     "consumes": [
                       "multipart/form-data"
                     ],
                     "parameters": [
+                        {
+                            "in": "path",
+                            "name": "animalId",
+                            "type": "number",
+                            "required": true
+                          },
                       {
                         "in": "formData",
                         "name": "photos",
@@ -37,7 +43,28 @@
                       }
                     ]
                   }
-                }
+                },
+                "/animals/{animalId}/thumbnail-upload": {
+                    "post": {
+                      "consumes": [
+                        "multipart/form-data"
+                      ],
+                      "parameters": [
+                          {
+                              "in": "path",
+                              "name": "animalId",
+                              "type": "number",
+                              "required": true
+                            },
+                        {
+                          "in": "formData",
+                          "name": "thumbnail",
+                          "type": "file",
+                          "required": true
+                        }
+                      ]
+                    }
+                  }
         }
     },
         "securityDefinitions": {

@@ -25,12 +25,17 @@ import { Request as ExRequest } from 'express';
 import express from 'express';
 import multer from 'multer';
 
+interface FileFields {
+    fieldname: string;
+    originalname: string;
+    encoding: string;
+    mimetype: string;
+    buffer: Buffer;
+    size: number;
+}
+
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
-interface PhotosRequest extends ExRequest {
-    photos: any;
-}
 
 @Tags('Animals')
 @Route('animals')
@@ -122,11 +127,28 @@ export class AnimalsController extends Controller {
         return this.animalsService.update(animalId, requestBody);
     }
 
-    @Post('/photos-upload')
+    @Post('{animalId}/photos-upload')
     @Response<ApiError>(201, 'Saved')
-    public async addPhotos(@Request() request: PhotosRequest): Promise<void> {
+    public async addPhotos(@Path() animalId: number, @Request() request: ExRequest): Promise<void> {
         await this.photosUpload(request);
         console.log(request.files);
+        const gettedFiles = request.files as Express.Multer.File[];
+        const base64Images = gettedFiles.map((file: FileFields) => {
+            const base64String = file.buffer.toString('base64');
+            return base64String;
+        });
+        await this.animalsService.savePhotos(animalId, base64Images);
+        this.setStatus(201);
+    }
+
+    @Post('{animalId}/thumbnail-upload')
+    @Response<ApiError>(201, 'Saved')
+    public async addThumbnail(@Path() animalId: number, @Request() request: ExRequest): Promise<void> {
+        await this.thumbnailUpload(request);
+        console.log(request.files);
+        const gettedFile = request.file as Express.Multer.File;
+        const base64Image = gettedFile.buffer.toString('base64');
+        await this.animalsService.saveThumbnail(animalId, base64Image);
         this.setStatus(201);
     }
 
@@ -134,6 +156,18 @@ export class AnimalsController extends Controller {
         const multerMulti = multer().array('photos');
         return new Promise((resolve, reject) => {
             multerMulti(request, undefined!, async (error: any) => {
+                if (error) {
+                    reject(error);
+                }
+                resolve();
+            });
+        });
+    }
+
+    private async thumbnailUpload(request: express.Request): Promise<void> {
+        const multerSingle = multer().single('thumbnail');
+        return new Promise((resolve, reject) => {
+            multerSingle(request, undefined!, async (error: any) => {
                 if (error) {
                     reject(error);
                 }
