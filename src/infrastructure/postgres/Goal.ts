@@ -4,7 +4,7 @@ import Organization from './Organization';
 import GoalDonation from './GoalDonation';
 
 @Entity()
-@Index(['organization'], { unique: true })
+@Index()
 export default class Goal {
     @PrimaryGeneratedColumn()
     id!: number;

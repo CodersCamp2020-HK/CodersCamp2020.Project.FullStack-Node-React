@@ -19,8 +19,6 @@ export default class GoalDonation {
     /**
      * The amount of the one donation.
      */
-    @Column({
-        length: 10,
-    })
+    @Column()
     amount!: number;
 }

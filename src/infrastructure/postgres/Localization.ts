@@ -8,22 +8,22 @@ export default class Localization {
     id!: number;
 
     @Column({
-        type: 'text',
-        length: 20,
+        type: 'varchar',
+        length: 30,
     })
     country!: string;
 
     @Column({
-        type: 'text',
-        length: 20,
+        type: 'varchar',
+        length: 30,
     })
     city!: string;
 
     @Column({
-        type: 'text',
-        length: 20,
+        type: 'varchar',
+        length: 50,
     })
-    adress!: string;
+    address!: string;
 
     @OneToMany(() => User, (user) => user.localization)
     user!: User;

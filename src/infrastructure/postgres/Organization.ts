@@ -41,6 +41,7 @@ export default class Organization {
 
     @ManyToOne(() => Localization, (localization) => localization.organization)
     localization!: Localization;
+
     @OneToMany(() => AdoptionStep, (step) => step.organization)
     step!: AdoptionStep;
 
