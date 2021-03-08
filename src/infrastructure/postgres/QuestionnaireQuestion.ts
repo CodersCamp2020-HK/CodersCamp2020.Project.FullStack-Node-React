@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import { Questionnaire, Form } from './Questionnaire';
+import Questionnaire, { Form } from './Questionnaire';
 import QuestionnaireAnswer from './QuestionnaireAnswer';
 
 @Entity()

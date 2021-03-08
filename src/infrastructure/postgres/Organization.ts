@@ -1,11 +1,12 @@
-import { Goal, OrganizationDonation } from './Donation';
-import { Localization } from './Localization';
+import Goal from './Goal';
+import OrganizationDonation from './OrganizationDonation';
+import Localization from './Localization';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 import QuestionnaireSubmission from './QuestionaireSubmission';
 
 @Entity()
-export class Organization {
+export default class Organization {
     @PrimaryGeneratedColumn()
     id!: number;
 

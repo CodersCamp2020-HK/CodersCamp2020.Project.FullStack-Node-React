@@ -7,7 +7,7 @@ import Animal from '@infrastructure/postgres/Animal';
 import { User } from '@infrastructure/postgres/User';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { QuestionnaireService } from '@application/QuestionnaireService';
-import { Questionnaire } from '@infrastructure/postgres/Questionnaire';
+import Questionnaire from '@infrastructure/postgres/Questionnaire';
 // import { UsersService } from '@application/UsersService';
 // import { User } from '@infrastructure/postgres/User';
 

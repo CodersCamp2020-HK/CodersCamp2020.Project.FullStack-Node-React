@@ -1,74 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, Index } from 'typeorm';
-import Animal from './Animal';
-import { Organization } from './Organization';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import Goal from './Goal';
 import { User } from './User';
 
 @Entity()
-export class AnimalDonation {
-    @PrimaryGeneratedColumn()
-    id!: number;
-
-    /**
-     * The amount of the animal donation.
-     */
-    @Column({
-        length: 10,
-    })
-    amount!: number;
-
-    @OneToMany(() => User, (user) => user.animalDonation)
-    user!: User[];
-
-    @OneToMany(() => Animal, (animal) => animal.animalDonation)
-    animal!: Animal[];
-}
-
-@Entity()
-export class OrganizationDonation {
-    @PrimaryGeneratedColumn()
-    id!: number;
-
-    /**
-     * The amount of the organization donation.
-     */
-    @Column({
-        length: 10,
-    })
-    amount!: number;
-
-    @OneToMany(() => User, (user) => user.organizationDonation)
-    user!: User[];
-
-    @OneToMany(() => Organization, (organization) => organization.organizatonDonation)
-    organization!: Organization[];
-}
-
-@Entity()
-@Index(['organization'], { unique: true })
-export class Goal {
-    @PrimaryGeneratedColumn()
-    id!: number;
-
-    @ManyToOne(() => GoalDonation, (goalDonation) => goalDonation.goal)
-    gaolDonation!: GoalDonation;
-
-    /**
-     * The amount of the one donation.
-     */
-    @Column({
-        length: 10,
-    })
-    amount!: number;
-
-    @OneToMany(() => Animal, (animal) => animal.animalDonation, { cascade: true })
-    animal!: Animal;
-
-    @OneToMany(() => Organization, (organization) => organization.goal)
-    organization!: Organization;
-}
-
-@Entity()
-export class GoalDonation {
+export default class GoalDonation {
     @PrimaryGeneratedColumn()
     id!: number;
 

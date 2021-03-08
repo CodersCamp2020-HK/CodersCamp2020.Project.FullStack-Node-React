@@ -1,0 +1,23 @@
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import Animal from './Animal';
+import { User } from './User';
+
+@Entity()
+export default class AnimalDonation {
+    @PrimaryGeneratedColumn()
+    id!: number;
+
+    /**
+     * The amount of the animal donation.
+     */
+    @Column({
+        length: 10,
+    })
+    amount!: number;
+
+    @OneToMany(() => User, (user) => user.animalDonation)
+    user!: User[];
+
+    @OneToMany(() => Animal, (animal) => animal.animalDonation)
+    animal!: Animal[];
+}

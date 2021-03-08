@@ -1,7 +1,7 @@
 import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
-import { Organization } from './Organization';
+import Organization from './Organization';
 import QuestionnaireSubmission from './QuestionaireSubmission';
-import { Questionnaire } from './Questionnaire';
+import Questionnaire from './Questionnaire';
 import Specie from './Specie';
 
 @Entity()

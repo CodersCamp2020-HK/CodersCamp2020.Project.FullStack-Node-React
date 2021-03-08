@@ -1,7 +1,7 @@
 import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 import Animal from './Animal';
-import { Organization } from './Organization';
+import Organization from './Organization';
 import QuestionnaireAnswer from './QuestionnaireAnswer';
 import { User } from './User';
 
