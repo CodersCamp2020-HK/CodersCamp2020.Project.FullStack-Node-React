@@ -103,10 +103,9 @@ export class User {
     @ManyToOne(() => Localization, (localization) => localization.user)
     localization!: Localization;
 
-    @OneToMany(() => QuestionnaireSubmission, (submission) => submission.applicant)
+    @OneToMany(() => QuestionnaireSubmission, (submission) => submission.applicant, { nullable: true })
     submission!: QuestionnaireSubmission;
 
-    @Column({ nullable: true })
-    @ManyToOne(() => QuestionnaireSubmission, (submission) => submission.reviewer)
+    @OneToMany(() => QuestionnaireSubmission, (submission) => submission.reviewer, { nullable: true })
     submissionReview!: QuestionnaireSubmission;
 }

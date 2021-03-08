@@ -8,22 +8,22 @@ import { User } from './User';
 @Entity()
 @Index(['animal', 'applicant', 'adoptionStep', 'organization'], { unique: true })
 export default class QuestionnaireSubmission {
-    @ManyToOne(() => Animal, (animal) => animal.submission)
+    @ManyToOne(() => Animal, (animal) => animal.submission, { primary: true, nullable: false })
     animal!: Animal;
 
-    @ManyToOne(() => User, (user) => user.submission)
+    @ManyToOne(() => User, (user) => user.submission, { primary: true, nullable: false })
     applicant!: User;
 
-    @ManyToOne(() => AdoptionStep, (step) => step.submission)
+    @ManyToOne(() => AdoptionStep, (step) => step.submission, { primary: true, nullable: false })
     adoptionStep!: AdoptionStep;
 
-    @ManyToOne(() => Organization, (organization) => organization.submission)
+    @ManyToOne(() => Organization, (organization) => organization.submission, { primary: true, nullable: false })
     organization!: Organization;
 
     @Column()
     status!: string;
 
-    @OneToMany(() => User, (user) => user.submissionReview)
+    @ManyToOne(() => User, (user) => user.submissionReview)
     reviewer!: User;
 
     @OneToMany(() => QuestionnaireAnswer, (answers) => answers.submission)

@@ -66,7 +66,7 @@ export default class Animal {
     @ManyToOne(() => AnimalDonation, (animalDonation) => animalDonation.animal, { cascade: true })
     animalDonation!: AnimalDonation;
 
-    @ManyToOne(() => Goal, (goal) => goal.animal)
+    @ManyToOne(() => Goal, (goal) => goal.animal, { cascade: true })
     goal!: Goal;
 
     @OneToMany(() => QuestionnaireSubmission, (submission) => submission.animal, { cascade: true })

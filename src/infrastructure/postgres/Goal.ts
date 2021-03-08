@@ -15,12 +15,10 @@ export default class Goal {
     /**
      * The amount of the one donation.
      */
-    @Column({
-        length: 10,
-    })
+    @Column()
     amount!: number;
 
-    @OneToMany(() => Animal, (animal) => animal.animalDonation, { cascade: true })
+    @OneToMany(() => Animal, (animal) => animal.animalDonation)
     animal!: Animal;
 
     @OneToMany(() => Organization, (organization) => organization.goal)

@@ -1,4 +1,4 @@
-import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, Index, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
 import Organization from './Organization';
 import QuestionnaireSubmission from './QuestionaireSubmission';
 import Questionnaire from './Questionnaire';
@@ -13,13 +13,13 @@ export default class AdoptionStep {
     @Column()
     description!: string;
 
-    @ManyToOne(() => Organization, (organization) => organization.step)
+    @ManyToOne(() => Organization, (organization) => organization.step, { primary: true, nullable: false })
     organization!: Organization;
 
-    @ManyToOne(() => Specie, (specie) => specie.id)
+    @ManyToOne(() => Specie, (specie) => specie.id, { primary: true, nullable: false })
     specie!: Specie;
 
-    @Column()
+    @PrimaryColumn({ nullable: false })
     number!: number;
 
     @ManyToOne(() => Questionnaire, (survey) => survey.step)

@@ -1,4 +1,4 @@
-import { Column, Entity, Index, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Index, ManyToOne } from 'typeorm';
 import QuestionnaireSubmission from './QuestionaireSubmission';
 import QuestionnaireQuestion from './QuestionnaireQuestion';
 
@@ -9,12 +9,10 @@ export interface Question {
 @Entity()
 @Index(['submission', 'question'], { unique: true })
 export default class QuestionnaireAnswer {
-    @PrimaryColumn()
-    @ManyToOne(() => QuestionnaireSubmission, (submission) => submission.answers)
+    @ManyToOne(() => QuestionnaireSubmission, (submission) => submission.answers, { primary: true, nullable: false })
     submission!: QuestionnaireSubmission;
 
-    @PrimaryColumn()
-    @ManyToOne(() => QuestionnaireQuestion, (question) => question.answers)
+    @ManyToOne(() => QuestionnaireQuestion, (question) => question.answers, { primary: true, nullable: false })
     question!: QuestionnaireQuestion;
 
     @Column({ type: 'jsonb' })

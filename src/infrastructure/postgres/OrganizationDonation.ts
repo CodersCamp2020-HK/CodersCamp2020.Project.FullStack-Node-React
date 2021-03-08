@@ -10,9 +10,7 @@ export default class OrganizationDonation {
     /**
      * The amount of the organization donation.
      */
-    @Column({
-        length: 10,
-    })
+    @Column()
     amount!: number;
 
     @OneToMany(() => User, (user) => user.organizationDonation)
