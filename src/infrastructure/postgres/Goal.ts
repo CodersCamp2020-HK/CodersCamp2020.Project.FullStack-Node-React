@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne, Index } from 'typeorm';
 import Animal from './Animal';
 import Organization from './Organization';
-import GoalDonation from './Donation';
+import GoalDonation from './GoalDonation';
 
 @Entity()
 @Index(['organization'], { unique: true })

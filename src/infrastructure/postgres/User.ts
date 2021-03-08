@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, ManyToOne, OneToMany } from 'typeorm';
-import GoalDonation from './Donation';
+import GoalDonation from './GoalDonation';
 import OrganizationDonation from './OrganizationDonation';
 import AnimalDonation from './AnimalDonation';
 import Localization from './Localization';
