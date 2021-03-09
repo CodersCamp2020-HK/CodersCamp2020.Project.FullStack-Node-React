@@ -1,6 +1,6 @@
 import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
 import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
-import { AnimalPhotos, AnimalThumbnailPhoto } from '@infrastructure/postgres/AnimalPhoto';
+import { AnimalPhoto, AnimalThumbnailPhoto } from '@infrastructure/postgres/AnimalPhoto';
 import { AnimalAdditionalInfo, AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
@@ -108,18 +108,21 @@ export class AnimalsService {
     }
 
     public async savePhotos(id: number, photosBuffer: Buffer[]): Promise<void> {
-        const animal = await this.animalRepository.findOne(id, { relations: ['photos', 'thumbnail'] });
+        const animal = await this.animalRepository.findOne(id);
         if (animal) {
-            const photos = new AnimalPhotos();
-            photos.bufferArray = photosBuffer;
-
+            const photos = photosBuffer.map((photoBuffer) => {
+                const photo = new AnimalPhoto();
+                photo.buffer = photoBuffer;
+                photo.animal = animal;
+                return photo;
+            });
             animal.photos = photos;
             this.animalRepository.save(animal);
         }
     }
 
     public async saveThumbnail(id: number, photoBuffer: Buffer): Promise<void> {
-        const animal = await this.animalRepository.findOne(id, { relations: ['photos', 'thumbnail'] });
+        const animal = await this.animalRepository.findOne(id);
         if (animal) {
             const photo = new AnimalThumbnailPhoto();
             photo.buffer = photoBuffer;

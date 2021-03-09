@@ -138,6 +138,8 @@ export class AnimalsController extends Controller {
             return photoBuffer;
         });
         await this.animalsService.savePhotos(animalId, photosBuffer);
+        console.log(photosBuffer);
+        console.log(animalId);
         this.setStatus(201);
     }
 
