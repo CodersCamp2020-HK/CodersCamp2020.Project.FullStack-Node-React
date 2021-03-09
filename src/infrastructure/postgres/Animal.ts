@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { AnimalAdditionalInfo } from './AnimalAdditionalInfo';
-import { AnimalPhotos, AnimalThumbnailPhoto } from './AnimalPhoto';
+import { AnimalPhoto, AnimalThumbnailPhoto } from './AnimalPhoto';
 
 export enum AnimalSpecies {
     CAT = 'cat',
@@ -57,11 +57,14 @@ export class Animal {
     @JoinColumn()
     additional_info!: AnimalAdditionalInfo;
 
-    @OneToOne(() => AnimalThumbnailPhoto, { cascade: true })
+    @OneToOne(() => AnimalThumbnailPhoto, (thumbnail: AnimalThumbnailPhoto) => thumbnail.animal, {
+        cascade: true,
+        eager: true,
+    })
     @JoinColumn()
     thumbnail!: AnimalThumbnailPhoto;
 
-    @OneToOne(() => AnimalPhotos, { cascade: true })
+    @OneToMany(() => AnimalPhoto, (photo: AnimalPhoto) => photo.animal, { cascade: true })
     @JoinColumn()
-    photos!: AnimalPhotos;
+    photos!: AnimalPhoto[];
 }
