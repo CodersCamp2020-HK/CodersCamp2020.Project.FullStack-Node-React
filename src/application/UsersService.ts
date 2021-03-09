@@ -23,6 +23,8 @@ export type UserResetPasswordParams = {
     password: Password;
 };
 
+export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname'>;
+
 export class UsersService {
     constructor(private userRepository: Repository<User>) {}
 
@@ -91,6 +93,14 @@ export class UsersService {
         const token = jwt.sign({ role: user.type, id: user.id }, process.env.JWT_KEY);
 
         return { apiKey: token };
+    }
+
+    public async update(id: number, userUpdateParams: Partial<UserUpdateParams>): Promise<User> {
+        const user = await this.userRepository.findOne(id);
+        if (!user) throw new ApiError('Not Found', 404, `User with id: ${id} not found!`);
+        const updateUser = { ...user, ...userUpdateParams };
+
+        return this.userRepository.save(updateUser);
     }
 
     public async delete(userId: number, request: IAuthUserInfoRequest): Promise<void> {

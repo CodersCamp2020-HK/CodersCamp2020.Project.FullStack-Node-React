@@ -4,6 +4,7 @@ import {
     UserLoginParams,
     UserResetPasswordParams,
     UsersService,
+    UserUpdateParams,
 } from '@application/UsersService';
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
@@ -16,6 +17,7 @@ import {
     Patch,
     Path,
     Post,
+    Put,
     Request,
     Res,
     Response,
@@ -46,6 +48,13 @@ export class UsersController extends Controller {
 
     @Inject
     private emailService!: EmailService;
+    @Response<ApiError>(404, 'User not found')
+    @Response<User>(200, 'User updated')
+    @Put('{userId}')
+    public async updateUser(@Path() userId: number, @Body() requestBody: Partial<UserUpdateParams>): Promise<User> {
+        this.setStatus(200);
+        return this.usersService.update(userId, requestBody);
+    }
 
     @Get('{userId}')
     public async getUser(@Path() userId: number): Promise<User> {
