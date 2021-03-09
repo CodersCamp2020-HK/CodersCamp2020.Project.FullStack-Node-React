@@ -25,44 +25,52 @@
             "paths": {
                 "/animals/{animalId}/photos-upload": {
                   "post": {
-                    "consumes": [
-                      "multipart/form-data"
-                    ],
-                    "parameters": [
-                        {
-                            "in": "path",
-                            "name": "animalId",
-                            "type": "number",
-                            "required": true
+                    "requestBody": {
+                      "required": true,
+                      "content": {
+                        "multipart/form-data": {
+                          "schema": {
+                            "type": "object",
+                            "properties": {
+                              "photos": {
+                                "type": "string",
+                                "format": "binary"
+                              }
+                            }
                           },
-                      {
-                        "in": "formData",
-                        "name": "photos",
-                        "type": "file",
-                        "required": true
+                          "encoding": {
+                            "photos": {
+                              "content-type": "image/png, image/jpeg"
+                            }
+                          }
+                        }
                       }
-                    ]
+                    }
                   }
                 },
                 "/animals/{animalId}/thumbnail-upload": {
                     "post": {
-                      "consumes": [
-                        "multipart/form-data"
-                      ],
-                      "parameters": [
-                          {
-                              "in": "path",
-                              "name": "animalId",
-                              "type": "number",
-                              "required": true
+                      "requestBody": {
+                        "required": true,
+                        "content": {
+                          "multipart/form-data": {
+                            "schema": {
+                              "type": "object",
+                              "properties": {
+                                "thumbnail": {
+                                  "type": "string",
+                                  "format": "binary"
+                                }
+                              }
                             },
-                        {
-                          "in": "formData",
-                          "name": "thumbnail",
-                          "type": "file",
-                          "required": true
+                            "encoding": {
+                              "photos": {
+                                "content-type": "image/png, image/jpeg"
+                              }
+                            }
+                          }
                         }
-                      ]
+                      }
                     }
                   }
         }
