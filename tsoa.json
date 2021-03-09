@@ -33,8 +33,11 @@
                             "type": "object",
                             "properties": {
                               "photos": {
-                                "type": "string",
-                                "format": "binary"
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "binary"
+                                }
                               }
                             }
                           },
