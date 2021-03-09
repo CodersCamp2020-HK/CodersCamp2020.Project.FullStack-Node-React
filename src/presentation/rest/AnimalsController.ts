@@ -133,6 +133,7 @@ export class AnimalsController extends Controller {
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
+    @Response<ApiError>(400, 'Bad Request')
     public async addPhotos(@Path() animalId: number, @Request() request: ExRequest): Promise<void> {
         await this.photosUpload(request);
         const gettedFiles = request.files as Express.Multer.File[];
@@ -147,7 +148,7 @@ export class AnimalsController extends Controller {
     @Security('jwt', ['admin', 'employee'])
     @Post('{animalId}/thumbnail-upload')
     @SuccessResponse(201, 'Saved')
-    @Response<ApiError>(400, 'Thumbnail already exists')
+    @Response<ApiError>(400, 'Bad Request')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')

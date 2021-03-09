@@ -110,6 +110,9 @@ export class AnimalsService {
 
     public async savePhotos(id: number, photosBuffer: Buffer[]): Promise<void> {
         const animal = await this.animalRepository.findOne(id);
+        if (photosBuffer.length <= 0) {
+            throw new ApiError('Bad Request', 400, 'No photos provided!');
+        }
         if (animal) {
             photosBuffer.forEach(async (photoBuffer) => {
                 const photo = this.animalPhotos.create({
@@ -124,6 +127,10 @@ export class AnimalsService {
     }
 
     public async saveThumbnail(id: number, photoBuffer: Buffer): Promise<void> {
+        if (!photoBuffer) {
+            throw new ApiError('Bad Request', 400, 'No photo provided!');
+        }
+
         const animal = await this.animalRepository.findOne(id);
 
         if (animal) {
