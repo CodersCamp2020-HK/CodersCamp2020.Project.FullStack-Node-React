@@ -118,17 +118,26 @@ export class AnimalsService {
                 });
                 await this.animalPhotos.save(photo);
             });
+        } else {
+            throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
         }
     }
 
     public async saveThumbnail(id: number, photoBuffer: Buffer): Promise<void> {
         const animal = await this.animalRepository.findOne(id);
+
         if (animal) {
+            if (animal.id) {
+                throw new ApiError('Bad Request', 400, 'Animal already has a thumbnail');
+            }
+
             const photo = new AnimalThumbnailPhoto();
             photo.buffer = photoBuffer;
 
             animal.thumbnail = photo;
             this.animalRepository.save(animal);
+        } else {
+            throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
         }
     }
 }

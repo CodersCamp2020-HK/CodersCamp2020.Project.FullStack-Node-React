@@ -127,27 +127,32 @@ export class AnimalsController extends Controller {
         return this.animalsService.update(animalId, requestBody);
     }
 
+    @Security('jwt', ['admin', 'employee'])
     @Post('{animalId}/photos-upload')
-    @Response<ApiError>(201, 'Saved')
+    @SuccessResponse(201, 'Saved')
+    @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
     public async addPhotos(@Path() animalId: number, @Request() request: ExRequest): Promise<void> {
         await this.photosUpload(request);
-        console.log(request.files);
         const gettedFiles = request.files as Express.Multer.File[];
         const photosBuffer = gettedFiles.map((file: FileFields) => {
             const photoBuffer = file.buffer;
             return photoBuffer;
         });
         await this.animalsService.savePhotos(animalId, photosBuffer);
-        console.log(photosBuffer);
-        console.log(animalId);
         this.setStatus(201);
     }
 
+    @Security('jwt', ['admin', 'employee'])
     @Post('{animalId}/thumbnail-upload')
-    @Response<ApiError>(201, 'Saved')
+    @SuccessResponse(201, 'Saved')
+    @Response<ApiError>(400, 'Thumbnail already exists')
+    @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
     public async addThumbnail(@Path() animalId: number, @Request() request: ExRequest): Promise<void> {
         await this.thumbnailUpload(request);
-        console.log(request.files);
         const gettedFile = request.file as Express.Multer.File;
         const photoBuffer = gettedFile.buffer;
         await this.animalsService.saveThumbnail(animalId, photoBuffer);
