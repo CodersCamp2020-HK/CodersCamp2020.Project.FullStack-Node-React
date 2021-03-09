@@ -22,7 +22,7 @@ export default class AdoptionStep {
     @Column({ primary: true, nullable: false })
     number!: number;
 
-    @ManyToOne(() => Questionnaire, (survey) => survey.step)
+    @ManyToOne(() => Questionnaire, (survey) => survey.steps)
     form!: Questionnaire;
 
     @OneToMany(() => QuestionnaireSubmission, (submission) => submission.adoptionStep)

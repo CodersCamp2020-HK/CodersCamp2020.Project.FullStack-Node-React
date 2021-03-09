@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 import QuestionnaireQuestion from './QuestionnaireQuestion';
 
@@ -28,6 +28,11 @@ export default class Questionnaire {
     @OneToMany(() => QuestionnaireQuestion, (question) => question.questionnaire, { cascade: true })
     questions!: QuestionnaireQuestion[];
 
-    @ManyToOne(() => AdoptionStep, (adoption) => adoption.form)
-    step!: AdoptionStep;
+    @OneToMany(() => AdoptionStep, (adoption) => adoption.form)
+    // @JoinColumn([
+    //     { name: 'organization', referencedColumnName: 'organization' },
+    //     { name: 'specie', referencedColumnName: 'specie' },
+    //     { name: 'number', referencedColumnName: 'number' },
+    // ])
+    steps!: AdoptionStep[];
 }
