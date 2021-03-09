@@ -48,6 +48,7 @@ export class AnimalsService {
     constructor(
         private animalRepository: Repository<Animal>,
         private animalAdditionalInfo: Repository<AnimalAdditionalInfo>,
+        private animalPhotos: Repository<AnimalPhoto>,
     ) {}
 
     public async get(id: number): Promise<Animal> {
@@ -110,14 +111,13 @@ export class AnimalsService {
     public async savePhotos(id: number, photosBuffer: Buffer[]): Promise<void> {
         const animal = await this.animalRepository.findOne(id);
         if (animal) {
-            const photos = photosBuffer.map((photoBuffer) => {
-                const photo = new AnimalPhoto();
-                photo.buffer = photoBuffer;
-                photo.animal = animal;
-                return photo;
+            photosBuffer.forEach(async (photoBuffer) => {
+                const photo = this.animalPhotos.create({
+                    animal: animal,
+                    buffer: photoBuffer,
+                });
+                await this.animalPhotos.save(photo);
             });
-            animal.photos = photos;
-            this.animalRepository.save(animal);
         }
     }
 

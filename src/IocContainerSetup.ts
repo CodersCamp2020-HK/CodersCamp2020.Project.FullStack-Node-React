@@ -8,6 +8,7 @@ import { User } from '@infrastructure/postgres/User';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { QuestionnaireService } from '@application/QuestionnaireService';
 import { Questionnaire } from '@infrastructure/postgres/Questionnaire';
+import { AnimalPhoto } from '@infrastructure/postgres/AnimalPhoto';
 // import { UsersService } from '@application/UsersService';
 // import { User } from '@infrastructure/postgres/User';
 
@@ -17,6 +18,7 @@ Container.bind(AnimalsService)
             new AnimalsService(
                 getConnection().getRepository(Animal),
                 getConnection().getRepository(AnimalAdditionalInfo),
+                getConnection().getRepository(AnimalPhoto),
             ),
     )
     .scope(Scope.Local);
