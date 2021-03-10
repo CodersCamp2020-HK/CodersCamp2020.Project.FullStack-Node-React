@@ -22,8 +22,7 @@ import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
 import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import ApiError from '@infrastructure/ApiError';
 import { Request as ExRequest } from 'express';
-import express from 'express';
-import multer from 'multer';
+import { PhotosService } from '@application/PhotosService';
 
 interface FileFields {
     fieldname: string;
@@ -34,14 +33,14 @@ interface FileFields {
     size: number;
 }
 
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 @Tags('Animals')
 @Route('animals')
 export class AnimalsController extends Controller {
     @Inject
     private animalsService!: AnimalsService;
+
+    @Inject
+    private photosService!: PhotosService;
 
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Animal not found')
@@ -135,13 +134,9 @@ export class AnimalsController extends Controller {
     @Response<ApiError>(404, 'Not Found')
     @Response<ApiError>(400, 'Bad Request')
     public async addPhotos(@Path() animalId: number, @Request() request: ExRequest): Promise<void> {
-        await this.photosUpload(request);
-        const gettedFiles = request.files as Express.Multer.File[];
-        const photosBuffer = gettedFiles.map((file: FileFields) => {
-            const photoBuffer = file.buffer;
-            return photoBuffer;
-        });
-        await this.animalsService.savePhotos(animalId, photosBuffer);
+        await this.photosService.photosUpload(request);
+        const gettedPhotos = request.files as unknown;
+        await this.animalsService.savePhotos(animalId, gettedPhotos as Express.Multer.File[]);
         this.setStatus(201);
     }
 
@@ -153,34 +148,8 @@ export class AnimalsController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
     public async addThumbnail(@Path() animalId: number, @Request() request: ExRequest): Promise<void> {
-        await this.thumbnailUpload(request);
-        const gettedFile = request.file as Express.Multer.File;
-        const photoBuffer = gettedFile.buffer;
-        await this.animalsService.saveThumbnail(animalId, photoBuffer);
+        await this.photosService.thumbnailUpload(request);
+        await this.animalsService.saveThumbnail(animalId, request.file);
         this.setStatus(201);
-    }
-
-    private async photosUpload(request: express.Request): Promise<void> {
-        const multerMulti = multer().array('photos');
-        return new Promise((resolve, reject) => {
-            multerMulti(request, undefined!, async (error: any) => {
-                if (error) {
-                    reject(error);
-                }
-                resolve();
-            });
-        });
-    }
-
-    private async thumbnailUpload(request: express.Request): Promise<void> {
-        const multerSingle = multer().single('thumbnail');
-        return new Promise((resolve, reject) => {
-            multerSingle(request, undefined!, async (error: any) => {
-                if (error) {
-                    reject(error);
-                }
-                resolve();
-            });
-        });
     }
 }

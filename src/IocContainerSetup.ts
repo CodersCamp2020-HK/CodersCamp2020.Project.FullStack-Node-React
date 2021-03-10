@@ -9,6 +9,7 @@ import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalI
 import { QuestionnaireService } from '@application/QuestionnaireService';
 import { Questionnaire } from '@infrastructure/postgres/Questionnaire';
 import { AnimalPhoto } from '@infrastructure/postgres/AnimalPhoto';
+import { PhotosService } from '@application/PhotosService';
 // import { UsersService } from '@application/UsersService';
 // import { User } from '@infrastructure/postgres/User';
 
@@ -26,4 +27,7 @@ Container.bind(AnimalsService)
 Container.bind(UsersService).factory(() => new UsersService(getConnection().getRepository(User)));
 Container.bind(QuestionnaireService)
     .factory(() => new QuestionnaireService(getConnection().getRepository(Questionnaire)))
+    .scope(Scope.Local);
+Container.bind(PhotosService)
+    .factory(() => new PhotosService())
     .scope(Scope.Local);

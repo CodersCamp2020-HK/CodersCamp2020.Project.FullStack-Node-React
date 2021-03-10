@@ -108,16 +108,16 @@ export class AnimalsService {
         return await this.animalRepository.save(updatedAnimal);
     }
 
-    public async savePhotos(id: number, photosBuffer: Buffer[]): Promise<void> {
+    public async savePhotos(id: number, files: Express.Multer.File[]): Promise<void> {
         const animal = await this.animalRepository.findOne(id);
-        if (photosBuffer.length <= 0) {
+        if (files.length <= 0) {
             throw new ApiError('Bad Request', 400, 'No photos provided!');
         }
         if (animal) {
-            photosBuffer.forEach(async (photoBuffer) => {
+            files.forEach(async (file) => {
                 const photo = this.animalPhotos.create({
                     animal: animal,
-                    buffer: photoBuffer,
+                    buffer: file.buffer,
                 });
                 await this.animalPhotos.save(photo);
             });
@@ -126,7 +126,8 @@ export class AnimalsService {
         }
     }
 
-    public async saveThumbnail(id: number, photoBuffer: Buffer): Promise<void> {
+    public async saveThumbnail(id: number, file: Express.Multer.File): Promise<void> {
+        const photoBuffer = file.buffer;
         if (!photoBuffer) {
             throw new ApiError('Bad Request', 400, 'No photo provided!');
         }
