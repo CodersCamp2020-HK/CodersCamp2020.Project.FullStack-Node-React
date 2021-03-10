@@ -1,12 +1,11 @@
 import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 import Animal from './Animal';
-import Organization from './Organization';
 import QuestionnaireAnswer from './QuestionnaireAnswer';
 import { User } from './User';
 
 @Entity()
-@Index(['animal', 'applicant', 'adoptionStep', 'organization'], { unique: true })
+@Index(['animal', 'applicant', 'adoptionStep'], { unique: true })
 export default class QuestionnaireSubmission {
     @ManyToOne(() => Animal, (animal) => animal.submission, { primary: true, nullable: false })
     animal!: Animal;
@@ -17,9 +16,6 @@ export default class QuestionnaireSubmission {
     @ManyToOne(() => AdoptionStep, (step) => step.submission, { primary: true, nullable: false })
     adoptionStep!: AdoptionStep;
 
-    @ManyToOne(() => Organization, (organization) => organization.submission, { primary: true, nullable: false })
-    organization!: Organization;
-
     @Column()
     status!: string;
 
@@ -27,5 +23,5 @@ export default class QuestionnaireSubmission {
     reviewer!: User;
 
     @OneToMany(() => QuestionnaireAnswer, (answers) => answers.submission)
-    answers!: QuestionnaireAnswer;
+    answers!: QuestionnaireAnswer[];
 }
