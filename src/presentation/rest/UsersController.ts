@@ -38,8 +38,6 @@ import { TemporaryUserLinkInfoStore } from '@application/TemporaryUserLinkInfoSt
 import { EmailService } from '@application/EmailService';
 import { v4 as uuidv4 } from 'uuid';
 import { Request as ExRequest } from 'express';
-
-const activationLinksStore = new TemporaryUserLinkInfoStore(30);
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
@@ -48,6 +46,10 @@ export class UsersController extends Controller {
 
     @Inject
     private emailService!: EmailService;
+
+    @Inject
+    private temporaryUserLinkInfoStore!: TemporaryUserLinkInfoStore;
+
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
     @Put('{userId}')
@@ -74,7 +76,7 @@ export class UsersController extends Controller {
 
             const generatedUUID = uuidv4();
 
-            activationLinksStore.addUserLinkInfo({
+            this.temporaryUserLinkInfoStore.addUserLinkInfo({
                 email: createdUser.mail,
                 id: createdUser.id,
                 linkUUID: generatedUUID,
@@ -105,11 +107,11 @@ export class UsersController extends Controller {
     @SuccessResponse('200', 'User Activated')
     @Response('404', 'Link is not valid or expired')
     public async sendEmail(@Path() generatedUUID: string): Promise<void> {
-        const foundedUserActivationInfo = activationLinksStore.getUserLinkInfo(generatedUUID);
+        const foundedUserActivationInfo = this.temporaryUserLinkInfoStore.getUserLinkInfo(generatedUUID);
 
         if (foundedUserActivationInfo) {
             await this.usersService.activateUser(foundedUserActivationInfo.id);
-            activationLinksStore.deleteUserLinkInfo(foundedUserActivationInfo);
+            this.temporaryUserLinkInfoStore.deleteUserLinkInfo(foundedUserActivationInfo);
             this.setStatus(200);
         } else {
             throw new ApiError('Not found', 404, 'Link is not valid or expired');
@@ -126,7 +128,7 @@ export class UsersController extends Controller {
                 throw new Error('User is already activated');
             }
 
-            const foundedUserActivationInfo = activationLinksStore.getAllUserLinksInfo().find((el) => {
+            const foundedUserActivationInfo = this.temporaryUserLinkInfoStore.getAllUserLinksInfo().find((el) => {
                 return el.id == userId;
             });
 
@@ -141,7 +143,7 @@ export class UsersController extends Controller {
 
             const generatedUUID = uuidv4();
 
-            activationLinksStore.addUserLinkInfo({
+            this.temporaryUserLinkInfoStore.addUserLinkInfo({
                 email: createdUser.mail,
                 id: createdUser.id,
                 linkUUID: generatedUUID,
