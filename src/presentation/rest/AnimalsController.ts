@@ -24,15 +24,6 @@ import ApiError from '@infrastructure/ApiError';
 import { Request as ExRequest } from 'express';
 import { PhotosService } from '@application/PhotosService';
 
-interface FileFields {
-    fieldname: string;
-    originalname: string;
-    encoding: string;
-    mimetype: string;
-    buffer: Buffer;
-    size: number;
-}
-
 @Tags('Animals')
 @Route('animals')
 export class AnimalsController extends Controller {
