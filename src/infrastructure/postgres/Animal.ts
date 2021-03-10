@@ -51,14 +51,14 @@ export default class Animal {
      * The animal is ready for adoption
      */
     @Column()
-    ready_for_adoption!: boolean;
+    readyForAdoption!: boolean;
 
     /**
      * The animal's addition information
      */
     @OneToOne(() => AnimalAdditionalInfo, { cascade: true })
     @JoinColumn()
-    additional_info!: AnimalAdditionalInfo;
+    additionalInfo!: AnimalAdditionalInfo;
 
     @OneToMany(() => AnimalPhoto, (photos) => photos.animal, { cascade: true })
     photos!: AnimalPhoto[];
