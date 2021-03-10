@@ -3,7 +3,7 @@ import { AnimalAdditionalInfo } from './AnimalAdditionalInfo';
 import AnimalPhoto from './AnimalPhoto';
 import Goal from './Goal';
 import AnimalDonation from './AnimalDonation';
-import QuestionnaireSubmission from './FormSubmission';
+import FormAnimalSubmission from './FormAnimalSubmission';
 
 export enum AnimalSpecies {
     CAT = 'cat',
@@ -69,6 +69,6 @@ export default class Animal {
     @ManyToOne(() => Goal, (goal) => goal.animals, { cascade: true })
     goal!: Goal;
 
-    @OneToMany(() => QuestionnaireSubmission, (submission) => submission.animal, { cascade: true })
-    submissions!: QuestionnaireSubmission[];
+    @OneToMany(() => FormAnimalSubmission, (submission) => submission.animal, { cascade: true })
+    submissions!: FormAnimalSubmission[];
 }

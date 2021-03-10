@@ -3,7 +3,7 @@ import Questionnaire, { Form } from './Form';
 import FormAnimalAnswer from './FormAnimalAnswer';
 
 @Entity('FormQuestions')
-export default class QuestionnaireQuestion {
+export default class FormQuestion {
     @PrimaryGeneratedColumn()
     id!: number;
 

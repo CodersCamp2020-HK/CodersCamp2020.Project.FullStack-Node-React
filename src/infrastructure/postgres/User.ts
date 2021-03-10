@@ -3,7 +3,7 @@ import GoalDonation from './GoalDonation';
 import OrganizationDonation from './OrganizationDonation';
 import AnimalDonation from './AnimalDonation';
 import Localization from './Localization';
-import QuestionnaireSubmission from './FormSubmission';
+import FormAnimalSubmission from './FormAnimalSubmission';
 
 /**
  * User Type
@@ -103,9 +103,9 @@ export class User {
     @ManyToOne(() => Localization, (localization) => localization.users)
     localization!: Localization;
 
-    @OneToMany(() => QuestionnaireSubmission, (submission) => submission.applicant, { nullable: true })
-    submissions!: QuestionnaireSubmission[];
+    @OneToMany(() => FormAnimalSubmission, (submission) => submission.applicant, { nullable: true })
+    submissions!: FormAnimalSubmission[];
 
-    @OneToMany(() => QuestionnaireSubmission, (submission) => submission.reviewer, { nullable: true })
-    submissionReviews!: QuestionnaireSubmission[];
+    @OneToMany(() => FormAnimalSubmission, (submission) => submission.reviewer, { nullable: true })
+    submissionReviews!: FormAnimalSubmission[];
 }

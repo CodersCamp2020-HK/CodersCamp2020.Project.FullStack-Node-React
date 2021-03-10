@@ -1,6 +1,6 @@
 import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import Organization from './Organization';
-import QuestionnaireSubmission from './FormSubmission';
+import FormAnimalSubmission from './FormAnimalSubmission';
 import Questionnaire from './Form';
 import Specie from './Specie';
 
@@ -25,6 +25,6 @@ export default class AdoptionStep {
     @ManyToOne(() => Questionnaire, (survey) => survey.steps)
     form!: Questionnaire;
 
-    @OneToMany(() => QuestionnaireSubmission, (submission) => submission.adoptionStep)
-    submissions!: QuestionnaireSubmission[];
+    @OneToMany(() => FormAnimalSubmission, (submission) => submission.adoptionStep)
+    submissions!: FormAnimalSubmission[];
 }
