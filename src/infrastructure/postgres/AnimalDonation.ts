@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import Animal from './Animal';
 import { User } from './User';
 
-@Entity()
+@Entity('AnimalDonations')
 export default class AnimalDonation {
     @PrimaryGeneratedColumn()
     id!: number;

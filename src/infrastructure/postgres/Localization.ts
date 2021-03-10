@@ -2,7 +2,7 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import Organization from './Organization';
 import { User } from './User';
 
-@Entity()
+@Entity('Localizations')
 export default class Localization {
     @PrimaryGeneratedColumn()
     id!: number;

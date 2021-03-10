@@ -1,8 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import Questionnaire, { Form } from './Questionnaire';
-import QuestionnaireAnswer from './QuestionnaireAnswer';
+import Questionnaire, { Form } from './Form';
+import QuestionnaireAnswer from './FormAnswer';
 
-@Entity()
+@Entity('FormQuestions')
 export default class QuestionnaireQuestion {
     @PrimaryGeneratedColumn()
     id!: number;

@@ -3,7 +3,7 @@ import Animal from './Animal';
 import Organization from './Organization';
 import GoalDonation from './GoalDonation';
 
-@Entity()
+@Entity('Goals')
 export default class Goal {
     @PrimaryGeneratedColumn()
     id!: number;

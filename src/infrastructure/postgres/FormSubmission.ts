@@ -1,10 +1,10 @@
 import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 import Animal from './Animal';
-import QuestionnaireAnswer from './QuestionnaireAnswer';
+import QuestionnaireAnswer from './FormAnswer';
 import { User } from './User';
 
-@Entity()
+@Entity('FormSubmissions')
 @Index(['animal', 'applicant', 'adoptionStep'], { unique: true })
 export default class QuestionnaireSubmission {
     @ManyToOne(() => Animal, (animal) => animal.submissions, { primary: true, nullable: false })

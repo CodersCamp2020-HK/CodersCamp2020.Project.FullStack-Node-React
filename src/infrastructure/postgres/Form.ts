@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
-import QuestionnaireQuestion from './QuestionnaireQuestion';
+import QuestionnaireQuestion from './FormQuestion';
 
 interface TextAnswer {
     placeholder: string;
@@ -17,7 +17,7 @@ export interface Form {
     data: TextAnswer | EnumAnswer;
 }
 
-@Entity()
+@Entity('Forms')
 export default class Questionnaire {
     @PrimaryGeneratedColumn()
     id!: number;

@@ -3,7 +3,7 @@ import { AnimalAdditionalInfo } from './AnimalAdditionalInfo';
 import AnimalPhoto from './AnimalPhoto';
 import Goal from './Goal';
 import AnimalDonation from './AnimalDonation';
-import QuestionnaireSubmission from './QuestionaireSubmission';
+import QuestionnaireSubmission from './FormSubmission';
 
 export enum AnimalSpecies {
     CAT = 'cat',

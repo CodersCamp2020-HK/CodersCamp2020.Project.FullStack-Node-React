@@ -3,7 +3,7 @@ import GoalDonation from './GoalDonation';
 import OrganizationDonation from './OrganizationDonation';
 import AnimalDonation from './AnimalDonation';
 import Localization from './Localization';
-import QuestionnaireSubmission from './QuestionaireSubmission';
+import QuestionnaireSubmission from './FormSubmission';
 
 /**
  * User Type
@@ -38,7 +38,7 @@ export type Password = string;
  */
 export type UUID = string;
 
-@Entity()
+@Entity('Users')
 export class User {
     @PrimaryGeneratedColumn()
     id!: number;

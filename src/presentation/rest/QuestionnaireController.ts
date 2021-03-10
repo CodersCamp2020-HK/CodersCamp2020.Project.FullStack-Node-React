@@ -2,7 +2,7 @@ import { Body, Controller, Post, Get, Path, Route, SuccessResponse, Tags, Respon
 import { Inject } from 'typescript-ioc';
 import { QuestionnaireCreationParams, QuestionnaireService } from '@application/QuestionnaireService';
 import ApiError from '@infrastructure/ApiError';
-import Questionnaire from '@infrastructure/postgres/Questionnaire';
+import Questionnaire from '@infrastructure/postgres/Form';
 
 @Tags('Questionnaire')
 @Route('questionnaires')

@@ -4,7 +4,7 @@ import Localization from './Localization';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 
-@Entity()
+@Entity('Organizations')
 export default class Organization {
     @PrimaryGeneratedColumn()
     id!: number;

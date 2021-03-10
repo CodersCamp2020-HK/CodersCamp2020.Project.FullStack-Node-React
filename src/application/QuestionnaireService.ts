@@ -1,5 +1,5 @@
-import Questionnaire from '@infrastructure/postgres/Questionnaire';
-import QuestionnaireQuestion from '@infrastructure/postgres/QuestionnaireQuestion';
+import Questionnaire from '@infrastructure/postgres/Form';
+import QuestionnaireQuestion from '@infrastructure/postgres/FormQuestion';
 import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
 

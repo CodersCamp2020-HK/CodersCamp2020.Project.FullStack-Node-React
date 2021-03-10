@@ -1,7 +1,7 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import Animal from './Animal';
 
-@Entity()
+@Entity('AnimalPhotos')
 export default class AnimalPhoto {
     @PrimaryGeneratedColumn()
     id!: number;

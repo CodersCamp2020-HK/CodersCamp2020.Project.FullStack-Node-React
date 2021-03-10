@@ -1,13 +1,13 @@
 import { Column, PrimaryGeneratedColumn, Entity, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 
-@Entity()
+@Entity('Species')
 export default class Specie {
     @PrimaryGeneratedColumn()
     id!: number;
 
     @Column()
-    species!: string;
+    specie!: string;
 
     @OneToMany(() => AdoptionStep, (step) => step.specie)
     steps!: AdoptionStep[];
