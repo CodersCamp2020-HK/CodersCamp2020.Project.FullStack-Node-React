@@ -74,18 +74,7 @@ export class UsersController extends Controller {
         try {
             const createdUser = await this.usersService.create(requestBody);
 
-            const generatedUUID = uuidv4();
-
-            this.temporaryUserLinkInfoStore.addUserLinkInfo({
-                email: createdUser.mail,
-                id: createdUser.id,
-                linkUUID: generatedUUID,
-            });
-
-            await this.emailService.sendActivationEmail(
-                createdUser.mail,
-                request.get('host') + `/api/users/activate/${generatedUUID}`,
-            );
+            await this.sendActivationLink(createdUser.id, request);
 
             this.setStatus(201);
         } catch (error) {
@@ -120,7 +109,7 @@ export class UsersController extends Controller {
 
     @Post('{userId}/sendactivationlink')
     @SuccessResponse('200', 'Sended')
-    public async sendLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
+    public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
         try {
             const createdUser = await this.usersService.get(userId);
 
