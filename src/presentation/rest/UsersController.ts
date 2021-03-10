@@ -19,9 +19,9 @@ import {
     Path,
     Post,
     Put,
-    Request,
     Res,
     Response,
+    Request,
     Route,
     Security,
     SuccessResponse,
@@ -29,6 +29,7 @@ import {
     TsoaResponse,
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
+import { Request as ExRequest } from 'express';
 import {
     InvalidEmailFormatError,
     PasswordRequirementsError,
@@ -76,8 +77,6 @@ export class UsersController extends Controller {
                 throw error;
             }
         }
-
-        return;
     }
     /** Supply the unique user ID and delete user with corresponding id from database
      *  @param userId The user's identifier
@@ -91,7 +90,6 @@ export class UsersController extends Controller {
     public async deleteUser(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {
         this.setStatus(200);
         await this.usersService.delete(userId, request);
-        return;
     }
 
     @Response<ApiError>(400, 'Bad Request')
@@ -126,8 +124,12 @@ export class UsersController extends Controller {
     @Response<ApiError>(400, 'Bad Request')
     @SuccessResponse('200', 'Email send')
     @Post('reset')
-    public async snedResetPasswordMail(@Body() email: EmailResetPassword): Promise<void> {
-        this.snedResetPasswordMail(email);
+    public async snedResetPasswordMail(
+        @Body() email: EmailResetPassword,
+        @Request() request: ExRequest,
+    ): Promise<void> {
+        const ACTIVATION_PATH = request.get('host') + '/api/users/activate/';
+        this.usersService.sendResetPasswordLink(email, ACTIVATION_PATH);
         this.setStatus(200);
     }
 
@@ -140,9 +142,9 @@ export class UsersController extends Controller {
     @Post('reset/{userResetUUID}')
     public async resetUserPassword(
         @Path() userResetUUID: string,
-        @Body() userResetPasswords: UserResetPasswordParams,
+        @Body() newPassword: UserResetPasswordParams,
     ): Promise<void> {
-        this.usersService.resetPassword(userResetUUID, userResetPasswords);
+        this.usersService.resetPassword(userResetUUID, newPassword);
         this.setStatus(200);
     }
 }

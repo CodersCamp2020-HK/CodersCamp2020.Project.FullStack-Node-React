@@ -9,6 +9,7 @@ import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalI
 import { QuestionnaireService } from '@application/QuestionnaireService';
 import { Questionnaire } from '@infrastructure/postgres/Questionnaire';
 import { EmailService } from '@infrastructure/EmailService';
+import TemporaryUserActivationInfoStore from '@infrastructure/TemporaryUserActivationInfoStore';
 
 Container.bind(AnimalsService)
     .factory(
@@ -25,3 +26,4 @@ Container.bind(QuestionnaireService)
     .factory(() => new QuestionnaireService(getConnection().getRepository(Questionnaire)))
     .scope(Scope.Local);
 Container.bind(EmailService).factory(() => new EmailService());
+Container.bind(TemporaryUserActivationInfoStore).to(new TemporaryUserActivationInfoStore(120)).scope(Scope.Singleton);

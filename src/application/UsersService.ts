@@ -7,6 +7,9 @@ import jwt from 'jsonwebtoken';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
 import { Inject } from 'typescript-ioc';
 import { EmailService } from '@infrastructure/EmailService';
+import TemporaryUserActivationInfoStore, { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
+import { v4 as uuidv4 } from 'uuid';
+import ResetPasswordMessage from '@infrastructure/ResetPasswordMessage';
 
 const SALT_ROUNDS = 10;
 
@@ -40,6 +43,8 @@ export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname'>;
 export class UsersService {
     @Inject
     emailService!: EmailService;
+    @Inject
+    linksStorage!: TemporaryUserActivationInfoStore;
 
     constructor(private userRepository: Repository<User>) {}
 
@@ -129,17 +134,45 @@ export class UsersService {
         throw new ApiError('Unauthorized', 401, 'Only admin can delete other accounts');
     }
 
-    public async sendResetPasswordLink({ email }: EmailResetPassword): Promise<void> {
-        const user = await this.userRepository.findOne({ where: { mail: email } });
+    public async createUUID(userId: number, linkType: LinkType): Promise<string> {
+        const createdUser = await this.get(userId);
 
+        if (linkType === LinkType.activation && createdUser.activated) {
+            throw new Error('User is already activated');
+        }
+
+        const activationLink = this.linksStorage.getUserLinkInfoById(userId, linkType);
+
+        if (activationLink) {
+            return activationLink.linkUUID;
+        }
+
+        const generatedUUID = uuidv4();
+
+        this.linksStorage.addLink({
+            email: createdUser.mail,
+            id: createdUser.id,
+            linkUUID: generatedUUID,
+            linkType: linkType,
+        });
+
+        return generatedUUID;
+    }
+
+    public async sendResetPasswordLink({ email }: EmailResetPassword, host: string): Promise<void> {
+        const user = await this.userRepository.findOne({ where: { mail: email } });
         if (!user) throw new ApiError('Not Found', 404, `Wrong email`);
 
-        this.emailService.sendResetPasswordLink(email, user.resetPasswordLink);
+        const link = await this.createUUID(user.id, LinkType.resetPassword);
+        this.emailService.sendLink(email, new ResetPasswordMessage(host + link).message);
     }
 
     public async resetPassword(userResetUUID: UUID, { password, repPassword }: UserResetPasswordParams): Promise<void> {
-        const user = await this.userRepository.findOne({ where: { resetPasswordLink: userResetUUID } });
+        const userInfo = this.linksStorage.getUserLinkInfoByUUID(userResetUUID);
+        if (!userInfo || userInfo.linkUUID !== userResetUUID)
+            throw new ApiError('Not Found', 400, `Wrong link to reset password!`);
 
+        const user = await this.userRepository.findOne(userInfo.id);
         if (!user) throw new ApiError('Not Found', 404, `User with uuid: ${userResetUUID} doesn't exist!`);
         if (password !== repPassword) throw new ApiError('Bad Request', 400, `Passwords don't match.`);
 

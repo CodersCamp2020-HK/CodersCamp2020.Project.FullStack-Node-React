@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
 
 /**
  * User Type
@@ -81,12 +81,4 @@ export class User {
 
     @Column({ default: false })
     activated!: boolean;
-
-    @Column()
-    @Generated('uuid')
-    activationLinkUuid!: UUID;
-
-    @Column()
-    @Generated('uuid')
-    resetPasswordLink!: UUID;
 }

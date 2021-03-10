@@ -1,23 +1,25 @@
-enum LinkType {
+export enum LinkType {
     'activation',
     'resetPassword',
 }
 
-interface UserActivationInfo {
+export interface UserLinkInfo {
     id: number;
     email: string;
     linkUUID: string;
     linkType: LinkType;
+    timeout?: NodeJS.Timeout;
 }
-export class TemporaryUserActivationInfoStore {
+
+export default class TemporaryUserActivationInfoStore {
     private deletionTimeInMinutes: number;
-    private usersActivationInfo: UserActivationInfo[] = [];
+    private usersActivationInfo: UserLinkInfo[] = [];
 
     constructor(deletionTimeInMinutes: number) {
         this.deletionTimeInMinutes = deletionTimeInMinutes;
     }
 
-    addLink(user: UserActivationInfo): void {
+    addLink(user: UserLinkInfo): void {
         this.usersActivationInfo.push(user);
 
         setTimeout(() => {
@@ -27,13 +29,31 @@ export class TemporaryUserActivationInfoStore {
         }, this.deletionTimeInMinutes * 1000 * 60);
     }
 
-    deleteLink(user: UserActivationInfo): void {
+    deleteLink(user: UserLinkInfo): void {
         this.usersActivationInfo = this.usersActivationInfo.filter((userToDelete) => {
             userToDelete.linkUUID != user.linkUUID;
         });
     }
 
-    getAllLinks(): UserActivationInfo[] {
+    getAllLinks(): UserLinkInfo[] {
         return this.usersActivationInfo;
+    }
+
+    getUserLinkInfoById(userId: number, linkType: LinkType): UserLinkInfo | undefined {
+        return this.getAllLinks().find((el) => {
+            if (el.id == userId && el.linkType == linkType) {
+                return true;
+            }
+            return false;
+        });
+    }
+
+    getUserLinkInfoByUUID(UUID: string): UserLinkInfo | undefined {
+        return this.getAllLinks().find((el) => {
+            if (el.linkUUID == UUID) {
+                return true;
+            }
+            return false;
+        });
     }
 }
