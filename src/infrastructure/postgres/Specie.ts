@@ -9,6 +9,6 @@ export default class Specie {
     @Column()
     specie!: string;
 
-    @OneToMany(() => AdoptionStep, (step) => step.specie)
+    @OneToMany(() => AdoptionStep, (step) => step.specie, { cascade: true })
     steps!: AdoptionStep[];
 }

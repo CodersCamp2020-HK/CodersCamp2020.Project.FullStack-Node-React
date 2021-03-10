@@ -19,9 +19,9 @@ export default class FormQuestion {
     })
     form!: Form;
 
-    @OneToMany(() => FormAnimalAnswer, (answers) => answers.question)
+    @OneToMany(() => FormAnimalAnswer, (answers) => answers.question, { cascade: true })
     animalAnswers!: FormAnimalAnswer[];
 
-    @OneToMany(() => FormVolunteerAnswer, (answers) => answers.question)
+    @OneToMany(() => FormVolunteerAnswer, (answers) => answers.question, { cascade: true })
     volunteerAnswers!: FormVolunteerAnswer[];
 }

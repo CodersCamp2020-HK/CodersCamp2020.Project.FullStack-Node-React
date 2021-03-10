@@ -13,9 +13,9 @@ export default class OrganizationDonation {
     @Column()
     amount!: number;
 
-    @OneToMany(() => User, (user) => user.organizationDonation)
+    @OneToMany(() => User, (user) => user.organizationDonation, { cascade: true })
     users!: User[];
 
-    @OneToMany(() => Organization, (organization) => organization.organizationDonation)
+    @OneToMany(() => Organization, (organization) => organization.organizationDonation, { cascade: true })
     organizations!: Organization[];
 }

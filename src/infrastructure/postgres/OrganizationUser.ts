@@ -27,12 +27,12 @@ export default class OrganizationUser {
     })
     role!: UserType;
 
-    @OneToMany(() => FormAnimalSubmission, (submission) => submission.reviewer, { nullable: true })
+    @OneToMany(() => FormAnimalSubmission, (submission) => submission.reviewer, { nullable: true, cascade: true })
     animalReviews!: FormAnimalSubmission[];
 
-    @OneToMany(() => AnimalHandler, (handler) => handler.organizationUser)
+    @OneToMany(() => AnimalHandler, (handler) => handler.organizationUser, { cascade: true })
     caregivers!: AnimalHandler[];
 
-    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.reviewer)
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.reviewer, { cascade: true })
     volunteerReviews!: FormVolunteerSubmission;
 }

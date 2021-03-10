@@ -7,13 +7,13 @@ export default class GoalDonation {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @OneToMany(() => User, (user) => user.goalDonation)
+    @OneToMany(() => User, (user) => user.goalDonation, { cascade: true })
     users!: User[];
 
     /**
      * The goal of donation.
      */
-    @OneToMany(() => Goal, (goal) => goal.gaolDonation)
+    @OneToMany(() => Goal, (goal) => goal.gaolDonation, { cascade: true })
     goals!: Goal[];
 
     /**

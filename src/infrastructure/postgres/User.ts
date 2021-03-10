@@ -96,12 +96,12 @@ export class User {
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.applicant, { nullable: true })
     animalSubmissions!: FormAnimalSubmission[];
 
-    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user)
+    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, { cascade: true })
     organizationUsers!: OrganizationUser[];
 
-    @OneToMany(() => VolunteerHireStep, (step) => step.user)
+    @OneToMany(() => VolunteerHireStep, (step) => step.user, { cascade: true })
     steps!: VolunteerHireStep[];
 
-    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user)
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, { cascade: true })
     volunteerSubmission!: FormVolunteerSubmission[];
 }

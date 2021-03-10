@@ -64,15 +64,15 @@ export default class Animal {
     @OneToMany(() => AnimalPhoto, (photos) => photos.animal, { cascade: true })
     photos!: AnimalPhoto[];
 
-    @ManyToOne(() => AnimalDonation, (animalDonation) => animalDonation.animals, { cascade: true })
+    @ManyToOne(() => AnimalDonation, (animalDonation) => animalDonation.animals)
     animalDonation!: AnimalDonation;
 
-    @ManyToOne(() => Goal, (goal) => goal.animals, { cascade: true })
+    @ManyToOne(() => Goal, (goal) => goal.animals)
     goal!: Goal;
 
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.animal, { cascade: true })
     submissions!: FormAnimalSubmission[];
 
-    @OneToMany(() => AnimalHandler, (handler) => handler.animal)
+    @OneToMany(() => AnimalHandler, (handler) => handler.animal, { cascade: true })
     animalsHandler!: AnimalHandler[];
 }

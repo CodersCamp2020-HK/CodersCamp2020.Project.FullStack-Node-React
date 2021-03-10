@@ -25,6 +25,6 @@ export default class AdoptionStep {
     @ManyToOne(() => Form, (survey) => survey.adoptionSteps)
     form!: Form;
 
-    @OneToMany(() => FormAnimalSubmission, (submission) => submission.adoptionStep)
+    @OneToMany(() => FormAnimalSubmission, (submission) => submission.adoptionStep, { cascade: true })
     submissions!: FormAnimalSubmission[];
 }

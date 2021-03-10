@@ -23,6 +23,6 @@ export default class FormAnimalSubmission {
     @ManyToOne(() => OrganizationUser, (user) => user.animalReviews)
     reviewer!: User;
 
-    @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission)
+    @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormAnimalAnswer[];
 }

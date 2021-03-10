@@ -13,9 +13,9 @@ export default class AnimalDonation {
     @Column()
     amount!: number;
 
-    @OneToMany(() => User, (user) => user.animalDonation)
+    @OneToMany(() => User, (user) => user.animalDonation, { cascade: true })
     users!: User[];
 
-    @OneToMany(() => Animal, (animal) => animal.animalDonation)
+    @OneToMany(() => Animal, (animal) => animal.animalDonation, { cascade: true })
     animals!: Animal[];
 }
