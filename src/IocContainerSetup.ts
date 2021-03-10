@@ -26,4 +26,6 @@ Container.bind(QuestionnaireService)
     .factory(() => new QuestionnaireService(getConnection().getRepository(Questionnaire)))
     .scope(Scope.Local);
 Container.bind(EmailService).factory(() => new EmailService());
-Container.bind(TemporaryUserActivationInfoStore).to(new TemporaryUserActivationInfoStore(120)).scope(Scope.Singleton);
+Container.bind(TemporaryUserActivationInfoStore)
+    .factory(() => new TemporaryUserActivationInfoStore(120))
+    .scope(Scope.Singleton);
