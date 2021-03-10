@@ -96,9 +96,6 @@ export class User {
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.applicant, { nullable: true })
     animalSubmissions!: FormAnimalSubmission[];
 
-    @OneToMany(() => FormAnimalSubmission, (submission) => submission.reviewer, { nullable: true })
-    submissionReviews!: FormAnimalSubmission[];
-
     @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user)
     organizationUsers!: OrganizationUser[];
 

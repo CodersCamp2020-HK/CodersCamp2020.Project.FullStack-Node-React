@@ -2,6 +2,7 @@ import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 import Animal from './Animal';
 import FormAnimalAnswer from './FormAnimalAnswer';
+import OrganizationUser from './OrganizationUser';
 import { User } from './User';
 
 @Entity('FormAnimalSubmissions')
@@ -19,7 +20,7 @@ export default class FormAnimalSubmission {
     @Column()
     status!: string;
 
-    @ManyToOne(() => User, (user) => user.submissionReviews)
+    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews)
     reviewer!: User;
 
     @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission)
