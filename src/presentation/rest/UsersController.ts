@@ -35,15 +35,12 @@ import {
     UniqueUserEmailError,
     ValidateErrorJSON,
 } from '@application/UsersErrors';
-import { EmailService } from '@infrastructure/EmailService';
 
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
     @Inject
     private usersService!: UsersService;
-    @Inject
-    private emailService!: EmailService;
 
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
@@ -129,9 +126,8 @@ export class UsersController extends Controller {
     @Response<ApiError>(400, 'Bad Request')
     @SuccessResponse('200', 'Email send')
     @Post('reset')
-    public async snedResetPasswordMail(@Body() { email }: EmailResetPassword): Promise<void> {
-        const { link } = await this.usersService.sendResetPasswordLink({ email });
-        this.emailService.sendResetPasswordLink(email, link);
+    public async snedResetPasswordMail(@Body() email: EmailResetPassword): Promise<void> {
+        this.snedResetPasswordMail(email);
         this.setStatus(200);
     }
 

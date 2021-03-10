@@ -5,6 +5,8 @@ import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import { Inject } from 'typescript-ioc';
+import { EmailService } from '@infrastructure/EmailService';
 
 const SALT_ROUNDS = 10;
 
@@ -36,6 +38,9 @@ export type UserResetPasswordParams = {
 export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname'>;
 
 export class UsersService {
+    @Inject
+    emailService!: EmailService;
+
     constructor(private userRepository: Repository<User>) {}
 
     public async get(id: number): Promise<User> {
@@ -124,12 +129,12 @@ export class UsersService {
         throw new ApiError('Unauthorized', 401, 'Only admin can delete other accounts');
     }
 
-    public async sendResetPasswordLink({ email }: EmailResetPassword): Promise<ResetPasswordLink> {
+    public async sendResetPasswordLink({ email }: EmailResetPassword): Promise<void> {
         const user = await this.userRepository.findOne({ where: { mail: email } });
 
         if (!user) throw new ApiError('Not Found', 404, `Wrong email`);
 
-        return { link: user.resetPasswordLink };
+        this.emailService.sendResetPasswordLink(email, user.resetPasswordLink);
     }
 
     public async resetPassword(userResetUUID: UUID, { password, repPassword }: UserResetPasswordParams): Promise<void> {
