@@ -34,7 +34,7 @@ import {
     UniqueUserEmailError,
     ValidateErrorJSON,
 } from '@application/UsersErrors';
-import { TemporaryUserLinkInfoStore } from '@application/TemporaryUserLinkInfoStore';
+import { LinkType, TemporaryUserLinkInfoStore } from '@application/TemporaryUserLinkInfoStore';
 import { EmailService } from '@application/EmailService';
 import { v4 as uuidv4 } from 'uuid';
 import { Request as ExRequest } from 'express';
@@ -95,8 +95,8 @@ export class UsersController extends Controller {
     @Get('activate/{generatedUUID}')
     @SuccessResponse('200', 'User Activated')
     @Response('404', 'Link is not valid or expired')
-    public async sendEmail(@Path() generatedUUID: string): Promise<void> {
-        const foundedUserActivationInfo = this.temporaryUserLinkInfoStore.getUserLinkInfo(generatedUUID);
+    public async activateUser(@Path() generatedUUID: string): Promise<void> {
+        const foundedUserActivationInfo = this.temporaryUserLinkInfoStore.getUserLinkInfoByUUID(generatedUUID);
 
         if (foundedUserActivationInfo) {
             await this.usersService.activateUser(foundedUserActivationInfo.id);
@@ -117,9 +117,10 @@ export class UsersController extends Controller {
                 throw new Error('User is already activated');
             }
 
-            const foundedUserActivationInfo = this.temporaryUserLinkInfoStore.getAllUserLinksInfo().find((el) => {
-                return el.id == userId;
-            });
+            const foundedUserActivationInfo = this.temporaryUserLinkInfoStore.getUserLinkInfoByUser(
+                userId,
+                LinkType.ACTIVATION,
+            );
 
             if (foundedUserActivationInfo) {
                 await this.emailService.sendActivationEmail(
@@ -136,6 +137,7 @@ export class UsersController extends Controller {
                 email: createdUser.mail,
                 id: createdUser.id,
                 linkUUID: generatedUUID,
+                type: LinkType.ACTIVATION,
             });
 
             await this.emailService.sendActivationEmail(

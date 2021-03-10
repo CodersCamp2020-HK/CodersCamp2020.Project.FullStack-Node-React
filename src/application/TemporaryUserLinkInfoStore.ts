@@ -1,9 +1,16 @@
-interface UserLinkInfo {
+export enum LinkType {
+    ACTIVATION = 'activation',
+    PASSWORD_RESET = 'password reset',
+}
+
+export interface UserLinkInfo {
     id: number;
     email: string;
     linkUUID: string;
+    type: LinkType;
     timeout?: NodeJS.Timeout;
 }
+
 export class TemporaryUserLinkInfoStore {
     constructor(deletionTimeInMinutes: number) {
         this.deletionTimeInMinutes = deletionTimeInMinutes;
@@ -12,7 +19,7 @@ export class TemporaryUserLinkInfoStore {
     private allUserLinksInfo: UserLinkInfo[] = [];
 
     addUserLinkInfo(userLinkInfo: UserLinkInfo): void {
-        if (this.getUserLinkInfo(userLinkInfo.linkUUID)) {
+        if (this.getUserLinkInfoByUser(userLinkInfo.id, userLinkInfo.type)) {
             return;
         }
 
@@ -41,9 +48,21 @@ export class TemporaryUserLinkInfoStore {
         return this.allUserLinksInfo;
     }
 
-    getUserLinkInfo(linkUUID: string): UserLinkInfo | undefined {
+    getUserLinkInfoByUser(userId: number, linkType: LinkType): UserLinkInfo | undefined {
         return this.getAllUserLinksInfo().find((el) => {
-            return el.linkUUID == linkUUID;
+            if (el.id == userId && el.type == linkType) {
+                return true;
+            }
+            return false;
+        });
+    }
+
+    getUserLinkInfoByUUID(UUID: string): UserLinkInfo | undefined {
+        return this.getAllUserLinksInfo().find((el) => {
+            if (el.linkUUID == UUID) {
+                return true;
+            }
+            return false;
         });
     }
 }
