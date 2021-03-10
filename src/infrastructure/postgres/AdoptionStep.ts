@@ -13,7 +13,7 @@ export default class AdoptionStep {
     @Column()
     description!: string;
 
-    @ManyToOne(() => Organization, (organization) => organization.steps, { primary: true, nullable: false })
+    @ManyToOne(() => Organization, (organization) => organization.adoptionSteps, { primary: true, nullable: false })
     organization!: Organization;
 
     @ManyToOne(() => Specie, (specie) => specie.steps, { primary: true, nullable: false })
