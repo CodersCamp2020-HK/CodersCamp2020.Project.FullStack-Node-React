@@ -4,6 +4,7 @@ import AnimalPhoto from './AnimalPhoto';
 import Goal from './Goal';
 import AnimalDonation from './AnimalDonation';
 import FormAnimalSubmission from './FormAnimalSubmission';
+import AnimalHandler from './AnimalHandler';
 
 export enum AnimalSpecies {
     CAT = 'cat',
@@ -71,4 +72,7 @@ export default class Animal {
 
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.animal, { cascade: true })
     submissions!: FormAnimalSubmission[];
+
+    @OneToMany(() => AnimalHandler, (handler) => handler.animal)
+    animalsHandler!: AnimalHandler[];
 }

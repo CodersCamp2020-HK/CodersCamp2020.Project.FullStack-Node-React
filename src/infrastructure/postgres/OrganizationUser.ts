@@ -1,4 +1,5 @@
-import { Column, Entity, Index, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
+import AnimalHandler from './AnimalHandler';
 import Organization from './Organization';
 import { User, UserType } from './User';
 
@@ -16,4 +17,7 @@ export default class OrganizationUser {
         enum: UserType,
     })
     role!: UserType;
+
+    @OneToMany(() => AnimalHandler, (handler) => handler.organizationUser)
+    caregivers!: AnimalHandler[];
 }
