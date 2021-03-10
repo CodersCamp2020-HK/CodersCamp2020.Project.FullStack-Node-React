@@ -1,4 +1,4 @@
-import { Column, Entity, Index, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import Form from './Form';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
 import Organization from './Organization';
@@ -13,15 +13,16 @@ export default class VolunteerHireStep {
     @Column()
     description!: string;
 
-    @PrimaryColumn()
-    @ManyToOne(() => Organization, (organization) => organization.volunteerHireSteps)
+    @ManyToOne(() => Organization, (organization) => organization.volunteerHireSteps, {
+        primary: true,
+        nullable: false,
+    })
     organization!: Organization;
 
-    @PrimaryColumn()
-    @ManyToOne(() => User, (user) => user.steps)
+    @ManyToOne(() => User, (user) => user.steps, { primary: true, nullable: false })
     user!: User;
 
-    @PrimaryColumn()
+    @Column()
     number!: number;
 
     @ManyToOne(() => Form, (form) => form.volunteerHireSteps)

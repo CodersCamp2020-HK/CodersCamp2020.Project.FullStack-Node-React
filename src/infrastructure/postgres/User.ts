@@ -12,12 +12,6 @@ import FormVolunteerSubmission from './FormVolunteerSubmission';
  * User Type
  * User can be: admin managing site, employee working in animal shelter, normal user wanting to adopt animal or volunteer helping sheler.
  */
-export enum UserType {
-    ADMIN = 'admin',
-    EMPLOYEE = 'employee',
-    NORMAL = 'normal',
-    VOLUNTEER = 'volunteer',
-}
 
 /**
  * User E-mail.

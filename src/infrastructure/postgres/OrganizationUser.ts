@@ -2,7 +2,14 @@ import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import AnimalHandler from './AnimalHandler';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
 import Organization from './Organization';
-import { User, UserType } from './User';
+import { User } from './User';
+
+export enum UserType {
+    ADMIN = 'admin',
+    EMPLOYEE = 'employee',
+    NORMAL = 'normal',
+    VOLUNTEER = 'volunteer',
+}
 
 @Index(['user', 'organization'], { unique: true })
 @Entity('OrganizationUsers')

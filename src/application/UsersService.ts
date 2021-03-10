@@ -1,5 +1,6 @@
 import ApiError from '@infrastructure/ApiError';
-import { Email, Password, User, UserType } from '@infrastructure/postgres/User';
+import { Email, Password, User } from '@infrastructure/postgres/User';
+import { UserType } from '@infrastructure/postgres/OrganizationUser';
 import { PasswordRequirementsError, UniqueUserEmailError } from './UsersErrors';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
