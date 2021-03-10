@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
 import Questionnaire, { Form } from './Form';
-import QuestionnaireAnswer from './FormAnswer';
+import FormAnimalAnswer from './FormAnimalAnswer';
 
 @Entity('FormQuestions')
 export default class QuestionnaireQuestion {
@@ -18,6 +18,6 @@ export default class QuestionnaireQuestion {
     })
     form!: Form;
 
-    @OneToMany(() => QuestionnaireAnswer, (answers) => answers.question)
-    answers!: QuestionnaireAnswer[];
+    @OneToMany(() => FormAnimalAnswer, (answers) => answers.question)
+    answers!: FormAnimalAnswer[];
 }
