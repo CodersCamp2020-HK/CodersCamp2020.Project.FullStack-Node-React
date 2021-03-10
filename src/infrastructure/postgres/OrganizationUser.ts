@@ -1,5 +1,6 @@
 import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import AnimalHandler from './AnimalHandler';
+import FormVolunteerSubmission from './FormVolunteerSubmission';
 import Organization from './Organization';
 import { User, UserType } from './User';
 
@@ -20,4 +21,7 @@ export default class OrganizationUser {
 
     @OneToMany(() => AnimalHandler, (handler) => handler.organizationUser)
     caregivers!: AnimalHandler[];
+
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.reviewer)
+    volunteerReviews!: FormVolunteerSubmission;
 }

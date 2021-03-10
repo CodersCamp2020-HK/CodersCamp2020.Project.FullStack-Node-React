@@ -10,7 +10,7 @@ export default class FormAnimalSubmission {
     @ManyToOne(() => Animal, (animal) => animal.submissions, { primary: true, nullable: false })
     animal!: Animal;
 
-    @ManyToOne(() => User, (user) => user.submissions, { primary: true, nullable: false })
+    @ManyToOne(() => User, (user) => user.animalSubmissions, { primary: true, nullable: false })
     applicant!: User;
 
     @ManyToOne(() => AdoptionStep, (step) => step.submissions, { primary: true, nullable: false })

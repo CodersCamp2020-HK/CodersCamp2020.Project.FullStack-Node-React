@@ -6,6 +6,7 @@ import Localization from './Localization';
 import FormAnimalSubmission from './FormAnimalSubmission';
 import OrganizationUser from './OrganizationUser';
 import VolunteerHireStep from './VolunteerHireStep';
+import FormVolunteerSubmission from './FormVolunteerSubmission';
 
 /**
  * User Type
@@ -99,7 +100,7 @@ export class User {
     localization!: Localization;
 
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.applicant, { nullable: true })
-    submissions!: FormAnimalSubmission[];
+    animalSubmissions!: FormAnimalSubmission[];
 
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.reviewer, { nullable: true })
     submissionReviews!: FormAnimalSubmission[];
@@ -109,4 +110,7 @@ export class User {
 
     @OneToMany(() => VolunteerHireStep, (step) => step.user)
     steps!: VolunteerHireStep[];
+
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user)
+    volunteerSubmission!: FormVolunteerSubmission[];
 }
