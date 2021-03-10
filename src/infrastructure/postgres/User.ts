@@ -5,6 +5,7 @@ import AnimalDonation from './AnimalDonation';
 import Localization from './Localization';
 import FormAnimalSubmission from './FormAnimalSubmission';
 import OrganizationUser from './OrganizationUser';
+import VolunteerHireStep from './VolunteerHireStep';
 
 /**
  * User Type
@@ -105,4 +106,7 @@ export class User {
 
     @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user)
     organizationUsers!: OrganizationUser[];
+
+    @OneToMany(() => VolunteerHireStep, (step) => step.user)
+    steps!: VolunteerHireStep[];
 }

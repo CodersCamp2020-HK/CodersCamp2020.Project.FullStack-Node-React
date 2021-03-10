@@ -1,7 +1,7 @@
 import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import Organization from './Organization';
 import FormAnimalSubmission from './FormAnimalSubmission';
-import Questionnaire from './Form';
+import Form from './Form';
 import Specie from './Specie';
 
 @Entity('AdoptionSteps')
@@ -22,8 +22,8 @@ export default class AdoptionStep {
     @Column({ primary: true, nullable: false })
     number!: number;
 
-    @ManyToOne(() => Questionnaire, (survey) => survey.steps)
-    form!: Questionnaire;
+    @ManyToOne(() => Form, (survey) => survey.adoptionSteps)
+    form!: Form;
 
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.adoptionStep)
     submissions!: FormAnimalSubmission[];

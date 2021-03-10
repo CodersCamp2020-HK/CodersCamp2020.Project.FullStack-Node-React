@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 import FormQuestion from './FormQuestion';
+import VolunteerHireStep from './VolunteerHireStep';
 
 interface TextAnswer {
     placeholder: string;
@@ -28,6 +29,9 @@ export default class Questionnaire {
     @OneToMany(() => FormQuestion, (question) => question.questionnaire, { cascade: true })
     questions!: FormQuestion[];
 
-    @OneToMany(() => AdoptionStep, (adoption) => adoption.form)
-    steps!: AdoptionStep[];
+    @OneToMany(() => AdoptionStep, (adoption) => adoption.form, { cascade: true })
+    adoptionSteps!: AdoptionStep[];
+
+    @OneToMany(() => VolunteerHireStep, (step) => step.form, { cascade: true })
+    volunteerHireSteps!: VolunteerHireStep[];
 }

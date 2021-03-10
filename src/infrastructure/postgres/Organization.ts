@@ -47,8 +47,8 @@ export default class Organization {
     adoptionSteps!: AdoptionStep[];
 
     @OneToMany(() => VolunteerHireStep, (volunteer) => volunteer.organization)
-    volunteerHireSteps!: VolunteerHireStep;
+    volunteerHireSteps!: VolunteerHireStep[];
 
     @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.organization)
-    organizationUsers!: OrganizationUser;
+    organizationUsers!: OrganizationUser[];
 }
