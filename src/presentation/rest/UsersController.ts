@@ -29,19 +29,24 @@ import {
     TsoaResponse,
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import { Request as ExRequest } from 'express';
 import {
     InvalidEmailFormatError,
     PasswordRequirementsError,
     UniqueUserEmailError,
     ValidateErrorJSON,
 } from '@application/UsersErrors';
-
+import { Request as ExRequest } from 'express';
+import { EmailService } from '@infrastructure/EmailService';
+import { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
+import ActivationMessage from '@infrastructure/ActivationMessage';
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
     @Inject
     private usersService!: UsersService;
+
+    @Inject
+    private emailService!: EmailService;
 
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
@@ -62,9 +67,13 @@ export class UsersController extends Controller {
     public async createUser(
         @Body() requestBody: UserCreationParams,
         @Res() badRequestResponse: TsoaResponse<400, { reason: string }>,
+        @Request() request: ExRequest,
     ): Promise<void> {
         try {
-            await this.usersService.create(requestBody);
+            const createdUser = await this.usersService.create(requestBody);
+
+            await this.sendActivationLink(createdUser.id, request);
+
             this.setStatus(201);
         } catch (error) {
             if (
@@ -78,6 +87,35 @@ export class UsersController extends Controller {
             }
         }
     }
+
+    @Get('activate/{generatedUUID}')
+    @SuccessResponse('200', 'User Activated')
+    @Response('404', 'Link is not valid or expired')
+    public async activateUser(@Path() generatedUUID: string): Promise<void> {
+        await this.usersService.activateUser(generatedUUID);
+        this.setStatus(200);
+    }
+
+    @Post('{userId}/sendactivationlink')
+    @SuccessResponse('200', 'Sent')
+    public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
+        try {
+            const ACTIVATION_PATH = request.get('host') + '/api/users/activate/';
+            const createdUser = await this.usersService.get(userId);
+            const personalUUID = await this.usersService.createUUID(userId, LinkType.activation);
+            const message = new ActivationMessage(ACTIVATION_PATH + personalUUID).message;
+
+            await this.emailService.sendLink(createdUser.mail, message);
+
+            this.setStatus(200);
+            return;
+        } catch (error) {
+            throw error;
+        }
+
+        return;
+    }
+
     /** Supply the unique user ID and delete user with corresponding id from database
      *  @param userId The user's identifier
      *  @isInt  userId

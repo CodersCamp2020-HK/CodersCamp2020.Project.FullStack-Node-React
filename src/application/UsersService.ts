@@ -54,7 +54,26 @@ export class UsersService {
         return user;
     }
 
-    public async create(userCreationParams: UserCreationParams): Promise<void> {
+    public async activateUser(generatedUUID: string): Promise<void> {
+        const foundedUserActivationInfo = this.linksStorage.getUserLinkInfoByUUID(generatedUUID);
+
+        if (foundedUserActivationInfo) {
+            await this.userRepository
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    activated: true,
+                })
+                .where('id = :id', { id: foundedUserActivationInfo.id })
+                .execute();
+            this.linksStorage.deleteLink(foundedUserActivationInfo);
+            return;
+        }
+
+        throw new ApiError('Not found', 404, 'Link is not valid or expired');
+    }
+
+    public async create(userCreationParams: UserCreationParams): Promise<User> {
         const potentialExistingUser = await this.userRepository.findOne({ where: { mail: userCreationParams.mail } });
         if (!potentialExistingUser) {
             if (userCreationParams.password != userCreationParams.repPassword) {
@@ -68,11 +87,10 @@ export class UsersService {
                 password: hash,
             });
 
-            this.userRepository.save(user);
+            return this.userRepository.save(user);
         } else {
             throw new UniqueUserEmailError(userCreationParams.mail);
         }
-        return;
     }
 
     public async updatePassword(
