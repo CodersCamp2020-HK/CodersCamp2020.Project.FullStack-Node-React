@@ -4,6 +4,7 @@ import OrganizationDonation from './OrganizationDonation';
 import AnimalDonation from './AnimalDonation';
 import Localization from './Localization';
 import FormAnimalSubmission from './FormAnimalSubmission';
+import OrganizationUser from './OrganizationUser';
 
 /**
  * User Type
@@ -58,13 +59,6 @@ export class User {
     surname!: string;
 
     @Column({
-        type: 'enum',
-        enum: UserType,
-        default: UserType.NORMAL,
-    })
-    type!: UserType;
-
-    @Column({
         nullable: true,
         default: null,
     })
@@ -108,4 +102,7 @@ export class User {
 
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.reviewer, { nullable: true })
     submissionReviews!: FormAnimalSubmission[];
+
+    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user)
+    organizationUsers!: OrganizationUser[];
 }

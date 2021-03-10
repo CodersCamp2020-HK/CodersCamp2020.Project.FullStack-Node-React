@@ -8,6 +8,7 @@ import { User } from '@infrastructure/postgres/User';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { QuestionnaireService } from '@application/QuestionnaireService';
 import Questionnaire from '@infrastructure/postgres/Form';
+import OrganizationUser from '@infrastructure/postgres/OrganizationUser';
 // import { UsersService } from '@application/UsersService';
 // import { User } from '@infrastructure/postgres/User';
 
@@ -21,7 +22,12 @@ Container.bind(AnimalsService)
     )
     .scope(Scope.Local);
 
-Container.bind(UsersService).factory(() => new UsersService(getConnection().getRepository(User)));
+Container.bind(UsersService)
+    .factory(
+        () => new UsersService(getConnection().getRepository(User), getConnection().getRepository(OrganizationUser)),
+    )
+    .scope(Scope.Local);
+
 Container.bind(QuestionnaireService)
     .factory(() => new QuestionnaireService(getConnection().getRepository(Questionnaire)))
     .scope(Scope.Local);

@@ -16,6 +16,6 @@ export default class OrganizationDonation {
     @OneToMany(() => User, (user) => user.organizationDonation)
     users!: User[];
 
-    @OneToMany(() => Organization, (organization) => organization.organizatonDonation)
+    @OneToMany(() => Organization, (organization) => organization.organizationDonation)
     organizations!: Organization[];
 }

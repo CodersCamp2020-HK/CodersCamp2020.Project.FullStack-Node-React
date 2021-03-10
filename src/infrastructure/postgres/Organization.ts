@@ -3,6 +3,8 @@ import OrganizationDonation from './OrganizationDonation';
 import Localization from './Localization';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
+import VolunteerHireStep from './VolunteerHireStep';
+import OrganizationUser from './OrganizationUser';
 
 @Entity('Organizations')
 export default class Organization {
@@ -33,7 +35,7 @@ export default class Organization {
     @ManyToOne(() => OrganizationDonation, (organizationDonation) => organizationDonation.organizations, {
         cascade: true,
     })
-    organizatonDonation!: OrganizationDonation;
+    organizationDonation!: OrganizationDonation;
 
     @ManyToOne(() => Goal, (goal) => goal.organizations)
     goal!: Goal;
@@ -42,5 +44,11 @@ export default class Organization {
     localization!: Localization;
 
     @OneToMany(() => AdoptionStep, (step) => step.organization)
-    steps!: AdoptionStep[];
+    adoptionSteps!: AdoptionStep[];
+
+    @OneToMany(() => VolunteerHireStep, (volunteer) => volunteer.organization)
+    volunteerHireSteps!: VolunteerHireStep;
+
+    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.organization)
+    organizationUsers!: OrganizationUser;
 }

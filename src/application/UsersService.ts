@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import OrganizationUser from '@infrastructure/postgres/OrganizationUser';
 
 const SALT_ROUNDS = 10;
 
@@ -26,7 +27,10 @@ export type UserResetPasswordParams = {
 export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname'>;
 
 export class UsersService {
-    constructor(private userRepository: Repository<User>) {}
+    constructor(
+        private userRepository: Repository<User>,
+        private organizationUserRepository: Repository<OrganizationUser>,
+    ) {}
 
     public async get(id: number): Promise<User> {
         const user = await this.userRepository.findOne(id);
@@ -73,13 +77,15 @@ export class UsersService {
     public async login(userLoginParams: UserLoginParams): Promise<ApiKey> {
         const user = await this.userRepository.findOne({ where: { mail: userLoginParams.mail } });
         if (!user) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
+        const organizationUser = await this.organizationUserRepository.findOne(user.id);
+        const role = organizationUser === undefined ? UserType.NORMAL : organizationUser.role;
 
         const match = await bcrypt.compare(userLoginParams.password, user.password);
         console.log(await bcrypt.hash(userLoginParams.password, 10));
         if (!match) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
 
         if (!process.env.JWT_KEY) throw new ApiError('Internal server error', 500, 'JWT private key not found!');
-        const token = jwt.sign({ role: user.type, id: user.id }, process.env.JWT_KEY);
+        const token = jwt.sign({ role, id: user.id }, process.env.JWT_KEY);
 
         return { apiKey: token };
     }
