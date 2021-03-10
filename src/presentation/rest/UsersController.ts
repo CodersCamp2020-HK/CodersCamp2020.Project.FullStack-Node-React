@@ -111,6 +111,8 @@ export class UsersController extends Controller {
     @SuccessResponse('200', 'Sended')
     public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
         try {
+            const ACTIVATION_PATH = request.get('host') + '/api/users/activate/';
+
             const createdUser = await this.usersService.get(userId);
 
             if (createdUser.activated) {
@@ -123,15 +125,17 @@ export class UsersController extends Controller {
             );
 
             if (foundedUserActivationInfo) {
-                await this.emailService.sendActivationEmail(
-                    createdUser.mail,
-                    request.get('host') + `/api/users/activate/${foundedUserActivationInfo.linkUUID}`,
+                const message = this.emailService.createActivationMessage(
+                    ACTIVATION_PATH + foundedUserActivationInfo.linkUUID,
                 );
+                await this.emailService.sendEmail(createdUser.mail, message);
                 this.setStatus(200);
                 return;
             }
 
             const generatedUUID = uuidv4();
+
+            const message = this.emailService.createActivationMessage(ACTIVATION_PATH + generatedUUID);
 
             this.temporaryUserLinkInfoStore.addUserLinkInfo({
                 email: createdUser.mail,
@@ -140,10 +144,7 @@ export class UsersController extends Controller {
                 type: LinkType.ACTIVATION,
             });
 
-            await this.emailService.sendActivationEmail(
-                createdUser.mail,
-                request.get('host') + `/api/users/activate/${generatedUUID}`,
-            );
+            await this.emailService.sendEmail(createdUser.mail, message);
 
             this.setStatus(200);
         } catch (error) {
