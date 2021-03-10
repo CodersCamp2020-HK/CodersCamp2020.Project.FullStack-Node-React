@@ -34,9 +34,8 @@ import {
     UniqueUserEmailError,
     ValidateErrorJSON,
 } from '@application/UsersErrors';
-import { LinkType, TemporaryUserLinkInfoStore } from '@application/TemporaryUserLinkInfoStore';
+//import { LinkType, TemporaryUserLinkInfoStore } from '@application/TemporaryUserLinkInfoStore';
 import { EmailService } from '@application/EmailService';
-import { v4 as uuidv4 } from 'uuid';
 import { Request as ExRequest } from 'express';
 @Tags('Users')
 @Route('users')
@@ -46,9 +45,6 @@ export class UsersController extends Controller {
 
     @Inject
     private emailService!: EmailService;
-
-    @Inject
-    private temporaryUserLinkInfoStore!: TemporaryUserLinkInfoStore;
 
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
@@ -96,15 +92,8 @@ export class UsersController extends Controller {
     @SuccessResponse('200', 'User Activated')
     @Response('404', 'Link is not valid or expired')
     public async activateUser(@Path() generatedUUID: string): Promise<void> {
-        const foundedUserActivationInfo = this.temporaryUserLinkInfoStore.getUserLinkInfoByUUID(generatedUUID);
-
-        if (foundedUserActivationInfo) {
-            await this.usersService.activateUser(foundedUserActivationInfo.id);
-            this.temporaryUserLinkInfoStore.deleteUserLinkInfo(foundedUserActivationInfo);
-            this.setStatus(200);
-        } else {
-            throw new ApiError('Not found', 404, 'Link is not valid or expired');
-        }
+        await this.usersService.activateUser(generatedUUID);
+        this.setStatus(200);
     }
 
     @Post('{userId}/sendactivationlink')
@@ -115,38 +104,14 @@ export class UsersController extends Controller {
 
             const createdUser = await this.usersService.get(userId);
 
-            if (createdUser.activated) {
-                throw new Error('User is already activated');
-            }
+            const personalUUID = await this.usersService.createPersonalActivationUUID(userId);
 
-            const foundedUserActivationInfo = this.temporaryUserLinkInfoStore.getUserLinkInfoByUser(
-                userId,
-                LinkType.ACTIVATION,
-            );
-
-            if (foundedUserActivationInfo) {
-                const message = this.emailService.createActivationMessage(
-                    ACTIVATION_PATH + foundedUserActivationInfo.linkUUID,
-                );
-                await this.emailService.sendEmail(createdUser.mail, message);
-                this.setStatus(200);
-                return;
-            }
-
-            const generatedUUID = uuidv4();
-
-            const message = this.emailService.createActivationMessage(ACTIVATION_PATH + generatedUUID);
-
-            this.temporaryUserLinkInfoStore.addUserLinkInfo({
-                email: createdUser.mail,
-                id: createdUser.id,
-                linkUUID: generatedUUID,
-                type: LinkType.ACTIVATION,
-            });
+            const message = await this.emailService.createActivationMessage(ACTIVATION_PATH + personalUUID);
 
             await this.emailService.sendEmail(createdUser.mail, message);
 
             this.setStatus(200);
+            return;
         } catch (error) {
             throw error;
         }

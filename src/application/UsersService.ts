@@ -5,6 +5,9 @@ import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import { TemporaryUserLinkInfoStore, LinkType } from '@application/TemporaryUserLinkInfoStore';
+import { Inject } from 'typescript-ioc';
+import { v4 as uuidv4 } from 'uuid';
 
 const SALT_ROUNDS = 10;
 
@@ -28,22 +31,60 @@ export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname'>;
 export class UsersService {
     constructor(private userRepository: Repository<User>) {}
 
+    @Inject
+    private temporaryUserLinkInfoStore!: TemporaryUserLinkInfoStore;
+
     public async get(id: number): Promise<User> {
         const user = await this.userRepository.findOne(id);
         if (!user) throw new Error('User not found in database');
         return user;
     }
 
-    public async activateUser(userId: number): Promise<void> {
-        await this.userRepository
-            .createQueryBuilder()
-            .update(User)
-            .set({
-                activated: true,
-            })
-            .where('id = :id', { id: userId })
-            .execute();
-        return;
+    public async activateUser(generatedUUID: string): Promise<void> {
+        const foundedUserActivationInfo = this.temporaryUserLinkInfoStore.getUserLinkInfoByUUID(generatedUUID);
+
+        if (foundedUserActivationInfo) {
+            await this.userRepository
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    activated: true,
+                })
+                .where('id = :id', { id: foundedUserActivationInfo.id })
+                .execute();
+            this.temporaryUserLinkInfoStore.deleteUserLinkInfo(foundedUserActivationInfo);
+            return;
+        }
+
+        throw new ApiError('Not found', 404, 'Link is not valid or expired');
+    }
+
+    public async createPersonalActivationUUID(userId: number): Promise<string> {
+        const createdUser = await this.get(userId);
+
+        if (createdUser.activated) {
+            throw new Error('User is already activated');
+        }
+
+        const foundedUserActivationInfo = this.temporaryUserLinkInfoStore.getUserLinkInfoByUser(
+            userId,
+            LinkType.ACTIVATION,
+        );
+
+        if (foundedUserActivationInfo) {
+            return foundedUserActivationInfo.linkUUID;
+        }
+
+        const generatedUUID = uuidv4();
+
+        this.temporaryUserLinkInfoStore.addUserLinkInfo({
+            email: createdUser.mail,
+            id: createdUser.id,
+            linkUUID: generatedUUID,
+            type: LinkType.ACTIVATION,
+        });
+
+        return generatedUUID;
     }
 
     public async create(userCreationParams: UserCreationParams): Promise<User> {
