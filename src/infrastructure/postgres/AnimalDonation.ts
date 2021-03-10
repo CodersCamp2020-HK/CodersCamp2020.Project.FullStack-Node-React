@@ -14,8 +14,8 @@ export default class AnimalDonation {
     amount!: number;
 
     @OneToMany(() => User, (user) => user.animalDonation)
-    user!: User[];
+    users!: User[];
 
     @OneToMany(() => Animal, (animal) => animal.animalDonation)
-    animal!: Animal[];
+    animals!: Animal[];
 }

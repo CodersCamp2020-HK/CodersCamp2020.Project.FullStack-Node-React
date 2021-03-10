@@ -10,5 +10,5 @@ export default class Specie {
     species!: string;
 
     @OneToMany(() => AdoptionStep, (step) => step.specie)
-    step!: AdoptionStep;
+    steps!: AdoptionStep[];
 }

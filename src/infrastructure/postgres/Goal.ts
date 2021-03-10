@@ -8,7 +8,7 @@ export default class Goal {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @ManyToOne(() => GoalDonation, (goalDonation) => goalDonation.goal)
+    @ManyToOne(() => GoalDonation, (goalDonation) => goalDonation.goals)
     gaolDonation!: GoalDonation;
 
     /**
@@ -18,8 +18,8 @@ export default class Goal {
     amount!: number;
 
     @OneToMany(() => Animal, (animal) => animal.animalDonation)
-    animal!: Animal;
+    animals!: Animal[];
 
     @OneToMany(() => Organization, (organization) => organization.goal)
-    organization!: Organization;
+    organizations!: Organization[];
 }

@@ -10,7 +10,7 @@ export enum AnimalSpecies {
     DOG = 'dog',
 }
 
-@Entity()
+@Entity('Animals')
 export default class Animal {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -63,12 +63,12 @@ export default class Animal {
     @OneToMany(() => AnimalPhoto, (photos) => photos.animal, { cascade: true })
     photos!: AnimalPhoto[];
 
-    @ManyToOne(() => AnimalDonation, (animalDonation) => animalDonation.animal, { cascade: true })
+    @ManyToOne(() => AnimalDonation, (animalDonation) => animalDonation.animals, { cascade: true })
     animalDonation!: AnimalDonation;
 
-    @ManyToOne(() => Goal, (goal) => goal.animal, { cascade: true })
+    @ManyToOne(() => Goal, (goal) => goal.animals, { cascade: true })
     goal!: Goal;
 
     @OneToMany(() => QuestionnaireSubmission, (submission) => submission.animal, { cascade: true })
-    submission!: QuestionnaireSubmission;
+    submissions!: QuestionnaireSubmission[];
 }

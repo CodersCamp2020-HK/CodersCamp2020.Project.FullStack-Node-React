@@ -3,7 +3,6 @@ import OrganizationDonation from './OrganizationDonation';
 import Localization from './Localization';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
-import QuestionnaireSubmission from './QuestionaireSubmission';
 
 @Entity()
 export default class Organization {
@@ -31,20 +30,17 @@ export default class Organization {
     @Column()
     krsNumber!: number;
 
-    @ManyToOne(() => OrganizationDonation, (organizationDonation) => organizationDonation.organization, {
+    @ManyToOne(() => OrganizationDonation, (organizationDonation) => organizationDonation.organizations, {
         cascade: true,
     })
     organizatonDonation!: OrganizationDonation;
 
-    @ManyToOne(() => Goal, (goal) => goal.organization)
+    @ManyToOne(() => Goal, (goal) => goal.organizations)
     goal!: Goal;
 
-    @ManyToOne(() => Localization, (localization) => localization.organization)
+    @ManyToOne(() => Localization, (localization) => localization.organizations)
     localization!: Localization;
 
     @OneToMany(() => AdoptionStep, (step) => step.organization)
-    step!: AdoptionStep;
-
-    @OneToMany(() => QuestionnaireSubmission, (submission) => submission.organization)
-    submission!: QuestionnaireSubmission;
+    steps!: AdoptionStep[];
 }

@@ -19,5 +19,5 @@ export default class QuestionnaireQuestion {
     form!: Form;
 
     @OneToMany(() => QuestionnaireAnswer, (answers) => answers.question)
-    answers!: QuestionnaireAnswer;
+    answers!: QuestionnaireAnswer[];
 }

@@ -4,7 +4,7 @@ import QuestionnaireSubmission from './QuestionaireSubmission';
 import Questionnaire from './Questionnaire';
 import Specie from './Specie';
 
-@Entity()
+@Entity('AdoptionSteps')
 @Index(['organization', 'specie', 'number'], { unique: true })
 export default class AdoptionStep {
     @Column()
@@ -13,10 +13,10 @@ export default class AdoptionStep {
     @Column()
     description!: string;
 
-    @ManyToOne(() => Organization, (organization) => organization.step, { primary: true, nullable: false })
+    @ManyToOne(() => Organization, (organization) => organization.steps, { primary: true, nullable: false })
     organization!: Organization;
 
-    @ManyToOne(() => Specie, (specie) => specie.id, { primary: true, nullable: false })
+    @ManyToOne(() => Specie, (specie) => specie.steps, { primary: true, nullable: false })
     specie!: Specie;
 
     @Column({ primary: true, nullable: false })
@@ -26,5 +26,5 @@ export default class AdoptionStep {
     form!: Questionnaire;
 
     @OneToMany(() => QuestionnaireSubmission, (submission) => submission.adoptionStep)
-    submission!: QuestionnaireSubmission;
+    submissions!: QuestionnaireSubmission[];
 }

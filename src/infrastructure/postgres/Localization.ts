@@ -25,9 +25,9 @@ export default class Localization {
     })
     address!: string;
 
-    @OneToMany(() => User, (user) => user.localization)
-    user!: User;
+    @OneToMany(() => User, (user) => user.localization, { nullable: true })
+    users!: User[];
 
-    @OneToMany(() => Organization, (organization) => organization.localization)
-    organization!: Organization;
+    @OneToMany(() => Organization, (organization) => organization.localization, { nullable: true })
+    organizations!: Organization[];
 }

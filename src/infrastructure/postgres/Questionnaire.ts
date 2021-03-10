@@ -29,10 +29,5 @@ export default class Questionnaire {
     questions!: QuestionnaireQuestion[];
 
     @OneToMany(() => AdoptionStep, (adoption) => adoption.form)
-    // @JoinColumn([
-    //     { name: 'organization', referencedColumnName: 'organization' },
-    //     { name: 'specie', referencedColumnName: 'specie' },
-    //     { name: 'number', referencedColumnName: 'number' },
-    // ])
     steps!: AdoptionStep[];
 }

@@ -8,13 +8,13 @@ export default class GoalDonation {
     id!: number;
 
     @OneToMany(() => User, (user) => user.goalDonation)
-    user!: User[];
+    users!: User[];
 
     /**
      * The goal of donation.
      */
     @OneToMany(() => Goal, (goal) => goal.gaolDonation)
-    goal!: Goal;
+    goals!: Goal[];
 
     /**
      * The amount of the one donation.
