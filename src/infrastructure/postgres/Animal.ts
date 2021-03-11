@@ -74,5 +74,5 @@ export default class Animal {
     submissions!: FormAnimalSubmission[];
 
     @OneToMany(() => AnimalHandler, (handler) => handler.animal, { cascade: true })
-    animalsHandler!: AnimalHandler[];
+    animalsHandlers!: AnimalHandler[];
 }

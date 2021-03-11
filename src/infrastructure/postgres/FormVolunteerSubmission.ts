@@ -1,4 +1,4 @@
-import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
 import OrganizationUser from './OrganizationUser';
 import { User } from './User';
@@ -21,4 +21,10 @@ export default class FormVolunteerSubmission {
 
     @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormVolunteerAnswer[];
+
+    @CreateDateColumn()
+    submissionDate!: Date;
+
+    @Column({ type: 'date', nullable: true })
+    reviewDate?: Date;
 }

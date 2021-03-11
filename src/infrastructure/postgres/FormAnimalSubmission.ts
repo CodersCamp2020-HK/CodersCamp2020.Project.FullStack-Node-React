@@ -1,4 +1,4 @@
-import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 import Animal from './Animal';
 import FormAnimalAnswer from './FormAnimalAnswer';
@@ -25,4 +25,10 @@ export default class FormAnimalSubmission {
 
     @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormAnimalAnswer[];
+
+    @CreateDateColumn()
+    submissionDate!: Date;
+
+    @Column({ type: 'date', nullable: true })
+    reviewDate?: Date;
 }
