@@ -1,6 +1,6 @@
 import { Repository } from 'typeorm';
 import Calendar from '../infrastructure/postgres/Calendar';
-import { Animal } from '../infrastructure/postgres/Animal';
+import Animal from '../infrastructure/postgres/Animal';
 import User from '../infrastructure/postgres/User';
 import ApiError from '@infrastructure/ApiError';
 
