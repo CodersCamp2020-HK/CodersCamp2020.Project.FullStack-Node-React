@@ -45,20 +45,20 @@ export class User {
         nullable: true,
         default: null,
     })
-    name!: string;
+    name?: string;
 
     @Column({
         length: 50,
         nullable: true,
         default: null,
     })
-    surname!: string;
+    surname?: string;
 
     @Column({
         nullable: true,
         default: null,
     })
-    phone!: number;
+    phone?: number;
 
     @Column({
         length: 50,

@@ -37,13 +37,13 @@ export class AnimalAdditionalInfo {
         type: 'text',
         nullable: true,
     })
-    specialDiet!: string;
+    specialDiet?: string;
 
     @Column({
         type: 'text',
         nullable: true,
     })
-    comments!: string;
+    comments?: string;
 
     @Column()
     temporaryHome!: boolean;

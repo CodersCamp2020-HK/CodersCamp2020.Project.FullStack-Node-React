@@ -16,7 +16,7 @@ export default class Organization {
         nullable: true,
         default: null,
     })
-    name!: string;
+    name?: string;
 
     /**
      * The short description of the organization.

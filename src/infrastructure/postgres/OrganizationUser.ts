@@ -28,7 +28,7 @@ export default class OrganizationUser {
     role!: UserType;
 
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.reviewer, { nullable: true, cascade: true })
-    animalReviews!: FormAnimalSubmission[];
+    animalReviews?: FormAnimalSubmission[];
 
     @OneToMany(() => AnimalHandler, (handler) => handler.organizationUser, { cascade: true })
     caregivers!: AnimalHandler[];
