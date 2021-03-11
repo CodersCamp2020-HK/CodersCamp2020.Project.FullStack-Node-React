@@ -135,7 +135,7 @@ export class AnimalsService {
         const animal = await this.animalRepository.findOne(id);
 
         if (animal) {
-            if (animal.id) {
+            if (animal.thumbnail) {
                 throw new ApiError('Bad Request', 400, 'Animal already has a thumbnail');
             }
 
