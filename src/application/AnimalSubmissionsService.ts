@@ -3,7 +3,7 @@ import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
 export enum FormStatus {
-    IN_PROGRESS = 'in progress',
+    IN_PROGRESS = 'inProgress',
     REJECTED = 'rejected',
     ACCEPTED = 'accepted',
 }
