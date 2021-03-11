@@ -4,7 +4,7 @@ import FormQuestion from './FormQuestion';
 import VolunteerHireStep from './VolunteerHireStep';
 
 @Entity('Forms')
-export default class Questionnaire {
+export default class Form {
     @PrimaryGeneratedColumn()
     id!: number;
 
