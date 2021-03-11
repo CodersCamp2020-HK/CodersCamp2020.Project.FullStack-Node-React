@@ -7,7 +7,7 @@ interface Message {
 }
 
 export class EmailService {
-    public async sendEmail(targetEmail: string, message: Message): Promise<void> {
+    public async sendLink(targetEmail: string, { subject, text, html }: Message): Promise<void> {
         //FOR PRODUCTION
         // if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSOWRD) {
         //     throw new Error('Email sender does not exist');
@@ -38,9 +38,9 @@ export class EmailService {
         const info = await transporter.sendMail({
             from: 'Animal shelter 🐈 <activation@animal-shelter.com>',
             to: targetEmail,
-            subject: message.subject,
-            text: message.text,
-            html: message.html,
+            subject,
+            text,
+            html,
         });
 
         console.log('Message sent: %s', info.messageId);
@@ -49,30 +49,5 @@ export class EmailService {
         // Preview only available when sending through an Ethereal account
         console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info));
         // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-
-        return;
-    }
-
-    createActivationMessage(link: string): Message {
-        const message = {
-            subject: 'Animal Shelter Account Activation',
-            text: `Animal Shelter: Thank you for registration! Here is your activation link: ${link}`,
-            html: `<div style="text-align: center;">
-                    <div style="width: 100%; background-color: green; padding: 5px">
-                     <h1>Animal Shelter</h1>
-                    </div>
-                    <div>
-                        <h2> Thank you for registration! Below is activation link for your account</h2>
-                        <div style="border: 1px solid black; padding: 5px; margin-bottom: 10px;">
-                            <h3>Activation link: </h3>
-                            <h3><a href="${link}">Click here</a></h3>
-                        </div>
-                    </div>
-                    <div style="width: 100%; background-color: green; padding: 5px">
-                        <h4>Animal Shelter &copy All right reserved </h4>
-                    </div>
-                   </div>`,
-        };
-        return message;
     }
 }

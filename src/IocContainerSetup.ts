@@ -10,7 +10,8 @@ import { QuestionnaireService } from '@application/QuestionnaireService';
 import { Questionnaire } from '@infrastructure/postgres/Questionnaire';
 import { AnimalPhoto } from '@infrastructure/postgres/AnimalPhoto';
 import { PhotosService } from '@application/PhotosService';
-import { TemporaryUserLinkInfoStore } from '@application/TemporaryUserLinkInfoStore';
+import { EmailService } from '@infrastructure/EmailService';
+import TemporaryUserActivationInfoStore from '@infrastructure/TemporaryUserActivationInfoStore';
 
 Container.bind(AnimalsService)
     .factory(
@@ -30,6 +31,7 @@ Container.bind(QuestionnaireService)
 Container.bind(PhotosService)
     .factory(() => new PhotosService())
     .scope(Scope.Local);
-Container.bind(TemporaryUserLinkInfoStore)
-    .factory(() => new TemporaryUserLinkInfoStore(30))
+Container.bind(EmailService).factory(() => new EmailService());
+Container.bind(TemporaryUserActivationInfoStore)
+    .factory(() => new TemporaryUserActivationInfoStore(120))
     .scope(Scope.Singleton);
