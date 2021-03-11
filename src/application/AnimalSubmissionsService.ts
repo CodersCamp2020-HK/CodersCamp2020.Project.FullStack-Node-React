@@ -9,12 +9,12 @@ export enum FormStatus {
 }
 
 interface getAllAnimalSubmissionsParams {
-    date: Date;
-    specie: string;
-    status: FormStatus;
+    date?: Date;
+    specie?: string;
+    status?: FormStatus;
 }
 
-export class SubmissionsService {
+export class AnimalSubmissionsService {
     constructor(private animalSubmissionRepository: Repository<FormAnimalSubmission>) {}
 
     public async getAllAnimalSubmissions(queryParams: getAllAnimalSubmissionsParams): Promise<FormAnimalSubmission[]> {

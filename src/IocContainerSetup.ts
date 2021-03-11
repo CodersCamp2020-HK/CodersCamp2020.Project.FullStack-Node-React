@@ -13,7 +13,7 @@ import { EmailService } from '@infrastructure/EmailService';
 import TemporaryUserActivationInfoStore from '@infrastructure/TemporaryUserActivationInfoStore';
 import { CalendarService } from '@application/CalendarService';
 import Calendar from '@infrastructure/postgres/Calendar';
-import { SubmissionsService } from '@application/SubmissionsService';
+import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
 import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
 
 Container.bind(AnimalsService)
@@ -49,6 +49,6 @@ Container.bind(CalendarService).factory(
         ),
 );
 
-Container.bind(SubmissionsService).factory(
-    () => new SubmissionsService(getConnection().getRepository(FormAnimalSubmission)),
+Container.bind(AnimalSubmissionsService).factory(
+    () => new AnimalSubmissionsService(getConnection().getRepository(FormAnimalSubmission)),
 );
