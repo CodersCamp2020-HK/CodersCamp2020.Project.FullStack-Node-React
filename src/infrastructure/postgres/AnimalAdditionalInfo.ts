@@ -14,8 +14,8 @@ export enum AnimalSize {
     UNKNOWN = 'unknown',
 }
 
-@Entity()
-export class AnimalAdditionalInfo {
+@Entity('AnimalsAdditionalInfo')
+export default class AnimalAdditionalInfo {
     @PrimaryGeneratedColumn()
     id!: number;
 
@@ -24,7 +24,7 @@ export class AnimalAdditionalInfo {
         enum: AnimalActiveLevel,
         default: AnimalActiveLevel.UNKNOWN,
     })
-    active_level!: AnimalActiveLevel;
+    activeLevel!: AnimalActiveLevel;
 
     @Column({
         type: 'enum',
@@ -37,36 +37,36 @@ export class AnimalAdditionalInfo {
         type: 'text',
         nullable: true,
     })
-    special_diet!: string;
+    specialDiet?: string;
 
     @Column({
         type: 'text',
         nullable: true,
     })
-    comments!: string;
+    comments?: string;
 
     @Column()
-    temporary_home!: boolean;
+    temporaryHome!: boolean;
 
     @Column()
-    need_donations!: boolean;
+    needDonations!: boolean;
 
     @Column()
-    virtual_adoption!: boolean;
+    virtualAdoption!: boolean;
 
     @Column({
         type: 'date',
     })
-    adoption_date!: Date;
+    adoptionDate!: Date;
 
     @Column({
         type: 'date',
     })
-    admission_to_shelter!: Date;
+    admissionToShelter!: Date;
 
     @Column()
-    accepts_kids!: boolean;
+    acceptsKids!: boolean;
 
     @Column()
-    accepts_other_animals!: boolean;
+    acceptsOtherAnimals!: boolean;
 }
