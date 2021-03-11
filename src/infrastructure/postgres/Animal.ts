@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
 import { AnimalAdditionalInfo } from './AnimalAdditionalInfo';
+// import { Calendar } from '../../infrastructure/postgres/Calendar';
 
 export enum AnimalSpecies {
     CAT = 'cat',
@@ -55,4 +56,7 @@ export class Animal {
     @OneToOne(() => AnimalAdditionalInfo, { cascade: true })
     @JoinColumn()
     additional_info!: AnimalAdditionalInfo;
+
+    // @ManyToOne(() => Calendar, (calendar) => calendar.animals)
+    // calendar!: Calendar;
 }

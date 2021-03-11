@@ -9,8 +9,8 @@ import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalI
 import { QuestionnaireService } from '@application/QuestionnaireService';
 import { Questionnaire } from '@infrastructure/postgres/Questionnaire';
 import { TemporaryUserLinkInfoStore } from '@application/TemporaryUserLinkInfoStore';
-// import { UsersService } from '@application/UsersService';
-// import { User } from '@infrastructure/postgres/User';
+import { CalendarService } from '@application/CalendarService';
+import { Calendar } from '@infrastructure/postgres/Calendar';
 
 Container.bind(AnimalsService)
     .factory(
@@ -23,9 +23,19 @@ Container.bind(AnimalsService)
     .scope(Scope.Local);
 
 Container.bind(UsersService).factory(() => new UsersService(getConnection().getRepository(User)));
+
 Container.bind(QuestionnaireService)
     .factory(() => new QuestionnaireService(getConnection().getRepository(Questionnaire)))
     .scope(Scope.Local);
 Container.bind(TemporaryUserLinkInfoStore)
     .factory(() => new TemporaryUserLinkInfoStore(30))
     .scope(Scope.Singleton);
+
+Container.bind(CalendarService).factory(
+    () =>
+        new CalendarService(
+            getConnection().getRepository(Calendar),
+            getConnection().getRepository(Animal),
+            getConnection().getRepository(User),
+        ),
+);
