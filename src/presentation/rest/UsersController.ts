@@ -27,6 +27,7 @@ import {
     SuccessResponse,
     Tags,
     TsoaResponse,
+    Query,
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import {
@@ -96,7 +97,7 @@ export class UsersController extends Controller {
         this.setStatus(200);
     }
 
-    @Post('{userId}/sendactivationlink')
+    @Post('{userId}/sendActivationLink')
     @SuccessResponse('200', 'Sent')
     public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
         try {
@@ -114,6 +115,28 @@ export class UsersController extends Controller {
         }
 
         return;
+    }
+
+    @Post('sendSomeoneAdoptedEmails')
+    @Response('401', 'Unauthorized')
+    @Response('400', 'Bad request')
+    @SuccessResponse('201', ' Email sended') // Custom success response
+    @Security('jwt', ['admin', 'employee'])
+    public async sendSomeoneAdoptedEmails(@Query() petName: string): Promise<void> {
+
+        //CHANGE
+        //Pobieranie wszystkich użytkowników którzy chcieli adoptowac dane zwierzę
+        const adopter = new User();
+        (adopter.name = 'Jan'), (adopter.surname = 'Nowak'), (adopter.mail = 'asd@asd.asd');
+
+        const adopter2 = new User();
+        (adopter2.name = 'Adam'), (adopter2.surname = 'Nowak'), (adopter2.mail = 'zxc@asd.asd');
+
+        const adopters = [adopter, adopter2];
+        //CHANGE
+
+        await this.usersService.sendSomeoneAdoptedEmails(adopters, petName);
+        this.setStatus(201);
     }
 
     /** Supply the unique user ID and delete user with corresponding id from database

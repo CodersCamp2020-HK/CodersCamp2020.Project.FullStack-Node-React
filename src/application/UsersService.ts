@@ -200,7 +200,7 @@ export class UsersService {
         this.userRepository.save(user);
     }
 
-    public async sendSomeoneAdoptedEmail(adopters: User[], petName: string): Promise<void> {
+    public async sendSomeoneAdoptedEmails(adopters: User[], petName: string): Promise<void> {
         if (adopters.length <= 0) {
             throw new ApiError('Bad Request', 400, 'No data provided');
         }
