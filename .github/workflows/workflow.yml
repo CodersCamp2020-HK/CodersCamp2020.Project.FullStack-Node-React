@@ -3,7 +3,7 @@ name: CI
 on:
   push:
     paths-ignore:
-      - '**/*.md'
+      - "**/*.md"
 
 jobs:
   build-dev:
@@ -25,19 +25,19 @@ jobs:
       - name: Server tests
         run: npm run server:test:cov
       - name: Web tests
-        run: npm run web:test
-  
+        run: npm run web:test:cov
+
   deploy-heroku:
     name: "Deploy to heroku"
     runs-on: ubuntu-latest
-    
+
     if: github.ref == 'refs/heads/master'
     needs: build-dev
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: '0'
-#       - name: Fetch
-#         run: git fetch --all --unshallow
+          fetch-depth: "0"
+      #       - name: Fetch
+      #         run: git fetch --all --unshallow
       - name: Push to heroku
         run: git push -f https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/coders-camp-schronisko.git origin/master:master
