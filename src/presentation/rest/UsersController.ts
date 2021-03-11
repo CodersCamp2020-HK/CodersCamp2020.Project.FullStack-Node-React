@@ -105,7 +105,7 @@ export class UsersController extends Controller {
             const personalUUID = await this.usersService.createUUID(userId, LinkType.activation);
             const message = new ActivationMessage(ACTIVATION_PATH + personalUUID).message;
 
-            await this.emailService.sendLink(createdUser.mail, message);
+            await this.emailService.sendEmail(createdUser.mail, message);
 
             this.setStatus(200);
             return;

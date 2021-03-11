@@ -182,7 +182,7 @@ export class UsersService {
         if (!user) throw new ApiError('Not Found', 404, `Wrong email`);
 
         const link = await this.createUUID(user.id, LinkType.resetPassword);
-        this.emailService.sendLink(email, new ResetPasswordMessage(host + link).message);
+        this.emailService.sendEmail(email, new ResetPasswordMessage(host + link).message);
     }
 
     public async resetPassword(userResetUUID: UUID, { password, repPassword }: UserResetPasswordParams): Promise<void> {
