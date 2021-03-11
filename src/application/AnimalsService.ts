@@ -1,11 +1,11 @@
 import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
-import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
-import { AnimalAdditionalInfo, AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
+import Animal from '@infrastructure/postgres/Animal';
+import AnimalAdditionalInfo, { AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 import ApiError from '@infrastructure/ApiError';
 
-type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'ready_for_adoption'>;
+type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
 type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
 export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
 export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
@@ -13,7 +13,7 @@ export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partia
 interface AnimalQueryParams {
     minAge?: number;
     maxAge?: number;
-    specie?: AnimalSpecies;
+    specie?: string;
     readyForAdoption?: boolean;
     temporaryHome?: boolean;
     needDonations?: boolean;
@@ -59,7 +59,7 @@ export class AnimalsService {
     public async create({ additionalInfo, ...animalParams }: AnimalCreationParams): Promise<void> {
         const animal = this.animalRepository.create(animalParams);
         const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
-        animal.additional_info = animalAdditionalInfo;
+        animal.additionalInfo = animalAdditionalInfo;
 
         await this.animalRepository.save(animal);
     }
@@ -100,7 +100,7 @@ export class AnimalsService {
         const updatedAnimal = {
             ...animal,
             ...animalParams,
-            additional_info: { ...animal.additional_info, ...additionalInfo },
+            additional_info: { ...animal.additionalInfo, ...additionalInfo },
         };
 
         return await this.animalRepository.save(updatedAnimal);

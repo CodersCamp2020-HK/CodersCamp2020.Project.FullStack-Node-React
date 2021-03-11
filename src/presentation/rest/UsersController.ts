@@ -9,7 +9,7 @@ import {
 } from '@application/UsersService';
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
-import { User } from '@infrastructure/postgres/User';
+import User from '@infrastructure/postgres/User';
 import {
     Body,
     Controller,
