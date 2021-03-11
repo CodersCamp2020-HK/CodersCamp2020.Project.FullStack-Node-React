@@ -1,5 +1,6 @@
 import {
     ApiKey,
+    EmailResetPassword,
     UserCreationParams,
     UserLoginParams,
     UserResetPasswordParams,
@@ -18,9 +19,9 @@ import {
     Path,
     Post,
     Put,
-    Request,
     Res,
     Response,
+    Request,
     Route,
     Security,
     SuccessResponse,
@@ -34,9 +35,10 @@ import {
     UniqueUserEmailError,
     ValidateErrorJSON,
 } from '@application/UsersErrors';
-//import { LinkType, TemporaryUserLinkInfoStore } from '@application/TemporaryUserLinkInfoStore';
-import { EmailService } from '@application/EmailService';
 import { Request as ExRequest } from 'express';
+import { EmailService } from '@infrastructure/EmailService';
+import { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
+import ActivationMessage from '@infrastructure/ActivationMessage';
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
@@ -84,8 +86,6 @@ export class UsersController extends Controller {
                 throw error;
             }
         }
-
-        return;
     }
 
     @Get('activate/{generatedUUID}')
@@ -97,18 +97,15 @@ export class UsersController extends Controller {
     }
 
     @Post('{userId}/sendactivationlink')
-    @SuccessResponse('200', 'Sended')
+    @SuccessResponse('200', 'Sent')
     public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
         try {
             const ACTIVATION_PATH = request.get('host') + '/api/users/activate/';
-
             const createdUser = await this.usersService.get(userId);
+            const personalUUID = await this.usersService.createUUID(userId, LinkType.activation);
+            const message = new ActivationMessage(ACTIVATION_PATH + personalUUID).message;
 
-            const personalUUID = await this.usersService.createPersonalActivationUUID(userId);
-
-            const message = await this.emailService.createActivationMessage(ACTIVATION_PATH + personalUUID);
-
-            await this.emailService.sendEmail(createdUser.mail, message);
+            await this.emailService.sendLink(createdUser.mail, message);
 
             this.setStatus(200);
             return;
@@ -131,7 +128,6 @@ export class UsersController extends Controller {
     public async deleteUser(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {
         this.setStatus(200);
         await this.usersService.delete(userId, request);
-        return;
     }
 
     @Response<ApiError>(400, 'Bad Request')
@@ -140,6 +136,7 @@ export class UsersController extends Controller {
         this.setStatus(200);
         return this.usersService.login(requestBody);
     }
+
     /**
      * Supply the unique user ID and update user password with corresponding id from database
      *  @param userId The user's identifier
@@ -156,5 +153,36 @@ export class UsersController extends Controller {
     ): Promise<void> {
         this.setStatus(200);
         return this.usersService.updatePassword(userId, password, request.user as IUserInfo);
+    }
+
+    /**
+     * Supply the email address in body, then link to reset the password will be sent for that user
+     */
+    @Response<ApiError>(404, 'User not found')
+    @Response<ApiError>(400, 'Bad Request')
+    @SuccessResponse('200', 'Email send')
+    @Post('reset')
+    public async snedResetPasswordMail(
+        @Body() email: EmailResetPassword,
+        @Request() request: ExRequest,
+    ): Promise<void> {
+        const ACTIVATION_PATH = request.get('host') + '/api/users/reset/';
+        this.usersService.sendResetPasswordLink(email, ACTIVATION_PATH);
+        this.setStatus(200);
+    }
+
+    /**
+     * Supply the reset password linkto reset the password
+     */
+    @Response<ApiError>(404, 'User not found')
+    @Response<ApiError>(400, 'Bad Request')
+    @SuccessResponse('200', 'Password set')
+    @Post('reset/{userResetUUID}')
+    public async resetUserPassword(
+        @Path() userResetUUID: string,
+        @Body() newPassword: UserResetPasswordParams,
+    ): Promise<void> {
+        this.usersService.resetPassword(userResetUUID, newPassword);
+        this.setStatus(200);
     }
 }
