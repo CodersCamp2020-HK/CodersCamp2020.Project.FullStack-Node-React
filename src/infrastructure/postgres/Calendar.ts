@@ -1,9 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
-import { User } from './User';
-import { Animal } from './Animal';
+import User from './User';
+import Animal from './Animal';
 
-@Entity()
-export class Calendar {
+@Entity('Calendar')
+export default class Calendar {
     @PrimaryGeneratedColumn()
     id!: number;
 

@@ -1,5 +1,5 @@
 import { Controller, Get, Path, Route, Post, Body, Tags } from 'tsoa';
-import { Calendar } from '../../infrastructure/postgres/Calendar';
+import Calendar from '../../infrastructure/postgres/Calendar';
 import { CalendarService, CalendarCreationParams } from '../../application/CalendarService';
 import { Inject } from 'typescript-ioc';
 

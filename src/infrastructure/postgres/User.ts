@@ -1,16 +1,17 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
-// import { Calendar } from './Calendar';
+import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, ManyToOne, OneToMany } from 'typeorm';
+import GoalDonation from './GoalDonation';
+import OrganizationDonation from './OrganizationDonation';
+import AnimalDonation from './AnimalDonation';
+import Localization from './Localization';
+import FormAnimalSubmission from './FormAnimalSubmission';
+import OrganizationUser from './OrganizationUser';
+import VolunteerHireStep from './VolunteerHireStep';
+import FormVolunteerSubmission from './FormVolunteerSubmission';
 
 /**
  * User Type
  * User can be: admin managing site, employee working in animal shelter, normal user wanting to adopt animal or volunteer helping sheler.
  */
-export enum UserType {
-    ADMIN = 'admin',
-    EMPLOYEE = 'employee',
-    NORMAL = 'normal',
-    VOLUNTEER = 'volunteer',
-}
 
 /**
  * User E-mail.
@@ -34,8 +35,8 @@ export type Password = string;
  */
 export type UUID = string;
 
-@Entity()
-export class User {
+@Entity('Users')
+export default class User {
     @PrimaryGeneratedColumn()
     id!: number;
 
@@ -44,27 +45,20 @@ export class User {
         nullable: true,
         default: null,
     })
-    name!: string;
+    name?: string;
 
     @Column({
         length: 50,
         nullable: true,
         default: null,
     })
-    surname!: string;
-
-    @Column({
-        type: 'enum',
-        enum: UserType,
-        default: UserType.NORMAL,
-    })
-    type!: UserType;
+    surname?: string;
 
     @Column({
         nullable: true,
         default: null,
     })
-    phone!: number;
+    phone?: number;
 
     @Column({
         length: 50,
@@ -83,6 +77,31 @@ export class User {
     @Column({ default: false })
     activated!: boolean;
 
-    // @ManyToOne(() => Calendar, (calendar) => calendar.users)
-    // calendar!: Calendar;
+    @Column()
+    @Generated('uuid')
+    activationLinkUuid!: UUID;
+
+    @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, { cascade: true })
+    animalDonations!: AnimalDonation[];
+
+    @OneToMany(() => OrganizationDonation, (organizationDonation) => organizationDonation.user, { cascade: true })
+    organizationDonations!: OrganizationDonation[];
+
+    @OneToMany(() => GoalDonation, (goalDonation) => goalDonation.user, { cascade: true })
+    goalDonations!: GoalDonation[];
+
+    @ManyToOne(() => Localization, (localization) => localization.users)
+    localization!: Localization;
+
+    @OneToMany(() => FormAnimalSubmission, (submission) => submission.applicant, { nullable: true })
+    animalSubmissions!: FormAnimalSubmission[];
+
+    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, { cascade: true })
+    organizationUsers!: OrganizationUser[];
+
+    @OneToMany(() => VolunteerHireStep, (step) => step.user, { cascade: true })
+    steps!: VolunteerHireStep[];
+
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, { cascade: true })
+    volunteerSubmission!: FormVolunteerSubmission[];
 }

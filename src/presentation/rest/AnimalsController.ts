@@ -17,7 +17,7 @@ import {
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@application/AnimalsService';
-import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
+import Animal from '@infrastructure/postgres/Animal';
 import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import ApiError from '@infrastructure/ApiError';
 
@@ -55,7 +55,7 @@ export class AnimalsController extends Controller {
         @Res() notFoundResponse: TsoaResponse<404, { reason: string }>,
         @Query() minAge?: number,
         @Query() maxAge?: number,
-        @Query() specie?: AnimalSpecies,
+        @Query() specie?: string,
         @Query() readyForAdoption?: boolean,
         @Query() temporaryHome?: boolean,
         @Query() needDonations?: boolean,

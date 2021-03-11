@@ -3,15 +3,16 @@ import { Container, Scope } from 'typescript-ioc';
 import { AnimalsService } from '@application/AnimalsService';
 import { UsersService } from '@application/UsersService';
 import { getConnection } from 'typeorm';
-import { Animal } from '@infrastructure/postgres/Animal';
-import { User } from '@infrastructure/postgres/User';
-import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { QuestionnaireService } from '@application/QuestionnaireService';
-import { Questionnaire } from '@infrastructure/postgres/Questionnaire';
-import { CalendarService } from '@application/CalendarService';
-import { Calendar } from '@infrastructure/postgres/Calendar';
+import Animal from '@infrastructure/postgres/Animal';
+import User from '@infrastructure/postgres/User';
+import AnimalAdditionalInfo from '@infrastructure/postgres/AnimalAdditionalInfo';
+import { FormService } from '@application/FormService';
+import Form from '@infrastructure/postgres/Form';
+import OrganizationUser from '@infrastructure/postgres/OrganizationUser';
 import { EmailService } from '@infrastructure/EmailService';
 import TemporaryUserActivationInfoStore from '@infrastructure/TemporaryUserActivationInfoStore';
+import { CalendarService } from '@application/CalendarService';
+import Calendar from '@infrastructure/postgres/Calendar';
 
 Container.bind(AnimalsService)
     .factory(
@@ -23,10 +24,14 @@ Container.bind(AnimalsService)
     )
     .scope(Scope.Local);
 
-Container.bind(UsersService).factory(() => new UsersService(getConnection().getRepository(User)));
+Container.bind(UsersService)
+    .factory(
+        () => new UsersService(getConnection().getRepository(User), getConnection().getRepository(OrganizationUser)),
+    )
+    .scope(Scope.Local);
 
-Container.bind(QuestionnaireService)
-    .factory(() => new QuestionnaireService(getConnection().getRepository(Questionnaire)))
+Container.bind(FormService)
+    .factory(() => new FormService(getConnection().getRepository(Form)))
     .scope(Scope.Local);
 Container.bind(EmailService).factory(() => new EmailService());
 Container.bind(TemporaryUserActivationInfoStore)

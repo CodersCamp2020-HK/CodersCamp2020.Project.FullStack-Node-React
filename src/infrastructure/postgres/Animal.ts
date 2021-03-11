@@ -1,14 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn } from 'typeorm';
-import { AnimalAdditionalInfo } from './AnimalAdditionalInfo';
-// import { Calendar } from '../../infrastructure/postgres/Calendar';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import AnimalAdditionalInfo from './AnimalAdditionalInfo';
+import AnimalPhoto from './AnimalPhoto';
+import Goal from './Goal';
+import AnimalDonation from './AnimalDonation';
+import FormAnimalSubmission from './FormAnimalSubmission';
+import AnimalHandler from './AnimalHandler';
+import Specie from './Specie';
 
-export enum AnimalSpecies {
-    CAT = 'cat',
-    DOG = 'dog',
-}
-
-@Entity()
-export class Animal {
+@Entity('Animals')
+export default class Animal {
     @PrimaryGeneratedColumn()
     id!: number;
 
@@ -29,11 +29,9 @@ export class Animal {
     /**
      * The animal's spieces (cat/dog) used to register its in database.
      */
-    @Column({
-        type: 'enum',
-        enum: AnimalSpecies,
-    })
-    specie!: AnimalSpecies;
+    @OneToOne(() => Specie, { cascade: true })
+    @JoinColumn()
+    specie!: Specie;
 
     /**
      * The description of the animal.
@@ -48,15 +46,27 @@ export class Animal {
      * The animal is ready for adoption
      */
     @Column()
-    ready_for_adoption!: boolean;
+    readyForAdoption!: boolean;
 
     /**
      * The animal's addition information
      */
     @OneToOne(() => AnimalAdditionalInfo, { cascade: true })
     @JoinColumn()
-    additional_info!: AnimalAdditionalInfo;
+    additionalInfo!: AnimalAdditionalInfo;
 
-    // @ManyToOne(() => Calendar, (calendar) => calendar.animals)
-    // calendar!: Calendar;
+    @OneToMany(() => AnimalPhoto, (photos) => photos.animal, { cascade: true })
+    photos!: AnimalPhoto[];
+
+    @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.animals)
+    animalDonations!: AnimalDonation[];
+
+    @OneToMany(() => Goal, (goal) => goal.animals)
+    goals!: Goal[];
+
+    @OneToMany(() => FormAnimalSubmission, (submission) => submission.animal, { cascade: true })
+    submissions!: FormAnimalSubmission[];
+
+    @OneToMany(() => AnimalHandler, (handler) => handler.animal, { cascade: true })
+    animalsHandlers!: AnimalHandler[];
 }
