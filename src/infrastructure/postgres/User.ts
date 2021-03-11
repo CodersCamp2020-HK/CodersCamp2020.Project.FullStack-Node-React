@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+// import { Calendar } from './Calendar';
 
 /**
  * User Type
@@ -81,4 +82,7 @@ export class User {
 
     @Column({ default: false })
     activated!: boolean;
+
+    // @ManyToOne(() => Calendar, (calendar) => calendar.users)
+    // calendar!: Calendar;
 }
