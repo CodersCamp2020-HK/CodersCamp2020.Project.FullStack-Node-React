@@ -1,9 +1,9 @@
 import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
 import Animal from '@infrastructure/postgres/Animal';
 import AnimalAdditionalInfo, { AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { Repository, SelectQueryBuilder } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
+import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
+import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
 type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
 type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
@@ -22,25 +22,6 @@ interface AnimalQueryParams {
     acceptsOtherAnimals?: boolean;
     size?: AnimalSize;
     activeLevel?: AnimalActiveLevel;
-}
-
-type Primitive<T> = T extends Record<string, unknown> ? never : T;
-
-class OptionalWhereSelectQueryBuilder<T> {
-    constructor(
-        public selectQueryBuilder: SelectQueryBuilder<T>,
-        private count: number = 0,
-        private uuid: string = uuidv4(),
-    ) {}
-
-    optAndWhere<P>(condition: string, param: Primitive<P>): OptionalWhereSelectQueryBuilder<T> {
-        if (param !== undefined && param !== null) {
-            const key = `${this.uuid}_${this.count++}`;
-            const query = `${condition} :${key}`;
-            this.selectQueryBuilder = this.selectQueryBuilder.andWhere(query, { [key]: param });
-        }
-        return this;
-    }
 }
 
 export class AnimalsService {
@@ -75,17 +56,17 @@ export class AnimalsService {
         return new OptionalWhereSelectQueryBuilder(
             this.animalRepository
                 .createQueryBuilder('animal')
-                .leftJoinAndSelect('animal.additional_info', 'info')
+                .leftJoinAndSelect('animal.additionalInfo', 'info')
                 .where('animal.id >= :zero', { zero: 0 }),
         )
-            .optAndWhere('animal.ready_for_adoption = ', queryParams.readyForAdoption)
-            .optAndWhere('info.temporary_home = ', queryParams.temporaryHome)
-            .optAndWhere('info.need_donations = ', queryParams.needDonations)
-            .optAndWhere('info.accepts_kids = ', queryParams.acceptsKids)
-            .optAndWhere('info.accepts_other_animals = ', queryParams.acceptsOtherAnimals)
-            .optAndWhere('info.virtual_adoption = ', queryParams.virtualAdoption)
+            .optAndWhere('animal.readyForAdoption = ', queryParams.readyForAdoption)
+            .optAndWhere('info.temporaryHome = ', queryParams.temporaryHome)
+            .optAndWhere('info.needDonations = ', queryParams.needDonations)
+            .optAndWhere('info.acceptsKids = ', queryParams.acceptsKids)
+            .optAndWhere('info.acceptsOtherAnimals = ', queryParams.acceptsOtherAnimals)
+            .optAndWhere('info.virtualAdoption = ', queryParams.virtualAdoption)
             .optAndWhere('info.size = ', queryParams.size)
-            .optAndWhere('info.active_level = ', queryParams.activeLevel)
+            .optAndWhere('info.activeLevel = ', queryParams.activeLevel)
             .optAndWhere('animal.age >= ', queryParams.minAge)
             .optAndWhere('animal.age <= ', queryParams.maxAge)
             .optAndWhere('animal.specie = ', queryParams.specie)
