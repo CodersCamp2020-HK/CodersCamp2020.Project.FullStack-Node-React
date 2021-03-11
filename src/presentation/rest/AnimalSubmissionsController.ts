@@ -1,6 +1,7 @@
 import { AnimalSubmissionsService, FormStatus } from '@application/AnimalSubmissionsService';
+import ApiError from '@infrastructure/ApiError';
 import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
-import { Get, Query, Route, Tags } from 'tsoa';
+import { Get, Query, Route, Tags, Response } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Submissions')
@@ -9,6 +10,7 @@ export class AnimalSubmissionsController {
     @Inject
     private submissionService!: AnimalSubmissionsService;
 
+    @Response<ApiError>(404, 'Submissions Not Found')
     @Get()
     public async getAllAnimalSubmissions(
         @Query() status?: FormStatus,
