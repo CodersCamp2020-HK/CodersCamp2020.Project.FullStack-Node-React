@@ -8,9 +8,8 @@ import { User } from '@infrastructure/postgres/User';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { QuestionnaireService } from '@application/QuestionnaireService';
 import { Questionnaire } from '@infrastructure/postgres/Questionnaire';
-import { TemporaryUserLinkInfoStore } from '@application/TemporaryUserLinkInfoStore';
-// import { UsersService } from '@application/UsersService';
-// import { User } from '@infrastructure/postgres/User';
+import { EmailService } from '@infrastructure/EmailService';
+import TemporaryUserActivationInfoStore from '@infrastructure/TemporaryUserActivationInfoStore';
 
 Container.bind(AnimalsService)
     .factory(
@@ -26,6 +25,7 @@ Container.bind(UsersService).factory(() => new UsersService(getConnection().getR
 Container.bind(QuestionnaireService)
     .factory(() => new QuestionnaireService(getConnection().getRepository(Questionnaire)))
     .scope(Scope.Local);
-Container.bind(TemporaryUserLinkInfoStore)
-    .factory(() => new TemporaryUserLinkInfoStore(30))
+Container.bind(EmailService).factory(() => new EmailService());
+Container.bind(TemporaryUserActivationInfoStore)
+    .factory(() => new TemporaryUserActivationInfoStore(120))
     .scope(Scope.Singleton);
