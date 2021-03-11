@@ -162,7 +162,7 @@ export class UsersController extends Controller {
     @Response<ApiError>(400, 'Bad Request')
     @SuccessResponse('200', 'Email send')
     @Post('reset')
-    public async snedResetPasswordMail(
+    public async sendResetPasswordMail(
         @Body() email: EmailResetPassword,
         @Request() request: ExRequest,
     ): Promise<void> {
