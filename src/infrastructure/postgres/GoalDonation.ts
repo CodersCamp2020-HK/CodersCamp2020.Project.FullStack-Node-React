@@ -7,7 +7,7 @@ export default class GoalDonation {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @ManyToOne(() => User, (user) => user.goalDonations, { cascade: true })
+    @ManyToOne(() => User, (user) => user.goalDonations)
     user!: User;
 
     /**

@@ -13,7 +13,7 @@ export default class AnimalDonation {
     @Column()
     amount!: number;
 
-    @ManyToOne(() => User, (user) => user.animalDonations, { cascade: true })
+    @ManyToOne(() => User, (user) => user.animalDonations)
     users!: User[];
 
     @ManyToOne(() => Animal, (animal) => animal.animalDonations, { cascade: true })

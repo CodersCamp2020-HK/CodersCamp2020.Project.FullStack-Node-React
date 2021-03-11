@@ -13,9 +13,9 @@ export default class OrganizationDonation {
     @Column()
     amount!: number;
 
-    @ManyToOne(() => User, (user) => user.organizationDonations, { cascade: true })
+    @ManyToOne(() => User, (user) => user.organizationDonations)
     user!: User;
 
-    @ManyToOne(() => Organization, (organization) => organization.organizationDonations, { cascade: true })
+    @ManyToOne(() => Organization, (organization) => organization.organizationDonations)
     organization!: Organization;
 }
