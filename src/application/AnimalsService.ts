@@ -1,5 +1,5 @@
 import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
-import Animal, { AnimalSpecies } from '@infrastructure/postgres/Animal';
+import Animal from '@infrastructure/postgres/Animal';
 import { AnimalAdditionalInfo, AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
@@ -13,7 +13,7 @@ export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partia
 interface AnimalQueryParams {
     minAge?: number;
     maxAge?: number;
-    specie?: AnimalSpecies;
+    specie?: string;
     readyForAdoption?: boolean;
     temporaryHome?: boolean;
     needDonations?: boolean;

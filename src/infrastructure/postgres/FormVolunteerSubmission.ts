@@ -4,6 +4,12 @@ import OrganizationUser from './OrganizationUser';
 import { User } from './User';
 import VolunteerHireStep from './VolunteerHireStep';
 
+enum FormStatus {
+    IN_PROGRESS = 'in progress',
+    REJECTED = 'rejected',
+    ACCEPTED = 'accepted',
+}
+
 @Index(['user', 'step'], { unique: true })
 @Entity('FormVolunteerSubmissions')
 export default class FormVolunteerSubmission {
@@ -13,8 +19,11 @@ export default class FormVolunteerSubmission {
     @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { primary: true, nullable: false })
     step!: VolunteerHireStep;
 
-    @Column()
+    @Column({ type: 'enum', enum: FormStatus })
     status!: string;
+
+    @Column({ nullable: true, default: null })
+    reason!: string;
 
     @ManyToOne(() => OrganizationUser, (user) => user.volunteerReviews)
     reviewer!: OrganizationUser;

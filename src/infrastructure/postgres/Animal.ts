@@ -7,11 +7,6 @@ import FormAnimalSubmission from './FormAnimalSubmission';
 import AnimalHandler from './AnimalHandler';
 import Specie from './Specie';
 
-export enum AnimalSpecies {
-    CAT = 'cat',
-    DOG = 'dog',
-}
-
 @Entity('Animals')
 export default class Animal {
     @PrimaryGeneratedColumn()

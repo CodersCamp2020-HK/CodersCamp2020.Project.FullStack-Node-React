@@ -5,6 +5,12 @@ import FormAnimalAnswer from './FormAnimalAnswer';
 import OrganizationUser from './OrganizationUser';
 import { User } from './User';
 
+enum FormStatus {
+    IN_PROGRESS = 'in progress',
+    REJECTED = 'rejected',
+    ACCEPTED = 'accepted',
+}
+
 @Entity('FormAnimalSubmissions')
 @Index(['animal', 'applicant', 'adoptionStep'], { unique: true })
 export default class FormAnimalSubmission {
@@ -17,8 +23,11 @@ export default class FormAnimalSubmission {
     @ManyToOne(() => AdoptionStep, (step) => step.submissions, { primary: true, nullable: false })
     adoptionStep!: AdoptionStep;
 
-    @Column()
+    @Column({ type: 'enum', enum: FormStatus })
     status!: string;
+
+    @Column({ nullable: true, default: null })
+    reason!: string;
 
     @ManyToOne(() => OrganizationUser, (user) => user.animalReviews)
     reviewer!: User;
