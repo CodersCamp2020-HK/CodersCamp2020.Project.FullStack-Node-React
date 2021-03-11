@@ -1,12 +1,14 @@
 import ApiError from '@infrastructure/ApiError';
 import { Email, Password, User } from '@infrastructure/postgres/User';
-import { UserType } from '@infrastructure/postgres/OrganizationUser';
+import OrganizationUser, { UserType } from '@infrastructure/postgres/OrganizationUser';
 import { PasswordRequirementsError, UniqueUserEmailError } from './UsersErrors';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
-import OrganizationUser from '@infrastructure/postgres/OrganizationUser';
+import { TemporaryUserLinkInfoStore, LinkType } from '@application/TemporaryUserLinkInfoStore';
+import { Inject } from 'typescript-ioc';
+import { v4 as uuidv4 } from 'uuid';
 
 const SALT_ROUNDS = 10;
 
@@ -33,13 +35,63 @@ export class UsersService {
         private organizationUserRepository: Repository<OrganizationUser>,
     ) {}
 
+    @Inject
+    private temporaryUserLinkInfoStore!: TemporaryUserLinkInfoStore;
+
     public async get(id: number): Promise<User> {
         const user = await this.userRepository.findOne(id);
         if (!user) throw new Error('User not found in database');
         return user;
     }
 
-    public async create(userCreationParams: UserCreationParams): Promise<void> {
+    public async activateUser(generatedUUID: string): Promise<void> {
+        const foundedUserActivationInfo = this.temporaryUserLinkInfoStore.getUserLinkInfoByUUID(generatedUUID);
+
+        if (foundedUserActivationInfo) {
+            await this.userRepository
+                .createQueryBuilder()
+                .update(User)
+                .set({
+                    activated: true,
+                })
+                .where('id = :id', { id: foundedUserActivationInfo.id })
+                .execute();
+            this.temporaryUserLinkInfoStore.deleteUserLinkInfo(foundedUserActivationInfo);
+            return;
+        }
+
+        throw new ApiError('Not found', 404, 'Link is not valid or expired');
+    }
+
+    public async createPersonalActivationUUID(userId: number): Promise<string> {
+        const createdUser = await this.get(userId);
+
+        if (createdUser.activated) {
+            throw new Error('User is already activated');
+        }
+
+        const foundedUserActivationInfo = this.temporaryUserLinkInfoStore.getUserLinkInfoByUser(
+            userId,
+            LinkType.ACTIVATION,
+        );
+
+        if (foundedUserActivationInfo) {
+            return foundedUserActivationInfo.linkUUID;
+        }
+
+        const generatedUUID = uuidv4();
+
+        this.temporaryUserLinkInfoStore.addUserLinkInfo({
+            email: createdUser.mail,
+            id: createdUser.id,
+            linkUUID: generatedUUID,
+            type: LinkType.ACTIVATION,
+        });
+
+        return generatedUUID;
+    }
+
+    public async create(userCreationParams: UserCreationParams): Promise<User> {
         const potentialExistingUser = await this.userRepository.findOne({ where: { mail: userCreationParams.mail } });
         if (!potentialExistingUser) {
             if (userCreationParams.password != userCreationParams.repPassword) {
@@ -53,11 +105,10 @@ export class UsersService {
                 password: hash,
             });
 
-            this.userRepository.save(user);
+            return this.userRepository.save(user);
         } else {
             throw new UniqueUserEmailError(userCreationParams.mail);
         }
-        return;
     }
 
     public async updatePassword(

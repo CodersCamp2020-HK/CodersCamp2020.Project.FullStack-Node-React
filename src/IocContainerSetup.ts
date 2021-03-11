@@ -9,6 +9,7 @@ import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalI
 import { FormService } from '@application/FormService';
 import Form from '@infrastructure/postgres/Form';
 import OrganizationUser from '@infrastructure/postgres/OrganizationUser';
+import { TemporaryUserLinkInfoStore } from '@application/TemporaryUserLinkInfoStore';
 
 Container.bind(AnimalsService)
     .factory(
@@ -29,3 +30,6 @@ Container.bind(UsersService)
 Container.bind(FormService)
     .factory(() => new FormService(getConnection().getRepository(Form)))
     .scope(Scope.Local);
+Container.bind(TemporaryUserLinkInfoStore)
+    .factory(() => new TemporaryUserLinkInfoStore(30))
+    .scope(Scope.Singleton);
