@@ -6,11 +6,9 @@ import { getConnection } from 'typeorm';
 import Animal from '@infrastructure/postgres/Animal';
 import { User } from '@infrastructure/postgres/User';
 import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { QuestionnaireService } from '@application/QuestionnaireService';
-import Questionnaire from '@infrastructure/postgres/Form';
+import { FormService } from '@application/FormService';
+import Form from '@infrastructure/postgres/Form';
 import OrganizationUser from '@infrastructure/postgres/OrganizationUser';
-// import { UsersService } from '@application/UsersService';
-// import { User } from '@infrastructure/postgres/User';
 
 Container.bind(AnimalsService)
     .factory(
@@ -28,6 +26,6 @@ Container.bind(UsersService)
     )
     .scope(Scope.Local);
 
-Container.bind(QuestionnaireService)
-    .factory(() => new QuestionnaireService(getConnection().getRepository(Questionnaire)))
+Container.bind(FormService)
+    .factory(() => new FormService(getConnection().getRepository(Form)))
     .scope(Scope.Local);

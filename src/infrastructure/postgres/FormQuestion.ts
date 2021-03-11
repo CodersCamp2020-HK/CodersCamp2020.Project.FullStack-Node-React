@@ -1,15 +1,30 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany } from 'typeorm';
-import Questionnaire, { Form } from './Form';
+import Form from './Form';
 import FormAnimalAnswer from './FormAnimalAnswer';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
+
+interface TextAnswer {
+    placeholder: string;
+}
+
+interface EnumAnswer {
+    values: string[];
+}
+
+type FormType = 'TextAnswer' | 'EnumAnswer';
+
+export interface AnswerForm {
+    type: FormType;
+    data: TextAnswer | EnumAnswer;
+}
 
 @Entity('FormQuestions')
 export default class FormQuestion {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @ManyToOne(() => Questionnaire, (questionnaire) => questionnaire.questions)
-    questionnaire!: Questionnaire;
+    @ManyToOne(() => Form, (form) => form.questions)
+    form!: Form;
 
     @Column()
     question!: string;
@@ -17,7 +32,7 @@ export default class FormQuestion {
     @Column({
         type: 'json',
     })
-    form!: Form;
+    placeholder!: AnswerForm;
 
     @OneToMany(() => FormAnimalAnswer, (answers) => answers.question, { cascade: true })
     animalAnswers!: FormAnimalAnswer[];
