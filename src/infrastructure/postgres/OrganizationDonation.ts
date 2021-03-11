@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import Organization from './Organization';
 import { User } from './User';
 
@@ -13,9 +13,9 @@ export default class OrganizationDonation {
     @Column()
     amount!: number;
 
-    @OneToMany(() => User, (user) => user.organizationDonation, { cascade: true })
-    users!: User[];
+    @ManyToOne(() => User, (user) => user.organizationDonations, { cascade: true })
+    user!: User;
 
-    @OneToMany(() => Organization, (organization) => organization.organizationDonation, { cascade: true })
-    organizations!: Organization[];
+    @ManyToOne(() => Organization, (organization) => organization.organizationDonations, { cascade: true })
+    organization!: Organization;
 }

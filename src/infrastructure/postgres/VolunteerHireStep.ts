@@ -14,7 +14,7 @@ export default class VolunteerHireStep {
     description!: string;
 
     @ManyToOne(() => Organization, (organization) => organization.volunteerHireSteps, {
-        primary: true,
+        primary: true, nullable: false,
         nullable: false,
     })
     organization!: Organization;
@@ -22,7 +22,7 @@ export default class VolunteerHireStep {
     @ManyToOne(() => User, (user) => user.steps, { primary: true, nullable: false })
     user!: User;
 
-    @Column()
+    @Column({ primary: true, nullable: false, nullable: false })
     number!: number;
 
     @ManyToOne(() => Form, (form) => form.volunteerHireSteps)

@@ -81,14 +81,14 @@ export class User {
     @Generated('uuid')
     activationLinkUuid!: UUID;
 
-    @ManyToOne(() => AnimalDonation, (animalDonation) => animalDonation.users, { cascade: true })
-    animalDonation!: AnimalDonation;
+    @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, { cascade: true })
+    animalDonations!: AnimalDonation[];
 
-    @ManyToOne(() => OrganizationDonation, (organizationDonation) => organizationDonation.users, { cascade: true })
-    organizationDonation!: OrganizationDonation;
+    @OneToMany(() => OrganizationDonation, (organizationDonation) => organizationDonation.user, { cascade: true })
+    organizationDonations!: OrganizationDonation[];
 
-    @ManyToOne(() => GoalDonation, (goalDonation) => goalDonation.users, { cascade: true })
-    goalDonation!: GoalDonation;
+    @OneToMany(() => GoalDonation, (goalDonation) => goalDonation.user, { cascade: true })
+    goalDonations!: GoalDonation[];
 
     @ManyToOne(() => Localization, (localization) => localization.users)
     localization!: Localization;

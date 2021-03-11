@@ -6,7 +6,7 @@ export default class Specie {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
+    @Column({ unique: true })
     specie!: string;
 
     @OneToMany(() => AdoptionStep, (step) => step.specie, { cascade: true })

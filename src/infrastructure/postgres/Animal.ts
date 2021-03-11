@@ -1,10 +1,11 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import { AnimalAdditionalInfo } from './AnimalAdditionalInfo';
 import AnimalPhoto from './AnimalPhoto';
 import Goal from './Goal';
 import AnimalDonation from './AnimalDonation';
 import FormAnimalSubmission from './FormAnimalSubmission';
 import AnimalHandler from './AnimalHandler';
+import Specie from './Specie';
 
 export enum AnimalSpecies {
     CAT = 'cat',
@@ -33,11 +34,9 @@ export default class Animal {
     /**
      * The animal's spieces (cat/dog) used to register its in database.
      */
-    @Column({
-        type: 'enum',
-        enum: AnimalSpecies,
-    })
-    specie!: AnimalSpecies;
+    @OneToOne(() => Specie, { cascade: true })
+    @JoinColumn()
+    specie!: Specie;
 
     /**
      * The description of the animal.
@@ -64,11 +63,11 @@ export default class Animal {
     @OneToMany(() => AnimalPhoto, (photos) => photos.animal, { cascade: true })
     photos!: AnimalPhoto[];
 
-    @ManyToOne(() => AnimalDonation, (animalDonation) => animalDonation.animals)
-    animalDonation!: AnimalDonation;
+    @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.animals)
+    animalDonations!: AnimalDonation[];
 
-    @ManyToOne(() => Goal, (goal) => goal.animals)
-    goal!: Goal;
+    @OneToMany(() => Goal, (goal) => goal.animals)
+    goals!: Goal[];
 
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.animal, { cascade: true })
     submissions!: FormAnimalSubmission[];

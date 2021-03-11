@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import Animal from './Animal';
 import { User } from './User';
 
@@ -13,9 +13,9 @@ export default class AnimalDonation {
     @Column()
     amount!: number;
 
-    @OneToMany(() => User, (user) => user.animalDonation, { cascade: true })
+    @ManyToOne(() => User, (user) => user.animalDonations, { cascade: true })
     users!: User[];
 
-    @OneToMany(() => Animal, (animal) => animal.animalDonation, { cascade: true })
+    @ManyToOne(() => Animal, (animal) => animal.animalDonations, { cascade: true })
     animals!: Animal[];
 }

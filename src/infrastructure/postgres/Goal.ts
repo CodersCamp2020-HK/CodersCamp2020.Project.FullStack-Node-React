@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import Animal from './Animal';
 import Organization from './Organization';
 import GoalDonation from './GoalDonation';
@@ -11,7 +11,7 @@ export default class Goal {
     @Column({ length: 200 })
     description!: string;
 
-    @ManyToOne(() => GoalDonation, (goalDonation) => goalDonation.goals)
+    @ManyToOne(() => GoalDonation, (goalDonation) => goalDonation.goal)
     goalDonation!: GoalDonation;
 
     /**
@@ -20,9 +20,9 @@ export default class Goal {
     @Column()
     amount!: number;
 
-    @OneToMany(() => Animal, (animal) => animal.animalDonation, { cascade: true })
+    @ManyToOne(() => Animal, (animal) => animal.animalDonations, { cascade: true })
     animals!: Animal[];
 
-    @OneToMany(() => Organization, (organization) => organization.goal, { cascade: true })
+    @ManyToOne(() => Organization, (organization) => organization.goals, { cascade: true })
     organizations!: Organization[];
 }

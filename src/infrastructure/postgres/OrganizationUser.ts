@@ -18,7 +18,7 @@ export default class OrganizationUser {
     @ManyToOne(() => User, (user) => user.organizationUsers, { primary: true, nullable: false })
     user!: User;
 
-    @ManyToOne(() => Organization, (organization) => organization.organizationUsers)
+    @ManyToOne(() => Organization, (organization) => organization.organizationUsers, { primary: true, nullable: false })
     organization!: Organization;
 
     @Column({
