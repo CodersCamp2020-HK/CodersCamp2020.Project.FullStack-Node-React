@@ -13,7 +13,7 @@ export default class GoalDonation {
     /**
      * The goal of donation.
      */
-    @OneToMany(() => Goal, (goal) => goal.gaolDonation, { cascade: true })
+    @OneToMany(() => Goal, (goal) => goal.goalDonation, { cascade: true })
     goals!: Goal[];
 
     /**

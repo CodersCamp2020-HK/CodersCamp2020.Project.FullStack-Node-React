@@ -8,8 +8,11 @@ export default class Goal {
     @PrimaryGeneratedColumn()
     id!: number;
 
+    @Column({ length: 200 })
+    description!: string;
+
     @ManyToOne(() => GoalDonation, (goalDonation) => goalDonation.goals)
-    gaolDonation!: GoalDonation;
+    goalDonation!: GoalDonation;
 
     /**
      * The amount of the one donation.
