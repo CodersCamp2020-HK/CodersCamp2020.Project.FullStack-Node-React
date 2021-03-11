@@ -34,12 +34,17 @@ import {
     UniqueUserEmailError,
     ValidateErrorJSON,
 } from '@application/UsersErrors';
-
+//import { LinkType, TemporaryUserLinkInfoStore } from '@application/TemporaryUserLinkInfoStore';
+import { EmailService } from '@application/EmailService';
+import { Request as ExRequest } from 'express';
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
     @Inject
     private usersService!: UsersService;
+
+    @Inject
+    private emailService!: EmailService;
 
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
@@ -60,9 +65,13 @@ export class UsersController extends Controller {
     public async createUser(
         @Body() requestBody: UserCreationParams,
         @Res() badRequestResponse: TsoaResponse<400, { reason: string }>,
+        @Request() request: ExRequest,
     ): Promise<void> {
         try {
-            await this.usersService.create(requestBody);
+            const createdUser = await this.usersService.create(requestBody);
+
+            await this.sendActivationLink(createdUser.id, request);
+
             this.setStatus(201);
         } catch (error) {
             if (
@@ -78,6 +87,38 @@ export class UsersController extends Controller {
 
         return;
     }
+
+    @Get('activate/{generatedUUID}')
+    @SuccessResponse('200', 'User Activated')
+    @Response('404', 'Link is not valid or expired')
+    public async activateUser(@Path() generatedUUID: string): Promise<void> {
+        await this.usersService.activateUser(generatedUUID);
+        this.setStatus(200);
+    }
+
+    @Post('{userId}/sendactivationlink')
+    @SuccessResponse('200', 'Sended')
+    public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
+        try {
+            const ACTIVATION_PATH = request.get('host') + '/api/users/activate/';
+
+            const createdUser = await this.usersService.get(userId);
+
+            const personalUUID = await this.usersService.createPersonalActivationUUID(userId);
+
+            const message = await this.emailService.createActivationMessage(ACTIVATION_PATH + personalUUID);
+
+            await this.emailService.sendEmail(createdUser.mail, message);
+
+            this.setStatus(200);
+            return;
+        } catch (error) {
+            throw error;
+        }
+
+        return;
+    }
+
     /** Supply the unique user ID and delete user with corresponding id from database
      *  @param userId The user's identifier
      *  @isInt  userId
