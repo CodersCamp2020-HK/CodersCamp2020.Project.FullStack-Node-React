@@ -3,7 +3,7 @@ import jwt, { JsonWebTokenError } from 'jsonwebtoken';
 import { getConnection } from 'typeorm';
 import ApiError from './ApiError';
 import OrganizationUser from './postgres/OrganizationUser';
-import { User } from './postgres/User';
+import User from './postgres/User';
 import { UserType } from '@infrastructure/postgres/OrganizationUser';
 
 export interface IUserInfo {

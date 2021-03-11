@@ -15,7 +15,7 @@ export enum AnimalSize {
 }
 
 @Entity('AnimalsAdditionalInfo')
-export class AnimalAdditionalInfo {
+export default class AnimalAdditionalInfo {
     @PrimaryGeneratedColumn()
     id!: number;
 

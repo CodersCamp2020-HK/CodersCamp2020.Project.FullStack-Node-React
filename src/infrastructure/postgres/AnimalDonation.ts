@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import Animal from './Animal';
-import { User } from './User';
+import User from './User';
 
 @Entity('AnimalDonations')
 export default class AnimalDonation {

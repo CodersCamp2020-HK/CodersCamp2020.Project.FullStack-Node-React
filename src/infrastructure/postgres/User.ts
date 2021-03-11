@@ -36,7 +36,7 @@ export type Password = string;
 export type UUID = string;
 
 @Entity('Users')
-export class User {
+export default class User {
     @PrimaryGeneratedColumn()
     id!: number;
 

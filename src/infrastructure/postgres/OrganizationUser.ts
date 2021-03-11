@@ -3,7 +3,7 @@ import AnimalHandler from './AnimalHandler';
 import FormAnimalSubmission from './FormAnimalSubmission';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
 import Organization from './Organization';
-import { User } from './User';
+import User from './User';
 
 export enum UserType {
     ADMIN = 'admin',

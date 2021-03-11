@@ -3,7 +3,7 @@ import AdoptionStep from './AdoptionStep';
 import Animal from './Animal';
 import FormAnimalAnswer from './FormAnimalAnswer';
 import OrganizationUser from './OrganizationUser';
-import { User } from './User';
+import User from './User';
 
 enum FormStatus {
     IN_PROGRESS = 'in progress',

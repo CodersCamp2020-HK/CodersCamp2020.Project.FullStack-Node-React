@@ -1,4 +1,4 @@
-import { AnimalAdditionalInfo } from '@infrastructure/postgres/AnimalAdditionalInfo';
+import AnimalAdditionalInfo from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository } from 'typeorm';
 
 export type AnimalAdditionalInfoParams = Pick<

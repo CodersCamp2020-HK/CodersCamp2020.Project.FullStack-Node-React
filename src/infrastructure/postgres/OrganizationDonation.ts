@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import Organization from './Organization';
-import { User } from './User';
+import User from './User';
 
 @Entity('OrganizationDonations')
 export default class OrganizationDonation {

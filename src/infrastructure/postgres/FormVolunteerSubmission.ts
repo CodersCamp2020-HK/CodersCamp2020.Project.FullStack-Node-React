@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
 import OrganizationUser from './OrganizationUser';
-import { User } from './User';
+import User from './User';
 import VolunteerHireStep from './VolunteerHireStep';
 
 enum FormStatus {

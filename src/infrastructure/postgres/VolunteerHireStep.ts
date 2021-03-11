@@ -2,7 +2,7 @@ import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import Form from './Form';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
 import Organization from './Organization';
-import { User } from './User';
+import User from './User';
 
 @Entity('VolunteerHireSteps')
 @Index(['organization', 'user', 'number'], { unique: true })

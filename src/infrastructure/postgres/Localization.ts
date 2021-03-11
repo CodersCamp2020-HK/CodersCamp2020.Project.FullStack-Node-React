@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import Organization from './Organization';
-import { User } from './User';
+import User from './User';
 
 @Entity('Localizations')
 export default class Localization {

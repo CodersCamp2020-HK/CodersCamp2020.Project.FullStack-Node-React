@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
-import { AnimalAdditionalInfo } from './AnimalAdditionalInfo';
+import AnimalAdditionalInfo from './AnimalAdditionalInfo';
 import AnimalPhoto from './AnimalPhoto';
 import Goal from './Goal';
 import AnimalDonation from './AnimalDonation';
