@@ -212,7 +212,8 @@ export class UsersService {
         }
 
         adopters.forEach((adopter) => {
-            const message = new SomeoneAdoptedMessage(petName, adopter.name, adopter.surname).message;
+            const message = new SomeoneAdoptedMessage(petName, adopter.name as string, adopter.surname as string)
+                .message;
 
             this.emailService.sendEmail(adopter.mail, message);
         });
