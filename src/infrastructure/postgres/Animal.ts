@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
 import AnimalAdditionalInfo from './AnimalAdditionalInfo';
-import AnimalPhoto from './AnimalPhoto';
+import { AnimalPhoto, AnimalThumbnailPhoto } from './AnimalPhoto';
 import Goal from './Goal';
 import AnimalDonation from './AnimalDonation';
 import FormAnimalSubmission from './FormAnimalSubmission';
@@ -55,7 +55,15 @@ export default class Animal {
     @JoinColumn()
     additionalInfo!: AnimalAdditionalInfo;
 
-    @OneToMany(() => AnimalPhoto, (photos) => photos.animal, { cascade: true })
+    @OneToOne(() => AnimalThumbnailPhoto, (thumbnail: AnimalThumbnailPhoto) => thumbnail.animal, {
+        cascade: true,
+        eager: true,
+    })
+    @JoinColumn()
+    thumbnail!: AnimalThumbnailPhoto;
+
+    @OneToMany(() => AnimalPhoto, (photo: AnimalPhoto) => photo.animal, { cascade: true })
+    @JoinColumn()
     photos!: AnimalPhoto[];
 
     @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.animals)
