@@ -1,4 +1,4 @@
-import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
+import { AdoptersCount, AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
 import { Get, Route, Tags, Query, Controller, Response, SuccessResponse } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
@@ -11,7 +11,7 @@ export class AnimalSubmissionsController extends Controller {
     @Response('500', 'Internal Server Error')
     @SuccessResponse('200', 'Ok')
     @Get('allWillignessesToAdoptCount')
-    public async getAllWillignessesToAdoptCount(@Query() petName: string): Promise<number> {
+    public async getAllWillignessesToAdoptCount(@Query() petName: string): Promise<AdoptersCount> {
         this.setStatus(200);
         return this.submissionService.adoptWillingnessCounter(petName);
     }

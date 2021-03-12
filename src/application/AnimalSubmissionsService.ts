@@ -7,12 +7,26 @@ export enum FormStatus {
     ACCEPTED = 'accepted',
 }
 
+export interface AdoptersCount {
+    description: string;
+    count: number;
+}
+
 export class AnimalSubmissionsService {
     constructor(private animalSubmissionRepository: Repository<FormAnimalSubmission>) {}
 
-    public adoptWillingnessCounter(petName: string): number {
+    public async adoptWillingnessCounter(petName: string): Promise<AdoptersCount> {
         console.log(petName);
-        this.animalSubmissionRepository.findOne();
-        return 1;
+        const count = await this.animalSubmissionRepository
+            .createQueryBuilder('submission')
+            .select()
+            .leftJoinAndSelect('submission.animal', 'animal')
+            .where('animal.name = :petName', { petName: petName })
+            .getCount();
+
+        return {
+            description: 'Adopters willing to adopt a given animal',
+            count,
+        }
     }
 }
