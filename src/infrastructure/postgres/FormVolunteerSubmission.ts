@@ -4,7 +4,7 @@ import OrganizationUser from './OrganizationUser';
 import User from './User';
 import VolunteerHireStep from './VolunteerHireStep';
 
-enum FormStatus {
+export enum FormStatus {
     IN_PROGRESS = 'in progress',
     REJECTED = 'rejected',
     ACCEPTED = 'accepted',
