@@ -1,9 +1,13 @@
 import { Body, Controller, Post, Get, Path, Route, SuccessResponse, Tags, Response, Put } from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import { FormCreationParams, FormService, FormType } from '@application/FormService';
+import {
+    ChangeStatusForVolunterFormParams,
+    ChangeStatusForAdoptionFormParams,
+    FormCreationParams,
+    FormService,
+} from '@application/FormService';
 import ApiError from '@infrastructure/ApiError';
 import Form from '@infrastructure/postgres/Form';
-import { FormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
 
 @Tags('Form')
 @Route('forms')
@@ -31,8 +35,17 @@ export class FormController extends Controller {
         return this.formService.getAll();
     }
 
-    @Put('changeStatus')
-    public async changeFormStatus(@Body() formType: FormType, @Body() status: FormStatus): Promise<void> {
-        await this.formService.changeStatus(formType, status);
+    @Put('changeVolunterFormStatus')
+    public async changeFormStatusForVolunteer(
+        @Body() changeStatusParams: ChangeStatusForVolunterFormParams,
+    ): Promise<void> {
+        await this.formService.changeStatusForVolunteerForm(changeStatusParams);
+    }
+
+    @Put('changeAdoptionFormStatus')
+    public async changeFormStatusForAdoption(
+        @Body() changeStatusParams: ChangeStatusForAdoptionFormParams,
+    ): Promise<void> {
+        await this.formService.changeStatusForAdoptionForm(changeStatusParams);
     }
 }

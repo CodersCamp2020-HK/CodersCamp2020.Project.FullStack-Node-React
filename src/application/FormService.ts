@@ -2,20 +2,36 @@ import Form from '@infrastructure/postgres/Form';
 import FormQuestion from '@infrastructure/postgres/FormQuestion';
 import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
-import { FormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
+import FormVolunteerSubmission, { VolunterFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
+import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
 
 export interface FormCreationParams {
     name: string;
     questions: Omit<FormQuestion, 'id' | 'form'>[];
 }
 
-export enum FormType {
+export enum SubmissionType {
     ADOPTION = 'adoption',
     VOLUNTEER = 'volunteer',
 }
 
+export interface ChangeStatusForVolunterFormParams {
+    status: VolunterFormStatus;
+    userId: number;
+}
+
+export interface ChangeStatusForAdoptionFormParams {
+    status: VolunterFormStatus;
+    userId: number;
+    animalId: number;
+}
+
 export class FormService {
-    constructor(private formRepository: Repository<Form>) {}
+    constructor(
+        private formRepository: Repository<Form>,
+        private volunteerSubmissionRepository: Repository<FormVolunteerSubmission>,
+        private animalSubmissionRepository: Repository<FormAnimalSubmission>,
+    ) {}
 
     public async create(formCreationParams: FormCreationParams): Promise<void> {
         const form = this.formRepository.create(formCreationParams);
@@ -34,13 +50,11 @@ export class FormService {
         return form;
     }
 
-    public async changeStatus(formType: FormType, status: FormStatus): void {
-        if (formType == FormType.ADOPTION) {
-            return;
-        }
-        if (formType == FormType.VOLUNTEER) {
-            return;
-        }
+    public async changeStatusForVolunteerForm(changeStatusParams: ChangeStatusForVolunterFormParams): Promise<void> {
+        return;
+    }
+
+    public async changeStatusForAdoptionForm(changeStatusParams: ChangeStatusForAdoptionFormParams): Promise<void> {
         return;
     }
 }

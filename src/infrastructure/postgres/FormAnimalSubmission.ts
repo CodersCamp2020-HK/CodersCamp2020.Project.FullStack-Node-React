@@ -5,7 +5,7 @@ import FormAnimalAnswer from './FormAnimalAnswer';
 import OrganizationUser from './OrganizationUser';
 import User from './User';
 
-export enum FormStatus {
+enum AnimalFormStatus {
     IN_PROGRESS = 'in progress',
     REJECTED = 'rejected',
     ACCEPTED = 'accepted',
@@ -23,7 +23,7 @@ export default class FormAnimalSubmission {
     @ManyToOne(() => AdoptionStep, (step) => step.submissions, { primary: true, nullable: false })
     adoptionStep!: AdoptionStep;
 
-    @Column({ type: 'enum', enum: FormStatus })
+    @Column({ type: 'enum', enum: AnimalFormStatus })
     status!: string;
 
     @Column({ nullable: true, default: null })
