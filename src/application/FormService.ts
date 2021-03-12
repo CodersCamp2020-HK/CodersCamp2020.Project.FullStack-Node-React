@@ -51,10 +51,27 @@ export class FormService {
     }
 
     public async changeStatusForVolunteerForm(changeStatusParams: ChangeStatusForVolunterFormParams): Promise<void> {
+        console.log(this.volunteerSubmissionRepository);
+        console.log(changeStatusParams);
+        // await this.volunteerSubmissionRepository
+        //     .createQueryBuilder()
+        //     .update(FormVolunteerSubmission)
+        //     .set({ status: changeStatusParams.status })
+        //     .where('userId = :id', { id: changeStatusParams.userId })
+        //     .execute();
         return;
     }
 
     public async changeStatusForAdoptionForm(changeStatusParams: ChangeStatusForAdoptionFormParams): Promise<void> {
+        console.log(this.animalSubmissionRepository);
+        console.log(changeStatusParams);
+        await this.animalSubmissionRepository
+            .createQueryBuilder()
+            .update(FormAnimalSubmission)
+            .set({ status: changeStatusParams.status })
+            .where('applicantId = :id', { id: changeStatusParams.userId })
+            .andWhere('animalId = :id', { id: changeStatusParams.animalId })
+            .execute();
         return;
     }
 }
