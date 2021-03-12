@@ -11,6 +11,7 @@ import { EmailService } from '@infrastructure/EmailService';
 import TemporaryUserActivationInfoStore, { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
 import { v4 as uuidv4 } from 'uuid';
 import ResetPasswordMessage from '@infrastructure/ResetPasswordMessage';
+import VisitConfirmationMessage from '@infrastructure/VisitConfirmationMessage';
 
 const SALT_ROUNDS = 10;
 
@@ -191,7 +192,7 @@ export class UsersService {
         if (!user) throw new ApiError('Not Found', 404, `Wrong email`);
 
         const link = await this.createUUID(user.id, LinkType.resetPassword);
-        this.emailService.sendLink(email, new ResetPasswordMessage(host + link).message);
+        this.emailService.sendEmail(email, new ResetPasswordMessage(host + link).message);
     }
 
     public async resetPassword(userResetUUID: UUID, { password, repPassword }: UserResetPasswordParams): Promise<void> {
@@ -206,5 +207,12 @@ export class UsersService {
         const hash = await bcrypt.hash(password, SALT_ROUNDS);
         user.password = hash;
         this.userRepository.save(user);
+    }
+
+    public async sendVisitConfirmationMessage(adopter: User, petName: string): Promise<void> {
+        const message = new VisitConfirmationMessage(petName, adopter.name as string, adopter.surname as string)
+            .message;
+
+        this.emailService.sendEmail(adopter.mail, message);
     }
 }

@@ -7,7 +7,7 @@ interface Message {
 }
 
 export class EmailService {
-    public async sendLink(targetEmail: string, { subject, text, html }: Message): Promise<void> {
+    public async sendEmail(targetEmail: string, { subject, text, html }: Message): Promise<void> {
         //FOR PRODUCTION
         // if (!process.env.EMAIL_USER || !process.env.EMAIL_PASSOWRD) {
         //     throw new Error('Email sender does not exist');
