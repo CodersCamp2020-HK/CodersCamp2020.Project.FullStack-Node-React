@@ -7,7 +7,6 @@ const configBase: Config.InitialOptions = {
     moduleDirectories: ['node_modules', 'src'],
     moduleNameMapper: {
         '@application/(.*)': '<rootDir>/src/application/$1',
-        '@domain/(.*)': '<rootDir>/src/domain/$1',
         '@infrastructure/(.*)': '<rootDir>/src/infrastructure/$1',
         '@presentation/(.*)': '<rootDir>/src/presentation/$1',
     },
@@ -30,7 +29,12 @@ const e2eConfig: Config.InitialOptions = {
     ...configBase,
     displayName: 'e2e',
     roots: ['tests/e2e'],
+    globals: {
+        TESTS_DATABASE_NAME: 'e2e',
+    },
+    setupFilesAfterEnv: ['./tests/config/TestsDatabseConnectionSetup.ts'],
 };
+
 const configs = {
     projects: [unitConfig, apiConfig, e2eConfig],
 };
