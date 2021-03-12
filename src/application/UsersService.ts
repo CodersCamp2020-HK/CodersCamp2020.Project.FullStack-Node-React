@@ -117,7 +117,10 @@ export class UsersService {
     public async login(userLoginParams: UserLoginParams): Promise<ApiKey> {
         const user = await this.userRepository.findOne({ where: { mail: userLoginParams.mail } });
         if (!user) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
-        const organizationUser = await this.organizationUserRepository.findOne(user.id);
+        const organizationUser = await this.organizationUserRepository.findOne({
+            user: { id: user.id },
+            organization: { id: 1 },
+        });
         const role = organizationUser === undefined ? UserType.NORMAL : organizationUser.role;
 
         const match = await bcrypt.compare(userLoginParams.password, user.password);

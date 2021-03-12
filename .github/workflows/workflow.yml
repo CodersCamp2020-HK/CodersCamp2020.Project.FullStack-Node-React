@@ -3,12 +3,27 @@ name: CI
 on:
   push:
     paths-ignore:
-      - '**/*.md'
+      - "**/*.md"
 
 jobs:
   build-dev:
     name: "Build production app"
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: root
+          POSTGRES_PASSWORD: root
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
 
     steps:
       - uses: actions/checkout@v2
@@ -25,19 +40,18 @@ jobs:
       - name: Server tests
         run: npm run server:test:cov
       - name: Web tests
-        run: npm run web:test
-  
+        run: npm run web:test:cov
+
   deploy-heroku:
     name: "Deploy to heroku"
     runs-on: ubuntu-latest
-    
+    timeout-minutes: 30
+
     if: github.ref == 'refs/heads/master'
     needs: build-dev
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: '0'
-#       - name: Fetch
-#         run: git fetch --all --unshallow
+          fetch-depth: "0"
       - name: Push to heroku
         run: git push -f https://heroku:${{ secrets.HEROKU_API_KEY }}@git.heroku.com/coders-camp-schronisko.git origin/master:master
