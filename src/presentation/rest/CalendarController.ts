@@ -1,4 +1,4 @@
-import { Controller, Get, Path, Route, Post, Body, Tags } from 'tsoa';
+import { Controller, Get, Path, Route, Post, Body, Tags, Delete } from 'tsoa';
 import Calendar from '../../infrastructure/postgres/Calendar';
 import { CalendarService, CalendarCreationParams } from '../../application/CalendarService';
 import { Inject } from 'typescript-ioc';
@@ -10,8 +10,7 @@ export class CalendarController extends Controller {
     private calendarService!: CalendarService;
 
     /**
-     * Retrieves the details of an existing visit.
-     * Supply the unique visit time from either and receive corresponding visit details.
+     * Retrieves all existing visit.
      */
     @Get()
     public async getAllVisits(): Promise<Calendar> {
@@ -19,17 +18,30 @@ export class CalendarController extends Controller {
     }
 
     /**
-     * Retrieves the details of an existing visit.
-     * Supply the unique visit time from either and receive corresponding visit details.
+     * Supply the visitId from either and receive corresponding visit details.
+     * @param visitId The visit's identifier
      */
-    @Get('{time}')
-    public async getVisit(@Path() time: Date): Promise<Calendar> {
-        return this.calendarService.get(time);
+    @Get('{visitId}')
+    public async getVisit(@Path() visitId: number): Promise<Calendar> {
+        return this.calendarService.get(visitId);
     }
 
+    /**
+     * Supply the unique visit time, aniaml ID and user ID and create unique visit.
+     */
     @Post()
     public async createVisit(@Body() requestBody: CalendarCreationParams): Promise<void> {
         this.setStatus(201);
         this.calendarService.create(requestBody);
+    }
+
+    /**
+     * Supply the visitId and delete corresponding visit.
+     * @param visitId The visit's identifier
+     */
+    @Delete('{visitId}')
+    public async deleteVisit(@Path() visitId: number): Promise<void> {
+        this.setStatus(200);
+        this.calendarService.delete(visitId);
     }
 }
