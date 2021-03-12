@@ -1,4 +1,5 @@
 import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
+import { AnimalPhoto, AnimalThumbnailPhoto } from '@infrastructure/postgres/AnimalPhoto';
 import Animal from '@infrastructure/postgres/Animal';
 import AnimalAdditionalInfo, { AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { Repository, SelectQueryBuilder } from 'typeorm';
@@ -47,6 +48,7 @@ export class AnimalsService {
     constructor(
         private animalRepository: Repository<Animal>,
         private animalAdditionalInfo: Repository<AnimalAdditionalInfo>,
+        private animalPhotos: Repository<AnimalPhoto>,
     ) {}
 
     public async get(id: number): Promise<Animal> {
@@ -104,5 +106,46 @@ export class AnimalsService {
         };
 
         return await this.animalRepository.save(updatedAnimal);
+    }
+
+    public async savePhotos(id: number, files: Express.Multer.File[]): Promise<void> {
+        const animal = await this.animalRepository.findOne(id);
+        if (files.length <= 0) {
+            throw new ApiError('Bad Request', 400, 'No photos provided!');
+        }
+        if (animal) {
+            files.forEach(async (file) => {
+                const photo = this.animalPhotos.create({
+                    animal: animal,
+                    buffer: file.buffer,
+                });
+                await this.animalPhotos.save(photo);
+            });
+        } else {
+            throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
+        }
+    }
+
+    public async saveThumbnail(id: number, file: Express.Multer.File): Promise<void> {
+        const photoBuffer = file.buffer;
+        if (!photoBuffer) {
+            throw new ApiError('Bad Request', 400, 'No photo provided!');
+        }
+
+        const animal = await this.animalRepository.findOne(id);
+
+        if (animal) {
+            if (animal.thumbnail) {
+                throw new ApiError('Bad Request', 400, 'Animal already has a thumbnail');
+            }
+
+            const photo = new AnimalThumbnailPhoto();
+            photo.buffer = photoBuffer;
+
+            animal.thumbnail = photo;
+            this.animalRepository.save(animal);
+        } else {
+            throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
+        }
     }
 }

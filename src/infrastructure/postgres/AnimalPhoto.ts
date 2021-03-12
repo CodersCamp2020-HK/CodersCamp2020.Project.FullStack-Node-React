@@ -1,14 +1,26 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, OneToOne } from 'typeorm';
 import Animal from './Animal';
 
-@Entity('AnimalPhotos')
-export default class AnimalPhoto {
+@Entity('AnimalPhoto')
+export class AnimalPhoto {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({ type: 'bytea' })
-    photo!: string;
+    @Column('bytea')
+    buffer!: Buffer;
 
-    @ManyToOne(() => Animal, (animal) => animal.photos)
+    @ManyToOne(() => Animal, (animal: Animal) => animal.photos)
+    animal!: Animal;
+}
+
+@Entity('AnimalThumbnailPhoto')
+export class AnimalThumbnailPhoto {
+    @PrimaryGeneratedColumn()
+    id!: number;
+
+    @Column('bytea')
+    buffer!: Buffer;
+
+    @OneToOne(() => Animal, (animal: Animal) => animal.thumbnail)
     animal!: Animal;
 }
