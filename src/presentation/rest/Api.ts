@@ -1,14 +1,11 @@
 import express, { Response, Request, NextFunction } from 'express';
 import { ValidateError } from 'tsoa';
-require('express-async-errors');
 import ApiError from '../../infrastructure/ApiError';
 import { RegisterRoutes } from './generated/routes';
 import { useSwagger } from './Swagger';
-import cors from 'cors';
 
 const api = express.Router();
 
-api.use(cors());
 api.use(express.json());
 
 RegisterRoutes(api);
@@ -31,8 +28,6 @@ api.use((err: ApiError | ValidateError | Error, req: Request, res: Response, _ne
         console.warn(`Internal Server Error for ${req.path}:`, err.message);
         return res.status(500).json({ name: err.name, message: err.message });
     }
-
-    _next();
 });
 
 api.use('/api', ...useSwagger());
