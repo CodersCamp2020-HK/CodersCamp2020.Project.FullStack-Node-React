@@ -43,6 +43,11 @@ export class AnimalSubmissionsController extends Controller {
         return this.submissionService.adoptWillingnessCounter(petName);
     }
 
+    /**
+     *
+     * @param id The submission's identifier
+     * @param isInt id
+     */
     @Response<ApiError>(404, 'Submission Not Found')
     @Get('{id}')
     public async getAnimalSubmission(@Path() id: number): Promise<FormAnimalSubmission> {
