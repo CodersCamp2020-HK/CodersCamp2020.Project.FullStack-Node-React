@@ -12,6 +12,7 @@ import TemporaryUserActivationInfoStore, { LinkType } from '@infrastructure/Temp
 import { v4 as uuidv4 } from 'uuid';
 import ResetPasswordMessage from '@infrastructure/ResetPasswordMessage';
 import SomeoneAdoptedMessage from '@infrastructure/SomeoneAdoptedMessage';
+import VisitConfirmationMessage from '@infrastructure/VisitConfirmationMessage';
 
 const SALT_ROUNDS = 10;
 
@@ -118,7 +119,10 @@ export class UsersService {
     public async login(userLoginParams: UserLoginParams): Promise<ApiKey> {
         const user = await this.userRepository.findOne({ where: { mail: userLoginParams.mail } });
         if (!user) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
-        const organizationUser = await this.organizationUserRepository.findOne(user.id);
+        const organizationUser = await this.organizationUserRepository.findOne({
+            user: { id: user.id },
+            organization: { id: 1 },
+        });
         const role = organizationUser === undefined ? UserType.NORMAL : organizationUser.role;
 
         const match = await bcrypt.compare(userLoginParams.password, user.password);
@@ -217,5 +221,12 @@ export class UsersService {
 
             this.emailService.sendEmail(adopter.mail, message);
         });
+    }
+
+    public async sendVisitConfirmationMessage(adopter: User, petName: string): Promise<void> {
+        const message = new VisitConfirmationMessage(petName, adopter.name as string, adopter.surname as string)
+            .message;
+
+        this.emailService.sendEmail(adopter.mail, message);
     }
 }

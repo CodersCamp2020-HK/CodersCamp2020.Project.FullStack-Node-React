@@ -9,7 +9,7 @@ import {
 } from '@application/UsersService';
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
-import User from '@infrastructure/postgres/User';
+import User, { Email } from '@infrastructure/postgres/User';
 import {
     Body,
     Controller,
@@ -207,5 +207,21 @@ export class UsersController extends Controller {
     ): Promise<void> {
         this.usersService.resetPassword(userResetUUID, newPassword);
         this.setStatus(200);
+    }
+
+    @Post('sendVisitConfirmationMessage')
+    @Response('401', 'Unauthorized')
+    @Response('400', 'Bad request')
+    @SuccessResponse('201', ' Email sended') // Custom success response
+    @Security('jwt', ['admin', 'employee'])
+    public async sendVisitConfirmationEmail(@Query() petName: string, @Query() adopterEmail: Email): Promise<void> {
+        //CHANGE
+        //Pobieranie użytkownika o podanym emailu
+        const adopter = new User();
+        (adopter.name = 'Jan'), (adopter.surname = 'Nowak'), (adopter.mail = adopterEmail);
+        //CHANGE
+
+        await this.usersService.sendVisitConfirmationMessage(adopter, petName);
+        this.setStatus(201);
     }
 }

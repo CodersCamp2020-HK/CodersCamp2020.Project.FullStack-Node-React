@@ -15,13 +15,69 @@
         },
         "license": "MIT",
         "basePath": "/api",
+        "specMerging": "recursive",
         "spec": {
             "servers": [
                 {
                     "url": "http://localhost:8000/api"
                 }
-            ]
-        },
+            ],
+            "paths": {
+                "/animals/{animalId}/photos-upload": {
+                  "post": {
+                    "requestBody": {
+                      "required": true,
+                      "content": {
+                        "multipart/form-data": {
+                          "schema": {
+                            "type": "object",
+                            "properties": {
+                              "photos": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string",
+                                  "format": "binary"
+                                }
+                              }
+                            }
+                          },
+                          "encoding": {
+                            "photos": {
+                              "content-type": "image/png, image/jpeg"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "/animals/{animalId}/thumbnail-upload": {
+                    "post": {
+                      "requestBody": {
+                        "required": true,
+                        "content": {
+                          "multipart/form-data": {
+                            "schema": {
+                              "type": "object",
+                              "properties": {
+                                "thumbnail": {
+                                  "type": "string",
+                                  "format": "binary"
+                                }
+                              }
+                            },
+                            "encoding": {
+                              "photos": {
+                                "content-type": "image/png, image/jpeg"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+        }
+    },
         "securityDefinitions": {
             "jwt": {
                 "type": "apiKey",

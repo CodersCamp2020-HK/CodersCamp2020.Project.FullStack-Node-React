@@ -1,9 +1,10 @@
 import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
+import { AnimalPhoto, AnimalThumbnailPhoto } from '@infrastructure/postgres/AnimalPhoto';
 import Animal from '@infrastructure/postgres/Animal';
 import AnimalAdditionalInfo, { AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { Repository, SelectQueryBuilder } from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
+import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
+import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
 type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
 type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
@@ -24,29 +25,11 @@ interface AnimalQueryParams {
     activeLevel?: AnimalActiveLevel;
 }
 
-type Primitive<T> = T extends Record<string, unknown> ? never : T;
-
-class OptionalWhereSelectQueryBuilder<T> {
-    constructor(
-        public selectQueryBuilder: SelectQueryBuilder<T>,
-        private count: number = 0,
-        private uuid: string = uuidv4(),
-    ) {}
-
-    optAndWhere<P>(condition: string, param: Primitive<P>): OptionalWhereSelectQueryBuilder<T> {
-        if (param !== undefined && param !== null) {
-            const key = `${this.uuid}_${this.count++}`;
-            const query = `${condition} :${key}`;
-            this.selectQueryBuilder = this.selectQueryBuilder.andWhere(query, { [key]: param });
-        }
-        return this;
-    }
-}
-
 export class AnimalsService {
     constructor(
         private animalRepository: Repository<Animal>,
         private animalAdditionalInfo: Repository<AnimalAdditionalInfo>,
+        private animalPhotos: Repository<AnimalPhoto>,
     ) {}
 
     public async get(id: number): Promise<Animal> {
@@ -75,17 +58,17 @@ export class AnimalsService {
         return new OptionalWhereSelectQueryBuilder(
             this.animalRepository
                 .createQueryBuilder('animal')
-                .leftJoinAndSelect('animal.additional_info', 'info')
+                .leftJoinAndSelect('animal.additionalInfo', 'info')
                 .where('animal.id >= :zero', { zero: 0 }),
         )
-            .optAndWhere('animal.ready_for_adoption = ', queryParams.readyForAdoption)
-            .optAndWhere('info.temporary_home = ', queryParams.temporaryHome)
-            .optAndWhere('info.need_donations = ', queryParams.needDonations)
-            .optAndWhere('info.accepts_kids = ', queryParams.acceptsKids)
-            .optAndWhere('info.accepts_other_animals = ', queryParams.acceptsOtherAnimals)
-            .optAndWhere('info.virtual_adoption = ', queryParams.virtualAdoption)
+            .optAndWhere('animal.readyForAdoption = ', queryParams.readyForAdoption)
+            .optAndWhere('info.temporaryHome = ', queryParams.temporaryHome)
+            .optAndWhere('info.needDonations = ', queryParams.needDonations)
+            .optAndWhere('info.acceptsKids = ', queryParams.acceptsKids)
+            .optAndWhere('info.acceptsOtherAnimals = ', queryParams.acceptsOtherAnimals)
+            .optAndWhere('info.virtualAdoption = ', queryParams.virtualAdoption)
             .optAndWhere('info.size = ', queryParams.size)
-            .optAndWhere('info.active_level = ', queryParams.activeLevel)
+            .optAndWhere('info.activeLevel = ', queryParams.activeLevel)
             .optAndWhere('animal.age >= ', queryParams.minAge)
             .optAndWhere('animal.age <= ', queryParams.maxAge)
             .optAndWhere('animal.specie = ', queryParams.specie)
@@ -104,5 +87,46 @@ export class AnimalsService {
         };
 
         return await this.animalRepository.save(updatedAnimal);
+    }
+
+    public async savePhotos(id: number, files: Express.Multer.File[]): Promise<void> {
+        const animal = await this.animalRepository.findOne(id);
+        if (files.length <= 0) {
+            throw new ApiError('Bad Request', 400, 'No photos provided!');
+        }
+        if (animal) {
+            files.forEach(async (file) => {
+                const photo = this.animalPhotos.create({
+                    animal: animal,
+                    buffer: file.buffer,
+                });
+                await this.animalPhotos.save(photo);
+            });
+        } else {
+            throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
+        }
+    }
+
+    public async saveThumbnail(id: number, file: Express.Multer.File): Promise<void> {
+        const photoBuffer = file.buffer;
+        if (!photoBuffer) {
+            throw new ApiError('Bad Request', 400, 'No photo provided!');
+        }
+
+        const animal = await this.animalRepository.findOne(id);
+
+        if (animal) {
+            if (animal.thumbnail) {
+                throw new ApiError('Bad Request', 400, 'Animal already has a thumbnail');
+            }
+
+            const photo = new AnimalThumbnailPhoto();
+            photo.buffer = photoBuffer;
+
+            animal.thumbnail = photo;
+            this.animalRepository.save(animal);
+        } else {
+            throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
+        }
     }
 }
