@@ -6,7 +6,7 @@ import * as faker from 'faker';
 export const seedAnimals = (amount: number): DeepPartial<Animal>[] => {
     const animals: DeepPartial<Animal>[] = [];
     for (let i = 0; i < amount; i++) {
-       // const randomSize = faker.random.arrayElement(Object.values(AnimalSize));
+        // const randomSize = faker.random.arrayElement(Object.values(AnimalSize));
         //const randomActiveLevel = faker.random.arrayElement(Object.values(AnimalActiveLevel));
         //const randomSpecie = faker.random.arrayElement(['cat', 'dog']);
 
@@ -19,7 +19,7 @@ export const seedAnimals = (amount: number): DeepPartial<Animal>[] => {
             }),
             description: faker.lorem.words(20),
             readyForAdoption: faker.random.boolean(),
-            specie: { id: 1 },
+            // specie: { id: 1 },
         });
     }
     return animals;
