@@ -1,8 +1,11 @@
-
-import { AdoptersCount, AnimalSubmissionsService, FormStatus, ChangeStatusForAdoptionFormParams } from '@application/AnimalSubmissionsService';
+import {
+    AdoptersCount,
+    AnimalSubmissionsService,
+    ChangeStatusForAdoptionFormParams,
+} from '@application/AnimalSubmissionsService';
 import ApiError from '@infrastructure/ApiError';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
-import {Body, Put, Get, Query, Route, Tags, Response, SuccessResponse, Controller } from 'tsoa';
+import { Body, Put, Get, Query, Route, Tags, Response, SuccessResponse, Controller } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Adoption Submissions')
