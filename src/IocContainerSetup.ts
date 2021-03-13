@@ -3,6 +3,8 @@ import { Container, Scope } from 'typescript-ioc';
 import { AnimalsService } from '@application/AnimalsService';
 import { UsersService } from '@application/UsersService';
 import { getConnection } from 'typeorm';
+import { AnimalPhoto } from '@infrastructure/postgres/AnimalPhoto';
+import { PhotosService } from '@application/PhotosService';
 import Animal from '@infrastructure/postgres/Animal';
 import User from '@infrastructure/postgres/User';
 import AnimalAdditionalInfo from '@infrastructure/postgres/AnimalAdditionalInfo';
@@ -22,6 +24,7 @@ Container.bind(AnimalsService)
             new AnimalsService(
                 getConnection().getRepository(Animal),
                 getConnection().getRepository(AnimalAdditionalInfo),
+                getConnection().getRepository(AnimalPhoto),
             ),
     )
     .scope(Scope.Local);
@@ -34,6 +37,9 @@ Container.bind(UsersService)
 
 Container.bind(FormService)
     .factory(() => new FormService(getConnection().getRepository(Form)))
+    .scope(Scope.Local);
+Container.bind(PhotosService)
+    .factory(() => new PhotosService())
     .scope(Scope.Local);
 Container.bind(EmailService).factory(() => new EmailService());
 Container.bind(TemporaryUserActivationInfoStore)
@@ -48,6 +54,7 @@ Container.bind(CalendarService).factory(
             getConnection().getRepository(User),
         ),
 );
+
 Container.bind(AnimalSubmissionsService).factory(
     () => new AnimalSubmissionsService(getConnection().getRepository(FormAnimalSubmission)),
 );
