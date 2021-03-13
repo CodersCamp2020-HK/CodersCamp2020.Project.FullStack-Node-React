@@ -26,7 +26,6 @@ export class AnimalSubmissionsService {
     constructor(private animalSubmissionRepository: Repository<FormAnimalSubmission>) {}
 
     public async adoptWillingnessCounter(petName: string): Promise<AdoptersCount> {
-        console.log(petName);
         const count = await this.animalSubmissionRepository
             .createQueryBuilder('submission')
             .select()
