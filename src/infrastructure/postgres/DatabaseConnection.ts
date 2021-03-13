@@ -1,6 +1,5 @@
 import { Connection, createConnection } from 'typeorm';
 import path from 'path';
-//import { Animal } from './Animal';
 
 export const connectToDb = (): Promise<Connection> => {
     return createConnection({
