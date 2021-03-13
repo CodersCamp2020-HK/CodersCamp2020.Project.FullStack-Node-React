@@ -61,6 +61,6 @@ export class AnimalSubmissionsController extends Controller {
     @Response<ApiError>(404, 'Submission Not Found')
     @Get('{id}')
     public async getAnimalSubmission(@Path() id: number): Promise<FormAnimalSubmission> {
-        return this.getAnimalSubmission(id);
+        return this.submissionService.getAnimalSubmission(id);
     }
 }
