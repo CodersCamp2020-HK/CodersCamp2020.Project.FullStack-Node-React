@@ -5,6 +5,8 @@ import { getConnection } from 'typeorm';
 //import Localization from './Localization';
 //import User from './User';
 //import { seedUsers } from './dummyData/users';
+import { seedAnimals } from './dummyData/animals';
+import Animal from './Animal';
 
 export default async function seedDatabase(): Promise<void> {
     //await getConnection().getRepository(Specie).save(species);
@@ -13,4 +15,5 @@ export default async function seedDatabase(): Promise<void> {
     //    .getRepository(User)
     //    .save(await seedUsers(5));
     //await getConnection().getRepository(Localization).save(seedLocalizations(5));
+    await getConnection().getRepository(Animal).save(seedAnimals(5));
 }

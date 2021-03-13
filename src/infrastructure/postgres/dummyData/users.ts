@@ -10,7 +10,11 @@ export const seedUsers = async (amount: number): Promise<DeepPartial<User>[]> =>
         users.push({
             name: faker.name.firstName(),
             surname: faker.name.lastName(),
-            phone: faker.random.number(999999999),
+            phone: faker.random.number({
+                min: 100000000,
+                max: 999999999,
+                precision: 1,
+            }),
             mail: faker.internet.email(),
             password: password,
             activated: faker.random.boolean(),

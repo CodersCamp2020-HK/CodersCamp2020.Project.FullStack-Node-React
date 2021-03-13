@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, OneToMany, ManyToOne } from 'typeorm';
 import AnimalAdditionalInfo from './AnimalAdditionalInfo';
 import { AnimalPhoto, AnimalThumbnailPhoto } from './AnimalPhoto';
 import Goal from './Goal';
@@ -29,8 +29,7 @@ export default class Animal {
     /**
      * The animal's spieces (cat/dog) used to register its in database.
      */
-    @OneToOne(() => Specie, { cascade: true })
-    @JoinColumn()
+    @ManyToOne(() => Specie, (specie) => specie.animals)
     specie!: Specie;
 
     /**
