@@ -27,9 +27,12 @@ export interface AdoptersCount {
 }
 
 interface getAllAnimalSubmissionsParams {
-    date?: Date;
+    submissionDate?: Date;
     specie?: string;
     status?: AnimalFormStatus;
+    animalName?: string;
+    userName?: string;
+    reviewerName?: string;
 }
 
 export interface ChangeStatusForAdoptionFormParams {
@@ -67,7 +70,7 @@ export class AnimalSubmissionsService {
             .optAndWhere('submission.submissionDate = ', queryParams.submissionDate)
             .optAndWhere('animal.name = ', queryParams.animalName)
             .optAndWhere('animal.specie = ', queryParams.specie)
-            .optAndWhere('applicant.name = ', queryParams.userName)
+            .optAndWhere('apllicant.name = ', queryParams.userName)
             .optAndWhere('reviewer.name = ', queryParams.reviewerName)
             .selectQueryBuilder.getMany();
 
