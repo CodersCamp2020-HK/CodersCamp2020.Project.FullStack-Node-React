@@ -27,9 +27,12 @@ export interface AdoptersCount {
 }
 
 interface getAllAnimalSubmissionsParams {
-    date?: Date;
+    submissionDate?: Date;
     specie?: string;
     status?: AnimalFormStatus;
+    animalName?: string;
+    userName?: string;
+    reviewerName?: string;
 }
 
 export interface ChangeStatusForAdoptionFormParams {
