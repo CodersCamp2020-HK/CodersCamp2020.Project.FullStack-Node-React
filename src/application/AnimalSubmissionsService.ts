@@ -9,6 +9,15 @@ export enum FormStatus {
     ACCEPTED = 'accepted',
 }
 
+interface getAllAnimalSubmissionsParams {
+    specie?: string;
+    submissionDate?: Date;
+    status?: AnimalFormStatus;
+    animalName?: string;
+    userName?: string;
+    reviewerName?: string;
+}
+
 /**
  * Show the number of adopters wanting to adopt given animal
  */
@@ -45,17 +54,24 @@ export class AnimalSubmissionsService {
             count,
         };
     }
+
     public async getAllAnimalSubmissions(queryParams: getAllAnimalSubmissionsParams): Promise<FormAnimalSubmission[]> {
         const submissions = await new OptionalWhereSelectQueryBuilder(
-            this.animalSubmissionRepository.createQueryBuilder('submission'),
+            this.animalSubmissionRepository
+                .createQueryBuilder('submission')
+                .leftJoinAndSelect('submission.animal', 'animal')
+                .leftJoinAndSelect('submission.applicant', 'applicant')
+                .leftJoinAndSelect('submission.reviewer', 'reviewer'),
         )
             .optAndWhere('submission.status = ', queryParams.status)
-            .optAndWhere('submission.status = ', queryParams.date)
-            .optAndWhere('submission.status = ', queryParams.specie)
+            .optAndWhere('submission.submissionDate = ', queryParams.submissionDate)
+            .optAndWhere('animal.name = ', queryParams.animalName)
+            .optAndWhere('animal.specie = ', queryParams.specie)
+            .optAndWhere('applicant.name = ', queryParams.userName)
+            .optAndWhere('reviewer.name = ', queryParams.reviewerName)
             .selectQueryBuilder.getMany();
 
         if (submissions.length === 0) throw new ApiError('Not Found', 404, 'Submissions not found');
-
         return submissions;
     }
 

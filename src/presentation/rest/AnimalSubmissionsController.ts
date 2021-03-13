@@ -1,11 +1,7 @@
-import {
-    AdoptersCount,
-    AnimalSubmissionsService,
-    ChangeStatusForAdoptionFormParams,
-} from '@application/AnimalSubmissionsService';
+import { AdoptersCount, AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
 import ApiError from '@infrastructure/ApiError';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
-import { Body, Put, Get, Query, Route, Tags, Response, SuccessResponse, Controller } from 'tsoa';
+import { Get, Query, Route, Tags, Response, SuccessResponse, Controller } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Adoption Submissions')
@@ -18,17 +14,20 @@ export class AnimalSubmissionsController extends Controller {
     @Get()
     public async getAllAnimalSubmissions(
         @Query() status?: AnimalFormStatus,
-        @Query() date?: Date,
+        @Query() submissionDate?: Date,
         @Query() specie?: string,
+        @Query() animalName?: string,
+        @Query() userName?: string,
+        @Query() reviewerName?: string,
     ): Promise<FormAnimalSubmission[]> {
-        return this.submissionService.getAllAnimalSubmissions({ status, date, specie });
-    }
-
-    @Put('changeAdoptionFormStatus')
-    public async changeFormStatusForAdoption(
-        @Body() changeStatusParams: ChangeStatusForAdoptionFormParams,
-    ): Promise<void> {
-        await this.submissionService.changeStatusForAdoptionForm(changeStatusParams);
+        return this.submissionService.getAllAnimalSubmissions({
+            status,
+            submissionDate,
+            animalName,
+            specie,
+            userName,
+            reviewerName,
+        });
     }
     /**
      * Get number of adopters wanting to adopt given animal
