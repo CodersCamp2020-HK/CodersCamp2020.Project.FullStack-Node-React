@@ -5,7 +5,7 @@ import {
 } from '@application/AnimalSubmissionsService';
 import ApiError from '@infrastructure/ApiError';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
-import { Body, Put, Get, Query, Route, Tags, Response, SuccessResponse, Controller } from 'tsoa';
+import { Body, Put, Get, Query, Route, Tags, Response, SuccessResponse, Controller, Path } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Adoption Submissions')
@@ -30,6 +30,7 @@ export class AnimalSubmissionsController extends Controller {
     ): Promise<void> {
         await this.submissionService.changeStatusForAdoptionForm(changeStatusParams);
     }
+
     /**
      * Get number of adopters wanting to adopt given animal
      * @param petName pet name which adopters want to adopt
@@ -40,5 +41,11 @@ export class AnimalSubmissionsController extends Controller {
     public async getAllWillignessesToAdoptCount(@Query() petName: string): Promise<AdoptersCount> {
         this.setStatus(200);
         return this.submissionService.adoptWillingnessCounter(petName);
+    }
+
+    @Response<ApiError>(404, 'Submission Not Found')
+    @Get('{id}')
+    public async getAnimalSubmission(@Path() id: number): Promise<FormAnimalSubmission> {
+        return this.getAnimalSubmission(id);
     }
 }
