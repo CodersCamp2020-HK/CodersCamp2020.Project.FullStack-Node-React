@@ -37,7 +37,7 @@ export class VolunteerSubmissionsController {
      */
     @Response<ApiError>(404, 'Submission Not Found')
     @Get('{id}')
-    public async getAnimalSubmission(@Path() id: number): Promise<FormVolunteerSubmission> {
+    public async getVolunteerSubmission(@Path() id: number): Promise<FormVolunteerSubmission> {
         return this.submissionService.getVolunteerSubmission(id);
     }
 }
