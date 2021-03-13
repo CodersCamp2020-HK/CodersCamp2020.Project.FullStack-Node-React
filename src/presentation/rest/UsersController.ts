@@ -40,6 +40,8 @@ import { Request as ExRequest } from 'express';
 import { EmailService } from '@infrastructure/EmailService';
 import { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
 import ActivationMessage from '@infrastructure/ActivationMessage';
+import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
+import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
@@ -48,6 +50,9 @@ export class UsersController extends Controller {
 
     @Inject
     private emailService!: EmailService;
+
+    @Inject
+    private animalSubmissionsService!: AnimalSubmissionsService;
 
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
@@ -97,7 +102,7 @@ export class UsersController extends Controller {
         this.setStatus(200);
     }
 
-    @Post('{userId}/sendactivationlink')
+    @Post('{userId}/sendActivationLink')
     @SuccessResponse('200', 'Sent')
     public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
         try {
@@ -115,6 +120,25 @@ export class UsersController extends Controller {
         }
 
         return;
+    }
+
+    @Post('sendSomeoneAdoptedEmails')
+    @Response('401', 'Unauthorized')
+    @Response('400', 'Bad request')
+    @SuccessResponse('201', ' Email sended') // Custom success response
+    @Security('jwt', ['admin', 'employee'])
+    public async sendSomeoneAdoptedEmails(@Query() petName: string): Promise<void> {
+        const submissions = await this.animalSubmissionsService.getAllAnimalSubmissions({
+            animalName: petName,
+            status: AnimalFormStatus.REJECTED,
+        });
+
+        const adopters = submissions.map((submission) => {
+            return submission.applicant;
+        });
+
+        await this.usersService.sendSomeoneAdoptedEmails(adopters, petName);
+        this.setStatus(201);
     }
 
     /** Supply the unique user ID and delete user with corresponding id from database
@@ -163,7 +187,7 @@ export class UsersController extends Controller {
     @Response<ApiError>(400, 'Bad Request')
     @SuccessResponse('200', 'Email send')
     @Post('reset')
-    public async snedResetPasswordMail(
+    public async sendResetPasswordMail(
         @Body() email: EmailResetPassword,
         @Request() request: ExRequest,
     ): Promise<void> {

@@ -11,6 +11,7 @@ import { EmailService } from '@infrastructure/EmailService';
 import TemporaryUserActivationInfoStore, { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
 import { v4 as uuidv4 } from 'uuid';
 import ResetPasswordMessage from '@infrastructure/ResetPasswordMessage';
+import SomeoneAdoptedMessage from '@infrastructure/SomeoneAdoptedMessage';
 import VisitConfirmationMessage from '@infrastructure/VisitConfirmationMessage';
 
 const SALT_ROUNDS = 10;
@@ -207,6 +208,19 @@ export class UsersService {
         const hash = await bcrypt.hash(password, SALT_ROUNDS);
         user.password = hash;
         this.userRepository.save(user);
+    }
+
+    public async sendSomeoneAdoptedEmails(adopters: User[], petName: string): Promise<void> {
+        if (adopters.length <= 0) {
+            throw new ApiError('Bad Request', 400, 'No data provided');
+        }
+
+        adopters.forEach((adopter) => {
+            const message = new SomeoneAdoptedMessage(petName, adopter.name as string, adopter.surname as string)
+                .message;
+
+            this.emailService.sendEmail(adopter.mail, message);
+        });
     }
 
     public async sendVisitConfirmationMessage(adopter: User, petName: string): Promise<void> {
