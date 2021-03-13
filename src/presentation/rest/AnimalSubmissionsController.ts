@@ -29,6 +29,7 @@ export class AnimalSubmissionsController extends Controller {
             reviewerName,
         });
     }
+
     /**
      * Get number of adopters wanting to adopt given animal
      * @param petName pet name which adopters want to adopt
