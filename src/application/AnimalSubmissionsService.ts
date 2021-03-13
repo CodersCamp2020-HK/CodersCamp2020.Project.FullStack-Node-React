@@ -9,6 +9,9 @@ export enum FormStatus {
     ACCEPTED = 'accepted',
 }
 
+/**
+ * Show the number of adopters wanting to adopt given animal
+ */
 export interface AdoptersCount {
     description: string;
     count: number;
@@ -34,7 +37,7 @@ export class AnimalSubmissionsService {
         return {
             description: 'Adopters willing to adopt a given animal',
             count,
-        }
+        };
     }
     public async getAllAnimalSubmissions(queryParams: getAllAnimalSubmissionsParams): Promise<FormAnimalSubmission[]> {
         const submissions = await new OptionalWhereSelectQueryBuilder(
