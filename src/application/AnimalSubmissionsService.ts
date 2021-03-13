@@ -70,7 +70,7 @@ export class AnimalSubmissionsService {
             .optAndWhere('submission.submissionDate = ', queryParams.submissionDate)
             .optAndWhere('animal.name = ', queryParams.animalName)
             .optAndWhere('animal.specie = ', queryParams.specie)
-            .optAndWhere('apllicant.name = ', queryParams.userName)
+            .optAndWhere('applicant.name = ', queryParams.userName)
             .optAndWhere('reviewer.name = ', queryParams.reviewerName)
             .selectQueryBuilder.getMany();
 
