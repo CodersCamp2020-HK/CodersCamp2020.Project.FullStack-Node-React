@@ -46,4 +46,14 @@ export class VolunteerSubmissionsService {
 
         return submissions;
     }
+
+    public async getVolunteerSubmission(id: number): Promise<FormVolunteerSubmission> {
+        const submission = await this.volunteerSubmissionRepository.findOne(id, {
+            relations: ['user', 'step', 'reviewer', 'answers'],
+        });
+
+        if (!submission) throw new ApiError('Not Found', 404, `Submission with ${id} not found`);
+
+        return submission;
+    }
 }
