@@ -15,6 +15,8 @@ import { EmailService } from '@infrastructure/EmailService';
 import TemporaryUserActivationInfoStore from '@infrastructure/TemporaryUserActivationInfoStore';
 import { CalendarService } from '@application/CalendarService';
 import Calendar from '@infrastructure/postgres/Calendar';
+import FormVolunteerSubmission from '@infrastructure/postgres/FormVolunteerSubmission';
+import { VolunteerSubmissionsService } from '@application/VolunteerSubmissionsService';
 import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
 import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
 import { WinstonLogger } from '@infrastructure/WinstonLogger';
@@ -59,6 +61,10 @@ Container.bind(CalendarService).factory(
 Container.bind(AnimalSubmissionsService).factory(
     () => new AnimalSubmissionsService(getConnection().getRepository(FormAnimalSubmission)),
 );
+Container.bind(VolunteerSubmissionsService).factory(
+    () => new VolunteerSubmissionsService(getConnection().getRepository(FormVolunteerSubmission)),
+);
+
 Container.bind(WinstonLogger).to(WinstonLogger).scope(Scope.Singleton);
 
 export { Container };

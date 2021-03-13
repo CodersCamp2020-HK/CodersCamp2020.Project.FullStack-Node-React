@@ -5,7 +5,7 @@ import FormAnimalAnswer from './FormAnimalAnswer';
 import OrganizationUser from './OrganizationUser';
 import User from './User';
 
-enum AnimalFormStatus {
+export enum AnimalFormStatus {
     IN_PROGRESS = 'in progress',
     REJECTED = 'rejected',
     ACCEPTED = 'accepted',
