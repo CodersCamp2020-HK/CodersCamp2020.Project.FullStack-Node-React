@@ -8,8 +8,8 @@ import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission'
 import { Body, Get, Put, Query, Route, Tags, Response } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
-@Tags('Submissions')
-@Route('submissions')
+@Tags('Adoption Submissions')
+@Route('adoptionSubmissions')
 export class AnimalSubmissionsController {
     @Inject
     private submissionService!: AnimalSubmissionsService;

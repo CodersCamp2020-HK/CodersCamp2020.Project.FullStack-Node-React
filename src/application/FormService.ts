@@ -2,29 +2,14 @@ import Form from '@infrastructure/postgres/Form';
 import FormQuestion from '@infrastructure/postgres/FormQuestion';
 import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
-import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
 
 export interface FormCreationParams {
     name: string;
     questions: Omit<FormQuestion, 'id' | 'form'>[];
 }
 
-export enum SubmissionType {
-    ADOPTION = 'adoption',
-    VOLUNTEER = 'volunteer',
-}
-
-export interface ChangeStatusForVolunterFormParams {
-    status: VolunteerFormStatus;
-    userId: number;
-}
-
 export class FormService {
-    constructor(
-        private formRepository: Repository<Form>,
-        private volunteerSubmissionRepository: Repository<FormVolunteerSubmission>,
-        private animalSubmissionRepository: Repository<FormAnimalSubmission>,
-    ) {}
+    constructor(private formRepository: Repository<Form>) {}
 
     public async create(formCreationParams: FormCreationParams): Promise<void> {
         const form = this.formRepository.create(formCreationParams);
@@ -41,15 +26,5 @@ export class FormService {
         const form = await this.formRepository.find({ relations: ['questions'] });
         if (!form) throw new ApiError('Not Found', 404, 'Surveys not found in database');
         return form;
-    }
-
-    public async changeStatusForVolunteerForm(changeStatusParams: ChangeStatusForVolunterFormParams): Promise<void> {
-        await this.volunteerSubmissionRepository
-            .createQueryBuilder()
-            .update()
-            .set({ status: changeStatusParams.status })
-            .where('userId = :id', { id: changeStatusParams.userId })
-            .execute();
-        return;
     }
 }
