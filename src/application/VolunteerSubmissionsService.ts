@@ -8,6 +8,13 @@ export interface ChangeStatusForVolunterFormParams {
     userId: number;
 }
 
+interface SubmissionQueryParams {
+    submissionDate?: Date;
+    status?: VolunteerFormStatus;
+    userName?: string;
+    reviewerName?: string;
+}
+
 export class VolunteerSubmissionsService {
     constructor(private volunteerSubmissionRepository: Repository<FormVolunteerSubmission>) {}
 
@@ -21,14 +28,19 @@ export class VolunteerSubmissionsService {
         return;
     }
 
-    public async getAllSubmissions(): Promise<FormVolunteerSubmission[]> {
+    public async getAllSubmissions(queryParams: SubmissionQueryParams): Promise<FormVolunteerSubmission[]> {
         const submissions = await new OptionalWhereSelectQueryBuilder(
             this.volunteerSubmissionRepository
                 .createQueryBuilder('submission')
                 .leftJoinAndSelect('submission.user', 'user')
                 .leftJoinAndSelect('submission.reviewer', 'reviewer')
                 .leftJoinAndSelect('submission.answers', 'answers'),
-        ).selectQueryBuilder.getMany();
+        )
+            .optAndWhere('submission.status = ', queryParams.status)
+            .optAndWhere('submission.submissionDate = ', queryParams.submissionDate)
+            .optAndWhere('user.name = ', queryParams.userName)
+            .optAndWhere('reviewer.name = ', queryParams.reviewerName)
+            .selectQueryBuilder.getMany();
 
         if (submissions.length === 0) throw new ApiError('Not Found', 404, 'Submissions not found');
 
