@@ -7,7 +7,7 @@ import { Inject } from 'typescript-ioc';
 
 @Tags('Volunteer Submissions')
 @Route('volunteerSubmissions')
-export class AnimalSubmissionsController {
+export class VolunteerSubmissionsController {
     @Inject
     private submissionService!: VolunteerSubmissionsService;
 

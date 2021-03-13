@@ -3,16 +3,10 @@ import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
-export enum FormStatus {
-    IN_PROGRESS = 'inProgress',
-    REJECTED = 'rejected',
-    ACCEPTED = 'accepted',
-}
-
 interface getAllAnimalSubmissionsParams {
     date?: Date;
     specie?: string;
-    status?: FormStatus;
+    status?: AnimalFormStatus;
 }
 
 export interface ChangeStatusForAdoptionFormParams {

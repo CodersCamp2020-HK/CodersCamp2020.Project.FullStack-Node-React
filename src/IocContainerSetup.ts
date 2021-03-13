@@ -16,6 +16,7 @@ import TemporaryUserActivationInfoStore from '@infrastructure/TemporaryUserActiv
 import { CalendarService } from '@application/CalendarService';
 import Calendar from '@infrastructure/postgres/Calendar';
 import FormVolunteerSubmission from '@infrastructure/postgres/FormVolunteerSubmission';
+import { VolunteerSubmissionsService } from '@application/VolunteerSubmissionsService';
 import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
 import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
 
@@ -37,14 +38,7 @@ Container.bind(UsersService)
     .scope(Scope.Local);
 
 Container.bind(FormService)
-    .factory(
-        () =>
-            new FormService(
-                getConnection().getRepository(Form),
-                getConnection().getRepository(FormVolunteerSubmission),
-                getConnection().getRepository(FormAnimalSubmission),
-            ),
-    )
+    .factory(() => new FormService(getConnection().getRepository(Form)))
     .scope(Scope.Local);
 Container.bind(PhotosService)
     .factory(() => new PhotosService())
@@ -65,4 +59,7 @@ Container.bind(CalendarService).factory(
 
 Container.bind(AnimalSubmissionsService).factory(
     () => new AnimalSubmissionsService(getConnection().getRepository(FormAnimalSubmission)),
+);
+Container.bind(VolunteerSubmissionsService).factory(
+    () => new VolunteerSubmissionsService(getConnection().getRepository(FormVolunteerSubmission)),
 );

@@ -1,12 +1,6 @@
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
 import { Repository } from 'typeorm';
 
-export enum FormStatus {
-    IN_PROGRESS = 'inProgress',
-    REJECTED = 'rejected',
-    ACCEPTED = 'accepted',
-}
-
 export interface ChangeStatusForVolunterFormParams {
     status: VolunteerFormStatus;
     userId: number;
