@@ -1,5 +1,5 @@
 import ApiError from '@infrastructure/ApiError';
-import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
+import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
@@ -13,6 +13,12 @@ interface getAllAnimalSubmissionsParams {
     date?: Date;
     specie?: string;
     status?: FormStatus;
+}
+
+export interface ChangeStatusForAdoptionFormParams {
+    status: AnimalFormStatus;
+    userId: number;
+    animalId: number;
 }
 
 export class AnimalSubmissionsService {
@@ -30,5 +36,16 @@ export class AnimalSubmissionsService {
         if (submissions.length === 0) throw new ApiError('Not Found', 404, 'Submissions not found');
 
         return submissions;
+    }
+
+    public async changeStatusForAdoptionForm(changeStatusParams: ChangeStatusForAdoptionFormParams): Promise<void> {
+        await this.animalSubmissionRepository
+            .createQueryBuilder()
+            .update()
+            .set({ status: changeStatusParams.status })
+            .where('applicantId = :id', { id: changeStatusParams.userId })
+            .andWhere('animalId = :id', { id: changeStatusParams.animalId })
+            .execute();
+        return;
     }
 }

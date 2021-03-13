@@ -42,10 +42,4 @@ export class FormController extends Controller {
         await this.formService.changeStatusForVolunteerForm(changeStatusParams);
     }
 
-    @Put('changeAdoptionFormStatus')
-    public async changeFormStatusForAdoption(
-        @Body() changeStatusParams: ChangeStatusForAdoptionFormParams,
-    ): Promise<void> {
-        await this.formService.changeStatusForAdoptionForm(changeStatusParams);
-    }
 }

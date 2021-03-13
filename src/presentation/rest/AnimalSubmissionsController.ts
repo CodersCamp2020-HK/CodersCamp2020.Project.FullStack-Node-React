@@ -1,7 +1,11 @@
-import { AnimalSubmissionsService, FormStatus } from '@application/AnimalSubmissionsService';
+import {
+    AnimalSubmissionsService,
+    FormStatus,
+    ChangeStatusForAdoptionFormParams,
+} from '@application/AnimalSubmissionsService';
 import ApiError from '@infrastructure/ApiError';
 import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
-import { Get, Query, Route, Tags, Response } from 'tsoa';
+import { Body, Get, Put, Query, Route, Tags, Response } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Submissions')
@@ -18,5 +22,12 @@ export class AnimalSubmissionsController {
         @Query() specie?: string,
     ): Promise<FormAnimalSubmission[]> {
         return this.submissionService.getAllAnimalSubmissions({ status, date, specie });
+    }
+
+    @Put('changeAdoptionFormStatus')
+    public async changeFormStatusForAdoption(
+        @Body() changeStatusParams: ChangeStatusForAdoptionFormParams,
+    ): Promise<void> {
+        await this.submissionService.changeStatusForAdoptionForm(changeStatusParams);
     }
 }

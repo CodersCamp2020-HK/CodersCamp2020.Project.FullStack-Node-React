@@ -3,7 +3,6 @@ import FormQuestion from '@infrastructure/postgres/FormQuestion';
 import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
-import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
 
 export interface FormCreationParams {
     name: string;
@@ -18,12 +17,6 @@ export enum SubmissionType {
 export interface ChangeStatusForVolunterFormParams {
     status: VolunteerFormStatus;
     userId: number;
-}
-
-export interface ChangeStatusForAdoptionFormParams {
-    status: VolunteerFormStatus;
-    userId: number;
-    animalId: number;
 }
 
 export class FormService {
@@ -56,17 +49,6 @@ export class FormService {
             .update()
             .set({ status: changeStatusParams.status })
             .where('userId = :id', { id: changeStatusParams.userId })
-            .execute();
-        return;
-    }
-
-    public async changeStatusForAdoptionForm(changeStatusParams: ChangeStatusForAdoptionFormParams): Promise<void> {
-        await this.animalSubmissionRepository
-            .createQueryBuilder()
-            .update()
-            .set({ status: changeStatusParams.status })
-            .where('applicantId = :id', { id: changeStatusParams.userId })
-            .andWhere('animalId = :id', { id: changeStatusParams.animalId })
             .execute();
         return;
     }
