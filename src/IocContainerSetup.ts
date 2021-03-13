@@ -19,6 +19,7 @@ import FormVolunteerSubmission from '@infrastructure/postgres/FormVolunteerSubmi
 import { VolunteerSubmissionsService } from '@application/VolunteerSubmissionsService';
 import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
 import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
+import { WinstonLogger } from '@infrastructure/WinstonLogger';
 
 Container.bind(AnimalsService)
     .factory(
@@ -63,3 +64,7 @@ Container.bind(AnimalSubmissionsService).factory(
 Container.bind(VolunteerSubmissionsService).factory(
     () => new VolunteerSubmissionsService(getConnection().getRepository(FormVolunteerSubmission)),
 );
+
+Container.bind(WinstonLogger).to(WinstonLogger).scope(Scope.Singleton);
+
+export { Container };

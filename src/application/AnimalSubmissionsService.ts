@@ -3,6 +3,20 @@ import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
+export enum FormStatus {
+    IN_PROGRESS = 'inProgress',
+    REJECTED = 'rejected',
+    ACCEPTED = 'accepted',
+}
+
+/**
+ * Show the number of adopters wanting to adopt given animal
+ */
+export interface AdoptersCount {
+    description: string;
+    count: number;
+}
+
 interface getAllAnimalSubmissionsParams {
     date?: Date;
     specie?: string;
@@ -18,6 +32,19 @@ export interface ChangeStatusForAdoptionFormParams {
 export class AnimalSubmissionsService {
     constructor(private animalSubmissionRepository: Repository<FormAnimalSubmission>) {}
 
+    public async adoptWillingnessCounter(petName: string): Promise<AdoptersCount> {
+        const count = await this.animalSubmissionRepository
+            .createQueryBuilder('submission')
+            .select()
+            .leftJoinAndSelect('submission.animal', 'animal')
+            .where('animal.name = :petName', { petName: petName })
+            .getCount();
+
+        return {
+            description: 'Adopters willing to adopt a given animal',
+            count,
+        };
+    }
     public async getAllAnimalSubmissions(queryParams: getAllAnimalSubmissionsParams): Promise<FormAnimalSubmission[]> {
         const submissions = await new OptionalWhereSelectQueryBuilder(
             this.animalSubmissionRepository.createQueryBuilder('submission'),

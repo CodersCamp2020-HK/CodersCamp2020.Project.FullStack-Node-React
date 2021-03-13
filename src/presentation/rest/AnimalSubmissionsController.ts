@@ -1,12 +1,13 @@
-import { AnimalSubmissionsService, ChangeStatusForAdoptionFormParams } from '@application/AnimalSubmissionsService';
+
+import { AdoptersCount, AnimalSubmissionsService, FormStatus, ChangeStatusForAdoptionFormParams } from '@application/AnimalSubmissionsService';
 import ApiError from '@infrastructure/ApiError';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
-import { Body, Get, Put, Query, Route, Tags, Response } from 'tsoa';
+import {Body, Put, Get, Query, Route, Tags, Response, SuccessResponse, Controller } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Adoption Submissions')
 @Route('adoptionSubmissions')
-export class AnimalSubmissionsController {
+export class AnimalSubmissionsController extends Controller {
     @Inject
     private submissionService!: AnimalSubmissionsService;
 
@@ -25,5 +26,16 @@ export class AnimalSubmissionsController {
         @Body() changeStatusParams: ChangeStatusForAdoptionFormParams,
     ): Promise<void> {
         await this.submissionService.changeStatusForAdoptionForm(changeStatusParams);
+    }
+    /**
+     * Get number of adopters wanting to adopt given animal
+     * @param petName pet name which adopters want to adopt
+     */
+    @Response('500', 'Internal Server Error')
+    @SuccessResponse('200', 'Ok')
+    @Get('allWillignessesToAdoptCount')
+    public async getAllWillignessesToAdoptCount(@Query() petName: string): Promise<AdoptersCount> {
+        this.setStatus(200);
+        return this.submissionService.adoptWillingnessCounter(petName);
     }
 }
