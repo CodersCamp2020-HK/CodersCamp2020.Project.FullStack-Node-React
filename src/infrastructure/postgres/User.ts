@@ -7,6 +7,7 @@ import FormAnimalSubmission from './FormAnimalSubmission';
 import OrganizationUser from './OrganizationUser';
 import VolunteerHireStep from './VolunteerHireStep';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
+import Calendar from './Calendar';
 
 /**
  * User Type
@@ -104,4 +105,7 @@ export default class User {
 
     @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, { cascade: true })
     volunteerSubmission!: FormVolunteerSubmission[];
+
+    @OneToMany(() => Calendar, (calendar) => calendar.user)
+    meetings!: Calendar[];
 }
