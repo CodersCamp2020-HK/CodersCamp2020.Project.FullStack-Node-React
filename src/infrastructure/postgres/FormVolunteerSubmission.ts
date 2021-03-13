@@ -4,7 +4,7 @@ import OrganizationUser from './OrganizationUser';
 import User from './User';
 import VolunteerHireStep from './VolunteerHireStep';
 
-export enum VolunterFormStatus {
+export enum VolunteerFormStatus {
     IN_PROGRESS = 'in progress',
     REJECTED = 'rejected',
     ACCEPTED = 'accepted',
@@ -19,7 +19,7 @@ export default class FormVolunteerSubmission {
     @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { primary: true, nullable: false })
     step!: VolunteerHireStep;
 
-    @Column({ type: 'enum', enum: VolunterFormStatus })
+    @Column({ type: 'enum', enum: VolunteerFormStatus })
     status!: string;
 
     @Column({ nullable: true, default: null })

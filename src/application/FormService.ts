@@ -2,7 +2,7 @@ import Form from '@infrastructure/postgres/Form';
 import FormQuestion from '@infrastructure/postgres/FormQuestion';
 import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
-import FormVolunteerSubmission, { VolunterFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
+import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
 import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
 
 export interface FormCreationParams {
@@ -16,12 +16,12 @@ export enum SubmissionType {
 }
 
 export interface ChangeStatusForVolunterFormParams {
-    status: VolunterFormStatus;
+    status: VolunteerFormStatus;
     userId: number;
 }
 
 export interface ChangeStatusForAdoptionFormParams {
-    status: VolunterFormStatus;
+    status: VolunteerFormStatus;
     userId: number;
     animalId: number;
 }

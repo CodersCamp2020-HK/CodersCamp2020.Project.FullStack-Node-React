@@ -96,7 +96,7 @@ export default class User {
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.applicant, { nullable: true })
     animalSubmissions!: FormAnimalSubmission[];
 
-    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, { cascade: true })
+    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, { cascade: true, nullable: true })
     organizationUsers!: OrganizationUser[];
 
     @OneToMany(() => VolunteerHireStep, (step) => step.user, { cascade: true })

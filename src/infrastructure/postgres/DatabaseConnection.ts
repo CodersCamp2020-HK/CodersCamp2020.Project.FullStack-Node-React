@@ -10,5 +10,6 @@ export const connectToDb = (): Promise<Connection> => {
         entities: [path.resolve(__dirname, './*{.ts,.js}')],
         synchronize: true,
         logging: 'all',
+        logger: 'file',
     });
 };

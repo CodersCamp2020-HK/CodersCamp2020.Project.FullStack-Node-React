@@ -3,6 +3,8 @@ import { Container, Scope } from 'typescript-ioc';
 import { AnimalsService } from '@application/AnimalsService';
 import { UsersService } from '@application/UsersService';
 import { getConnection } from 'typeorm';
+import { AnimalPhoto } from '@infrastructure/postgres/AnimalPhoto';
+import { PhotosService } from '@application/PhotosService';
 import Animal from '@infrastructure/postgres/Animal';
 import User from '@infrastructure/postgres/User';
 import AnimalAdditionalInfo from '@infrastructure/postgres/AnimalAdditionalInfo';
@@ -14,6 +16,7 @@ import TemporaryUserActivationInfoStore from '@infrastructure/TemporaryUserActiv
 import { CalendarService } from '@application/CalendarService';
 import Calendar from '@infrastructure/postgres/Calendar';
 import FormVolunteerSubmission from '@infrastructure/postgres/FormVolunteerSubmission';
+import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
 import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
 
 Container.bind(AnimalsService)
@@ -22,6 +25,7 @@ Container.bind(AnimalsService)
             new AnimalsService(
                 getConnection().getRepository(Animal),
                 getConnection().getRepository(AnimalAdditionalInfo),
+                getConnection().getRepository(AnimalPhoto),
             ),
     )
     .scope(Scope.Local);
@@ -42,6 +46,9 @@ Container.bind(FormService)
             ),
     )
     .scope(Scope.Local);
+Container.bind(PhotosService)
+    .factory(() => new PhotosService())
+    .scope(Scope.Local);
 Container.bind(EmailService).factory(() => new EmailService());
 Container.bind(TemporaryUserActivationInfoStore)
     .factory(() => new TemporaryUserActivationInfoStore(120))
@@ -54,4 +61,8 @@ Container.bind(CalendarService).factory(
             getConnection().getRepository(Animal),
             getConnection().getRepository(User),
         ),
+);
+
+Container.bind(AnimalSubmissionsService).factory(
+    () => new AnimalSubmissionsService(getConnection().getRepository(FormAnimalSubmission)),
 );
