@@ -40,6 +40,8 @@ import { Request as ExRequest } from 'express';
 import { EmailService } from '@infrastructure/EmailService';
 import { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
 import ActivationMessage from '@infrastructure/ActivationMessage';
+import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
+import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
@@ -48,6 +50,9 @@ export class UsersController extends Controller {
 
     @Inject
     private emailService!: EmailService;
+
+    @Inject
+    private animalSubmissionsService!: AnimalSubmissionsService;
 
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
@@ -123,17 +128,14 @@ export class UsersController extends Controller {
     @SuccessResponse('201', ' Email sended') // Custom success response
     @Security('jwt', ['admin', 'employee'])
     public async sendSomeoneAdoptedEmails(@Query() petName: string): Promise<void> {
+        const submissions = await this.animalSubmissionsService.getAllAnimalSubmissions({
+            animalName: petName,
+            status: AnimalFormStatus.REJECTED,
+        });
 
-        //CHANGE
-        //Pobieranie wszystkich użytkowników którzy chcieli adoptowac dane zwierzę
-        const adopter = new User();
-        (adopter.name = 'Jan'), (adopter.surname = 'Nowak'), (adopter.mail = 'asd@asd.asd');
-
-        const adopter2 = new User();
-        (adopter2.name = 'Adam'), (adopter2.surname = 'Nowak'), (adopter2.mail = 'zxc@asd.asd');
-
-        const adopters = [adopter, adopter2];
-        //CHANGE
+        const adopters = submissions.map((submission) => {
+            return submission.applicant;
+        });
 
         await this.usersService.sendSomeoneAdoptedEmails(adopters, petName);
         this.setStatus(201);
