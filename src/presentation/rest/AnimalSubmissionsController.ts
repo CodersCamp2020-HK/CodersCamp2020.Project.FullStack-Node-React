@@ -18,10 +18,20 @@ export class AnimalSubmissionsController extends Controller {
     @Get()
     public async getAllAnimalSubmissions(
         @Query() status?: AnimalFormStatus,
-        @Query() date?: Date,
+        @Query() submissionDate?: Date,
         @Query() specie?: string,
+        @Query() animalName?: string,
+        @Query() userName?: string,
+        @Query() reviewerName?: string,
     ): Promise<FormAnimalSubmission[]> {
-        return this.submissionService.getAllAnimalSubmissions({ status, date, specie });
+        return this.submissionService.getAllAnimalSubmissions({
+            status,
+            submissionDate,
+            animalName,
+            specie,
+            userName,
+            reviewerName,
+        });
     }
 
     @Put('changeAdoptionFormStatus')
