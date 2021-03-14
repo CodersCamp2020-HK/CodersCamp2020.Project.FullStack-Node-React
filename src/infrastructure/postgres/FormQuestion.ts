@@ -3,19 +3,15 @@ import Form from './Form';
 import FormAnimalAnswer from './FormAnimalAnswer';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
 
-interface TextAnswer {
-    placeholder: string;
+export enum AnswerType {
+    CHECKBOX = 'checkbox',
+    RADIO = 'radio',
+    TEXT = 'text',
 }
-
-interface EnumAnswer {
-    values: string[];
-}
-
-type FormType = 'TextAnswer' | 'EnumAnswer';
 
 export interface AnswerForm {
-    type: FormType;
-    data: TextAnswer | EnumAnswer;
+    type: AnswerType;
+    answer: string | string[];
 }
 
 @Entity('FormQuestions')
@@ -34,9 +30,9 @@ export default class FormQuestion {
     })
     placeholder!: AnswerForm;
 
-    @OneToMany(() => FormAnimalAnswer, (answers) => answers.question, { cascade: true })
+    @OneToMany(() => FormAnimalAnswer, (answers) => answers.question)
     animalAnswers!: FormAnimalAnswer[];
 
-    @OneToMany(() => FormVolunteerAnswer, (answers) => answers.question, { cascade: true })
+    @OneToMany(() => FormVolunteerAnswer, (answers) => answers.question)
     volunteerAnswers!: FormVolunteerAnswer[];
 }

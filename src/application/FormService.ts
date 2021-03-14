@@ -1,11 +1,16 @@
 import Form from '@infrastructure/postgres/Form';
-import FormQuestion from '@infrastructure/postgres/FormQuestion';
+import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
 import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
 
+interface Question {
+    question: string;
+    placeholder: AnswerForm;
+}
+
 export interface FormCreationParams {
     name: string;
-    questions: Omit<FormQuestion, 'id' | 'form'>[];
+    questions: Question[];
 }
 
 export class FormService {
