@@ -1,4 +1,5 @@
 import { getConnection } from 'typeorm';
+import { connectToDb } from '../postgres/DatabaseConnection';
 
 // import { seedLocalizations } from './dummyData/localizations';
 // import Localization from './Localization';
@@ -17,12 +18,12 @@ import { seedAnimalAdditionalInfo } from './dummyData/animalAdditionalInfo';
 import { AnimalThumbnailPhoto } from './AnimalPhoto';
 import { seedAnimalThumbnailPhoto } from './dummyData/animalPhoto';
 
-const clear = false;
+const clear = true;
 export default async function seedDatabase(): Promise<void> {
     if (clear) {
         await getConnection().synchronize(true); // czyści baze danych
     } else {
-        // getConnection().synchronize(true);
+        //await getConnection().synchronize(true);
         await getConnection().getRepository(AnimalAdditionalInfo).save(seedAnimalAdditionalInfo(5));
         await getConnection().getRepository(AnimalThumbnailPhoto).save(seedAnimalThumbnailPhoto(5));
         await getConnection().getRepository(Specie).save(species);
@@ -35,3 +36,11 @@ export default async function seedDatabase(): Promise<void> {
     //    .save(await seedUsers(5));
     //await getConnection().getRepository(Localization).save(seedLocalizations(5));
 }
+
+// async function seedAndClose() {
+//     await connectToDb();
+//     await seedDatabase();
+//     process.exit();
+// }
+
+// seedAndClose();

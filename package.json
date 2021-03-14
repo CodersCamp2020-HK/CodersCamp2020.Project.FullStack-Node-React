@@ -39,7 +39,8 @@
         "build": "npm run server:build:production && npm run tools:generate-client-react && npm run web:build && npm run tools:copy-web",
         "dev": "concurrently \"npm run server:dev\" \"nodemon --watch\"src/presentation/rest/generated/swagger.json\" --ext \"json\" -x npm run tools:generate-client-react\" \"npm run web:dev\"",
         "test": "npm run server:test && npm run web:test",
-        "preinstall": "npm ci --prefix src/presentation/web"
+        "preinstall": "npm ci --prefix src/presentation/web",
+        "seed": "ts-node ./src/infrastructure/postgres/seedDatabase.ts"
     },
     "devDependencies": {
         "@types/bcrypt": "^3.0.0",
