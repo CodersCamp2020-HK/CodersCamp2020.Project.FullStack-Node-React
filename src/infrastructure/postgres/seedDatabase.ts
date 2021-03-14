@@ -16,9 +16,6 @@ import { species } from './dummyData/species';
 import AnimalAdditionalInfo from './AnimalAdditionalInfo';
 import { seedAnimalAdditionalInfo } from './dummyData/animalAdditionalInfo';
 
-import { AnimalThumbnailPhoto } from './AnimalPhoto';
-import { seedAnimalThumbnailPhoto } from './dummyData/animalPhoto';
-
 import { organizations } from './dummyData/organizations';
 import Organization from './Organization';
 
@@ -40,6 +37,12 @@ import { organizationUsers } from './dummyData/organizationUsers';
 import VolunteerHireStep from './VolunteerHireStep';
 import { seedVolunteerHireStep } from './dummyData/volunteerHireSteps';
 
+import { AnimalThumbnailPhoto } from './AnimalPhoto';
+import { seedAnimalThumbnailPhoto } from './dummyData/animalPhoto';
+
+// import { AnimalPhoto } from './AnimalPhoto';
+// import { seedAnimalPhoto } from './dummyData/animalPhoto';
+
 const clear = false;
 export default async function seedDatabase(): Promise<void> {
     if (clear) {
@@ -47,7 +50,6 @@ export default async function seedDatabase(): Promise<void> {
     } else {
         //await getConnection().synchronize(true);
         await getConnection().getRepository(AnimalAdditionalInfo).save(seedAnimalAdditionalInfo(5));
-
         await getConnection().getRepository(AnimalThumbnailPhoto).save(seedAnimalThumbnailPhoto(5));
         // await getConnection().getRepository(AnimalPhoto).save(seedAnimalPhoto(5));
 

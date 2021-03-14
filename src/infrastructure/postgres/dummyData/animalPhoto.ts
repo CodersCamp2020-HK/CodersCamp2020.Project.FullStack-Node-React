@@ -20,7 +20,7 @@ export const seedAnimalPhoto = (amount: number): DeepPartial<AnimalPhoto>[] => {
 
         animalPhoto.push({
             buffer: buf,
-            animal: { id: i + 1 },
+            animal: { id: 1 },
         });
     }
     return animalPhoto;
