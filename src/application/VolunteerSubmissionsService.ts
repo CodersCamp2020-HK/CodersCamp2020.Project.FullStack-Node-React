@@ -1,5 +1,6 @@
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
@@ -16,9 +17,15 @@ interface SubmissionQueryParams {
     reviewerName?: string;
 }
 
+interface VolunteerAnswer {
+    questionId: number;
+    answers: AnswerForm;
+}
+
 export interface PostVolunteerSubmissionParams {
     stepNumber: number;
     stepOrganization: number;
+    answer: VolunteerAnswer[];
 }
 
 export class VolunteerSubmissionsService {
@@ -68,7 +75,7 @@ export class VolunteerSubmissionsService {
         request: IAuthUserInfoRequest,
     ): Promise<void> {
         const user = request.user as IUserInfo;
-        const submission = this.volunteerSubmissionRepository.create({ user, ...body });
+        const submission = this.volunteerSubmissionRepository.create({ user: { id: user.id }, ...body });
         this.volunteerSubmissionRepository.save(submission);
     }
 }
