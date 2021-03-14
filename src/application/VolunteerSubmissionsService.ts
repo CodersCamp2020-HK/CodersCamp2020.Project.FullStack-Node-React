@@ -1,5 +1,8 @@
 import ApiError from '@infrastructure/ApiError';
+import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
+import VolunteerHireStep from '@infrastructure/postgres/VolunteerHireStep';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
@@ -13,6 +16,11 @@ interface SubmissionQueryParams {
     status?: VolunteerFormStatus;
     userName?: string;
     reviewerName?: string;
+}
+
+export interface PostVolunteerSubmissionParams {
+    step: VolunteerHireStep;
+    answers: FormVolunteerAnswer[];
 }
 
 export class VolunteerSubmissionsService {
@@ -55,5 +63,14 @@ export class VolunteerSubmissionsService {
         if (!submission) throw new ApiError('Not Found', 404, `Submission with ${id} not found`);
 
         return submission;
+    }
+
+    public async createVolunteerSubmission(
+        body: PostVolunteerSubmissionParams,
+        request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        const user = request.user as IUserInfo;
+        const submission = this.volunteerSubmissionRepository.create({ user, ...body });
+        this.volunteerSubmissionRepository.save(submission);
     }
 }

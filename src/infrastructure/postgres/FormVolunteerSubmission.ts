@@ -19,14 +19,14 @@ export default class FormVolunteerSubmission {
     @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { primary: true, nullable: false })
     step!: VolunteerHireStep;
 
-    @Column({ type: 'enum', enum: VolunteerFormStatus })
+    @Column({ type: 'enum', enum: VolunteerFormStatus, default: VolunteerFormStatus.IN_PROGRESS })
     status!: string;
 
     @Column({ nullable: true, default: null })
-    reason!: string;
+    reason?: string;
 
     @ManyToOne(() => OrganizationUser, (user) => user.volunteerReviews)
-    reviewer!: OrganizationUser;
+    reviewer?: OrganizationUser;
 
     @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormVolunteerAnswer[];
