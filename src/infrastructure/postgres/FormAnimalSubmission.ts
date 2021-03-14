@@ -23,14 +23,15 @@ export default class FormAnimalSubmission {
     @ManyToOne(() => AdoptionStep, (step) => step.submissions, { primary: true, nullable: false })
     adoptionStep!: AdoptionStep;
 
-    @Column({ type: 'enum', enum: AnimalFormStatus })
-    status!: string;
+    @Column({ type: 'enum', enum: AnimalFormStatus, default: AnimalFormStatus.IN_PROGRESS })
+    status?: string;
 
     @Column({ nullable: true, default: null })
-    reason!: string;
+    reason?: string;
 
+    @Column({ nullable: true, default: null })
     @ManyToOne(() => OrganizationUser, (user) => user.animalReviews)
-    reviewer!: User;
+    reviewer?: User;
 
     @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormAnimalAnswer[];
