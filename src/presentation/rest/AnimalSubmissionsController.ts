@@ -2,10 +2,26 @@ import {
     AdoptersCount,
     AnimalSubmissionsService,
     ChangeStatusForAdoptionFormParams,
+    PostAnimalSubmissionParams,
 } from '@application/AnimalSubmissionsService';
 import ApiError from '@infrastructure/ApiError';
+import { IAuthUserInfoRequest } from '@infrastructure/Auth';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
-import { Body, Put, Get, Query, Route, Tags, Response, SuccessResponse, Controller, Path } from 'tsoa';
+import {
+    Body,
+    Put,
+    Get,
+    Query,
+    Route,
+    Tags,
+    Response,
+    SuccessResponse,
+    Controller,
+    Path,
+    Security,
+    Post,
+    Request,
+} from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Adoption Submissions')
@@ -62,5 +78,16 @@ export class AnimalSubmissionsController extends Controller {
     @Get('{id}')
     public async getAnimalSubmission(@Path() id: number): Promise<FormAnimalSubmission> {
         return this.submissionService.getAnimalSubmission(id);
+    }
+
+    @Security('jwt', ['admin', 'employee', 'volunteer', 'normal'])
+    @SuccessResponse(201, 'Created')
+    @Post('add')
+    public async postAnimalSubmission(
+        @Body() requestBody: PostAnimalSubmissionParams,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        this.setStatus(201);
+        this.submissionService.createAnimalSubmission(requestBody, request);
     }
 }
