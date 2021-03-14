@@ -58,7 +58,6 @@ export class UsersController extends Controller {
      * Supply the unique user ID and update informations about him in database
      * @param userId Identyfy user by ID
      * @param requestBody Update informations about ('name', 'phone', 'surname')
-     * @returns
      */
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
@@ -71,7 +70,6 @@ export class UsersController extends Controller {
     /**
      * Supply the unique user ID and get informations about him from database
      * @param userId Identyfy user by ID
-     * @returns
      */
     @Get('{userId}')
     public async getUser(@Path() userId: number): Promise<User> {
@@ -82,8 +80,6 @@ export class UsersController extends Controller {
      * Creating new user in datebase with unique ID.
      * @param requestBody User need to give his email and password
      * @param badRequestResponse Throws error when erver was unable to process the request
-     * @param request
-     * @returns
      */
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @SuccessResponse('201', 'Created')
@@ -113,7 +109,7 @@ export class UsersController extends Controller {
     }
 
     /**
-     * Get
+     * Get additional user ID for activation
      * @param generatedUUID additional user ID for activation user in datebase
      */
     @Get('activate/{generatedUUID}')
@@ -125,10 +121,9 @@ export class UsersController extends Controller {
     }
 
     /**
-     * Method send activation link to user with unique ID with information about
+     * Send activation link to user with unique ID with information about
      * @param userId Unique ID of user
-     * @param request
-     * @returns
+     * @param request Information from express
      */
     @Post('{userId}/sendActivationLink')
     @SuccessResponse('200', 'Sent')
@@ -175,7 +170,6 @@ export class UsersController extends Controller {
 
     /** Supply the unique user ID and delete user with corresponding id from database
      *  @param userId Unique ID of user
-     *  @isInt  userId
      */
     @Response('401', 'Unauthorized')
     @Response('404', 'User not found')
@@ -190,7 +184,6 @@ export class UsersController extends Controller {
     /**
      *
      * @param requestBody
-     * @returns
      */
     @Response<ApiError>(400, 'Bad Request')
     @Post('auth')
@@ -201,8 +194,8 @@ export class UsersController extends Controller {
 
     /**
      * Supply the unique user ID and update user password with corresponding id from database
-     *  @param userId The user's identifier
-     *  @isInt  userId
+     * @param userId The user's identifier
+     * @param password The user's password
      */
     @Security('jwt', ['admin', 'employee', 'normal', 'volunteer'])
     @Response<ApiError>(404, 'User not found')
@@ -219,6 +212,7 @@ export class UsersController extends Controller {
 
     /**
      * Supply the email address in body, then link to reset the password will be sent for that user
+     * @param email User's email
      */
     @Response<ApiError>(404, 'User not found')
     @Response<ApiError>(400, 'Bad Request')

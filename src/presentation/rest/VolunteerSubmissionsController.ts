@@ -30,7 +30,6 @@ export class VolunteerSubmissionsController {
      * @param status Shows status of submission
      * @param userName Shows name of user that applied
      * @param reviewerName Shows name of shelter worker that deals with the matter
-     * @returns
      */
     @Get()
     public async getAllSubmissions(

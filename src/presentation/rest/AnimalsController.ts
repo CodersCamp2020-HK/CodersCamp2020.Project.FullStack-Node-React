@@ -30,7 +30,6 @@ export class AnimalsController extends Controller {
     /**
      * Supply the unique animal ID and get the animal with corresponding id from database
      * @param animalId The animal's identifier
-     * @returns
      */
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Animal not found')
@@ -55,7 +54,7 @@ export class AnimalsController extends Controller {
     }
 
     /**
-     * Get all animals and basic information about each of them
+     * Get all animals and basic informations about each of them
      * @param notFoundResponse Throws error when didn't response anumal ID
      * @param minAge The animal's minimal age
      * @param maxAge The animal's maximal age
@@ -68,7 +67,6 @@ export class AnimalsController extends Controller {
      * @param acceptsOtherAnimals Gives information that animal accept other animals
      * @param activeLevel Gives information about active level of animal
      * @param size Gives information about size of animal
-     * @returns
      */
     @SuccessResponse('200')
     @Get('/')

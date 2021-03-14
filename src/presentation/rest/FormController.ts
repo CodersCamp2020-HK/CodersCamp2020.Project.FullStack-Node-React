@@ -12,8 +12,7 @@ export class FormController extends Controller {
 
     /**
      * Post a form and throws information about success
-     * @param requestBody
-     * @returns
+     * @param requestBody includes 'name', 'questions' of form
      */
     @SuccessResponse('201', 'created')
     @Post()
@@ -26,7 +25,6 @@ export class FormController extends Controller {
     /**
      * Supply an ID of survey and get it from database
      * @param surveyId ID of survey (number)
-     * @returns
      */
     @Response<ApiError>(404, 'Survey not found')
     @Get('{surveyId}')
@@ -36,7 +34,6 @@ export class FormController extends Controller {
 
     /**
      * Get all surveys applied by users
-     * @returns
      */
     @Response<ApiError>(404, 'Surveys not found')
     @Get()
