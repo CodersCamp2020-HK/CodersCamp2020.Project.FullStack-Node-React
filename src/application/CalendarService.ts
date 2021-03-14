@@ -34,7 +34,7 @@ export class CalendarService {
         if (!animalFromDB) throw new ApiError('Not Found', 404, `Animal with id: ${animal} not found in database`);
         const userFromDB = await this.userRepository.findOne(user);
         if (!userFromDB) throw new ApiError('Not Found', 404, `User with id: ${user} not found in database`);
-        const visit = this.calendarRepository.create({ date, animal, user });
+        const visit = this.calendarRepository.create({ date, animal: animalFromDB, user: userFromDB });
         await this.calendarRepository.save(visit);
     }
 

@@ -6,6 +6,7 @@ import AnimalDonation from './AnimalDonation';
 import FormAnimalSubmission from './FormAnimalSubmission';
 import AnimalHandler from './AnimalHandler';
 import Specie from './Specie';
+import Calendar from './Calendar';
 
 @Entity('Animals')
 export default class Animal {
@@ -76,4 +77,7 @@ export default class Animal {
 
     @OneToMany(() => AnimalHandler, (handler) => handler.animal, { cascade: true })
     animalsHandlers!: AnimalHandler[];
+
+    @OneToMany(() => Calendar, (calendar) => calendar.animal)
+    meetings!: Calendar[];
 }

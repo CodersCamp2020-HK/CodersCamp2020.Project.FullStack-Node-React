@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
 import User from './User';
 import Animal from './Animal';
 
@@ -10,11 +10,9 @@ export default class Calendar {
     @Column()
     date!: Date;
 
-    @OneToOne(() => User)
-    @JoinColumn()
-    user!: number;
+    @ManyToOne(() => User, (user) => user.meetings)
+    user!: User;
 
-    @OneToOne(() => Animal)
-    @JoinColumn()
-    animal!: number;
+    @ManyToOne(() => Animal, (animal) => animal.meetings)
+    animal!: Animal;
 }

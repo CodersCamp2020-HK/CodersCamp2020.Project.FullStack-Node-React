@@ -27,9 +27,12 @@ export interface AdoptersCount {
 }
 
 interface getAllAnimalSubmissionsParams {
-    date?: Date;
+    submissionDate?: Date;
     specie?: string;
     status?: AnimalFormStatus;
+    animalName?: string;
+    userName?: string;
+    reviewerName?: string;
 }
 
 export interface ChangeStatusForAdoptionFormParams {
@@ -84,5 +87,15 @@ export class AnimalSubmissionsService {
             .andWhere('animalId = :id', { id: changeStatusParams.animalId })
             .execute();
         return;
+    }
+
+    public async getAnimalSubmission(id: number): Promise<FormAnimalSubmission> {
+        const submission = await this.animalSubmissionRepository.findOne(id, {
+            relations: ['animal', 'applicant', 'answers', 'reviewer'],
+        });
+
+        if (!submission) throw new ApiError('Not Found', 404, `Submission with ${id} not found`);
+
+        return submission;
     }
 }
