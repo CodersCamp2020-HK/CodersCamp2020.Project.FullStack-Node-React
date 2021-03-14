@@ -29,7 +29,6 @@ export default class FormAnimalSubmission {
     @Column({ nullable: true, default: null })
     reason?: string;
 
-    @Column({ nullable: true, default: null })
     @ManyToOne(() => OrganizationUser, (user) => user.animalReviews)
     reviewer?: User;
 
