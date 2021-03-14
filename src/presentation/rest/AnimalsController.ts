@@ -14,15 +14,12 @@ import {
     TsoaResponse,
     Res,
     Security,
-    Request,
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@application/AnimalsService';
-import Animal from '@infrastructure/postgres/Animal';
+import { Animal, AnimalSpecies } from '@infrastructure/postgres/Animal';
 import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import ApiError from '@infrastructure/ApiError';
-import { Request as ExRequest } from 'express';
-import { PhotosService } from '@application/PhotosService';
 
 @Tags('Animals')
 @Route('animals')
@@ -30,9 +27,11 @@ export class AnimalsController extends Controller {
     @Inject
     private animalsService!: AnimalsService;
 
-    @Inject
-    private photosService!: PhotosService;
-
+    /**
+     * Supply the unique animal ID and get the animal with corresponding id from database
+     * @param animalId The animal's identifier
+     * @returns
+     */
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Animal not found')
     @Get('{animalId}')
@@ -55,13 +54,29 @@ export class AnimalsController extends Controller {
         return this.animalsService.delete(animalId);
     }
 
+    /**
+     * Get all animals and basic information about each of them
+     * @param notFoundResponse Throws error when didn't response anumal ID
+     * @param minAge The animal's minimal age
+     * @param maxAge The animal's maximal age
+     * @param specie Gives information about specification of animal
+     * @param readyForAdoption Gives information about adoption status. Animal is ready for adoption or no
+     * @param temporaryHome The animal's information about adoption status
+     * @param needDonations Gives information that animal need donations
+     * @param virtualAdoption Gives information that animal could be adopted virtually
+     * @param acceptsKids Gives information that animal accept kids
+     * @param acceptsOtherAnimals Gives information that animal accept other animals
+     * @param activeLevel Gives information about active level of animal
+     * @param size Gives information about size of animal
+     * @returns
+     */
     @SuccessResponse('200')
     @Get('/')
     public async getAnimals(
         @Res() notFoundResponse: TsoaResponse<404, { reason: string }>,
         @Query() minAge?: number,
         @Query() maxAge?: number,
-        @Query() specie?: string,
+        @Query() specie?: AnimalSpecies,
         @Query() readyForAdoption?: boolean,
         @Query() temporaryHome?: boolean,
         @Query() needDonations?: boolean,
@@ -85,6 +100,9 @@ export class AnimalsController extends Controller {
             activeLevel,
         });
 
+        /**
+         * Throws error if it cannot find a match
+         */
         if (foundedAnimals.length <= 0) {
             return notFoundResponse(404, { reason: 'Animals not found' });
         }
@@ -92,6 +110,10 @@ export class AnimalsController extends Controller {
         return foundedAnimals;
     }
 
+    /**
+     * Create animal in database with informations about 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption';
+     * @param requestBody
+     */
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('201', 'created')
     @Post()
@@ -101,6 +123,7 @@ export class AnimalsController extends Controller {
     }
 
     /**
+     * Suppy animal ID and update information about animal
      * @param animalId This is a description for animalId
      * @isInt animalId
      */
@@ -115,32 +138,5 @@ export class AnimalsController extends Controller {
     public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalUpdateParams): Promise<Animal> {
         this.setStatus(200);
         return this.animalsService.update(animalId, requestBody);
-    }
-
-    @Security('jwt', ['admin', 'employee'])
-    @Post('{animalId}/photos-upload')
-    @SuccessResponse(201, 'Saved')
-    @Response<ApiError>(401, 'Unauthorized')
-    @Response<Error>(500, 'Internal Server Error')
-    @Response<ApiError>(404, 'Not Found')
-    @Response<ApiError>(400, 'Bad Request')
-    public async addPhotos(@Path() animalId: number, @Request() request: ExRequest): Promise<void> {
-        await this.photosService.photosUpload(request);
-        const gettedPhotos = request.files as unknown;
-        await this.animalsService.savePhotos(animalId, gettedPhotos as Express.Multer.File[]);
-        this.setStatus(201);
-    }
-
-    @Security('jwt', ['admin', 'employee'])
-    @Post('{animalId}/thumbnail-upload')
-    @SuccessResponse(201, 'Saved')
-    @Response<ApiError>(400, 'Bad Request')
-    @Response<ApiError>(401, 'Unauthorized')
-    @Response<Error>(500, 'Internal Server Error')
-    @Response<ApiError>(404, 'Not Found')
-    public async addThumbnail(@Path() animalId: number, @Request() request: ExRequest): Promise<void> {
-        await this.photosService.thumbnailUpload(request);
-        await this.animalsService.saveThumbnail(animalId, request.file);
-        this.setStatus(201);
     }
 }

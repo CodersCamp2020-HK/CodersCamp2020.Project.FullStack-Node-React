@@ -54,6 +54,12 @@ export class UsersController extends Controller {
     @Inject
     private animalSubmissionsService!: AnimalSubmissionsService;
 
+    /**
+     * Supply the unique user ID and update informations about him in database
+     * @param userId Identyfy user by ID
+     * @param requestBody Update informations about ('name', 'phone', 'surname')
+     * @returns
+     */
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
     @Put('{userId}')
@@ -62,11 +68,23 @@ export class UsersController extends Controller {
         return this.usersService.update(userId, requestBody);
     }
 
+    /**
+     * Supply the unique user ID and get informations about him from database
+     * @param userId Identyfy user by ID
+     * @returns
+     */
     @Get('{userId}')
     public async getUser(@Path() userId: number): Promise<User> {
         return this.usersService.get(userId);
     }
 
+    /**
+     * Creating new user in datebase with unique ID.
+     * @param requestBody User need to give his email and password
+     * @param badRequestResponse Throws error when erver was unable to process the request
+     * @param request
+     * @returns
+     */
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @SuccessResponse('201', 'Created')
     @Post()
@@ -94,6 +112,10 @@ export class UsersController extends Controller {
         }
     }
 
+    /**
+     * Get
+     * @param generatedUUID additional user ID for activation user in datebase
+     */
     @Get('activate/{generatedUUID}')
     @SuccessResponse('200', 'User Activated')
     @Response('404', 'Link is not valid or expired')
@@ -102,6 +124,12 @@ export class UsersController extends Controller {
         this.setStatus(200);
     }
 
+    /**
+     * Method send activation link to user with unique ID with information about
+     * @param userId Unique ID of user
+     * @param request
+     * @returns
+     */
     @Post('{userId}/sendActivationLink')
     @SuccessResponse('200', 'Sent')
     public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
@@ -122,6 +150,10 @@ export class UsersController extends Controller {
         return;
     }
 
+    /**
+     * Send an email to users that applied for unique pet
+     * @param petName Send and email by pet name
+     */
     @Post('sendSomeoneAdoptedEmails')
     @Response('401', 'Unauthorized')
     @Response('400', 'Bad request')
@@ -142,7 +174,7 @@ export class UsersController extends Controller {
     }
 
     /** Supply the unique user ID and delete user with corresponding id from database
-     *  @param userId The user's identifier
+     *  @param userId Unique ID of user
      *  @isInt  userId
      */
     @Response('401', 'Unauthorized')
@@ -155,6 +187,11 @@ export class UsersController extends Controller {
         await this.usersService.delete(userId, request);
     }
 
+    /**
+     *
+     * @param requestBody
+     * @returns
+     */
     @Response<ApiError>(400, 'Bad Request')
     @Post('auth')
     public async loginUser(@Body() requestBody: UserLoginParams): Promise<ApiKey> {
@@ -211,6 +248,11 @@ export class UsersController extends Controller {
         this.setStatus(200);
     }
 
+    /**
+     * Sending Confirmation message to
+     * @param petName
+     * @param adopterEmail
+     */
     @Post('sendVisitConfirmationMessage')
     @Response('401', 'Unauthorized')
     @Response('400', 'Bad request')
