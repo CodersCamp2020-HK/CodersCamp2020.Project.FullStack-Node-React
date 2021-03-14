@@ -14,10 +14,10 @@ export const seedFormAnimalSubmission = (amount: number): DeepPartial<FormAnimal
             reviewDate: faker.date.past(),
             animal: { id: i + 1 },
             applicant: { id: i + 1 },
-            reviewer: ,
+            reviewer: { user: { id: i + 1 }, organization: { id: 1 } },
             adoptionStep: {
                 organization: { id: 1 },
-                specie: { id: 1 },
+                specie: { id: (i % 2) + 1 },
                 number: i + 1,
             },
         });
