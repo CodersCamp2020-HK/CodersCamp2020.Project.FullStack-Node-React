@@ -1,8 +1,6 @@
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
-import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
-import VolunteerHireStep from '@infrastructure/postgres/VolunteerHireStep';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
@@ -19,8 +17,8 @@ interface SubmissionQueryParams {
 }
 
 export interface PostVolunteerSubmissionParams {
-    step: VolunteerHireStep;
-    answers: FormVolunteerAnswer[];
+    stepNumber: number;
+    stepOrganization: number;
 }
 
 export class VolunteerSubmissionsService {
