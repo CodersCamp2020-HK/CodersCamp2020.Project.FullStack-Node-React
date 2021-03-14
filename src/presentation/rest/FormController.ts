@@ -10,11 +10,12 @@ export class FormController extends Controller {
     @Inject
     private formService!: FormService;
 
+    @Response('400', 'Bad request')
     @SuccessResponse('201', 'created')
     @Post()
     public async createForm(@Body() requestBody: FormCreationParams): Promise<void> {
+        await this.formService.create(requestBody);
         this.setStatus(201);
-        this.formService.create(requestBody);
         return;
     }
 
