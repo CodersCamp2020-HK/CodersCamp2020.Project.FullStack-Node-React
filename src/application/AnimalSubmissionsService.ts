@@ -1,4 +1,8 @@
 import ApiError from '@infrastructure/ApiError';
+import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
+import Animal from '@infrastructure/postgres/Animal';
+import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
@@ -9,7 +13,7 @@ export enum FormStatus {
     ACCEPTED = 'accepted',
 }
 
-interface getAllAnimalSubmissionsParams {
+interface GetAllAnimalSubmissionsParams {
     specie?: string;
     submissionDate?: Date;
     status?: AnimalFormStatus;
@@ -26,7 +30,7 @@ export interface AdoptersCount {
     count: number;
 }
 
-interface getAllAnimalSubmissionsParams {
+interface GetAllAnimalSubmissionsParams {
     submissionDate?: Date;
     specie?: string;
     status?: AnimalFormStatus;
@@ -39,6 +43,12 @@ export interface ChangeStatusForAdoptionFormParams {
     status: AnimalFormStatus;
     userId: number;
     animalId: number;
+}
+
+export interface PostAnimalSubmissionParams {
+    animal: Animal;
+    adoptionStep: AdoptionStep;
+    answers: FormAnimalAnswer[];
 }
 
 export class AnimalSubmissionsService {
@@ -58,7 +68,7 @@ export class AnimalSubmissionsService {
         };
     }
 
-    public async getAllAnimalSubmissions(queryParams: getAllAnimalSubmissionsParams): Promise<FormAnimalSubmission[]> {
+    public async getAllAnimalSubmissions(queryParams: GetAllAnimalSubmissionsParams): Promise<FormAnimalSubmission[]> {
         const submissions = await new OptionalWhereSelectQueryBuilder(
             this.animalSubmissionRepository
                 .createQueryBuilder('submission')
@@ -97,5 +107,14 @@ export class AnimalSubmissionsService {
         if (!submission) throw new ApiError('Not Found', 404, `Submission with ${id} not found`);
 
         return submission;
+    }
+
+    public async createAnimalSubmission(
+        body: PostAnimalSubmissionParams,
+        request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        const user = request.user as IUserInfo;
+        const submission = this.animalSubmissionRepository.create({ applicant: user, ...body });
+        await this.animalSubmissionRepository.save(submission);
     }
 }
