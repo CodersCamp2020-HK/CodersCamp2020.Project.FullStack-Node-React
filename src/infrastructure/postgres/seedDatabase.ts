@@ -25,6 +25,9 @@ import Organization from './Organization';
 import Form from './Form';
 import { seedForms } from './dummyData/forms';
 
+import AdoptionStep from './AdoptionStep';
+import { seedAdoptionStep } from './dummyData/adoptionSteps';
+
 const clear = false;
 export default async function seedDatabase(): Promise<void> {
     if (clear) {
@@ -41,6 +44,7 @@ export default async function seedDatabase(): Promise<void> {
             .save(await seedUsers(5));
         await getConnection().getRepository(Organization).save(organizations);
         await getConnection().getRepository(Form).save(seedForms(5));
+        await getConnection().getRepository(AdoptionStep).save(seedAdoptionStep(5));
     }
 }
 

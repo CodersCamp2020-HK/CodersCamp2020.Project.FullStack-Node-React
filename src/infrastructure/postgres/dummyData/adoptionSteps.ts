@@ -10,8 +10,8 @@ export const seedAdoptionStep = (amount: number): DeepPartial<AdoptionStep>[] =>
 
         adoptionStep.push({
             name: faker.random.word(),
-            description: faker.lorem.sentence(),
-            organization: { id: i + 1 },
+            description: faker.lorem.words(5),
+            organization: { id: 1 },
             number: i,
             form: { id: i + 1 },
             specie: { id: (i % 2) + 1 },
