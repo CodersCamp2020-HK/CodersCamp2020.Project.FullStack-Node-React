@@ -28,6 +28,12 @@ import { seedForms } from './dummyData/forms';
 import AdoptionStep from './AdoptionStep';
 import { seedAdoptionStep } from './dummyData/adoptionSteps';
 
+import AnimalHandler from './AnimalHandler';
+import { seedAnimalHandlers } from './dummyData/animalsHandlers';
+
+import Calendar from './Calendar';
+import { seedCalendars } from './dummyData/calendars';
+
 const clear = false;
 export default async function seedDatabase(): Promise<void> {
     if (clear) {
@@ -45,6 +51,8 @@ export default async function seedDatabase(): Promise<void> {
         await getConnection().getRepository(Organization).save(organizations);
         await getConnection().getRepository(Form).save(seedForms(5));
         await getConnection().getRepository(AdoptionStep).save(seedAdoptionStep(5));
+        await getConnection().getRepository(AnimalHandler).save(seedAnimalHandlers(5));
+        await getConnection().getRepository(Calendar).save(seedCalendars(5));
     }
 }
 
