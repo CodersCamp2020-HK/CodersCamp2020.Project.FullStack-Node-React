@@ -1,10 +1,11 @@
 import { getConnection } from 'typeorm';
 import { connectToDb } from '../postgres/DatabaseConnection';
 
-// import { seedLocalizations } from './dummyData/localizations';
-// import Localization from './Localization';
-//import User from './User';
-//import { seedUsers } from './dummyData/users';
+import { seedLocalizations } from './dummyData/localizations';
+import Localization from './Localization';
+
+import User from './User';
+import { seedUsers } from './dummyData/users';
 
 import { seedAnimals } from './dummyData/animals';
 import Animal from './Animal';
@@ -18,7 +19,13 @@ import { seedAnimalAdditionalInfo } from './dummyData/animalAdditionalInfo';
 import { AnimalThumbnailPhoto } from './AnimalPhoto';
 import { seedAnimalThumbnailPhoto } from './dummyData/animalPhoto';
 
-const clear = true;
+import { organizations } from './dummyData/organizations';
+import Organization from './Organization';
+
+import Form from './Form';
+import { seedForms } from './dummyData/forms';
+
+const clear = false;
 export default async function seedDatabase(): Promise<void> {
     if (clear) {
         await getConnection().synchronize(true); // czyści baze danych
@@ -28,19 +35,19 @@ export default async function seedDatabase(): Promise<void> {
         await getConnection().getRepository(AnimalThumbnailPhoto).save(seedAnimalThumbnailPhoto(5));
         await getConnection().getRepository(Specie).save(species);
         await getConnection().getRepository(Animal).save(seedAnimals(5));
+        await getConnection().getRepository(Localization).save(seedLocalizations(5));
+        await getConnection()
+            .getRepository(User)
+            .save(await seedUsers(5));
+        await getConnection().getRepository(Organization).save(organizations);
+        await getConnection().getRepository(Form).save(seedForms(5));
     }
-
-    // await getConnection().getRepository(Localization).save(seedLocalizations(5));
-    //await getConnection()
-    //    .getRepository(User)
-    //    .save(await seedUsers(5));
-    //await getConnection().getRepository(Localization).save(seedLocalizations(5));
 }
 
-// async function seedAndClose() {
-//     await connectToDb();
-//     await seedDatabase();
-//     process.exit();
-// }
+async function seedAndClose() {
+    await connectToDb();
+    await seedDatabase();
+    process.exit();
+}
 
-// seedAndClose();
+seedAndClose();
