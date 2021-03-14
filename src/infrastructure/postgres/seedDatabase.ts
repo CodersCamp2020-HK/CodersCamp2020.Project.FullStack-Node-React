@@ -1,5 +1,5 @@
 import { getConnection } from 'typeorm';
-// import { connectToDb } from '../postgres/DatabaseConnection';
+import { connectToDb } from '../postgres/DatabaseConnection';
 
 import { seedLocalizations } from './dummyData/localizations';
 import Localization from './Localization';
@@ -43,6 +43,9 @@ import { seedAnimalThumbnailPhoto } from './dummyData/animalPhoto';
 import { AnimalPhoto } from './AnimalPhoto';
 import { seedAnimalPhoto } from './dummyData/animalPhoto';
 
+// import FormAnimalSubmission from './FormAnimalSubmission';
+// import { seedFormAnimalSubmission } from './dummyData/formAnimalSubmissions';
+
 const clear = false;
 export default async function seedDatabase(): Promise<void> {
     if (clear) {
@@ -66,13 +69,14 @@ export default async function seedDatabase(): Promise<void> {
         await getConnection().getRepository(Calendar).save(seedCalendars(5));
         await getConnection().getRepository(OrganizationUser).save(organizationUsers);
         await getConnection().getRepository(VolunteerHireStep).save(seedVolunteerHireStep(5));
+        // await getConnection().getRepository(FormAnimalSubmission).save(seedFormAnimalSubmission(5));
     }
 }
 
-// async function seedAndClose() {
-//     await connectToDb();
-//     await seedDatabase();
-//     process.exit();
-// }
+async function seedAndClose() {
+    await connectToDb();
+    await seedDatabase();
+    process.exit();
+}
 
-// seedAndClose();
+seedAndClose();
