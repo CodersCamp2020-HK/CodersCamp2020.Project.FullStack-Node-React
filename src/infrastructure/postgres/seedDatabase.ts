@@ -34,6 +34,12 @@ import { seedAnimalHandlers } from './dummyData/animalsHandlers';
 import Calendar from './Calendar';
 import { seedCalendars } from './dummyData/calendars';
 
+import OrganizationUser from './OrganizationUser';
+import { organizationUsers } from './dummyData/organizationUsers';
+
+import VolunteerHireStep from './VolunteerHireStep';
+import { seedVolunteerHireStep } from './dummyData/volunteerHireSteps';
+
 const clear = false;
 export default async function seedDatabase(): Promise<void> {
     if (clear) {
@@ -41,7 +47,10 @@ export default async function seedDatabase(): Promise<void> {
     } else {
         //await getConnection().synchronize(true);
         await getConnection().getRepository(AnimalAdditionalInfo).save(seedAnimalAdditionalInfo(5));
+
         await getConnection().getRepository(AnimalThumbnailPhoto).save(seedAnimalThumbnailPhoto(5));
+        // await getConnection().getRepository(AnimalPhoto).save(seedAnimalPhoto(5));
+
         await getConnection().getRepository(Specie).save(species);
         await getConnection().getRepository(Animal).save(seedAnimals(5));
         await getConnection().getRepository(Localization).save(seedLocalizations(5));
@@ -53,6 +62,8 @@ export default async function seedDatabase(): Promise<void> {
         await getConnection().getRepository(AdoptionStep).save(seedAdoptionStep(5));
         await getConnection().getRepository(AnimalHandler).save(seedAnimalHandlers(5));
         await getConnection().getRepository(Calendar).save(seedCalendars(5));
+        await getConnection().getRepository(OrganizationUser).save(organizationUsers);
+        await getConnection().getRepository(VolunteerHireStep).save(seedVolunteerHireStep(5));
     }
 }
 

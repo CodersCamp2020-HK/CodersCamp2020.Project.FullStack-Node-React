@@ -10,8 +10,8 @@ export const seedCalendars = (amount: number): DeepPartial<Calendar>[] => {
 
         calendars.push({
             date: faker.date.soon(),
-            user: i + 1,
-            animal: i + 1,
+            user: { id: i + 1 },
+            animal: { id: i + 1 },
         });
     }
     return calendars;
