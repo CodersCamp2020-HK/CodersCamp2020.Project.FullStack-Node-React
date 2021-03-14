@@ -3,11 +3,11 @@ import Form from './Form';
 import FormAnimalAnswer from './FormAnimalAnswer';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
 
-interface TextAnswer {
+export interface TextAnswer {
     placeholder: string;
 }
 
-interface EnumAnswer {
+export interface EnumAnswer {
     values: string[];
 }
 

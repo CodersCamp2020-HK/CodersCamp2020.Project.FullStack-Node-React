@@ -1,5 +1,5 @@
 import { getConnection } from 'typeorm';
-import { connectToDb } from '../postgres/DatabaseConnection';
+// import { connectToDb } from '../postgres/DatabaseConnection';
 
 import { seedLocalizations } from './dummyData/localizations';
 import Localization from './Localization';
@@ -40,8 +40,8 @@ import { seedVolunteerHireStep } from './dummyData/volunteerHireSteps';
 import { AnimalThumbnailPhoto } from './AnimalPhoto';
 import { seedAnimalThumbnailPhoto } from './dummyData/animalPhoto';
 
-// import { AnimalPhoto } from './AnimalPhoto';
-// import { seedAnimalPhoto } from './dummyData/animalPhoto';
+import { AnimalPhoto } from './AnimalPhoto';
+import { seedAnimalPhoto } from './dummyData/animalPhoto';
 
 const clear = false;
 export default async function seedDatabase(): Promise<void> {
@@ -51,10 +51,10 @@ export default async function seedDatabase(): Promise<void> {
         //await getConnection().synchronize(true);
         await getConnection().getRepository(AnimalAdditionalInfo).save(seedAnimalAdditionalInfo(5));
         await getConnection().getRepository(AnimalThumbnailPhoto).save(seedAnimalThumbnailPhoto(5));
-        // await getConnection().getRepository(AnimalPhoto).save(seedAnimalPhoto(5));
 
         await getConnection().getRepository(Specie).save(species);
         await getConnection().getRepository(Animal).save(seedAnimals(5));
+        await getConnection().getRepository(AnimalPhoto).save(seedAnimalPhoto(5));
         await getConnection().getRepository(Localization).save(seedLocalizations(5));
         await getConnection()
             .getRepository(User)
@@ -69,10 +69,10 @@ export default async function seedDatabase(): Promise<void> {
     }
 }
 
-async function seedAndClose() {
-    await connectToDb();
-    await seedDatabase();
-    process.exit();
-}
+// async function seedAndClose() {
+//     await connectToDb();
+//     await seedDatabase();
+//     process.exit();
+// }
 
-seedAndClose();
+// seedAndClose();

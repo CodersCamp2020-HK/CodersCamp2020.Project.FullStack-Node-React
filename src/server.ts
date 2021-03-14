@@ -19,21 +19,17 @@ const appUrl = isProductionEnv ? 'https://coders-camp-schronisko.herokuapp.com/'
 const app = express();
 
 (async () => {
-    try {
-        await connectToDb();
+    await connectToDb();
 
-        await seedDatabase();
+    await seedDatabase();
 
-        const logger = Container.get(WinstonLogger);
-        logger.log('Connected to database');
+    const logger = Container.get(WinstonLogger);
+    logger.log('Connected to database');
 
-        app.use(useLogging(logger));
-        app.use(useSecurity({ isProductionEnv }));
-        app.use(api);
-        app.use(express.static(path.join(__dirname, 'presentation/web/build')));
+    app.use(useLogging(logger));
+    app.use(useSecurity({ isProductionEnv }));
+    app.use(api);
+    app.use(express.static(path.join(__dirname, 'presentation/web/build')));
 
-        app.listen(port, () => logger.log(`App listening at ${appUrl}`));
-    } catch (error) {
-        console.log(error);
-    }
+    app.listen(port, () => logger.log(`App listening at ${appUrl}`));
 })();
