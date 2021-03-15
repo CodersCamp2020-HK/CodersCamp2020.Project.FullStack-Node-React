@@ -20,9 +20,9 @@ export default class Goal {
     @Column()
     amount!: number;
 
-    @ManyToOne(() => Animal, (animal) => animal.animalDonations, { cascade: true })
+    @ManyToOne(() => Animal, (animal) => animal.animalDonations)
     animals!: Animal[];
 
-    @ManyToOne(() => Organization, (organization) => organization.goals, { cascade: true })
+    @ManyToOne(() => Organization, (organization) => organization.goals)
     organizations!: Organization[];
 }

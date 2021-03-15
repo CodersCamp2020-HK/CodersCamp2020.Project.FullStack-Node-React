@@ -32,9 +32,7 @@ export default class Organization {
     @Column()
     krsNumber!: number;
 
-    @OneToMany(() => OrganizationDonation, (organizationDonation) => organizationDonation.organization, {
-        cascade: true,
-    })
+    @OneToMany(() => OrganizationDonation, (organizationDonation) => organizationDonation.organization)
     organizationDonations!: OrganizationDonation[];
 
     @OneToMany(() => Goal, (goal) => goal.organizations)
