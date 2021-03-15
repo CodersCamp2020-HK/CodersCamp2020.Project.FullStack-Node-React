@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ResetPasswordMessage from '@infrastructure/ResetPasswordMessage';
 import SomeoneAdoptedMessage from '@infrastructure/SomeoneAdoptedMessage';
 import VisitConfirmationMessage from '@infrastructure/VisitConfirmationMessage';
+import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
 const SALT_ROUNDS = 10;
 
@@ -58,6 +59,14 @@ export class UsersService {
         const user = await this.userRepository.findOne(id);
         if (!user) throw new Error('User not found in database');
         return user;
+    }
+
+    public async getAll(email?: string): Promise<User[]> {
+        return new OptionalWhereSelectQueryBuilder(
+            this.userRepository.createQueryBuilder('user').where('user.id >= :zero', { zero: 0 }),
+        )
+            .optAndWhere('user.mail = ', email)
+            .selectQueryBuilder.getMany();
     }
 
     public async activateUser(generatedUUID: string): Promise<void> {

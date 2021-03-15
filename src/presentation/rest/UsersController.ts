@@ -280,12 +280,14 @@ export class UsersController extends Controller {
     @Security('jwt', ['admin', 'employee'])
     public async sendVisitConfirmationEmail(@Query() petName: string, @Query() adopterEmail: Email): Promise<void> {
         //TODO:
-        //Pobieranie użytkownika o podanym emailu
-        const adopter = new User();
-        (adopter.name = 'Jan'), (adopter.surname = 'Nowak'), (adopter.mail = adopterEmail);
-        //CHANGE
+        const adopters = await this.usersService.getAll(adopterEmail);
 
-        await this.usersService.sendVisitConfirmationMessage(adopter, petName);
-        this.setStatus(201);
+        if (adopters) {
+            const adopter = adopters[0];
+            await this.usersService.sendVisitConfirmationMessage(adopter, petName);
+            this.setStatus(201);
+        } else {
+            throw new ApiError('Not found', 404, 'User not found');
+        }
     }
 }
