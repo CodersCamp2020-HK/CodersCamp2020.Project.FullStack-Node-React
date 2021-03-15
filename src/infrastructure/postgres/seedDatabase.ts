@@ -46,6 +46,9 @@ import { seedAnimalPhoto } from './dummyData/animalPhoto';
 import FormAnimalSubmission from './FormAnimalSubmission';
 import { seedFormAnimalSubmission } from './dummyData/formAnimalSubmissions';
 
+import FormQuestion from './FormQuestion';
+import { seedFormQuestion } from './dummyData/formQuestions';
+
 const clear = false;
 export default async function seedDatabase(): Promise<void> {
     if (clear) {
@@ -70,6 +73,7 @@ export default async function seedDatabase(): Promise<void> {
         await getConnection().getRepository(OrganizationUser).save(organizationUsers);
         await getConnection().getRepository(VolunteerHireStep).save(seedVolunteerHireStep(5));
         await getConnection().getRepository(FormAnimalSubmission).save(seedFormAnimalSubmission(5));
+        await getConnection().getRepository(FormQuestion).save(seedFormQuestion(5));
     }
 }
 
