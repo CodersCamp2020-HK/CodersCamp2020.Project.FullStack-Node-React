@@ -41,7 +41,7 @@ export class AnimalsController extends Controller {
     /**
      * Supply the unique animal ID and delete the animal with corresponding id from database
      *  @param animalId The animal's identifier
-     *  @isInt  animalId
+     *  @isInt  animalId animalId must be integer
      */
     @Security('jwt', ['admin', 'employee'])
     @Response<ApiError>(400, 'Bad Request')
@@ -67,6 +67,16 @@ export class AnimalsController extends Controller {
      * @param acceptsOtherAnimals Gives information that animal accept other animals
      * @param activeLevel Gives information about active level of animal
      * @param size Gives information about size of animal
+     * @isInt minAge minAge must be integer
+     * @isInt maxAge minAge must be integer
+     * @minimum minAge 0 minAge > 0
+     * @maximum maxAge 32 maxAge < 32
+     * @isBool readyForAdoption readyForAdoption must be boolean
+     * @isBool temporaryHome temporaryHome must be boolean
+     * @isBool needDonations needDonations must be boolean
+     * @isBool virtualAdoption virtualAdoption must be boolean
+     * @isBool acceptKids acceptKids must be boolean
+     * @isBool acceptOtherAnimals acceptOtherAnimals must be boolean
      */
     @SuccessResponse('200')
     @Get('/')
@@ -109,7 +119,7 @@ export class AnimalsController extends Controller {
     }
 
     /**
-     * Create animal in database with informations about 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption';
+     * Create animal in database with informations about 'name', 'age', 'specie', 'description', 'readyForAdoption';
      * @param requestBody
      */
     @Response<Error>(500, 'Internal Server Error')
