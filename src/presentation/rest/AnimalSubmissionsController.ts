@@ -22,6 +22,7 @@ export class AnimalSubmissionsController extends Controller {
      * @param animalName Gives animal name that user applied
      * @param userName Gives name of user that applied for animal
      * @param reviewerName Gives name of shelter worker that who deals with the user application
+     * @isString reviewerName reviewerName must be a string
      */
     @Response<ApiError>(404, 'Submissions Not Found')
     @Get()
