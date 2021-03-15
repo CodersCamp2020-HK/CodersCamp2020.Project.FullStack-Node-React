@@ -35,7 +35,7 @@ export default class FormAnimalSubmission {
     @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormAnimalAnswer[];
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'date' })
     submissionDate!: Date;
 
     @Column({ type: 'date', nullable: true })

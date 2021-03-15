@@ -1,10 +1,6 @@
 import { Column, Entity, Index, ManyToOne } from 'typeorm';
 import FormAnimalSubmission from './FormAnimalSubmission';
-import FormQuestion from './FormQuestion';
-
-export interface JsonAnswer {
-    answer: string;
-}
+import FormQuestion, { AnswerForm } from './FormQuestion';
 
 @Entity('FormAnimalAnswers')
 @Index(['submission', 'question'], { unique: true })
@@ -16,5 +12,5 @@ export default class FormAnimalAnswer {
     question!: FormQuestion;
 
     @Column({ type: 'jsonb' })
-    answer!: JsonAnswer;
+    answer!: AnswerForm;
 }

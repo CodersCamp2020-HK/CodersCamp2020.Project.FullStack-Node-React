@@ -1,7 +1,6 @@
-import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
 import OrganizationUser from './OrganizationUser';
-import User from './User';
 import VolunteerHireStep from './VolunteerHireStep';
 
 export enum VolunteerFormStatus {
@@ -13,10 +12,10 @@ export enum VolunteerFormStatus {
 @Entity('FormVolunteerSubmissions')
 @Index(['user', 'step'], { unique: true })
 export default class FormVolunteerSubmission {
-    @ManyToOne(() => User, (user) => user.volunteerSubmission, { primary: true, nullable: false })
-    user!: User;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-    @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { primary: true, nullable: false })
+    @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { nullable: false })
     step!: VolunteerHireStep;
 
     @Column({ type: 'enum', enum: VolunteerFormStatus, default: VolunteerFormStatus.IN_PROGRESS })
@@ -31,7 +30,7 @@ export default class FormVolunteerSubmission {
     @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormVolunteerAnswer[];
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'date' })
     submissionDate!: Date;
 
     @Column({ type: 'date', nullable: true })

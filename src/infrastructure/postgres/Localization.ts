@@ -9,13 +9,13 @@ export default class Localization {
 
     @Column({
         type: 'varchar',
-        length: 30,
+        length: 50,
     })
     country!: string;
 
     @Column({
         type: 'varchar',
-        length: 30,
+        length: 50,
     })
     city!: string;
 

@@ -5,8 +5,8 @@ import AnimalDonation from './AnimalDonation';
 import Localization from './Localization';
 import FormAnimalSubmission from './FormAnimalSubmission';
 import OrganizationUser from './OrganizationUser';
-import FormVolunteerSubmission from './FormVolunteerSubmission';
 import Calendar from './Calendar';
+import VolunteerHireStep from './VolunteerHireStep';
 
 /**
  * User Type
@@ -99,8 +99,11 @@ export default class User {
     @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, { nullable: true })
     organizationUsers!: OrganizationUser[];
 
-    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, { nullable: true })
-    volunteerSubmission!: FormVolunteerSubmission[];
+    @OneToMany(() => VolunteerHireStep, (step) => step.user, { cascade: true })
+    steps!: VolunteerHireStep[];
+
+    // @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, { cascade: true })
+    // volunteerSubmission!: FormVolunteerSubmission[];
 
     @OneToMany(() => Calendar, (calendar) => calendar.user)
     meetings!: Calendar[];
