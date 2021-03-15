@@ -25,6 +25,7 @@ export class AnimalSubmissionsController extends Controller {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Submissions Not Found')
+    @Response<ApiError>(401, 'Unauthorized')
     @Get()
     //TODO: dodac zeby uzytkownik mogl tylko swoje submissions
     public async getAllAnimalSubmissions(
@@ -75,6 +76,7 @@ export class AnimalSubmissionsController extends Controller {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     //TODO: zwykly user tylko swoj moze pobrac
+    @Response<ApiError>(401, 'Unauthorized')
     @Response<ApiError>(404, 'Submission Not Found')
     @Get('{id}')
     public async getAnimalSubmission(@Path() id: number): Promise<FormAnimalSubmission> {

@@ -60,6 +60,7 @@ export class UsersController extends Controller {
      * @param requestBody Update informations about ('name', 'phone', 'surname')
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<ApiError>(401, 'Unauthorized')
     //TODO: sprawdz czy user sobie
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
@@ -74,6 +75,7 @@ export class UsersController extends Controller {
      * @param userId Identyfy user by ID
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<ApiError>(401, 'Unauthorized')
     //TODO user tylko sam sobie
     @Get('{userId}')
     public async getUser(@Path() userId: number): Promise<User> {

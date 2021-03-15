@@ -48,9 +48,10 @@ export class VolunteerSubmissionsController {
      * @param id The submission's identifier
      * @param isInt id
      */
-    //TODO:
+    //TODO:user sobie
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Submission Not Found')
+    @Response<ApiError>(401, 'Unauthorized')
     @Get('{id}')
     public async getVolunteerSubmission(@Path() id: number): Promise<FormVolunteerSubmission> {
         return this.submissionService.getVolunteerSubmission(id);
