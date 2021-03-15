@@ -21,7 +21,7 @@ const app = express();
 (async () => {
     await connectToDb();
 
-    // await seedDatabase();
+    await seedDatabase();
 
     const logger = Container.get(WinstonLogger);
     logger.log('Connected to database');
