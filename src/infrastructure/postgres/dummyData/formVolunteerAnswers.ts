@@ -8,13 +8,7 @@ export const seedFormVolunteerAnswer = (amount: number): DeepPartial<FormVolunte
         formVolunteerAnswer.push({
             answer: faker.lorem.sentence(),
             question: { id: i + 1 },
-            submission: {
-                user: { id: 1 },
-                step: {
-                    organization: { id: 1 },
-                    number: i + 1,
-                },
-            },
+            submission: { id: i + 1 },
         });
     }
     return formVolunteerAnswer;

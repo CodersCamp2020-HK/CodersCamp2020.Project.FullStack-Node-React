@@ -10,7 +10,7 @@ export const seedVolunteerHireStep = (amount: number): DeepPartial<VolunteerHire
             description: faker.lorem.sentence(),
             number: i + 1,
             organization: { id: 1 },
-            // user: { id: i + 1 },
+            user: { id: i + 1 },
             form: { id: i + 1 },
         });
     }

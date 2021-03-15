@@ -12,10 +12,11 @@ export const seedFormVolunteerSubmission = (amount: number): DeepPartial<FormVol
             reason: faker.lorem.sentence(),
             submissionDate: faker.date.past(),
             reviewDate: faker.date.recent(3),
-            user: { id: i + 1 },
+            id: i + 1,
             step: {
                 organization: { id: 1 },
                 number: i + 1,
+                user: { id: i + 1 },
             },
             reviewer: {
                 user: { id: i + 1 },

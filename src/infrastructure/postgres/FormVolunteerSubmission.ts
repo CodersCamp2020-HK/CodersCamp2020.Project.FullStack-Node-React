@@ -1,7 +1,6 @@
-import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
 import OrganizationUser from './OrganizationUser';
-import User from './User';
 import VolunteerHireStep from './VolunteerHireStep';
 
 export enum VolunteerFormStatus {
@@ -10,13 +9,12 @@ export enum VolunteerFormStatus {
     ACCEPTED = 'accepted',
 }
 
-@Index(['user', 'step'], { unique: true })
 @Entity('FormVolunteerSubmissions')
 export default class FormVolunteerSubmission {
-    @ManyToOne(() => User, (user) => user.volunteerSubmission, { primary: true, nullable: false })
-    user!: User;
+    @PrimaryGeneratedColumn()
+    id!: number;
 
-    @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { primary: true, nullable: false })
+    @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { nullable: false })
     step!: VolunteerHireStep;
 
     @Column({ type: 'enum', enum: VolunteerFormStatus })

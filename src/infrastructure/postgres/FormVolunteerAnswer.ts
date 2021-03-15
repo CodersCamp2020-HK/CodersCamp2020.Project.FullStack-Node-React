@@ -1,5 +1,4 @@
 import { Column, Entity, Index, ManyToOne } from 'typeorm';
-// import { JsonAnswer } from './FormAnimalAnswer';
 import FormQuestion from './FormQuestion';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
 
