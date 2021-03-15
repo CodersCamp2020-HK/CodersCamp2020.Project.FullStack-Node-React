@@ -1,5 +1,7 @@
 import ApiError from '@infrastructure/ApiError';
+import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
+import { UserType } from '@infrastructure/postgres/OrganizationUser';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
@@ -58,7 +60,21 @@ export class AnimalSubmissionsService {
         };
     }
 
-    public async getAllAnimalSubmissions(queryParams: getAllAnimalSubmissionsParams): Promise<FormAnimalSubmission[]> {
+    public async getAllAnimalSubmissions(
+        queryParams: getAllAnimalSubmissionsParams,
+        currentUser: IUserInfo,
+    ): Promise<FormAnimalSubmission[]> {
+        if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
+            const submission = await this.animalSubmissionRepository
+                .createQueryBuilder('submission')
+                .leftJoinAndSelect('submission.applicant', 'applicant')
+                .where('applicant.id = :id', { id: currentUser.id })
+                .getOne();
+
+            if (submission?.applicant.id != currentUser.id) {
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only get their submissions');
+            }
+        }
         const submissions = await new OptionalWhereSelectQueryBuilder(
             this.animalSubmissionRepository
                 .createQueryBuilder('submission')

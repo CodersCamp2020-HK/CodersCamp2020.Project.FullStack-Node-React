@@ -6,8 +6,22 @@ import {
 import { ValidateErrorJSON } from '@application/UsersErrors';
 import ApiError from '@infrastructure/ApiError';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
-import { Body, Put, Get, Query, Route, Tags, Response, SuccessResponse, Controller, Path, Security } from 'tsoa';
+import {
+    Body,
+    Put,
+    Get,
+    Query,
+    Route,
+    Tags,
+    Response,
+    SuccessResponse,
+    Controller,
+    Path,
+    Security,
+    Request,
+} from 'tsoa';
 import { Inject } from 'typescript-ioc';
+import { IAuthUserInfoRequest } from '@infrastructure/Auth';
 
 @Tags('Adoption Submissions')
 @Route('adoptionSubmissions')
@@ -30,8 +44,8 @@ export class AnimalSubmissionsController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'ok')
     @Get()
-    //TODO: dodac zeby uzytkownik mogl tylko swoje submissions
     public async getAllAnimalSubmissions(
+        @Request() request: IAuthUserInfoRequest,
         @Query() status?: AnimalFormStatus,
         @Query() submissionDate?: Date,
         @Query() specie?: string,
@@ -39,14 +53,17 @@ export class AnimalSubmissionsController extends Controller {
         @Query() userName?: string,
         @Query() reviewerName?: string,
     ): Promise<FormAnimalSubmission[]> {
-        return this.submissionService.getAllAnimalSubmissions({
-            status,
-            submissionDate,
-            animalName,
-            specie,
-            userName,
-            reviewerName,
-        });
+        return this.submissionService.getAllAnimalSubmissions(
+            {
+                status,
+                submissionDate,
+                animalName,
+                specie,
+                userName,
+                reviewerName,
+            },
+            request.user,
+        );
     }
 
     /**
