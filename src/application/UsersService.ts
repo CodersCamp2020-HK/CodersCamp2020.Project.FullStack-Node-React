@@ -134,7 +134,16 @@ export class UsersService {
         return { apiKey: token };
     }
 
-    public async update(id: number, userUpdateParams: Partial<UserUpdateParams>): Promise<User> {
+    public async update(
+        id: number,
+        userUpdateParams: Partial<UserUpdateParams>,
+        currentUser: IUserInfo,
+    ): Promise<User> {
+        if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
+            if (id != currentUser.id) {
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only update own account');
+            }
+        }
         const user = await this.userRepository.findOne(id);
         if (!user) throw new ApiError('Not Found', 404, `User with id: ${id} not found!`);
         const updateUser = { ...user, ...userUpdateParams };

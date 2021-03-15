@@ -4,8 +4,9 @@ import {
     VolunteerSubmissionsService,
 } from '@application/VolunteerSubmissionsService';
 import ApiError from '@infrastructure/ApiError';
+import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
-import { Body, Get, Path, Put, Query, Route, Tags, Response, Security, SuccessResponse } from 'tsoa';
+import { Body, Get, Path, Put, Query, Route, Tags, Response, Security, SuccessResponse, Request } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Volunteer Submissions')
@@ -44,12 +45,16 @@ export class VolunteerSubmissionsController {
     @SuccessResponse(200, 'ok')
     @Get()
     public async getAllSubmissions(
+        @Request() request: IAuthUserInfoRequest,
         @Query() submissionDate?: Date,
         @Query() status?: VolunteerFormStatus,
         @Query() userName?: string,
         @Query() reviewerName?: string,
     ): Promise<FormVolunteerSubmission[]> {
-        return this.submissionService.getAllSubmissions({ submissionDate, status, userName, reviewerName });
+        return this.submissionService.getAllSubmissions(
+            { submissionDate, status, userName, reviewerName },
+            request.user as IUserInfo,
+        );
     }
 
     /**
@@ -57,14 +62,16 @@ export class VolunteerSubmissionsController {
      * @param id The submission's identifier
      * @param isInt id
      */
-    //TODO:user sobie
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Submission Not Found')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'ok')
     @Get('{id}')
-    public async getVolunteerSubmission(@Path() id: number): Promise<FormVolunteerSubmission> {
-        return this.submissionService.getVolunteerSubmission(id);
+    public async getVolunteerSubmission(
+        @Path() id: number,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<FormVolunteerSubmission> {
+        return this.submissionService.getVolunteerSubmission(id, request.user as IUserInfo);
     }
 }

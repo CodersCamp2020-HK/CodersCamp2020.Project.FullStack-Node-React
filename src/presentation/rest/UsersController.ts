@@ -61,15 +61,18 @@ export class UsersController extends Controller {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(401, 'Unauthorized')
-    //TODO: sprawdz czy user sobie
     @Response<ApiError>(404, 'User not found')
     @Response<ApiError>(400, 'Bad Request')
     @Response<Error>(500, 'Internal Server Error')
     @Response<User>(200, 'User updated')
     @Put('{userId}')
-    public async updateUser(@Path() userId: number, @Body() requestBody: Partial<UserUpdateParams>): Promise<User> {
+    public async updateUser(
+        @Path() userId: number,
+        @Body() requestBody: Partial<UserUpdateParams>,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<User> {
         this.setStatus(200);
-        return this.usersService.update(userId, requestBody);
+        return this.usersService.update(userId, requestBody, request.user as IUserInfo);
     }
 
     /**
