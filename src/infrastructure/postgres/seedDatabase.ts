@@ -89,10 +89,10 @@ export default async function seedDatabase(): Promise<void> {
     }
 }
 
-async function seedAndClose() {
-    await connectToDb();
-    await seedDatabase();
-    process.exit();
-}
+// async function seedAndClose() {
+//     await connectToDb();
+//     await seedDatabase();
+//     process.exit();
+// }
 
-seedAndClose();
+// seedAndClose();
