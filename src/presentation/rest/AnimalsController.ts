@@ -20,6 +20,7 @@ import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@appli
 import Animal from '@infrastructure/postgres/Animal';
 import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import ApiError from '@infrastructure/ApiError';
+import { ValidateErrorJSON } from '@application/UsersErrors';
 
 @Tags('Animals')
 @Route('animals')
@@ -44,6 +45,7 @@ export class AnimalsController extends Controller {
      *  @isInt  animalId
      */
     @Security('jwt', ['admin', 'employee'])
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Response<ApiError>(400, 'Bad Request')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
@@ -68,7 +70,9 @@ export class AnimalsController extends Controller {
      * @param activeLevel Gives information about active level of animal
      * @param size Gives information about size of animal
      */
-    @SuccessResponse('200')
+    @SuccessResponse(200, 'ok')
+    @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
     @Get('/')
     public async getAnimals(
         @Res() notFoundResponse: TsoaResponse<404, { reason: string }>,
@@ -112,8 +116,11 @@ export class AnimalsController extends Controller {
      * Create animal in database with informations about 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption';
      * @param requestBody
      */
+    @Security('jwt', ['admin', 'employee'])
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Response<Error>(500, 'Internal Server Error')
-    @SuccessResponse('201', 'created')
+    @Response<ApiError>(400, 'Bad Request')
+    @SuccessResponse(201, 'created')
     @Post()
     public async createAnimal(@Body() requestBody: AnimalCreationParams): Promise<void> {
         this.setStatus(201);
@@ -129,9 +136,9 @@ export class AnimalsController extends Controller {
     @Response<ApiError>(400, 'Bad Request')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
-    @Response<ApiError>(400, 'Bad Reqest')
     @Response<ApiError>(404, 'Not Found')
-    @SuccessResponse('200')
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
+    @SuccessResponse(200, 'ok')
     @Put('{animalId}')
     public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalUpdateParams): Promise<Animal> {
         this.setStatus(200);
