@@ -57,6 +57,7 @@ export class AnimalSubmissionsController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Response<ApiError>(400, 'Bad Request')
+    @Response<ApiError>(404, 'Not Found')
     @SuccessResponse('200', 'ok')
     @Put('changeAdoptionFormStatus')
     public async changeFormStatusForAdoption(
@@ -70,6 +71,7 @@ export class AnimalSubmissionsController extends Controller {
      * @param petName pet name which adopters want to adopt
      */
     @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
     @SuccessResponse('200', 'Ok')
     @Get('allWillignessesToAdoptCount')
     public async getAllWillignessesToAdoptCount(@Query() petName: string): Promise<AdoptersCount> {

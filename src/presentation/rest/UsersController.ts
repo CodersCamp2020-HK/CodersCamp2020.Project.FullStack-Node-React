@@ -271,6 +271,7 @@ export class UsersController extends Controller {
     @Post('sendVisitConfirmationMessage')
     @Response('401', 'Unauthorized')
     @Response('400', 'Bad request')
+    @Response<ApiError>(404, 'Not Found')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('201', ' Email sended')
     @Security('jwt', ['admin', 'employee'])

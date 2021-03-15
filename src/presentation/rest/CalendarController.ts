@@ -16,6 +16,7 @@ export class CalendarController extends Controller {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
     @SuccessResponse('200', 'ok')
     @Get()
     public async getAllVisits(): Promise<Calendar> {
@@ -28,6 +29,7 @@ export class CalendarController extends Controller {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
     @SuccessResponse('200', 'ok')
     @Get('{visitId}')
     public async getVisit(@Path() visitId: number): Promise<Calendar> {
@@ -42,6 +44,7 @@ export class CalendarController extends Controller {
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
+    @Response<ApiError>(404, 'Not Found')
     @SuccessResponse(201, 'created')
     //TODO: Uzytkownik tylko dla siebie moze
     @Post()
@@ -56,6 +59,7 @@ export class CalendarController extends Controller {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(400, 'Bad Request')
+    @Response<ApiError>(404, 'Not Found')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')

@@ -21,6 +21,7 @@ export class VolunteerSubmissionsController {
     @Security('jwt', ['admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(400, 'Bad Request')
+    @Response<ApiError>(404, 'Not Found')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @SuccessResponse('200', 'ok')
     @Put('changeVolunterFormStatus')
@@ -39,6 +40,7 @@ export class VolunteerSubmissionsController {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
     @SuccessResponse('200', 'ok')
     @Get()
     public async getAllSubmissions(

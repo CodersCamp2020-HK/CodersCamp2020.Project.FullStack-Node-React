@@ -18,6 +18,7 @@ export class FormController extends Controller {
     @Security('jwt', ['admin', 'employee'])
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Response('400', 'Bad request')
+    @Response<ApiError>(404, 'Not Found')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('201', 'created')
     @Post()

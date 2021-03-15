@@ -72,6 +72,7 @@ export class AnimalsController extends Controller {
      */
     @SuccessResponse('200')
     @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
     @Get('/')
     public async getAnimals(
         @Res() notFoundResponse: TsoaResponse<404, { reason: string }>,
