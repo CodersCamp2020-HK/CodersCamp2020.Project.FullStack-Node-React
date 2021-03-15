@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Get, Path, Route, SuccessResponse, Tags, Response } from 'tsoa';
+import { Body, Controller, Post, Get, Path, Route, SuccessResponse, Tags, Response, Security } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { FormCreationParams, FormService } from '@application/FormService';
 import ApiError from '@infrastructure/ApiError';
@@ -14,6 +14,7 @@ export class FormController extends Controller {
      * Post a form and throws information about success
      * @param requestBody includes 'name', 'questions' of form
      */
+    @Security('jwt', ['admin', 'employee'])
     @Response('400', 'Bad request')
     @SuccessResponse('201', 'created')
     @Post()
@@ -27,6 +28,7 @@ export class FormController extends Controller {
      * Supply an ID of survey and get it from database
      * @param surveyId ID of survey (number)
      */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Survey not found')
     @Get('{surveyId}')
     public async getForm(@Path() surveyId: number): Promise<Form> {
@@ -36,6 +38,7 @@ export class FormController extends Controller {
     /**
      * Get all surveys applied by users
      */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Surveys not found')
     @Get()
     public async getAllForms(): Promise<Form[]> {

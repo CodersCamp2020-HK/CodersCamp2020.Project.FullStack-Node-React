@@ -112,6 +112,7 @@ export class AnimalsController extends Controller {
      * Create animal in database with informations about 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption';
      * @param requestBody
      */
+    @Security('jwt', ['admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('201', 'created')
     @Post()

@@ -59,6 +59,8 @@ export class UsersController extends Controller {
      * @param userId Identyfy user by ID
      * @param requestBody Update informations about ('name', 'phone', 'surname')
      */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    //TODO: sprawdz czy user sobie
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
     @Put('{userId}')
@@ -71,6 +73,8 @@ export class UsersController extends Controller {
      * Supply the unique user ID and get informations about him from database
      * @param userId Identyfy user by ID
      */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    //TODO user tylko sam sobie
     @Get('{userId}')
     public async getUser(@Path() userId: number): Promise<User> {
         return this.usersService.get(userId);
@@ -149,6 +153,7 @@ export class UsersController extends Controller {
      * Send an email to users that applied for unique pet
      * @param petName Send and email by pet name
      */
+    @Security('jwt', ['admin', 'employee'])
     @Post('sendSomeoneAdoptedEmails')
     @Response('401', 'Unauthorized')
     @Response('400', 'Bad request')
@@ -253,7 +258,7 @@ export class UsersController extends Controller {
     @SuccessResponse('201', ' Email sended') // Custom success response
     @Security('jwt', ['admin', 'employee'])
     public async sendVisitConfirmationEmail(@Query() petName: string, @Query() adopterEmail: Email): Promise<void> {
-        //CHANGE
+        //TODO:
         //Pobieranie użytkownika o podanym emailu
         const adopter = new User();
         (adopter.name = 'Jan'), (adopter.surname = 'Nowak'), (adopter.mail = adopterEmail);

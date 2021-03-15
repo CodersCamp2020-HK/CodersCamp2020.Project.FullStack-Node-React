@@ -4,7 +4,7 @@ import {
 } from '@application/VolunteerSubmissionsService';
 import ApiError from '@infrastructure/ApiError';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
-import { Body, Get, Path, Put, Query, Route, Tags, Response } from 'tsoa';
+import { Body, Get, Path, Put, Query, Route, Tags, Response, Security } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Volunteer Submissions')
@@ -17,6 +17,7 @@ export class VolunteerSubmissionsController {
      * Update status of volunteer form
      * @param changeStatusParams It takes values ('in progress', 'rejected', 'accepted')
      */
+    @Security('jwt', ['admin', 'employee'])
     @Put('changeVolunterFormStatus')
     public async changeFormStatusForVolunteer(
         @Body() changeStatusParams: ChangeStatusForVolunterFormParams,
@@ -31,6 +32,7 @@ export class VolunteerSubmissionsController {
      * @param userName Shows name of user that applied
      * @param reviewerName Shows name of shelter worker that deals with the matter
      */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Get()
     public async getAllSubmissions(
         @Query() submissionDate?: Date,
@@ -46,6 +48,8 @@ export class VolunteerSubmissionsController {
      * @param id The submission's identifier
      * @param isInt id
      */
+    //TODO:
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Submission Not Found')
     @Get('{id}')
     public async getVolunteerSubmission(@Path() id: number): Promise<FormVolunteerSubmission> {

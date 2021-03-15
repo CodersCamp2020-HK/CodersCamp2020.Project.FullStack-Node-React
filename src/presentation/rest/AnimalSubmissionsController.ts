@@ -5,7 +5,7 @@ import {
 } from '@application/AnimalSubmissionsService';
 import ApiError from '@infrastructure/ApiError';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
-import { Body, Put, Get, Query, Route, Tags, Response, SuccessResponse, Controller, Path } from 'tsoa';
+import { Body, Put, Get, Query, Route, Tags, Response, SuccessResponse, Controller, Path, Security } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Adoption Submissions')
@@ -23,8 +23,10 @@ export class AnimalSubmissionsController extends Controller {
      * @param userName Gives name of user that applied for animal
      * @param reviewerName Gives name of shelter worker that who deals with the user application
      */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Submissions Not Found')
     @Get()
+    //TODO: dodac zeby uzytkownik mogl tylko swoje submissions
     public async getAllAnimalSubmissions(
         @Query() status?: AnimalFormStatus,
         @Query() submissionDate?: Date,
@@ -47,6 +49,7 @@ export class AnimalSubmissionsController extends Controller {
      * Method allows shelter worker to change the status of user application for an animal
      * @param changeStatusParams Information about actual status of application ('in progress', 'rejected', 'accepted')
      */
+    @Security('jwt', ['admin', 'employee'])
     @Put('changeAdoptionFormStatus')
     public async changeFormStatusForAdoption(
         @Body() changeStatusParams: ChangeStatusForAdoptionFormParams,
@@ -70,6 +73,8 @@ export class AnimalSubmissionsController extends Controller {
      * Method get information about submission, supplied by unique ID
      * @param id The submission's identifier
      */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    //TODO: zwykly user tylko swoj moze pobrac
     @Response<ApiError>(404, 'Submission Not Found')
     @Get('{id}')
     public async getAnimalSubmission(@Path() id: number): Promise<FormAnimalSubmission> {
