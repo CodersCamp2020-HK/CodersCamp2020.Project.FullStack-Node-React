@@ -132,7 +132,7 @@ export class AnimalsController extends Controller {
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
-    @SuccessResponse('200')
+    @SuccessResponse('200', 'ok')
     @Put('{animalId}')
     public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalUpdateParams): Promise<Animal> {
         this.setStatus(200);

@@ -27,6 +27,7 @@ export class AnimalSubmissionsController extends Controller {
     @Response<ApiError>(404, 'Submissions Not Found')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('200', 'ok')
     @Get()
     //TODO: dodac zeby uzytkownik mogl tylko swoje submissions
     public async getAllAnimalSubmissions(
@@ -53,6 +54,7 @@ export class AnimalSubmissionsController extends Controller {
      */
     @Security('jwt', ['admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('200', 'ok')
     @Put('changeAdoptionFormStatus')
     public async changeFormStatusForAdoption(
         @Body() changeStatusParams: ChangeStatusForAdoptionFormParams,
@@ -81,6 +83,7 @@ export class AnimalSubmissionsController extends Controller {
     @Response<ApiError>(401, 'Unauthorized')
     @Response<ApiError>(404, 'Submission Not Found')
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('200', 'ok')
     @Get('{id}')
     public async getAnimalSubmission(@Path() id: number): Promise<FormAnimalSubmission> {
         return this.submissionService.getAnimalSubmission(id);

@@ -32,6 +32,7 @@ export class FormController extends Controller {
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Survey not found')
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('200', 'ok')
     @Get('{surveyId}')
     public async getForm(@Path() surveyId: number): Promise<Form> {
         return this.formService.get(surveyId);
@@ -43,6 +44,7 @@ export class FormController extends Controller {
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Surveys not found')
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('200', 'ok')
     @Get()
     public async getAllForms(): Promise<Form[]> {
         return this.formService.getAll();

@@ -165,7 +165,7 @@ export class UsersController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Response('401', 'Unauthorized')
     @Response('400', 'Bad request')
-    @SuccessResponse('201', ' Email sended') // Custom success response
+    @SuccessResponse('201', ' Email sended')
     @Security('jwt', ['admin', 'employee'])
     public async sendSomeoneAdoptedEmails(@Query() petName: string): Promise<void> {
         const submissions = await this.animalSubmissionsService.getAllAnimalSubmissions({
@@ -187,7 +187,7 @@ export class UsersController extends Controller {
      @Response<Error>(500, 'Internal Server Error')
     @Response('401', 'Unauthorized')
     @Response('404', 'User not found')
-    @SuccessResponse('200', ' User deleted') // Custom success response
+    @SuccessResponse('200', ' User deleted')
     @Security('jwt', ['admin', 'normal', 'volunteer', 'employee'])
     @Delete('{userId}')
     public async deleteUser(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {
@@ -202,6 +202,7 @@ export class UsersController extends Controller {
     @Response<ApiError>(400, 'Bad Request')
     @Response<Error>(500, 'Internal Server Error')
     @Post('auth')
+    @SuccessResponse('200', 'ok')
     public async loginUser(@Body() requestBody: UserLoginParams): Promise<ApiKey> {
         this.setStatus(200);
         return this.usersService.login(requestBody);
@@ -269,7 +270,7 @@ export class UsersController extends Controller {
     @Response('401', 'Unauthorized')
     @Response('400', 'Bad request')
     @Response<Error>(500, 'Internal Server Error')
-    @SuccessResponse('201', ' Email sended') // Custom success response
+    @SuccessResponse('201', ' Email sended')
     @Security('jwt', ['admin', 'employee'])
     public async sendVisitConfirmationEmail(@Query() petName: string, @Query() adopterEmail: Email): Promise<void> {
         //TODO:

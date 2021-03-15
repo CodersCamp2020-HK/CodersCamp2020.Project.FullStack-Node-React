@@ -1,4 +1,4 @@
-import { Controller, Get, Path, Route, Post, Body, Tags, Delete, Security, Response } from 'tsoa';
+import { Controller, Get, Path, Route, Post, Body, Tags, Delete, Security, Response, SuccessResponse } from 'tsoa';
 import Calendar from '../../infrastructure/postgres/Calendar';
 import { CalendarService, CalendarCreationParams } from '../../application/CalendarService';
 import { Inject } from 'typescript-ioc';
@@ -15,6 +15,7 @@ export class CalendarController extends Controller {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('200', 'ok')
     @Get()
     public async getAllVisits(): Promise<Calendar> {
         return this.calendarService.getAll();
@@ -26,6 +27,7 @@ export class CalendarController extends Controller {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('200', 'ok')
     @Get('{visitId}')
     public async getVisit(@Path() visitId: number): Promise<Calendar> {
         return this.calendarService.get(visitId);
@@ -37,6 +39,7 @@ export class CalendarController extends Controller {
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse(201, 'created')
     //TODO: Uzytkownik tylko dla siebie moze
     @Post()
     public async createVisit(@Body() requestBody: CalendarCreationParams): Promise<void> {

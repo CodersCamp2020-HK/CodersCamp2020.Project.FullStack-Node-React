@@ -4,7 +4,7 @@ import {
 } from '@application/VolunteerSubmissionsService';
 import ApiError from '@infrastructure/ApiError';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
-import { Body, Get, Path, Put, Query, Route, Tags, Response, Security } from 'tsoa';
+import { Body, Get, Path, Put, Query, Route, Tags, Response, Security, SuccessResponse } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Volunteer Submissions')
@@ -19,6 +19,7 @@ export class VolunteerSubmissionsController {
      */
     @Security('jwt', ['admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('200', 'ok')
     @Put('changeVolunterFormStatus')
     public async changeFormStatusForVolunteer(
         @Body() changeStatusParams: ChangeStatusForVolunterFormParams,
@@ -35,6 +36,7 @@ export class VolunteerSubmissionsController {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('200', 'ok')
     @Get()
     public async getAllSubmissions(
         @Query() submissionDate?: Date,
@@ -55,6 +57,7 @@ export class VolunteerSubmissionsController {
     @Response<ApiError>(404, 'Submission Not Found')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('200', 'ok')
     @Get('{id}')
     public async getVolunteerSubmission(@Path() id: number): Promise<FormVolunteerSubmission> {
         return this.submissionService.getVolunteerSubmission(id);
