@@ -17,7 +17,7 @@ export class CalendarController extends Controller {
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
-    @SuccessResponse('200', 'ok')
+    @SuccessResponse(200, 'ok')
     @Get()
     public async getAllVisits(): Promise<Calendar> {
         return this.calendarService.getAll();
@@ -30,7 +30,7 @@ export class CalendarController extends Controller {
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
-    @SuccessResponse('200', 'ok')
+    @SuccessResponse(200, 'ok')
     @Get('{visitId}')
     public async getVisit(@Path() visitId: number): Promise<Calendar> {
         return this.calendarService.get(visitId);

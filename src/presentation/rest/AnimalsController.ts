@@ -70,7 +70,7 @@ export class AnimalsController extends Controller {
      * @param activeLevel Gives information about active level of animal
      * @param size Gives information about size of animal
      */
-    @SuccessResponse('200')
+    @SuccessResponse(200, 'ok')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
     @Get('/')
@@ -120,7 +120,7 @@ export class AnimalsController extends Controller {
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(400, 'Bad Request')
-    @SuccessResponse('201', 'created')
+    @SuccessResponse(201, 'created')
     @Post()
     public async createAnimal(@Body() requestBody: AnimalCreationParams): Promise<void> {
         this.setStatus(201);
@@ -138,7 +138,7 @@ export class AnimalsController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
-    @SuccessResponse('200', 'ok')
+    @SuccessResponse(200, 'ok')
     @Put('{animalId}')
     public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalUpdateParams): Promise<Animal> {
         this.setStatus(200);
