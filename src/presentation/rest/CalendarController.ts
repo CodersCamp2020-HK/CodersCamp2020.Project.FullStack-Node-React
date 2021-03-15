@@ -14,6 +14,7 @@ export class CalendarController extends Controller {
      * Retrieves all existing visit.
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<Error>(500, 'Internal Server Error')
     @Get()
     public async getAllVisits(): Promise<Calendar> {
         return this.calendarService.getAll();
@@ -24,6 +25,7 @@ export class CalendarController extends Controller {
      * @param visitId The visit's identifier
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<Error>(500, 'Internal Server Error')
     @Get('{visitId}')
     public async getVisit(@Path() visitId: number): Promise<Calendar> {
         return this.calendarService.get(visitId);
@@ -34,6 +36,7 @@ export class CalendarController extends Controller {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
     //TODO: Uzytkownik tylko dla siebie moze
     @Post()
     public async createVisit(@Body() requestBody: CalendarCreationParams): Promise<void> {
@@ -47,6 +50,7 @@ export class CalendarController extends Controller {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
     @Delete('{visitId}')
     //TODO: Uzytkownik tylko dla siebie moze
     public async deleteVisit(@Path() visitId: number): Promise<void> {

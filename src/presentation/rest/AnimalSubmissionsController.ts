@@ -26,6 +26,7 @@ export class AnimalSubmissionsController extends Controller {
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Submissions Not Found')
     @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
     @Get()
     //TODO: dodac zeby uzytkownik mogl tylko swoje submissions
     public async getAllAnimalSubmissions(
@@ -51,6 +52,7 @@ export class AnimalSubmissionsController extends Controller {
      * @param changeStatusParams Information about actual status of application ('in progress', 'rejected', 'accepted')
      */
     @Security('jwt', ['admin', 'employee'])
+    @Response<Error>(500, 'Internal Server Error')
     @Put('changeAdoptionFormStatus')
     public async changeFormStatusForAdoption(
         @Body() changeStatusParams: ChangeStatusForAdoptionFormParams,
@@ -62,7 +64,7 @@ export class AnimalSubmissionsController extends Controller {
      * Get number of adopters wanting to adopt given animal
      * @param petName pet name which adopters want to adopt
      */
-    @Response('500', 'Internal Server Error')
+    @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('200', 'Ok')
     @Get('allWillignessesToAdoptCount')
     public async getAllWillignessesToAdoptCount(@Query() petName: string): Promise<AdoptersCount> {
@@ -78,6 +80,7 @@ export class AnimalSubmissionsController extends Controller {
     //TODO: zwykly user tylko swoj moze pobrac
     @Response<ApiError>(401, 'Unauthorized')
     @Response<ApiError>(404, 'Submission Not Found')
+    @Response<Error>(500, 'Internal Server Error')
     @Get('{id}')
     public async getAnimalSubmission(@Path() id: number): Promise<FormAnimalSubmission> {
         return this.submissionService.getAnimalSubmission(id);

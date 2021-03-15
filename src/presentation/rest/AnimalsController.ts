@@ -69,6 +69,7 @@ export class AnimalsController extends Controller {
      * @param size Gives information about size of animal
      */
     @SuccessResponse('200')
+    @Response<Error>(500, 'Internal Server Error')
     @Get('/')
     public async getAnimals(
         @Res() notFoundResponse: TsoaResponse<404, { reason: string }>,
@@ -130,7 +131,6 @@ export class AnimalsController extends Controller {
     @Response<ApiError>(400, 'Bad Request')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
-    @Response<ApiError>(400, 'Bad Reqest')
     @Response<ApiError>(404, 'Not Found')
     @SuccessResponse('200')
     @Put('{animalId}')

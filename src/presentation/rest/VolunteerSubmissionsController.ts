@@ -18,6 +18,7 @@ export class VolunteerSubmissionsController {
      * @param changeStatusParams It takes values ('in progress', 'rejected', 'accepted')
      */
     @Security('jwt', ['admin', 'employee'])
+    @Response<Error>(500, 'Internal Server Error')
     @Put('changeVolunterFormStatus')
     public async changeFormStatusForVolunteer(
         @Body() changeStatusParams: ChangeStatusForVolunterFormParams,
@@ -33,6 +34,7 @@ export class VolunteerSubmissionsController {
      * @param reviewerName Shows name of shelter worker that deals with the matter
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<Error>(500, 'Internal Server Error')
     @Get()
     public async getAllSubmissions(
         @Query() submissionDate?: Date,
@@ -52,6 +54,7 @@ export class VolunteerSubmissionsController {
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Submission Not Found')
     @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
     @Get('{id}')
     public async getVolunteerSubmission(@Path() id: number): Promise<FormVolunteerSubmission> {
         return this.submissionService.getVolunteerSubmission(id);

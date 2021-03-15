@@ -64,6 +64,7 @@ export class UsersController extends Controller {
     //TODO: sprawdz czy user sobie
     @Response<ApiError>(404, 'User not found')
     @Response<User>(200, 'User updated')
+    @Response<Error>(500, 'Internal Server Error')
     @Put('{userId}')
     public async updateUser(@Path() userId: number, @Body() requestBody: Partial<UserUpdateParams>): Promise<User> {
         this.setStatus(200);
@@ -76,6 +77,7 @@ export class UsersController extends Controller {
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
     //TODO user tylko sam sobie
     @Get('{userId}')
     public async getUser(@Path() userId: number): Promise<User> {
@@ -89,6 +91,7 @@ export class UsersController extends Controller {
      */
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @SuccessResponse('201', 'Created')
+    @Response<Error>(500, 'Internal Server Error')
     @Post()
     public async createUser(
         @Body() requestBody: UserCreationParams,
@@ -121,6 +124,7 @@ export class UsersController extends Controller {
     @Get('activate/{generatedUUID}')
     @SuccessResponse('200', 'User Activated')
     @Response('404', 'Link is not valid or expired')
+    @Response<Error>(500, 'Internal Server Error')
     public async activateUser(@Path() generatedUUID: string): Promise<void> {
         await this.usersService.activateUser(generatedUUID);
         this.setStatus(200);
@@ -132,6 +136,7 @@ export class UsersController extends Controller {
      * @param request Information from express
      */
     @Post('{userId}/sendActivationLink')
+    @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('200', 'Sent')
     public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
         try {
@@ -157,6 +162,7 @@ export class UsersController extends Controller {
      */
     @Security('jwt', ['admin', 'employee'])
     @Post('sendSomeoneAdoptedEmails')
+    @Response<Error>(500, 'Internal Server Error')
     @Response('401', 'Unauthorized')
     @Response('400', 'Bad request')
     @SuccessResponse('201', ' Email sended') // Custom success response
@@ -178,6 +184,7 @@ export class UsersController extends Controller {
     /** Supply the unique user ID and delete user with corresponding id from database
      *  @param userId Unique ID of user
      */
+     @Response<Error>(500, 'Internal Server Error')
     @Response('401', 'Unauthorized')
     @Response('404', 'User not found')
     @SuccessResponse('200', ' User deleted') // Custom success response
@@ -193,6 +200,7 @@ export class UsersController extends Controller {
      * @param requestBody
      */
     @Response<ApiError>(400, 'Bad Request')
+    @Response<Error>(500, 'Internal Server Error')
     @Post('auth')
     public async loginUser(@Body() requestBody: UserLoginParams): Promise<ApiKey> {
         this.setStatus(200);
@@ -206,6 +214,7 @@ export class UsersController extends Controller {
      */
     @Security('jwt', ['admin', 'employee', 'normal', 'volunteer'])
     @Response<ApiError>(404, 'User not found')
+    @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'OK')
     @Patch('{userId}')
     public async updateUserPassword(
@@ -223,7 +232,8 @@ export class UsersController extends Controller {
      */
     @Response<ApiError>(404, 'User not found')
     @Response<ApiError>(400, 'Bad Request')
-    @SuccessResponse('200', 'Email send')
+    @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('200', 'Email sended')
     @Post('reset')
     public async sendResetPasswordMail(
         @Body() email: EmailResetPassword,
@@ -239,6 +249,7 @@ export class UsersController extends Controller {
      */
     @Response<ApiError>(404, 'User not found')
     @Response<ApiError>(400, 'Bad Request')
+    @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('200', 'Password set')
     @Post('reset/{userResetUUID}')
     public async resetUserPassword(
@@ -257,6 +268,7 @@ export class UsersController extends Controller {
     @Post('sendVisitConfirmationMessage')
     @Response('401', 'Unauthorized')
     @Response('400', 'Bad request')
+    @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('201', ' Email sended') // Custom success response
     @Security('jwt', ['admin', 'employee'])
     public async sendVisitConfirmationEmail(@Query() petName: string, @Query() adopterEmail: Email): Promise<void> {
