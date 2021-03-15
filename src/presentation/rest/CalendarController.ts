@@ -18,7 +18,6 @@ import { Inject } from 'typescript-ioc';
 import ApiError from '@infrastructure/ApiError';
 import { ValidateErrorJSON } from '@application/UsersErrors';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
-import { request } from 'express';
 
 @Tags('Calendar')
 @Route('calendars')

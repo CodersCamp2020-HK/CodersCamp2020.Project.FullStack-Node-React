@@ -1,5 +1,5 @@
 import ApiError from '@infrastructure/ApiError';
-import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import { IUserInfo } from '@infrastructure/Auth';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import { UserType } from '@infrastructure/postgres/OrganizationUser';
 import { Repository } from 'typeorm';

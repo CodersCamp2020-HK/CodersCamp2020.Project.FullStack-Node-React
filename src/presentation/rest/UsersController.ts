@@ -171,11 +171,17 @@ export class UsersController extends Controller {
     @Response(400, 'Bad request')
     @SuccessResponse(201, ' Email sended')
     @Post('sendSomeoneAdoptedEmails')
-    public async sendSomeoneAdoptedEmails(@Query() petName: string): Promise<void> {
-        const submissions = await this.animalSubmissionsService.getAllAnimalSubmissions({
-            animalName: petName,
-            status: AnimalFormStatus.REJECTED,
-        });
+    public async sendSomeoneAdoptedEmails(
+        @Query() petName: string,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        const submissions = await this.animalSubmissionsService.getAllAnimalSubmissions(
+            {
+                animalName: petName,
+                status: AnimalFormStatus.REJECTED,
+            },
+            request.user as IUserInfo,
+        );
 
         const adopters = submissions.map((submission) => {
             return submission.applicant;
