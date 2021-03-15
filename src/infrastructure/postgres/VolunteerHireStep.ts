@@ -5,7 +5,7 @@ import Organization from './Organization';
 import User from './User';
 
 @Entity('VolunteerHireSteps')
-@Index(['organization', 'user', 'number'], { unique: true })
+@Index(['organization', 'number', 'user'], { unique: true })
 export default class VolunteerHireStep {
     @Column()
     name!: string;

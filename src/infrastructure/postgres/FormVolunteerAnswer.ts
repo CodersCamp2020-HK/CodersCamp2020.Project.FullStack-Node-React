@@ -1,6 +1,5 @@
 import { Column, Entity, Index, ManyToOne } from 'typeorm';
-import { JsonAnswer } from './FormAnimalAnswer';
-import FormQuestion from './FormQuestion';
+import FormQuestion, { AnswerForm } from './FormQuestion';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
 
 @Entity('FormVolunteerAnswers')
@@ -13,5 +12,5 @@ export default class FormVolunteerAnswer {
     question!: FormQuestion;
 
     @Column({ type: 'jsonb' })
-    answer!: JsonAnswer;
+    answer!: AnswerForm;
 }
