@@ -8,7 +8,7 @@ export default class Form {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column()
+    @Column({ unique: true })
     name!: string;
 
     @OneToMany(() => FormQuestion, (question) => question.form, { cascade: true })
