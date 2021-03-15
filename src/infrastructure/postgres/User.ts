@@ -99,7 +99,7 @@ export default class User {
     @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, { nullable: true })
     organizationUsers!: OrganizationUser[];
 
-    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user)
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, { nullable: true })
     volunteerSubmission!: FormVolunteerSubmission[];
 
     @OneToMany(() => Calendar, (calendar) => calendar.user)

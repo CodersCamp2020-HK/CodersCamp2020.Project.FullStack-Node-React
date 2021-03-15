@@ -10,8 +10,8 @@ export enum VolunteerFormStatus {
     ACCEPTED = 'accepted',
 }
 
-@Index(['user', 'step'], { unique: true })
 @Entity('FormVolunteerSubmissions')
+@Index(['user', 'step'], { unique: true })
 export default class FormVolunteerSubmission {
     @ManyToOne(() => User, (user) => user.volunteerSubmission, { primary: true, nullable: false })
     user!: User;
@@ -20,7 +20,7 @@ export default class FormVolunteerSubmission {
     step!: VolunteerHireStep;
 
     @Column({ type: 'enum', enum: VolunteerFormStatus, default: VolunteerFormStatus.IN_PROGRESS })
-    status!: string;
+    status!: VolunteerFormStatus;
 
     @Column({ nullable: true, default: null })
     reason?: string;
