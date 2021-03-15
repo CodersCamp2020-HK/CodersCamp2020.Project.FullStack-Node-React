@@ -58,41 +58,35 @@ import { seedFormAnimalAnswer } from './dummyData/formAnimalAnswers';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
 import { seedFormVolunteerAnswer } from './dummyData/formVolunteerAnswers';
 
-const clear = false;
 export default async function seedDatabase(): Promise<void> {
-    if (clear) {
-        await getConnection().synchronize(true); // czyści baze danych
-    } else {
-        await getConnection().synchronize(true);
-        await getConnection().getRepository(AnimalAdditionalInfo).save(seedAnimalAdditionalInfo(5));
-        await getConnection().getRepository(AnimalThumbnailPhoto).save(seedAnimalThumbnailPhoto(5));
+    await getConnection().getRepository(AnimalAdditionalInfo).save(seedAnimalAdditionalInfo(5));
+    await getConnection().getRepository(AnimalThumbnailPhoto).save(seedAnimalThumbnailPhoto(5));
 
-        await getConnection().getRepository(Specie).save(species);
-        await getConnection().getRepository(Animal).save(seedAnimals(5));
-        await getConnection().getRepository(AnimalPhoto).save(seedAnimalPhoto(5));
-        await getConnection().getRepository(Localization).save(seedLocalizations(5));
-        await getConnection()
-            .getRepository(User)
-            .save(await seedUsers(5));
-        await getConnection().getRepository(Organization).save(organizations);
-        await getConnection().getRepository(Form).save(seedForms(5));
-        await getConnection().getRepository(AdoptionStep).save(seedAdoptionStep(5));
-        await getConnection().getRepository(AnimalHandler).save(seedAnimalHandlers(5));
-        await getConnection().getRepository(Calendar).save(seedCalendars(5));
-        await getConnection().getRepository(OrganizationUser).save(organizationUsers);
-        await getConnection().getRepository(VolunteerHireStep).save(seedVolunteerHireStep(5));
-        await getConnection().getRepository(FormAnimalSubmission).save(seedFormAnimalSubmission(5));
-        await getConnection().getRepository(FormQuestion).save(seedFormQuestion(5));
-        await getConnection().getRepository(FormVolunteerSubmission).save(seedFormVolunteerSubmission(5));
-        await getConnection().getRepository(FormAnimalAnswer).save(seedFormAnimalAnswer(5));
-        await getConnection().getRepository(FormVolunteerAnswer).save(seedFormVolunteerAnswer(5));
-    }
+    await getConnection().getRepository(Specie).save(species);
+    await getConnection().getRepository(Animal).save(seedAnimals(5));
+    await getConnection().getRepository(AnimalPhoto).save(seedAnimalPhoto(5));
+    await getConnection().getRepository(Localization).save(seedLocalizations(5));
+    await getConnection()
+        .getRepository(User)
+        .save(await seedUsers(5));
+    await getConnection().getRepository(Organization).save(organizations);
+    await getConnection().getRepository(Form).save(seedForms(5));
+    await getConnection().getRepository(AdoptionStep).save(seedAdoptionStep(5));
+    await getConnection().getRepository(AnimalHandler).save(seedAnimalHandlers(5));
+    await getConnection().getRepository(Calendar).save(seedCalendars(5));
+    await getConnection().getRepository(OrganizationUser).save(organizationUsers);
+    await getConnection().getRepository(VolunteerHireStep).save(seedVolunteerHireStep(5));
+    await getConnection().getRepository(FormAnimalSubmission).save(seedFormAnimalSubmission(5));
+    await getConnection().getRepository(FormQuestion).save(seedFormQuestion(5));
+    await getConnection().getRepository(FormVolunteerSubmission).save(seedFormVolunteerSubmission(5));
+    await getConnection().getRepository(FormAnimalAnswer).save(seedFormAnimalAnswer(5));
+    await getConnection().getRepository(FormVolunteerAnswer).save(seedFormVolunteerAnswer(5));
 }
 
-async function seedAndClose() {
-    await connectToDb();
-    await seedDatabase();
-    process.exit();
-}
+// async function seedAndClose() {
+//     await connectToDb();
+//     await seedDatabase();
+//     process.exit();
+// }
 
-seedAndClose();
+// seedAndClose();
