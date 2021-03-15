@@ -1,7 +1,7 @@
 import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import AnimalHandler from './AnimalHandler';
 import FormAnimalSubmission from './FormAnimalSubmission';
-// import FormVolunteerSubmission from './FormVolunteerSubmission';
+import FormVolunteerSubmission from './FormVolunteerSubmission';
 import Organization from './Organization';
 import User from './User';
 
@@ -33,6 +33,6 @@ export default class OrganizationUser {
     @OneToMany(() => AnimalHandler, (handler) => handler.organizationUser, { cascade: true })
     caregivers!: AnimalHandler[];
 
-    // @OneToMany(() => FormVolunteerSubmission, (submission) => submission.reviewer, { cascade: true })
-    // volunteerReviews!: FormVolunteerSubmission;
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.reviewer, { cascade: true })
+    volunteerReviews!: FormVolunteerSubmission;
 }
