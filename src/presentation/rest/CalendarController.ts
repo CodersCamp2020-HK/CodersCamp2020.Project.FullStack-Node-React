@@ -3,6 +3,7 @@ import Calendar from '../../infrastructure/postgres/Calendar';
 import { CalendarService, CalendarCreationParams } from '../../application/CalendarService';
 import { Inject } from 'typescript-ioc';
 import ApiError from '@infrastructure/ApiError';
+import { ValidateErrorJSON } from '@application/UsersErrors';
 
 @Tags('Calendar')
 @Route('calendars')
@@ -39,6 +40,7 @@ export class CalendarController extends Controller {
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @SuccessResponse(201, 'created')
     //TODO: Uzytkownik tylko dla siebie moze
     @Post()
@@ -54,6 +56,7 @@ export class CalendarController extends Controller {
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Delete('{visitId}')
     //TODO: Uzytkownik tylko dla siebie moze
     public async deleteVisit(@Path() visitId: number): Promise<void> {

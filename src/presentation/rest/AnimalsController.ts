@@ -20,6 +20,7 @@ import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@appli
 import Animal from '@infrastructure/postgres/Animal';
 import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import ApiError from '@infrastructure/ApiError';
+import { ValidateErrorJSON } from '@application/UsersErrors';
 
 @Tags('Animals')
 @Route('animals')
@@ -44,6 +45,7 @@ export class AnimalsController extends Controller {
      *  @isInt  animalId
      */
     @Security('jwt', ['admin', 'employee'])
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Response<ApiError>(400, 'Bad Request')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
@@ -114,6 +116,7 @@ export class AnimalsController extends Controller {
      * @param requestBody
      */
     @Security('jwt', ['admin', 'employee'])
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('201', 'created')
     @Post()
@@ -132,6 +135,7 @@ export class AnimalsController extends Controller {
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @SuccessResponse('200', 'ok')
     @Put('{animalId}')
     public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalUpdateParams): Promise<Animal> {

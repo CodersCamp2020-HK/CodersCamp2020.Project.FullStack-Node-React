@@ -3,6 +3,7 @@ import {
     AnimalSubmissionsService,
     ChangeStatusForAdoptionFormParams,
 } from '@application/AnimalSubmissionsService';
+import { ValidateErrorJSON } from '@application/UsersErrors';
 import ApiError from '@infrastructure/ApiError';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import { Body, Put, Get, Query, Route, Tags, Response, SuccessResponse, Controller, Path, Security } from 'tsoa';
@@ -54,6 +55,7 @@ export class AnimalSubmissionsController extends Controller {
      */
     @Security('jwt', ['admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @SuccessResponse('200', 'ok')
     @Put('changeAdoptionFormStatus')
     public async changeFormStatusForAdoption(

@@ -1,3 +1,4 @@
+import { ValidateErrorJSON } from '@application/UsersErrors';
 import {
     ChangeStatusForVolunterFormParams,
     VolunteerSubmissionsService,
@@ -20,6 +21,7 @@ export class VolunteerSubmissionsController {
     @Security('jwt', ['admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('200', 'ok')
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Put('changeVolunterFormStatus')
     public async changeFormStatusForVolunteer(
         @Body() changeStatusParams: ChangeStatusForVolunterFormParams,

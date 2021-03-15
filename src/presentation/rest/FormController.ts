@@ -3,6 +3,7 @@ import { Inject } from 'typescript-ioc';
 import { FormCreationParams, FormService } from '@application/FormService';
 import ApiError from '@infrastructure/ApiError';
 import Form from '@infrastructure/postgres/Form';
+import { ValidateErrorJSON } from '@application/UsersErrors';
 
 @Tags('Form')
 @Route('forms')
@@ -15,9 +16,10 @@ export class FormController extends Controller {
      * @param requestBody includes 'name', 'questions' of form
      */
     @Security('jwt', ['admin', 'employee'])
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Response('400', 'Bad request')
-    @SuccessResponse('201', 'created')
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('201', 'created')
     @Post()
     public async createForm(@Body() requestBody: FormCreationParams): Promise<void> {
         await this.formService.create(requestBody);
