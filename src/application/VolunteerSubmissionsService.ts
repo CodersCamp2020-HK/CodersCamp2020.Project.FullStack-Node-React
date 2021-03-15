@@ -74,7 +74,6 @@ export class VolunteerSubmissionsService {
         request: IAuthUserInfoRequest,
     ): Promise<void> {
         const user = request.user as IUserInfo;
-        console.log(user);
         const submission = this.volunteerSubmissionRepository.create({
             user: { id: user.id },
             step: {
