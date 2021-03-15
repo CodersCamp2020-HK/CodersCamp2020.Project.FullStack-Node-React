@@ -9,7 +9,7 @@ import { Container } from './IocContainerSetup';
 import 'express-async-errors';
 import 'reflect-metadata';
 import dotenv from 'dotenv';
-import seedDatabase from '@infrastructure/postgres/seedDatabase';
+// import seedDatabase from '@infrastructure/postgres/seedDatabase';
 
 dotenv.config();
 
@@ -21,7 +21,7 @@ const app = express();
 (async () => {
     await connectToDb();
 
-    await seedDatabase();
+    // await seedDatabase();
 
     const logger = Container.get(WinstonLogger);
     logger.log('Connected to database');

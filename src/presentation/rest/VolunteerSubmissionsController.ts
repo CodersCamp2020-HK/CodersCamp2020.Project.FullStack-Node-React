@@ -13,6 +13,10 @@ export class VolunteerSubmissionsController {
     @Inject
     private submissionService!: VolunteerSubmissionsService;
 
+    /**
+     * Update status of volunteer form
+     * @param changeStatusParams It takes values ('in progress', 'rejected', 'accepted')
+     */
     @Put('changeVolunterFormStatus')
     public async changeFormStatusForVolunteer(
         @Body() changeStatusParams: ChangeStatusForVolunterFormParams,
@@ -20,6 +24,13 @@ export class VolunteerSubmissionsController {
         await this.submissionService.changeStatusForVolunteerForm(changeStatusParams);
     }
 
+    /**
+     * Get all volunteer submission and basic information about each of them
+     * @param submissionDate Date that submission started
+     * @param status Shows status of submission
+     * @param userName Shows name of user that applied
+     * @param reviewerName Shows name of shelter worker that deals with the matter
+     */
     @Get()
     public async getAllSubmissions(
         @Query() submissionDate?: Date,
@@ -31,7 +42,7 @@ export class VolunteerSubmissionsController {
     }
 
     /**
-     *
+     * Get submission with unique ID
      * @param id The submission's identifier
      * @param isInt id
      */
