@@ -31,7 +31,7 @@ export default class FormVolunteerSubmission {
     @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormVolunteerAnswer[];
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'date' })
     submissionDate!: Date;
 
     @Column({ type: 'date', nullable: true })
