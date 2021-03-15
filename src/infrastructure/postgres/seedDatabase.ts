@@ -43,15 +43,15 @@ import { seedAnimalThumbnailPhoto } from './dummyData/animalPhoto';
 import { AnimalPhoto } from './AnimalPhoto';
 import { seedAnimalPhoto } from './dummyData/animalPhoto';
 
-// import FormAnimalSubmission from './FormAnimalSubmission';
-// import { seedFormAnimalSubmission } from './dummyData/formAnimalSubmissions';
+import FormAnimalSubmission from './FormAnimalSubmission';
+import { seedFormAnimalSubmission } from './dummyData/formAnimalSubmissions';
 
 const clear = false;
 export default async function seedDatabase(): Promise<void> {
     if (clear) {
         await getConnection().synchronize(true); // czyści baze danych
     } else {
-        //await getConnection().synchronize(true);
+        await getConnection().synchronize(true);
         await getConnection().getRepository(AnimalAdditionalInfo).save(seedAnimalAdditionalInfo(5));
         await getConnection().getRepository(AnimalThumbnailPhoto).save(seedAnimalThumbnailPhoto(5));
 
@@ -69,7 +69,7 @@ export default async function seedDatabase(): Promise<void> {
         await getConnection().getRepository(Calendar).save(seedCalendars(5));
         await getConnection().getRepository(OrganizationUser).save(organizationUsers);
         await getConnection().getRepository(VolunteerHireStep).save(seedVolunteerHireStep(5));
-        // await getConnection().getRepository(FormAnimalSubmission).save(seedFormAnimalSubmission(5));
+        await getConnection().getRepository(FormAnimalSubmission).save(seedFormAnimalSubmission(5));
     }
 }
 
