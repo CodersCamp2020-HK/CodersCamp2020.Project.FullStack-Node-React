@@ -1,6 +1,7 @@
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
-import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
+// import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
+import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
@@ -17,14 +18,14 @@ interface SubmissionQueryParams {
     reviewerName?: string;
 }
 
-interface VolunteerAnswer {
-    questionId: number;
-    answers: AnswerForm;
-}
+// interface VolunteerAnswer {
+//     questionId: number;
+//     answers: AnswerForm;
+// }
 
 export interface PostVolunteerSubmissionParams {
     stepNumber: number;
-    answer: VolunteerAnswer[];
+    answers: Pick<FormVolunteerAnswer, 'answer' | 'question'>[];
 }
 
 export class VolunteerSubmissionsService {
@@ -70,16 +71,17 @@ export class VolunteerSubmissionsService {
     }
 
     public async createVolunteerSubmission(
-        body: PostVolunteerSubmissionParams,
+        { stepNumber, answers }: PostVolunteerSubmissionParams,
         request: IAuthUserInfoRequest,
     ): Promise<void> {
         const user = request.user as IUserInfo;
         const submission = this.volunteerSubmissionRepository.create({
-            user: { id: user.id },
             step: {
-                number: body.stepNumber,
+                number: stepNumber,
                 organization: { id: 1 },
+                user: { id: user.id },
             },
+            answers,
         });
         this.volunteerSubmissionRepository.save(submission);
     }

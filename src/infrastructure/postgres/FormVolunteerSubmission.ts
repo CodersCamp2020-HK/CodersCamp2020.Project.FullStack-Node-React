@@ -10,7 +10,6 @@ export enum VolunteerFormStatus {
 }
 
 @Entity('FormVolunteerSubmissions')
-@Index(['user', 'step'], { unique: true })
 export default class FormVolunteerSubmission {
     @PrimaryGeneratedColumn()
     id!: number;
@@ -18,14 +17,14 @@ export default class FormVolunteerSubmission {
     @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { nullable: false })
     step!: VolunteerHireStep;
 
-    @Column({ type: 'enum', enum: VolunteerFormStatus, default: VolunteerFormStatus.IN_PROGRESS })
-    status!: VolunteerFormStatus;
+    @Column({ type: 'enum', enum: VolunteerFormStatus })
+    status!: string;
 
     @Column({ nullable: true, default: null })
-    reason?: string;
+    reason!: string;
 
-    @ManyToOne(() => OrganizationUser, (user) => user.volunteerReviews, { nullable: true })
-    reviewer?: OrganizationUser;
+    @ManyToOne(() => OrganizationUser, (user) => user.volunteerReviews)
+    reviewer!: OrganizationUser;
 
     @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormVolunteerAnswer[];
