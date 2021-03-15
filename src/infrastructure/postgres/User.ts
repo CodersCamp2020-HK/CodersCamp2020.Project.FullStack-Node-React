@@ -81,13 +81,13 @@ export default class User {
     @Generated('uuid')
     activationLinkUuid!: UUID;
 
-    @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, { cascade: true })
+    @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users)
     animalDonations!: AnimalDonation[];
 
-    @OneToMany(() => OrganizationDonation, (organizationDonation) => organizationDonation.user, { cascade: true })
+    @OneToMany(() => OrganizationDonation, (organizationDonation) => organizationDonation.user)
     organizationDonations!: OrganizationDonation[];
 
-    @OneToMany(() => GoalDonation, (goalDonation) => goalDonation.user, { cascade: true })
+    @OneToMany(() => GoalDonation, (goalDonation) => goalDonation.user)
     goalDonations!: GoalDonation[];
 
     @ManyToOne(() => Localization, (localization) => localization.users)
@@ -96,10 +96,10 @@ export default class User {
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.applicant, { nullable: true })
     animalSubmissions!: FormAnimalSubmission[];
 
-    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, { cascade: true, nullable: true })
+    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, { nullable: true })
     organizationUsers!: OrganizationUser[];
 
-    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, { cascade: true })
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user)
     volunteerSubmission!: FormVolunteerSubmission[];
 
     @OneToMany(() => Calendar, (calendar) => calendar.user)

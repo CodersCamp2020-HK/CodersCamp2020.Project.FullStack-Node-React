@@ -43,12 +43,12 @@ export default class Organization {
     @ManyToOne(() => Localization, (localization) => localization.organizations)
     localization!: Localization;
 
-    @OneToMany(() => AdoptionStep, (step) => step.organization, { cascade: true })
+    @OneToMany(() => AdoptionStep, (step) => step.organization)
     adoptionSteps!: AdoptionStep[];
 
-    @OneToMany(() => VolunteerHireStep, (volunteer) => volunteer.organization, { cascade: true })
+    @OneToMany(() => VolunteerHireStep, (volunteer) => volunteer.organization)
     volunteerHireSteps!: VolunteerHireStep[];
 
-    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.organization, { cascade: true })
+    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.organization, { nullable: true })
     organizationUsers!: OrganizationUser[];
 }

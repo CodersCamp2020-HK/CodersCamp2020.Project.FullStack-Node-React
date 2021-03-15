@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
-import OrganizationUser from './OrganizationUser';
+// import OrganizationUser from './OrganizationUser';
 import User from './User';
 import VolunteerHireStep from './VolunteerHireStep';
 
@@ -25,8 +25,8 @@ export default class FormVolunteerSubmission {
     @Column({ nullable: true, default: null })
     reason?: string;
 
-    @ManyToOne(() => OrganizationUser, (user) => user.volunteerReviews, { nullable: true })
-    reviewer?: OrganizationUser;
+    // @ManyToOne(() => OrganizationUser, (user) => user.volunteerReviews, { nullable: true })
+    // reviewer?: OrganizationUser;
 
     @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormVolunteerAnswer[];

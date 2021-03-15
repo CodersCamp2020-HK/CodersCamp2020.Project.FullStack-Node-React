@@ -14,9 +14,9 @@ export default class Form {
     @OneToMany(() => FormQuestion, (question) => question.form, { cascade: true })
     questions!: FormQuestion[];
 
-    @OneToMany(() => AdoptionStep, (adoption) => adoption.form, { cascade: true })
+    @OneToMany(() => AdoptionStep, (adoption) => adoption.form)
     adoptionSteps!: AdoptionStep[];
 
-    @OneToMany(() => VolunteerHireStep, (step) => step.form, { cascade: true })
+    @OneToMany(() => VolunteerHireStep, (step) => step.form)
     volunteerHireSteps!: VolunteerHireStep[];
 }
