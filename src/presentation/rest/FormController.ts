@@ -14,11 +14,12 @@ export class FormController extends Controller {
      * Post a form and throws information about success
      * @param requestBody includes 'name', 'questions' of form
      */
+    @Response('400', 'Bad request')
     @SuccessResponse('201', 'created')
     @Post()
     public async createForm(@Body() requestBody: FormCreationParams): Promise<void> {
+        await this.formService.create(requestBody);
         this.setStatus(201);
-        this.formService.create(requestBody);
         return;
     }
 
