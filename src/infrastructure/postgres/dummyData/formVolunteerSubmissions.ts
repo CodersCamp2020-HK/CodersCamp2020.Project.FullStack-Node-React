@@ -15,8 +15,7 @@ export const seedFormVolunteerSubmission = (amount: number): DeepPartial<FormVol
             user: { id: i + 1 },
             step: {
                 organization: { id: 1 },
-                user: { id: i + 1 },
-                number: i,
+                number: i + 1,
             },
             reviewer: {
                 user: { id: i + 1 },

@@ -8,9 +8,9 @@ export const seedVolunteerHireStep = (amount: number): DeepPartial<VolunteerHire
         volunteerHireStep.push({
             name: faker.name.firstName(),
             description: faker.lorem.sentence(),
-            number: i,
+            number: i + 1,
             organization: { id: 1 },
-            user: { id: i + 1 },
+            // user: { id: i + 1 },
             form: { id: i + 1 },
         });
     }

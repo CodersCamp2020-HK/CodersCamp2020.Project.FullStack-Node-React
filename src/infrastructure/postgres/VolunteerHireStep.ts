@@ -2,10 +2,10 @@ import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import Form from './Form';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
 import Organization from './Organization';
-import User from './User';
+// import User from './User';
 
 @Entity('VolunteerHireSteps')
-@Index(['organization', 'user', 'number'], { unique: true })
+@Index(['organization', 'number'], { unique: true })
 export default class VolunteerHireStep {
     @Column()
     name!: string;
@@ -19,8 +19,8 @@ export default class VolunteerHireStep {
     })
     organization!: Organization;
 
-    @ManyToOne(() => User, (user) => user.steps, { primary: true, nullable: false })
-    user!: User;
+    // @ManyToOne(() => User, (user) => user.steps, { primary: true, nullable: false })
+    // user!: User;
 
     @Column({ primary: true, nullable: false })
     number!: number;
