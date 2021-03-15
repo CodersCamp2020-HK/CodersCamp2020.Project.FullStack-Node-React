@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, OneToMany } from 'typeorm';
 import GoalDonation from './GoalDonation';
 import OrganizationDonation from './OrganizationDonation';
 import AnimalDonation from './AnimalDonation';
@@ -69,6 +69,7 @@ export default class User {
 
     @Column({
         length: 255,
+        select: false,
     })
     password!: Password;
 
@@ -77,10 +78,6 @@ export default class User {
 
     @Column({ default: false })
     activated!: boolean;
-
-    @Column()
-    @Generated('uuid')
-    activationLinkUuid!: UUID;
 
     @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, { cascade: true })
     animalDonations!: AnimalDonation[];
