@@ -72,7 +72,7 @@ export class AnimalSubmissionsService {
                 .getOne();
 
             if (submission?.applicant.id != currentUser.id) {
-                throw new ApiError('Unauthorized', 401, 'User and volunteer can only get their submissions');
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submissions');
             }
         }
         const submissions = await new OptionalWhereSelectQueryBuilder(
@@ -105,7 +105,13 @@ export class AnimalSubmissionsService {
         return;
     }
 
-    public async getAnimalSubmission(id: number): Promise<FormAnimalSubmission> {
+    public async getAnimalSubmission(id: number, currentUser: IUserInfo): Promise<FormAnimalSubmission> {
+        if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
+            if (id != currentUser.id) {
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submission');
+            }
+        }
+
         const submission = await this.animalSubmissionRepository.findOne(id, {
             relations: ['animal', 'applicant', 'answers', 'reviewer'],
         });

@@ -21,7 +21,7 @@ import {
     Request,
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
-import { IAuthUserInfoRequest } from '@infrastructure/Auth';
+import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
 
 @Tags('Adoption Submissions')
 @Route('adoptionSubmissions')
@@ -62,7 +62,7 @@ export class AnimalSubmissionsController extends Controller {
                 userName,
                 reviewerName,
             },
-            request.user,
+            request.user as IUserInfo,
         );
     }
 
@@ -101,13 +101,15 @@ export class AnimalSubmissionsController extends Controller {
      * @param id The submission's identifier
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
-    //TODO: zwykly user tylko swoj moze pobrac
     @Response<ApiError>(401, 'Unauthorized')
     @Response<ApiError>(404, 'Submission Not Found')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'ok')
     @Get('{id}')
-    public async getAnimalSubmission(@Path() id: number): Promise<FormAnimalSubmission> {
-        return this.submissionService.getAnimalSubmission(id);
+    public async getAnimalSubmission(
+        @Path() id: number,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<FormAnimalSubmission> {
+        return this.submissionService.getAnimalSubmission(id, request.user as IUserInfo);
     }
 }
