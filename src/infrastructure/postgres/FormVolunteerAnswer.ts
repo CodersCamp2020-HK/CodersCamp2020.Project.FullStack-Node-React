@@ -2,7 +2,7 @@ import { Column, Entity, Index, ManyToOne } from 'typeorm';
 import FormQuestion, { AnswerForm } from './FormQuestion';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
 
-@Entity('FormAnimalAnswers')
+@Entity('FormVolunteerAnswers')
 @Index(['submission', 'question'], { unique: true })
 export default class FormVolunteerAnswer {
     @ManyToOne(() => FormVolunteerSubmission, (submission) => submission.answers, { primary: true, nullable: false })

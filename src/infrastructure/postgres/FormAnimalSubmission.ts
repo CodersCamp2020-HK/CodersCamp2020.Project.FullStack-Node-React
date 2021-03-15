@@ -29,8 +29,8 @@ export default class FormAnimalSubmission {
     @Column({ nullable: true, default: null })
     reason!: string;
 
-    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews, { nullable: true })
-    reviewer?: OrganizationUser;
+    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews)
+    reviewer!: OrganizationUser;
 
     @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormAnimalAnswer[];
