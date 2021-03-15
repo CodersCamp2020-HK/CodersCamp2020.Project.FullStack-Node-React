@@ -52,6 +52,9 @@ import { seedFormQuestion } from './dummyData/formQuestions';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
 import { seedFormVolunteerSubmission } from './dummyData/formVolunteerSubmissions';
 
+import FormAnimalAnswer from './FormAnimalAnswer';
+import { seedFormAnimalAnswer } from './dummyData/formAnimalAnswers';
+
 const clear = false;
 export default async function seedDatabase(): Promise<void> {
     if (clear) {
@@ -78,6 +81,7 @@ export default async function seedDatabase(): Promise<void> {
         await getConnection().getRepository(FormAnimalSubmission).save(seedFormAnimalSubmission(5));
         await getConnection().getRepository(FormQuestion).save(seedFormQuestion(5));
         await getConnection().getRepository(FormVolunteerSubmission).save(seedFormVolunteerSubmission(5));
+        await getConnection().getRepository(FormAnimalAnswer).save(seedFormAnimalAnswer(5));
     }
 }
 

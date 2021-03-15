@@ -5,9 +5,6 @@ import AdoptionStep from '../AdoptionStep';
 export const seedAdoptionStep = (amount: number): DeepPartial<AdoptionStep>[] => {
     const adoptionStep: DeepPartial<AdoptionStep>[] = [];
     for (let i = 0; i < amount; i++) {
-        // const randomSize = faker.random.arrayElement(Object.values(AnimalSize));
-        // const randomActiveLevel = faker.random.arrayElement(Object.values(AnimalActiveLevel));
-
         adoptionStep.push({
             name: faker.random.word(),
             description: faker.lorem.words(3),
