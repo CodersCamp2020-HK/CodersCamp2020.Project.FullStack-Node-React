@@ -14,6 +14,15 @@ export class AnimalSubmissionsController extends Controller {
     @Inject
     private submissionService!: AnimalSubmissionsService;
 
+    /**
+     * Get all animal submissions with parameters
+     * @param status Gives information about status of animal that user applied. It can give you information that application is: 'in progress', 'rejected', or 'accepted'
+     * @param submissionDate Gives date when user applied for an animal
+     * @param specie Gives additional informations that was added by a user
+     * @param animalName Gives animal name that user applied
+     * @param userName Gives name of user that applied for animal
+     * @param reviewerName Gives name of shelter worker that who deals with the user application
+     */
     @Response<ApiError>(404, 'Submissions Not Found')
     @Get()
     public async getAllAnimalSubmissions(
@@ -34,6 +43,10 @@ export class AnimalSubmissionsController extends Controller {
         });
     }
 
+    /**
+     * Method allows shelter worker to change the status of user application for an animal
+     * @param changeStatusParams Information about actual status of application ('in progress', 'rejected', 'accepted')
+     */
     @Put('changeAdoptionFormStatus')
     public async changeFormStatusForAdoption(
         @Body() changeStatusParams: ChangeStatusForAdoptionFormParams,
@@ -54,9 +67,8 @@ export class AnimalSubmissionsController extends Controller {
     }
 
     /**
-     *
+     * Method get information about submission, supplied by unique ID
      * @param id The submission's identifier
-     * @param isInt id
      */
     @Response<ApiError>(404, 'Submission Not Found')
     @Get('{id}')
