@@ -56,6 +56,7 @@ export class AnimalSubmissionsController extends Controller {
     @Security('jwt', ['admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
+    @Response<ApiError>(400, 'Bad Request')
     @SuccessResponse('200', 'ok')
     @Put('changeAdoptionFormStatus')
     public async changeFormStatusForAdoption(

@@ -20,8 +20,9 @@ export class VolunteerSubmissionsController {
      */
     @Security('jwt', ['admin', 'employee'])
     @Response<Error>(500, 'Internal Server Error')
-    @SuccessResponse('200', 'ok')
+    @Response<ApiError>(400, 'Bad Request')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
+    @SuccessResponse('200', 'ok')
     @Put('changeVolunterFormStatus')
     public async changeFormStatusForVolunteer(
         @Body() changeStatusParams: ChangeStatusForVolunterFormParams,

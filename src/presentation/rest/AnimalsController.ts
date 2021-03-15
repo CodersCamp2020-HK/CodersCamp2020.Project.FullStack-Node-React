@@ -118,6 +118,7 @@ export class AnimalsController extends Controller {
     @Security('jwt', ['admin', 'employee'])
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(400, 'Bad Request')
     @SuccessResponse('201', 'created')
     @Post()
     public async createAnimal(@Body() requestBody: AnimalCreationParams): Promise<void> {

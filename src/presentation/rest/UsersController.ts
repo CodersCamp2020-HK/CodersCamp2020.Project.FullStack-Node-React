@@ -63,8 +63,9 @@ export class UsersController extends Controller {
     @Response<ApiError>(401, 'Unauthorized')
     //TODO: sprawdz czy user sobie
     @Response<ApiError>(404, 'User not found')
-    @Response<User>(200, 'User updated')
+    @Response<ApiError>(400, 'Bad Request')
     @Response<Error>(500, 'Internal Server Error')
+    @Response<User>(200, 'User updated')
     @Put('{userId}')
     public async updateUser(@Path() userId: number, @Body() requestBody: Partial<UserUpdateParams>): Promise<User> {
         this.setStatus(200);
@@ -90,8 +91,9 @@ export class UsersController extends Controller {
      * @param badRequestResponse Throws error when erver was unable to process the request
      */
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
-    @SuccessResponse('201', 'Created')
+    @Response<ApiError>(400, 'Bad Request')
     @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse('201', 'Created')
     @Post()
     public async createUser(
         @Body() requestBody: UserCreationParams,
@@ -121,10 +123,10 @@ export class UsersController extends Controller {
      * Get additional user ID for activation
      * @param generatedUUID additional user ID for activation user in datebase
      */
-    @Get('activate/{generatedUUID}')
     @SuccessResponse('200', 'User Activated')
     @Response('404', 'Link is not valid or expired')
     @Response<Error>(500, 'Internal Server Error')
+    @Get('activate/{generatedUUID}')
     public async activateUser(@Path() generatedUUID: string): Promise<void> {
         await this.usersService.activateUser(generatedUUID);
         this.setStatus(200);
@@ -135,9 +137,9 @@ export class UsersController extends Controller {
      * @param userId Unique ID of user
      * @param request Information from express
      */
-    @Post('{userId}/sendActivationLink')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse('200', 'Sent')
+    @Post('{userId}/sendActivationLink')
     public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
         try {
             const ACTIVATION_PATH = request.get('host') + '/api/users/activate/';
@@ -161,12 +163,11 @@ export class UsersController extends Controller {
      * @param petName Send and email by pet name
      */
     @Security('jwt', ['admin', 'employee'])
-    @Post('sendSomeoneAdoptedEmails')
     @Response<Error>(500, 'Internal Server Error')
     @Response('401', 'Unauthorized')
     @Response('400', 'Bad request')
     @SuccessResponse('201', ' Email sended')
-    @Security('jwt', ['admin', 'employee'])
+    @Post('sendSomeoneAdoptedEmails')
     public async sendSomeoneAdoptedEmails(@Query() petName: string): Promise<void> {
         const submissions = await this.animalSubmissionsService.getAllAnimalSubmissions({
             animalName: petName,
@@ -184,11 +185,12 @@ export class UsersController extends Controller {
     /** Supply the unique user ID and delete user with corresponding id from database
      *  @param userId Unique ID of user
      */
-     @Response<Error>(500, 'Internal Server Error')
+    @Security('jwt', ['admin', 'normal', 'volunteer', 'employee'])
+    @Response<Error>(500, 'Internal Server Error')
+    @Response('400', 'Bad request')
     @Response('401', 'Unauthorized')
     @Response('404', 'User not found')
     @SuccessResponse('200', ' User deleted')
-    @Security('jwt', ['admin', 'normal', 'volunteer', 'employee'])
     @Delete('{userId}')
     public async deleteUser(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {
         this.setStatus(200);
@@ -201,8 +203,8 @@ export class UsersController extends Controller {
      */
     @Response<ApiError>(400, 'Bad Request')
     @Response<Error>(500, 'Internal Server Error')
-    @Post('auth')
     @SuccessResponse('200', 'ok')
+    @Post('auth')
     public async loginUser(@Body() requestBody: UserLoginParams): Promise<ApiKey> {
         this.setStatus(200);
         return this.usersService.login(requestBody);

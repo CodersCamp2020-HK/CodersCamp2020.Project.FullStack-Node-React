@@ -38,6 +38,7 @@ export class CalendarController extends Controller {
      * Supply the unique visit time, aniaml ID and user ID and create unique visit.
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<ApiError>(400, 'Bad Request')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
@@ -54,6 +55,7 @@ export class CalendarController extends Controller {
      * @param visitId The visit's identifier
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<ApiError>(400, 'Bad Request')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
