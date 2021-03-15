@@ -34,17 +34,18 @@ export class VolunteerSubmissionsService {
         queryParams: SubmissionQueryParams,
         currentUser: IUserInfo,
     ): Promise<FormVolunteerSubmission[]> {
-        if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
-            const submission = await this.volunteerSubmissionRepository
-                .createQueryBuilder('submission')
-                .leftJoinAndSelect('submission.user', 'user')
-                .where('user.id = :id', { id: currentUser.id })
-                .getOne();
+        console.log(currentUser);
+        // if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
+        //     const submission = await this.volunteerSubmissionRepository
+        //         .createQueryBuilder('submission')
+        //         .leftJoinAndSelect('submission.user', 'user')
+        //         .where('user.id = :id', { id: currentUser.id })
+        //         .getOne();
 
-            if (submission?.user.id != currentUser.id) {
-                throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submissions');
-            }
-        }
+        //     // if (submission?.user.id != currentUser.id) {
+        //     //     throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submissions');
+        //     // }
+        // }
 
         const submissions = await new OptionalWhereSelectQueryBuilder(
             this.volunteerSubmissionRepository
