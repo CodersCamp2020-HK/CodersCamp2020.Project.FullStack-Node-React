@@ -5,6 +5,7 @@ import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
 import { UserType } from '@infrastructure/postgres/OrganizationUser';
 import { Repository } from 'typeorm';
+import hasDuplicates from 'utils/HasDuplicates';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
 export interface ChangeStatusForVolunterFormParams {
@@ -19,7 +20,7 @@ interface SubmissionQueryParams {
     reviewerName?: string;
 }
 
-interface VolunteerAnswer {
+export interface VolunteerAnswer {
     question: number;
     answer: AnswerForm;
 }
@@ -100,6 +101,7 @@ export class VolunteerSubmissionsService {
         { stepNumber, answers }: PostVolunteerSubmissionParams,
         request: IAuthUserInfoRequest,
     ): Promise<void> {
+        if (hasDuplicates(answers)) throw new ApiError('Bad Request', 400, `Question's ids must be unique!`);
         const user = request.user as IUserInfo;
         const isSubmission = await this.volunteerSubmissionRepository.findOne({
             user: { id: user.id },
