@@ -28,6 +28,7 @@ import {
     Tags,
     TsoaResponse,
     Query,
+    Example,
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import {
@@ -42,7 +43,9 @@ import { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
 import ActivationMessage from '@infrastructure/ActivationMessage';
 import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
 import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
-import {omit} from '../../utils/omit';
+import { omit } from '../../utils/omit';
+import { DeepPartial } from 'typeorm';
+import { singleUserExample } from 'examples/userExample';
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
@@ -66,6 +69,7 @@ export class UsersController extends Controller {
     @Response<ApiError>(400, 'Bad Request')
     @Response<Error>(500, 'Internal Server Error')
     @Response<User>(200, 'User updated')
+    @Example<DeepPartial<User>>(singleUserExample)
     @Put('{userId}')
     public async updateUser(
         @Path() userId: number,
@@ -83,6 +87,7 @@ export class UsersController extends Controller {
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
+    @Example<DeepPartial<User>>(singleUserExample)
     @Get('{userId}')
     public async getUser(
         @Path() userId: number,
