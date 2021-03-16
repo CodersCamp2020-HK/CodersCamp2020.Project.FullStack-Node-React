@@ -6,7 +6,6 @@ import {
     JoinColumn,
     ManyToOne,
     OneToMany,
-    OneToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
@@ -29,7 +28,7 @@ export default class FormVolunteerSubmission {
     @ManyToOne(() => User, (user) => user.volunteerSubmission, { nullable: false })
     user!: User;
 
-    @OneToOne(() => VolunteerHireStep, (step) => step.submission, { nullable: false })
+    @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { nullable: false })
     @JoinColumn()
     step!: VolunteerHireStep;
 

@@ -78,11 +78,11 @@ export class VolunteerSubmissionsService {
         // console.log(answers);
         console.log(user.id);
         const submission = this.volunteerSubmissionRepository.create({
+            user: { id: user.id },
             step: {
                 organization: { id: 1 },
                 number: stepNumber,
             },
-            user: { id: user.id },
             // answers,
         });
         this.volunteerSubmissionRepository.save(submission);

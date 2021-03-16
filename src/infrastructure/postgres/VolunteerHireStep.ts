@@ -1,4 +1,4 @@
-import { Column, Entity, Index, ManyToOne, OneToOne } from 'typeorm';
+import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
 import Form from './Form';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
 import Organization from './Organization';
@@ -24,6 +24,6 @@ export default class VolunteerHireStep {
     @ManyToOne(() => Form, (form) => form.volunteerHireSteps)
     form!: Form;
 
-    @OneToOne(() => FormVolunteerSubmission, (submission) => submission.step)
-    submission!: FormVolunteerSubmission;
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.step)
+    submissions!: FormVolunteerSubmission[];
 }
