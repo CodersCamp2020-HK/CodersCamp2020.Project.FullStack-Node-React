@@ -45,7 +45,6 @@ import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService'
 import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import { omit } from '../../utils/omit';
 import { DeepPartial } from 'typeorm';
-import { singleUserExample } from 'examples/userExample';
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
@@ -69,7 +68,15 @@ export class UsersController extends Controller {
     @Response<ApiError>(400, 'Bad Request')
     @Response<Error>(500, 'Internal Server Error')
     @Response<User>(200, 'User updated')
-    @Example<DeepPartial<User>>(singleUserExample)
+    @Example<DeepPartial<User>>({
+        id: 1,
+        name: 'Jan',
+        surname: 'Nowak',
+        phone: 123456789,
+        mail: 'email@domain.com',
+        registrationDate: new Date(),
+        activated: true,
+    })
     @Put('{userId}')
     public async updateUser(
         @Path() userId: number,
@@ -87,12 +94,17 @@ export class UsersController extends Controller {
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
-    @Example<DeepPartial<User>>(singleUserExample)
+    @Example<DeepPartial<User>>({
+        id: 1,
+        name: 'Jan',
+        surname: 'Nowak',
+        phone: 123456789,
+        mail: 'email@domain.com',
+        registrationDate: new Date(),
+        activated: true,
+    })
     @Get('{userId}')
-    public async getUser(
-        @Path() userId: number,
-        @Request() request: IAuthUserInfoRequest,
-    ): Promise<Omit<User, 'password'>> {
+    public async getUser(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<DeepPartial<User>> {
         const user = await this.usersService.get(userId, request.user as IUserInfo);
         const userWithoutPassword = omit('password', user) as Omit<User, 'password'>;
         return userWithoutPassword;
