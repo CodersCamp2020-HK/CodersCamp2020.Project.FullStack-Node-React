@@ -77,8 +77,8 @@ export class VolunteerSubmissionsController {
     }
 
     @Security('jwt', ['normal', 'admin'])
+    @Response<ApiError>(400, 'Bad Request')
     @SuccessResponse(201, 'Created')
-    @Response(400, 'Bad Request')
     @Post('add')
     public async postVolunteerSubmission(
         @Body() requestBody: PostVolunteerSubmissionParams,
