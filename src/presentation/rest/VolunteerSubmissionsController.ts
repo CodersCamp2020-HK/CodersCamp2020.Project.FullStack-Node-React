@@ -54,7 +54,7 @@ export class VolunteerSubmissionsController {
         return this.submissionService.getVolunteerSubmission(id);
     }
 
-    @Security('jwt', ['normal'])
+    @Security('jwt', ['normal', 'admin'])
     @SuccessResponse(201, 'Created')
     @Post('add')
     public async postVolunteerSubmission(

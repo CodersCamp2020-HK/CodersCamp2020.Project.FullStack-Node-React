@@ -189,7 +189,7 @@ export class UsersController extends Controller {
     @Post('auth')
     public async loginUser(@Body() requestBody: UserLoginParams): Promise<ApiKey> {
         this.setStatus(200);
-        return this.usersService.login(requestBody);
+        return await this.usersService.login(requestBody);
     }
 
     /**

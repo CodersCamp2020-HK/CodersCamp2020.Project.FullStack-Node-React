@@ -10,7 +10,9 @@ export const seedFormVolunteerAnswer = (amount: number): DeepPartial<FormVolunte
         formVolunteerAnswer.push({
             answer: answerObj,
             question: { id: i + 1 },
-            submission: { id: i + 1 },
+            submission: {
+                id: i + 1,
+            },
         });
     }
     return formVolunteerAnswer;

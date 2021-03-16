@@ -1,11 +1,10 @@
-import { Column, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, Index, ManyToOne, OneToOne } from 'typeorm';
 import Form from './Form';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
 import Organization from './Organization';
-import User from './User';
 
 @Entity('VolunteerHireSteps')
-@Index(['organization', 'number', 'user'], { unique: true })
+@Index(['organization', 'number'], { unique: true })
 export default class VolunteerHireStep {
     @Column()
     name!: string;
@@ -19,15 +18,12 @@ export default class VolunteerHireStep {
     })
     organization!: Organization;
 
-    @ManyToOne(() => User, (user) => user.steps, { primary: true, nullable: false })
-    user!: User;
-
     @Column({ primary: true, nullable: false })
     number!: number;
 
     @ManyToOne(() => Form, (form) => form.volunteerHireSteps)
     form!: Form;
 
-    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.step)
-    submissions!: FormVolunteerSubmission[];
+    @OneToOne(() => FormVolunteerSubmission, (submission) => submission.step)
+    submission!: FormVolunteerSubmission;
 }
