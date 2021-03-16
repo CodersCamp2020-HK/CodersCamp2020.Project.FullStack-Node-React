@@ -15,6 +15,7 @@ import {
     Res,
     Security,
     Example,
+    Request,
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@application/AnimalsService';
@@ -23,12 +24,17 @@ import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAd
 import ApiError from '@infrastructure/ApiError';
 import { ValidateErrorJSON } from '@application/UsersErrors';
 import { DeepPartial } from 'typeorm';
+import { Request as ExRequest } from 'express';
+import { PhotosService } from '@application/PhotosService';
 
 @Tags('Animals')
 @Route('animals')
 export class AnimalsController extends Controller {
     @Inject
     private animalsService!: AnimalsService;
+
+    @Inject
+    private photosService!: PhotosService;
 
     /**
      * Supply the unique animal ID and get the animal with corresponding id from database
@@ -199,5 +205,32 @@ export class AnimalsController extends Controller {
     public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalUpdateParams): Promise<Animal> {
         this.setStatus(200);
         return this.animalsService.update(animalId, requestBody);
+    }
+
+    @Security('jwt', ['admin', 'employee'])
+    @Post('{animalId}/photos-upload')
+    @SuccessResponse(201, 'Saved')
+    @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
+    @Response<ApiError>(400, 'Bad Request')
+    public async addPhotos(@Path() animalId: number, @Request() request: ExRequest): Promise<void> {
+        await this.photosService.photosUpload(request);
+        const gettedPhotos = request.files as unknown;
+        await this.animalsService.savePhotos(animalId, gettedPhotos as Express.Multer.File[]);
+        this.setStatus(201);
+    }
+
+    @Security('jwt', ['admin', 'employee'])
+    @Post('{animalId}/thumbnail-upload')
+    @SuccessResponse(201, 'Saved')
+    @Response<ApiError>(400, 'Bad Request')
+    @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
+    public async addThumbnail(@Path() animalId: number, @Request() request: ExRequest): Promise<void> {
+        await this.photosService.thumbnailUpload(request);
+        await this.animalsService.saveThumbnail(animalId, request.file);
+        this.setStatus(201);
     }
 }
