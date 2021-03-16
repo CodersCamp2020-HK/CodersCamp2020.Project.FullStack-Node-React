@@ -22,6 +22,7 @@ import Animal from '@infrastructure/postgres/Animal';
 import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import ApiError from '@infrastructure/ApiError';
 import { ValidateErrorJSON } from '@application/UsersErrors';
+import { DeepPartial } from 'typeorm';
 
 @Tags('Animals')
 @Route('animals')
@@ -35,6 +36,21 @@ export class AnimalsController extends Controller {
      */
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Animal not found')
+    @Example<DeepPartial<Animal>>({
+        id: 1,
+        name: 'Lavon',
+        age: 0,
+        description:
+            'debitis aut placeat possimus nam rerum eligendi quisquam et deleniti eaque sunt assumenda doloremque voluptatem adipisci et numquam qui tempore',
+        readyForAdoption: true,
+        thumbnail: {
+            id: 1,
+            buffer: {
+                type: 'Buffer',
+                data: [104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100],
+            } as DeepPartial<Buffer>,
+        },
+    })
     @Get('{animalId}')
     public async getAnimal(@Path() animalId: number): Promise<Animal> {
         return this.animalsService.get(animalId);
@@ -51,6 +67,21 @@ export class AnimalsController extends Controller {
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
+    @Example<DeepPartial<Animal>>({
+        id: 1,
+        name: 'Lavon',
+        age: 0,
+        description:
+            'debitis aut placeat possimus nam rerum eligendi quisquam et deleniti eaque sunt assumenda doloremque voluptatem adipisci et numquam qui tempore',
+        readyForAdoption: true,
+        thumbnail: {
+            id: 1,
+            buffer: {
+                type: 'Buffer',
+                data: [104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100],
+            } as DeepPartial<Buffer>,
+        },
+    })
     @Delete('{animalId}')
     public async deleteAnimal(@Path() animalId: number): Promise<Animal> {
         return this.animalsService.delete(animalId);
@@ -74,6 +105,30 @@ export class AnimalsController extends Controller {
     @SuccessResponse(200, 'ok')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
+    @Example([
+        {
+            id: 2,
+            name: 'Aiyana',
+            age: 2,
+            description:
+                'enim ipsum mollitia eligendi accusantium qui labore omnis et quidem provident deserunt impedit praesentium commodi cumque quis rerum nihil odio',
+            readyForAdoption: false,
+            additionalInfo: {
+                id: 2,
+                activeLevel: 'high',
+                size: 'large',
+                specialDiet: 'Vegan',
+                comments: 'I like toys',
+                temporaryHome: true,
+                needDonations: false,
+                virtualAdoption: true,
+                adoptionDate: '2020-05-27',
+                admissionToShelter: '2020-04-20',
+                acceptsKids: false,
+                acceptsOtherAnimals: false,
+            },
+        },
+    ])
     @Get('/')
     public async getAnimals(
         @Res() notFoundResponse: TsoaResponse<404, { reason: string }>,
