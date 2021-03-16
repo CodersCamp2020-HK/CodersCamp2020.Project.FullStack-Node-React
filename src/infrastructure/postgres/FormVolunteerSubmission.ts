@@ -23,7 +23,7 @@ export default class FormVolunteerSubmission {
     @Column({ nullable: true, default: null })
     reason!: string;
 
-    @ManyToOne(() => OrganizationUser, (user) => user.volunteerReviews)
+    @ManyToOne(() => OrganizationUser, (user) => user.volunteerReviews, { onDelete: 'CASCADE' })
     reviewer!: OrganizationUser;
 
     @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true })
