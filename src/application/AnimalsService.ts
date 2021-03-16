@@ -58,17 +58,15 @@ export class AnimalsService {
         return animal;
     }
 
-    public async create({ additionalInfo, ...animalParams }: AnimalCreationParams): Promise<void> {
+    public async create({ additionalInfo, specie, ...animalParams }: AnimalCreationParams): Promise<void> {
         const animal = this.animalRepository.create({
             ...animalParams,
-            specie: {
-                specie: animalParams.specie,
-            },
+            specie: { id: 1 },
         });
         const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
         animal.additionalInfo = animalAdditionalInfo;
-
         await this.animalRepository.save(animal);
+        console.log(specie);
     }
 
     public async delete(id: number): Promise<Animal> {
