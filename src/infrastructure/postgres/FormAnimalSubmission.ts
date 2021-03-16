@@ -14,7 +14,7 @@ export enum AnimalFormStatus {
 @Entity('FormAnimalSubmissions')
 @Index(['animal', 'applicant', 'adoptionStep'], { unique: true })
 export default class FormAnimalSubmission {
-    @ManyToOne(() => Animal, (animal) => animal.submissions, { primary: true, nullable: false })
+    @ManyToOne(() => Animal, (animal) => animal.submissions, { primary: true, nullable: false, onDelete: 'CASCADE' })
     animal!: Animal;
 
     @ManyToOne(() => User, (user) => user.animalSubmissions, { primary: true, nullable: false, onDelete: 'CASCADE' })

@@ -13,6 +13,6 @@ export default class Calendar {
     @ManyToOne(() => User, (user) => user.meetings, { onDelete: 'CASCADE' })
     user!: User;
 
-    @ManyToOne(() => Animal, (animal) => animal.meetings)
+    @ManyToOne(() => Animal, (animal) => animal.meetings, { onDelete: 'CASCADE' })
     animal!: Animal;
 }

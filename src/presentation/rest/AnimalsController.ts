@@ -14,6 +14,7 @@ import {
     TsoaResponse,
     Res,
     Security,
+    Example,
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@application/AnimalsService';
