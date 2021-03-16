@@ -42,6 +42,7 @@ import { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
 import ActivationMessage from '@infrastructure/ActivationMessage';
 import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
 import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
+import {omit} from '../../utils/omit';
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
@@ -83,8 +84,13 @@ export class UsersController extends Controller {
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Get('{userId}')
-    public async getUser(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<User> {
-        return this.usersService.get(userId, request.user as IUserInfo);
+    public async getUser(
+        @Path() userId: number,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<Omit<User, 'password'>> {
+        const user = await this.usersService.get(userId, request.user as IUserInfo);
+        const userWithoutPassword = omit('password', user) as Omit<User, 'password'>;
+        return userWithoutPassword;
     }
 
     /**
