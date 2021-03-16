@@ -1,7 +1,7 @@
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
-// import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
-// import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
+import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
+import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
@@ -18,18 +18,21 @@ interface SubmissionQueryParams {
     reviewerName?: string;
 }
 
-// interface VolunteerAnswer {
-//     question: number;
-//     answers: AnswerForm;
-// }
+interface VolunteerAnswer {
+    question: number;
+    answer: AnswerForm;
+}
 
 export interface PostVolunteerSubmissionParams {
     stepNumber: number;
-    // answers: VolunteerAnswer[];
+    answers: VolunteerAnswer[];
 }
 
 export class VolunteerSubmissionsService {
-    constructor(private volunteerSubmissionRepository: Repository<FormVolunteerSubmission>) {}
+    constructor(
+        private volunteerSubmissionRepository: Repository<FormVolunteerSubmission>,
+        private volunteerAnswerRepository: Repository<FormVolunteerAnswer>,
+    ) {}
 
     public async changeStatusForVolunteerForm(changeStatusParams: ChangeStatusForVolunterFormParams): Promise<void> {
         await this.volunteerSubmissionRepository
@@ -71,20 +74,30 @@ export class VolunteerSubmissionsService {
     }
 
     public async createVolunteerSubmission(
-        { stepNumber }: PostVolunteerSubmissionParams,
+        { stepNumber, answers }: PostVolunteerSubmissionParams,
         request: IAuthUserInfoRequest,
     ): Promise<void> {
         const user = request.user as IUserInfo;
-        // console.log(answers);
-        console.log(user.id);
         const submission = this.volunteerSubmissionRepository.create({
             user: { id: user.id },
             step: {
                 organization: { id: 1 },
                 number: stepNumber,
             },
-            // answers,
         });
+        await this.volunteerSubmissionRepository.save(submission);
+
+        const answersList: FormVolunteerAnswer[] = [];
+        for (const obj of answers) {
+            const submissionAnswer = this.volunteerAnswerRepository.create({
+                submission: { id: submission.id },
+                question: { id: obj.question },
+                answer: obj.answer,
+            });
+            answersList.push(submissionAnswer);
+        }
+
+        submission.answers = answersList;
         this.volunteerSubmissionRepository.save(submission);
     }
 }

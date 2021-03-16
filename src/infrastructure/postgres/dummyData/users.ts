@@ -17,7 +17,7 @@ export const seedUsers = async (amount: number): Promise<DeepPartial<User>[]> =>
             }),
             mail: faker.internet.email(),
             password: password,
-            activated: faker.random.boolean(),
+            activated: true,
             localization: { id: i + 1 },
         });
     }
