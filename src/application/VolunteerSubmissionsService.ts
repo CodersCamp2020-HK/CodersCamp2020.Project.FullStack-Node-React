@@ -101,6 +101,14 @@ export class VolunteerSubmissionsService {
         request: IAuthUserInfoRequest,
     ): Promise<void> {
         const user = request.user as IUserInfo;
+        const isSubmission = await this.volunteerSubmissionRepository.findOne({
+            user: { id: user.id },
+            step: {
+                organization: { id: 1 },
+                number: stepNumber,
+            },
+        });
+        if (isSubmission) throw new ApiError('Bad Request', 400, 'Submission already exists!');
         const submission = this.volunteerSubmissionRepository.create({
             user: { id: user.id },
             step: {
@@ -112,6 +120,12 @@ export class VolunteerSubmissionsService {
 
         const answersList: FormVolunteerAnswer[] = [];
         for (const obj of answers) {
+            const isAnswer = await this.volunteerAnswerRepository.findOne({
+                submission: { id: submission.id },
+                question: { id: obj.question },
+                answer: obj.answer,
+            });
+            if (isAnswer) throw new ApiError('Bad Request', 400, 'Answer already exists!');
             const submissionAnswer = this.volunteerAnswerRepository.create({
                 submission: { id: submission.id },
                 question: { id: obj.question },
@@ -121,6 +135,6 @@ export class VolunteerSubmissionsService {
         }
 
         submission.answers = answersList;
-        this.volunteerSubmissionRepository.save(submission);
+        await this.volunteerSubmissionRepository.save(submission);
     }
 }
