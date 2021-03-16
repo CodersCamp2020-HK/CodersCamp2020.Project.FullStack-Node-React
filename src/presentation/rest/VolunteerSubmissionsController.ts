@@ -1,10 +1,11 @@
+import { ValidateErrorJSON } from '@application/UsersErrors';
 import {
     ChangeStatusForVolunterFormParams,
     PostVolunteerSubmissionParams,
     VolunteerSubmissionsService,
 } from '@application/VolunteerSubmissionsService';
 import ApiError from '@infrastructure/ApiError';
-import { IAuthUserInfoRequest } from '@infrastructure/Auth';
+import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
 import { Body, Get, Path, Put, Query, Route, Tags, Response, Security, SuccessResponse, Post, Request } from 'tsoa';
 import { Inject } from 'typescript-ioc';
@@ -19,6 +20,12 @@ export class VolunteerSubmissionsController {
      * Update status of volunteer form
      * @param changeStatusParams It takes values ('in progress', 'rejected', 'accepted')
      */
+    @Security('jwt', ['admin', 'employee'])
+    @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(400, 'Bad Request')
+    @Response<ApiError>(404, 'Not Found')
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
+    @SuccessResponse(200, 'ok')
     @Put('changeVolunterFormStatus')
     public async changeFormStatusForVolunteer(
         @Body() changeStatusParams: ChangeStatusForVolunterFormParams,
@@ -33,14 +40,22 @@ export class VolunteerSubmissionsController {
      * @param userName Shows name of user that applied
      * @param reviewerName Shows name of shelter worker that deals with the matter
      */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
+    @SuccessResponse(200, 'ok')
     @Get()
     public async getAllSubmissions(
+        @Request() request: IAuthUserInfoRequest,
         @Query() submissionDate?: Date,
         @Query() status?: VolunteerFormStatus,
         @Query() userName?: string,
         @Query() reviewerName?: string,
     ): Promise<FormVolunteerSubmission[]> {
-        return this.submissionService.getAllSubmissions({ submissionDate, status, userName, reviewerName });
+        return this.submissionService.getAllSubmissions(
+            { submissionDate, status, userName, reviewerName },
+            request.user as IUserInfo,
+        );
     }
 
     /**
@@ -48,10 +63,17 @@ export class VolunteerSubmissionsController {
      * @param id The submission's identifier
      * @param isInt id
      */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Submission Not Found')
+    @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse(200, 'ok')
     @Get('{id}')
-    public async getVolunteerSubmission(@Path() id: number): Promise<FormVolunteerSubmission> {
-        return this.submissionService.getVolunteerSubmission(id);
+    public async getVolunteerSubmission(
+        @Path() id: number,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<FormVolunteerSubmission> {
+        return this.submissionService.getVolunteerSubmission(id, request.user as IUserInfo);
     }
 
     @Security('jwt', ['normal', 'admin'])

@@ -3,6 +3,7 @@ import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
 import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
 import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
+import { UserType } from '@infrastructure/postgres/OrganizationUser';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
@@ -44,7 +45,23 @@ export class VolunteerSubmissionsService {
         return;
     }
 
-    public async getAllSubmissions(queryParams: SubmissionQueryParams): Promise<FormVolunteerSubmission[]> {
+    public async getAllSubmissions(
+        queryParams: SubmissionQueryParams,
+        currentUser: IUserInfo,
+    ): Promise<FormVolunteerSubmission[]> {
+        console.log(currentUser);
+        // if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
+        //     const submission = await this.volunteerSubmissionRepository
+        //         .createQueryBuilder('submission')
+        //         .leftJoinAndSelect('submission.user', 'user')
+        //         .where('user.id = :id', { id: currentUser.id })
+        //         .getOne();
+
+        //     // if (submission?.user.id != currentUser.id) {
+        //     //     throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submissions');
+        //     // }
+        // }
+
         const submissions = await new OptionalWhereSelectQueryBuilder(
             this.volunteerSubmissionRepository
                 .createQueryBuilder('submission')
@@ -63,7 +80,13 @@ export class VolunteerSubmissionsService {
         return submissions;
     }
 
-    public async getVolunteerSubmission(id: number): Promise<FormVolunteerSubmission> {
+    public async getVolunteerSubmission(id: number, currentUser: IUserInfo): Promise<FormVolunteerSubmission> {
+        if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
+            if (id != currentUser.id) {
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submission');
+            }
+        }
+
         const submission = await this.volunteerSubmissionRepository.findOne(id, {
             relations: ['user', 'step', 'reviewer', 'answers'],
         });

@@ -59,18 +59,30 @@ export class UsersController extends Controller {
      * @param userId Identyfy user by ID
      * @param requestBody Update informations about ('name', 'phone', 'surname')
      */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<ApiError>(401, 'Unauthorized')
     @Response<ApiError>(404, 'User not found')
+    @Response<ApiError>(400, 'Bad Request')
+    @Response<Error>(500, 'Internal Server Error')
     @Response<User>(200, 'User updated')
     @Put('{userId}')
-    public async updateUser(@Path() userId: number, @Body() requestBody: Partial<UserUpdateParams>): Promise<User> {
+    public async updateUser(
+        @Path() userId: number,
+        @Body() requestBody: Partial<UserUpdateParams>,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<User> {
         this.setStatus(200);
-        return this.usersService.update(userId, requestBody);
+        return this.usersService.update(userId, requestBody, request.user as IUserInfo);
     }
 
     /**
      * Supply the unique user ID and get informations about him from database
      * @param userId Identyfy user by ID
      */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
+    //TODO user tylko sam sobie
     @Get('{userId}')
     public async getUser(@Path() userId: number): Promise<User> {
         return this.usersService.get(userId);
@@ -82,7 +94,9 @@ export class UsersController extends Controller {
      * @param badRequestResponse Throws error when erver was unable to process the request
      */
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
-    @SuccessResponse('201', 'Created')
+    @Response<ApiError>(400, 'Bad Request')
+    @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse(201, 'Created')
     @Post()
     public async createUser(
         @Body() requestBody: UserCreationParams,
@@ -112,9 +126,10 @@ export class UsersController extends Controller {
      * Get additional user ID for activation
      * @param generatedUUID additional user ID for activation user in datebase
      */
+    @SuccessResponse(200, 'User Activated')
+    @Response(404, 'Link is not valid or expired')
+    @Response<Error>(500, 'Internal Server Error')
     @Get('activate/{generatedUUID}')
-    @SuccessResponse('200', 'User Activated')
-    @Response('404', 'Link is not valid or expired')
     public async activateUser(@Path() generatedUUID: string): Promise<void> {
         await this.usersService.activateUser(generatedUUID);
         this.setStatus(200);
@@ -125,8 +140,9 @@ export class UsersController extends Controller {
      * @param userId Unique ID of user
      * @param request Information from express
      */
+    @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse(200, 'Sent')
     @Post('{userId}/sendActivationLink')
-    @SuccessResponse('200', 'Sent')
     public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
         try {
             const ACTIVATION_PATH = request.get('host') + '/api/users/activate/';
@@ -149,16 +165,23 @@ export class UsersController extends Controller {
      * Send an email to users that applied for unique pet
      * @param petName Send and email by pet name
      */
-    @Post('sendSomeoneAdoptedEmails')
-    @Response('401', 'Unauthorized')
-    @Response('400', 'Bad request')
-    @SuccessResponse('201', ' Email sended') // Custom success response
     @Security('jwt', ['admin', 'employee'])
-    public async sendSomeoneAdoptedEmails(@Query() petName: string): Promise<void> {
-        const submissions = await this.animalSubmissionsService.getAllAnimalSubmissions({
-            animalName: petName,
-            status: AnimalFormStatus.REJECTED,
-        });
+    @Response<Error>(500, 'Internal Server Error')
+    @Response('401', 'Unauthorized')
+    @Response(400, 'Bad request')
+    @SuccessResponse(201, ' Email sended')
+    @Post('sendSomeoneAdoptedEmails')
+    public async sendSomeoneAdoptedEmails(
+        @Query() petName: string,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        const submissions = await this.animalSubmissionsService.getAllAnimalSubmissions(
+            {
+                animalName: petName,
+                status: AnimalFormStatus.REJECTED,
+            },
+            request.user as IUserInfo,
+        );
 
         const adopters = submissions.map((submission) => {
             return submission.applicant;
@@ -171,10 +194,12 @@ export class UsersController extends Controller {
     /** Supply the unique user ID and delete user with corresponding id from database
      *  @param userId Unique ID of user
      */
-    @Response('401', 'Unauthorized')
-    @Response('404', 'User not found')
-    @SuccessResponse('200', ' User deleted') // Custom success response
     @Security('jwt', ['admin', 'normal', 'volunteer', 'employee'])
+    @Response<Error>(500, 'Internal Server Error')
+    @Response(400, 'Bad request')
+    @Response('401', 'Unauthorized')
+    @Response(404, 'User not found')
+    @SuccessResponse(200, ' User deleted')
     @Delete('{userId}')
     public async deleteUser(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {
         this.setStatus(200);
@@ -186,6 +211,8 @@ export class UsersController extends Controller {
      * @param requestBody
      */
     @Response<ApiError>(400, 'Bad Request')
+    @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse(200, 'ok')
     @Post('auth')
     public async loginUser(@Body() requestBody: UserLoginParams): Promise<ApiKey> {
         this.setStatus(200);
@@ -199,6 +226,7 @@ export class UsersController extends Controller {
      */
     @Security('jwt', ['admin', 'employee', 'normal', 'volunteer'])
     @Response<ApiError>(404, 'User not found')
+    @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'OK')
     @Patch('{userId}')
     public async updateUserPassword(
@@ -216,7 +244,8 @@ export class UsersController extends Controller {
      */
     @Response<ApiError>(404, 'User not found')
     @Response<ApiError>(400, 'Bad Request')
-    @SuccessResponse('200', 'Email send')
+    @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse(200, 'Email sended')
     @Post('reset')
     public async sendResetPasswordMail(
         @Body() email: EmailResetPassword,
@@ -232,7 +261,8 @@ export class UsersController extends Controller {
      */
     @Response<ApiError>(404, 'User not found')
     @Response<ApiError>(400, 'Bad Request')
-    @SuccessResponse('200', 'Password set')
+    @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse(200, 'Password set')
     @Post('reset/{userResetUUID}')
     public async resetUserPassword(
         @Path() userResetUUID: string,
@@ -249,17 +279,21 @@ export class UsersController extends Controller {
      */
     @Post('sendVisitConfirmationMessage')
     @Response('401', 'Unauthorized')
-    @Response('400', 'Bad request')
-    @SuccessResponse('201', ' Email sended') // Custom success response
+    @Response(400, 'Bad request')
+    @Response<ApiError>(404, 'Not Found')
+    @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse(201, ' Email sended')
     @Security('jwt', ['admin', 'employee'])
     public async sendVisitConfirmationEmail(@Query() petName: string, @Query() adopterEmail: Email): Promise<void> {
-        //CHANGE
-        //Pobieranie użytkownika o podanym emailu
-        const adopter = new User();
-        (adopter.name = 'Jan'), (adopter.surname = 'Nowak'), (adopter.mail = adopterEmail);
-        //CHANGE
+        //TODO:
+        const adopters = await this.usersService.getAll(adopterEmail);
 
-        await this.usersService.sendVisitConfirmationMessage(adopter, petName);
-        this.setStatus(201);
+        if (adopters) {
+            const adopter = adopters[0];
+            await this.usersService.sendVisitConfirmationMessage(adopter, petName);
+            this.setStatus(201);
+        } else {
+            throw new ApiError('Not found', 404, 'User not found');
+        }
     }
 }
