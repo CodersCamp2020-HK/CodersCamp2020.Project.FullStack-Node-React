@@ -29,13 +29,13 @@ export default class FormAnimalSubmission {
     @Column({ nullable: true, default: null })
     reason?: string;
 
-    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews)
-    reviewer?: User;
+    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews, { nullable: true })
+    reviewer?: OrganizationUser;
 
     @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormAnimalAnswer[];
 
-    @CreateDateColumn()
+    @CreateDateColumn({ type: 'date' })
     submissionDate!: Date;
 
     @Column({ type: 'date', nullable: true })

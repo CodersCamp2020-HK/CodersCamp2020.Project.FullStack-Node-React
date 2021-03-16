@@ -4,6 +4,7 @@ import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
 import Animal from '@infrastructure/postgres/Animal';
 import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
+import { UserType } from '@infrastructure/postgres/OrganizationUser';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
@@ -68,7 +69,21 @@ export class AnimalSubmissionsService {
         };
     }
 
-    public async getAllAnimalSubmissions(queryParams: GetAllAnimalSubmissionsParams): Promise<FormAnimalSubmission[]> {
+    public async getAllAnimalSubmissions(
+        queryParams: GetAllAnimalSubmissionsParams,
+        currentUser: IUserInfo,
+    ): Promise<FormAnimalSubmission[]> {
+        if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
+            const submission = await this.animalSubmissionRepository
+                .createQueryBuilder('submission')
+                .leftJoinAndSelect('submission.applicant', 'applicant')
+                .where('applicant.id = :id', { id: currentUser.id })
+                .getOne();
+
+            if (submission?.applicant.id != currentUser.id) {
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submissions');
+            }
+        }
         const submissions = await new OptionalWhereSelectQueryBuilder(
             this.animalSubmissionRepository
                 .createQueryBuilder('submission')
@@ -99,7 +114,13 @@ export class AnimalSubmissionsService {
         return;
     }
 
-    public async getAnimalSubmission(id: number): Promise<FormAnimalSubmission> {
+    public async getAnimalSubmission(id: number, currentUser: IUserInfo): Promise<FormAnimalSubmission> {
+        if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
+            if (id != currentUser.id) {
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submission');
+            }
+        }
+
         const submission = await this.animalSubmissionRepository.findOne(id, {
             relations: ['animal', 'applicant', 'answers', 'reviewer'],
         });
