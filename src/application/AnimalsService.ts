@@ -8,7 +8,26 @@ import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuild
 
 type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
 type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
-export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
+//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
+export interface AnimalCreationParams {
+    name: string;
+    age: number;
+    specie: string;
+    description: string;
+    readyForAdoption: boolean;
+    additionalInfo: {
+        activeLevel: AnimalActiveLevel;
+        size: AnimalSize;
+        specialDiet: string;
+        temporaryHome: boolean;
+        needDonations: boolean;
+        virtualAdoption: boolean;
+        acceptsKids: boolean;
+        acceptsOtherAnimals: boolean;
+    };
+}
+
+//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
 export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
 
 interface AnimalQueryParams {
@@ -40,7 +59,12 @@ export class AnimalsService {
     }
 
     public async create({ additionalInfo, ...animalParams }: AnimalCreationParams): Promise<void> {
-        const animal = this.animalRepository.create(animalParams);
+        const animal = this.animalRepository.create({
+            ...animalParams,
+            specie: {
+                specie: animalParams.specie,
+            },
+        });
         const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
         animal.additionalInfo = animalAdditionalInfo;
 

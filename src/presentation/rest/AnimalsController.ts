@@ -183,6 +183,23 @@ export class AnimalsController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(400, 'Bad Request')
     @SuccessResponse(201, 'created')
+    @Example<DeepPartial<AnimalCreationParams>>({
+        name: 'Felek',
+        age: 1,
+        specie: 'cat',
+        description: 'sadsadhh',
+        readyForAdoption: false,
+        additionalInfo: {
+            activeLevel: AnimalActiveLevel.HIGH,
+            size: AnimalSize.SMALL,
+            specialDiet: 'none',
+            temporaryHome: false,
+            needDonations: false,
+            virtualAdoption: false,
+            acceptsKids: false,
+            acceptsOtherAnimals: false,
+        },
+    })
     @Post()
     public async createAnimal(@Body() requestBody: AnimalCreationParams): Promise<void> {
         this.setStatus(201);

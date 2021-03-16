@@ -56,11 +56,13 @@ export default class AnimalAdditionalInfo {
 
     @Column({
         type: 'date',
+        default: new Date(),
     })
     adoptionDate!: Date;
 
     @Column({
         type: 'date',
+        default: new Date(),
     })
     admissionToShelter!: Date;
 
