@@ -82,10 +82,9 @@ export class UsersController extends Controller {
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
-    //TODO user tylko sam sobie
     @Get('{userId}')
-    public async getUser(@Path() userId: number): Promise<User> {
-        return this.usersService.get(userId);
+    public async getUser(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<User> {
+        return this.usersService.get(userId, request.user as IUserInfo);
     }
 
     /**
@@ -284,7 +283,6 @@ export class UsersController extends Controller {
     @SuccessResponse(201, ' Email sended')
     @Security('jwt', ['admin', 'employee'])
     public async sendVisitConfirmationEmail(@Query() petName: string, @Query() adopterEmail: Email): Promise<void> {
-        //TODO:
         const adopters = await this.usersService.getAll(adopterEmail);
 
         if (adopters) {
