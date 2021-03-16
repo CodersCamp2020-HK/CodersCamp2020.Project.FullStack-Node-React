@@ -78,30 +78,40 @@ export default class User {
     @Column({ default: false })
     activated!: boolean;
 
-    @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, { cascade: true })
+    @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, { cascade: true, onDelete: 'CASCADE' })
     animalDonations!: AnimalDonation[];
 
-    @OneToMany(() => OrganizationDonation, (organizationDonation) => organizationDonation.user, { cascade: true })
+    @OneToMany(() => OrganizationDonation, (organizationDonation) => organizationDonation.user, {
+        cascade: true,
+        onDelete: 'CASCADE',
+    })
     organizationDonations!: OrganizationDonation[];
 
-    @OneToMany(() => GoalDonation, (goalDonation) => goalDonation.user, { cascade: true })
+    @OneToMany(() => GoalDonation, (goalDonation) => goalDonation.user, { cascade: true, onDelete: 'CASCADE' })
     goalDonations!: GoalDonation[];
 
     @ManyToOne(() => Localization, (localization) => localization.users)
     localization!: Localization;
 
-    @OneToMany(() => FormAnimalSubmission, (submission) => submission.applicant, { nullable: true })
+    @OneToMany(() => FormAnimalSubmission, (submission) => submission.applicant, {
+        nullable: true,
+        onDelete: 'CASCADE',
+    })
     animalSubmissions!: FormAnimalSubmission[];
 
-    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, { cascade: true, nullable: true })
+    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, {
+        cascade: true,
+        nullable: true,
+        onDelete: 'CASCADE',
+    })
     organizationUsers!: OrganizationUser[];
 
-    @OneToMany(() => VolunteerHireStep, (step) => step.user, { cascade: true })
+    @OneToMany(() => VolunteerHireStep, (step) => step.user, { cascade: true, onDelete: 'CASCADE' })
     steps!: VolunteerHireStep[];
 
     // @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, { cascade: true })
     // volunteerSubmission!: FormVolunteerSubmission[];
 
-    @OneToMany(() => Calendar, (calendar) => calendar.user)
+    @OneToMany(() => Calendar, (calendar) => calendar.user, { onDelete: 'CASCADE' })
     meetings!: Calendar[];
 }

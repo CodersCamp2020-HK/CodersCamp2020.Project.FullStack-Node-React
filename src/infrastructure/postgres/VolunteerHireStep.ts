@@ -19,7 +19,7 @@ export default class VolunteerHireStep {
     })
     organization!: Organization;
 
-    @ManyToOne(() => User, (user) => user.steps, { primary: true, nullable: false })
+    @ManyToOne(() => User, (user) => user.steps, { primary: true, nullable: false, onDelete: 'CASCADE' })
     user!: User;
 
     @Column({ primary: true, nullable: false })
