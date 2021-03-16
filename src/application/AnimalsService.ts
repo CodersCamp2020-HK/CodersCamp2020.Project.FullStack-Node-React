@@ -59,6 +59,7 @@ export class AnimalsService {
             this.animalRepository
                 .createQueryBuilder('animal')
                 .leftJoinAndSelect('animal.additionalInfo', 'info')
+                .leftJoinAndSelect('animal.specie', 'specie')
                 .where('animal.id >= :zero', { zero: 0 }),
         )
             .optAndWhere('animal.readyForAdoption = ', queryParams.readyForAdoption)
@@ -71,7 +72,7 @@ export class AnimalsService {
             .optAndWhere('info.activeLevel = ', queryParams.activeLevel)
             .optAndWhere('animal.age >= ', queryParams.minAge)
             .optAndWhere('animal.age <= ', queryParams.maxAge)
-            .optAndWhere('animal.specie = ', queryParams.specie)
+            .optAndWhere('specie.specie = ', queryParams.specie)
             .selectQueryBuilder.getMany();
     }
 
