@@ -10,7 +10,7 @@ export default class Calendar {
     @Column()
     date!: Date;
 
-    @ManyToOne(() => User, (user) => user.meetings)
+    @ManyToOne(() => User, (user) => user.meetings, { onDelete: 'CASCADE' })
     user!: User;
 
     @ManyToOne(() => Animal, (animal) => animal.meetings)

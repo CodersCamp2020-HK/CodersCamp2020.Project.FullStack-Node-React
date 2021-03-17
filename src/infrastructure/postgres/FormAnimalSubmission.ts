@@ -20,7 +20,7 @@ export default class FormAnimalSubmission {
     @ManyToOne(() => Animal, (animal) => animal.submissions, { nullable: false })
     animal!: Animal;
 
-    @ManyToOne(() => User, (user) => user.animalSubmissions, { nullable: false })
+    @ManyToOne(() => User, (user) => user.animalSubmissions, { nullable: false, onDelete: 'CASCADE' })
     applicant!: User;
 
     @ManyToOne(() => AdoptionStep, (step) => step.submissions, { nullable: false })
@@ -32,7 +32,7 @@ export default class FormAnimalSubmission {
     @Column({ nullable: true, default: null })
     reason?: string;
 
-    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews, { nullable: true })
+    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews, { nullable: true, onDelete: 'CASCADE' })
     reviewer?: OrganizationUser;
 
     @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission, { cascade: true })
