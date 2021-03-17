@@ -15,7 +15,7 @@ export enum UserType {
 @Index(['user', 'organization'], { unique: true })
 @Entity('OrganizationUsers')
 export default class OrganizationUser {
-    @ManyToOne(() => User, (user) => user.organizationUsers, { primary: true, nullable: false })
+    @ManyToOne(() => User, (user) => user.organizationUsers, { primary: true, nullable: false, onDelete: 'CASCADE' })
     user!: User;
 
     @ManyToOne(() => Organization, (organization) => organization.organizationUsers, { primary: true, nullable: false })

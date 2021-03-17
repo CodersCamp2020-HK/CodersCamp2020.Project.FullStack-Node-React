@@ -55,7 +55,12 @@ export class UsersService {
         private organizationUserRepository: Repository<OrganizationUser>,
     ) {}
 
-    public async get(id: number): Promise<User> {
+    public async get(id: number, currentUser?: IUserInfo): Promise<User> {
+        if (currentUser?.role == UserType.NORMAL || currentUser?.role == UserType.VOLUNTEER) {
+            if (id != currentUser.id) {
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only watch own account');
+            }
+        }
         const user = await this.userRepository.findOne(id);
         if (!user) throw new Error('User not found in database');
         return user;
