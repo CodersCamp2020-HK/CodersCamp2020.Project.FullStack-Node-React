@@ -5,6 +5,7 @@ import AnimalAdditionalInfo, { AnimalSize, AnimalActiveLevel } from '@infrastruc
 import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
+import Specie from '@infrastructure/postgres/Specie';
 
 type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
 type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
@@ -49,6 +50,7 @@ export class AnimalsService {
         private animalRepository: Repository<Animal>,
         private animalAdditionalInfo: Repository<AnimalAdditionalInfo>,
         private animalPhotos: Repository<AnimalPhoto>,
+        private speciesRepository: Repository<Specie>,
     ) {}
 
     public async get(id: number): Promise<Animal> {
@@ -59,14 +61,19 @@ export class AnimalsService {
     }
 
     public async create({ additionalInfo, specie, ...animalParams }: AnimalCreationParams): Promise<void> {
+        const specieRow = await this.speciesRepository.findOne({ where: { specie } });
+
+        if (!specieRow) {
+            throw new ApiError('Not Found', 404, `specie with name: ${specie} not found!`);
+        }
+
         const animal = this.animalRepository.create({
             ...animalParams,
-            specie: { id: 1 },
+            specie: { id: specieRow.id },
         });
         const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
         animal.additionalInfo = animalAdditionalInfo;
         await this.animalRepository.save(animal);
-        console.log(specie);
     }
 
     public async delete(id: number): Promise<Animal> {

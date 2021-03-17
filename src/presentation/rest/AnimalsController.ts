@@ -182,6 +182,7 @@ export class AnimalsController extends Controller {
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(400, 'Bad Request')
+    @Response<ApiError>(404, 'Specie not found')
     @SuccessResponse(201, 'created')
     @Example<DeepPartial<AnimalCreationParams>>({
         name: 'Felek',
@@ -202,8 +203,8 @@ export class AnimalsController extends Controller {
     })
     @Post()
     public async createAnimal(@Body() requestBody: AnimalCreationParams): Promise<void> {
+        await this.animalsService.create(requestBody);
         this.setStatus(201);
-        this.animalsService.create(requestBody);
     }
 
     /**
