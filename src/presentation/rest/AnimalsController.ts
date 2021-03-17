@@ -221,8 +221,7 @@ export class AnimalsController extends Controller {
     @SuccessResponse(200, 'ok')
     @Put('{animalId}')
     public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalUpdateParams): Promise<Animal> {
-        this.setStatus(200);
-        return this.animalsService.update(animalId, requestBody);
+        return await this.animalsService.update(animalId, requestBody);
     }
 
     @Security('jwt', ['admin', 'employee'])
