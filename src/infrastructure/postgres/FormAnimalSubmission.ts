@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 import Animal from './Animal';
 import FormAnimalAnswer from './FormAnimalAnswer';
@@ -14,13 +14,16 @@ export enum AnimalFormStatus {
 @Entity('FormAnimalSubmissions')
 @Index(['animal', 'applicant', 'adoptionStep'], { unique: true })
 export default class FormAnimalSubmission {
-    @ManyToOne(() => Animal, (animal) => animal.submissions, { primary: true, nullable: false })
+    @PrimaryGeneratedColumn()
+    id!: number;
+
+    @ManyToOne(() => Animal, (animal) => animal.submissions, { nullable: false })
     animal!: Animal;
 
-    @ManyToOne(() => User, (user) => user.animalSubmissions, { primary: true, nullable: false })
+    @ManyToOne(() => User, (user) => user.animalSubmissions, { nullable: false })
     applicant!: User;
 
-    @ManyToOne(() => AdoptionStep, (step) => step.submissions, { primary: true, nullable: false })
+    @ManyToOne(() => AdoptionStep, (step) => step.submissions, { nullable: false })
     adoptionStep!: AdoptionStep;
 
     @Column({ type: 'enum', enum: AnimalFormStatus, default: AnimalFormStatus.IN_PROGRESS })
