@@ -115,7 +115,8 @@ export class AnimalSubmissionsController extends Controller {
         return this.submissionService.getAnimalSubmission(id, request.user as IUserInfo);
     }
 
-    @Security('jwt', ['admin', 'employee', 'volunteer', 'normal'])
+    @Security('jwt', ['admin', 'normal'])
+    @Response<ApiError>(400, 'Bad Request')
     @SuccessResponse(201, 'Created')
     @Post('add')
     public async postAnimalSubmission(
