@@ -219,6 +219,39 @@ export class AnimalsController extends Controller {
     @Response<ApiError>(404, 'Not Found')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @SuccessResponse(200, 'ok')
+    @Example({
+        id: 2,
+        name: 'Dynia',
+        age: 34,
+        description:
+            'enim ipsum mollitia eligendi accusantium qui labore omnis et quidem provident deserunt impedit praesentium commodi cumque quis rerum nihil odio',
+        readyForAdoption: false,
+        thumbnail: {
+            id: 2,
+            buffer: {
+                type: 'Buffer',
+                data: [1, 2, 3],
+            },
+        },
+        additionalInfo: {
+            id: 2,
+            activeLevel: 'low',
+            size: 'large',
+            specialDiet: 'Meat',
+            comments: 'lorem ipsum',
+            temporaryHome: true,
+            needDonations: false,
+            virtualAdoption: true,
+            adoptionDate: '2020-05-27',
+            admissionToShelter: '2020-04-20',
+            acceptsKids: true,
+            acceptsOtherAnimals: true,
+        },
+        specie: {
+            id: 2,
+            specie: 'cat',
+        },
+    })
     @Put('{animalId}')
     public async updateAnimal(@Path() animalId: number, @Body() requestBody: AnimalUpdateParams): Promise<Animal> {
         return await this.animalsService.update(animalId, requestBody);
