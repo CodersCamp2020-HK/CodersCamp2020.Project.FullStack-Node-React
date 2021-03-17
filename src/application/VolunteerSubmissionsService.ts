@@ -111,32 +111,25 @@ export class VolunteerSubmissionsService {
             },
         });
         if (isSubmission) throw new ApiError('Bad Request', 400, 'Submission already exists!');
-        const submission = this.volunteerSubmissionRepository.create({
-            user: { id: user.id },
-            step: {
-                organization: { id: 1 },
-                number: stepNumber,
-            },
-        });
-        await this.volunteerSubmissionRepository.save(submission);
 
         const answersList: FormVolunteerAnswer[] = [];
         for (const obj of answers) {
-            const isAnswer = await this.volunteerAnswerRepository.findOne({
-                submission: { id: submission.id },
-                question: { id: obj.question },
-                answer: obj.answer,
-            });
-            if (isAnswer) throw new ApiError('Bad Request', 400, 'Answer already exists!');
             const submissionAnswer = this.volunteerAnswerRepository.create({
-                submission: { id: submission.id },
                 question: { id: obj.question },
                 answer: obj.answer,
             });
             answersList.push(submissionAnswer);
         }
 
-        submission.answers = answersList;
+        const submission = this.volunteerSubmissionRepository.create({
+            user: { id: user.id },
+            step: {
+                organization: { id: 1 },
+                number: stepNumber,
+            },
+            answers: answersList,
+        });
+
         await this.volunteerSubmissionRepository.save(submission);
     }
 }
