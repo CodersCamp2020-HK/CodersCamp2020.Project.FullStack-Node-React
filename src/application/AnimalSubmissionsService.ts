@@ -1,6 +1,9 @@
 import ApiError from '@infrastructure/ApiError';
-import { IUserInfo } from '@infrastructure/Auth';
+import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import Animal from '@infrastructure/postgres/Animal';
+import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
+import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
 import { UserType } from '@infrastructure/postgres/OrganizationUser';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
@@ -11,7 +14,7 @@ export enum FormStatus {
     ACCEPTED = 'accepted',
 }
 
-interface getAllAnimalSubmissionsParams {
+interface GetAllAnimalSubmissionsParams {
     specie?: string;
     submissionDate?: Date;
     status?: AnimalFormStatus;
@@ -28,7 +31,7 @@ export interface AdoptersCount {
     count: number;
 }
 
-interface getAllAnimalSubmissionsParams {
+interface GetAllAnimalSubmissionsParams {
     submissionDate?: Date;
     specie?: string;
     status?: AnimalFormStatus;
@@ -43,8 +46,23 @@ export interface ChangeStatusForAdoptionFormParams {
     animalId: number;
 }
 
+interface AnimalAnswer {
+    questionId: number;
+    answer: AnswerForm;
+}
+
+export interface PostAnimalSubmissionParams {
+    animalId: number;
+    stepNumber: number;
+    answers: AnimalAnswer[];
+}
+
 export class AnimalSubmissionsService {
-    constructor(private animalSubmissionRepository: Repository<FormAnimalSubmission>) {}
+    constructor(
+        private animalSubmissionRepository: Repository<FormAnimalSubmission>,
+        private animalRepository: Repository<Animal>,
+        private animalAnswerRepository: Repository<FormAnimalAnswer>,
+    ) {}
 
     public async adoptWillingnessCounter(petName: string): Promise<AdoptersCount> {
         const count = await this.animalSubmissionRepository
@@ -61,7 +79,7 @@ export class AnimalSubmissionsService {
     }
 
     public async getAllAnimalSubmissions(
-        queryParams: getAllAnimalSubmissionsParams,
+        queryParams: GetAllAnimalSubmissionsParams,
         currentUser: IUserInfo,
     ): Promise<FormAnimalSubmission[]> {
         if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
@@ -119,5 +137,48 @@ export class AnimalSubmissionsService {
         if (!submission) throw new ApiError('Not Found', 404, `Submission with ${id} not found`);
 
         return submission;
+    }
+
+    public async createAnimalSubmission(
+        { animalId, answers, stepNumber }: PostAnimalSubmissionParams,
+        request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        answers;
+        const user = request.user as IUserInfo;
+        const animal = await this.animalRepository.findOne(animalId, { relations: ['specie'] });
+        if (!animal) throw new ApiError('Not Found', 404, `Animal with ${animalId} not found!`);
+
+        const isSubmission = await this.animalSubmissionRepository.findOne({
+            animal: { id: animalId },
+            applicant: { id: user.id },
+            adoptionStep: {
+                organization: { id: 1 },
+                specie: { id: animal.specie.id },
+                number: stepNumber,
+            },
+        });
+        if (isSubmission) throw new ApiError('Bad Request', 400, 'Submission already exists!');
+
+        const answersList: FormAnimalAnswer[] = [];
+        for (const obj of answers) {
+            const submissionAnswer = this.animalAnswerRepository.create({
+                question: { id: obj.questionId },
+                answer: obj.answer,
+            });
+            answersList.push(submissionAnswer);
+        }
+
+        const submission = this.animalSubmissionRepository.create({
+            animal: { id: animalId },
+            applicant: { id: user.id },
+            adoptionStep: {
+                organization: { id: 1 },
+                specie: { id: animal.specie.id },
+                number: stepNumber,
+            },
+        });
+        submission.answers = answersList;
+
+        await this.animalSubmissionRepository.save(submission);
     }
 }

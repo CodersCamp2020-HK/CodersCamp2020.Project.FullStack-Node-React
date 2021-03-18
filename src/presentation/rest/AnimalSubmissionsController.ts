@@ -2,6 +2,7 @@ import {
     AdoptersCount,
     AnimalSubmissionsService,
     ChangeStatusForAdoptionFormParams,
+    PostAnimalSubmissionParams,
 } from '@application/AnimalSubmissionsService';
 import { ValidateErrorJSON } from '@application/UsersErrors';
 import ApiError from '@infrastructure/ApiError';
@@ -18,6 +19,7 @@ import {
     Controller,
     Path,
     Security,
+    Post,
     Request,
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
@@ -111,5 +113,17 @@ export class AnimalSubmissionsController extends Controller {
         @Request() request: IAuthUserInfoRequest,
     ): Promise<FormAnimalSubmission> {
         return this.submissionService.getAnimalSubmission(id, request.user as IUserInfo);
+    }
+
+    @Security('jwt', ['admin', 'normal'])
+    @Response<ApiError>(400, 'Bad Request')
+    @SuccessResponse(201, 'Created')
+    @Post('add')
+    public async postAnimalSubmission(
+        @Body() requestBody: PostAnimalSubmissionParams,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        this.setStatus(201);
+        this.submissionService.createAnimalSubmission(requestBody, request);
     }
 }

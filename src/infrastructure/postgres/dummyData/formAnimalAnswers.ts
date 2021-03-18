@@ -11,13 +11,7 @@ export const seedFormAnimalAnswer = (amount: number): DeepPartial<FormAnimalAnsw
             answer: answerObj,
             question: { id: i + 1 },
             submission: {
-                animal: { id: i + 1 },
-                applicant: { id: i + 1 },
-                adoptionStep: {
-                    organization: { id: 1 },
-                    specie: { id: (i % 2) + 1 },
-                    number: i + 1,
-                },
+                id: 1,
             },
         });
     }

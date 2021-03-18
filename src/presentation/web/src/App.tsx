@@ -1,35 +1,26 @@
-
-import logo from './logo.svg';
 import './App.css';
-import { useGetUser } from './client';
+import Button from '@material-ui/core/Button'
+import theme from './themes/theme'
+import {ThemeProvider} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles'
+
+const useStyles = makeStyles({
+  myBtn: {
+    backgroundColor: 'red'
+  }
+})
+
+
 
 function App() {
-  const { data, refetch, loading, error } = useGetUser({ userId: 1})
-
+  const classes = useStyles()
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        {
-          error ? <span>Error {error.data}</span>
-                : loading
-                    ? <span>Loading...</span>
-                    : <span>{data?.mail}</span>
-        }
-        <button onClick={() => refetch()}> Refetch </button>
-      </header>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+      <Button variant='contained' className={classes.myBtn}>Click me</Button>
     </div>
+    </ThemeProvider>
+    
   );
 }
 
