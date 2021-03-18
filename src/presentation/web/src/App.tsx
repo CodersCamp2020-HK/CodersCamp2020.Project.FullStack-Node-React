@@ -1,10 +1,10 @@
 
 import logo from './logo.svg';
 import './App.css';
-import { useGetUser } from './client';
+//import { useGetUser } from './client';
 
 function App() {
-  const { data, refetch, loading, error } = useGetUser({ userId: 1})
+  //const { data, refetch, loading, error } = useGetUser({ userId: 1})
 
   return (
     <div className="App">
@@ -21,13 +21,13 @@ function App() {
         >
           Learn React
         </a>
-        {
+        {/* {
           error ? <span>Error {error.data}</span>
                 : loading
                     ? <span>Loading...</span>
                     : <span>{data?.mail}</span>
         }
-        <button onClick={() => refetch()}> Refetch </button>
+        <button onClick={() => refetch()}> Refetch </button> */}
       </header>
     </div>
   );
