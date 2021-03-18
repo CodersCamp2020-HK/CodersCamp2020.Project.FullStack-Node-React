@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 import Animal from './Animal';
 import FormAnimalAnswer from './FormAnimalAnswer';
@@ -14,23 +14,26 @@ export enum AnimalFormStatus {
 @Entity('FormAnimalSubmissions')
 @Index(['animal', 'applicant', 'adoptionStep'], { unique: true })
 export default class FormAnimalSubmission {
+    @PrimaryGeneratedColumn()
+    id!: number;
+
     @ManyToOne(() => Animal, (animal) => animal.submissions, { primary: true, nullable: false, onDelete: 'CASCADE' })
     animal!: Animal;
 
-    @ManyToOne(() => User, (user) => user.animalSubmissions, { primary: true, nullable: false, onDelete: 'CASCADE' })
+    @ManyToOne(() => User, (user) => user.animalSubmissions, { nullable: false, onDelete: 'CASCADE' })
     applicant!: User;
 
-    @ManyToOne(() => AdoptionStep, (step) => step.submissions, { primary: true, nullable: false })
+    @ManyToOne(() => AdoptionStep, (step) => step.submissions, { nullable: false })
     adoptionStep!: AdoptionStep;
 
-    @Column({ type: 'enum', enum: AnimalFormStatus })
-    status!: string;
+    @Column({ type: 'enum', enum: AnimalFormStatus, default: AnimalFormStatus.IN_PROGRESS })
+    status?: string;
 
     @Column({ nullable: true, default: null })
-    reason!: string;
+    reason?: string;
 
-    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews, { onDelete: 'CASCADE' })
-    reviewer!: OrganizationUser;
+    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews, { nullable: true, onDelete: 'CASCADE' })
+    reviewer?: OrganizationUser;
 
     @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormAnimalAnswer[];

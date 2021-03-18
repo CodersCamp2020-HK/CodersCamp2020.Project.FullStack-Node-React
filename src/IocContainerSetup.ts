@@ -21,6 +21,7 @@ import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService'
 import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
 import { WinstonLogger } from '@infrastructure/WinstonLogger';
 import Specie from '@infrastructure/postgres/Specie';
+import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
 
 Container.bind(AnimalsService)
     .factory(
@@ -61,7 +62,12 @@ Container.bind(CalendarService).factory(
 );
 
 Container.bind(AnimalSubmissionsService).factory(
-    () => new AnimalSubmissionsService(getConnection().getRepository(FormAnimalSubmission)),
+    () =>
+        new AnimalSubmissionsService(
+            getConnection().getRepository(FormAnimalSubmission),
+            getConnection().getRepository(Animal),
+            getConnection().getRepository(FormAnimalAnswer),
+        ),
 );
 Container.bind(VolunteerSubmissionsService).factory(
     () => new VolunteerSubmissionsService(getConnection().getRepository(FormVolunteerSubmission)),
