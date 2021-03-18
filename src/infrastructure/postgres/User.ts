@@ -5,8 +5,8 @@ import AnimalDonation from './AnimalDonation';
 import Localization from './Localization';
 import FormAnimalSubmission from './FormAnimalSubmission';
 import OrganizationUser from './OrganizationUser';
-import Calendar from './Calendar';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
+import Calendar from './Calendar';
 
 /**
  * User Type

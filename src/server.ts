@@ -17,7 +17,7 @@ const isProductionEnv = process.env.NODE_ENV === 'production';
 const port = process.env.PORT || 8000;
 const appUrl = isProductionEnv ? 'https://coders-camp-schronisko.herokuapp.com/' : `http://localhost:${port}`;
 const app = express();
-//work!
+
 (async () => {
     await connectToDb();
 
