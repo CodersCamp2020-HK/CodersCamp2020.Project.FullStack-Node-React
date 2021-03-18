@@ -49,6 +49,6 @@ export default class Organization {
     @OneToMany(() => VolunteerHireStep, (volunteer) => volunteer.organization, { cascade: true })
     volunteerHireSteps!: VolunteerHireStep[];
 
-    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.organization, { cascade: true })
+    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.organization, { nullable: true })
     organizationUsers!: OrganizationUser[];
 }

@@ -1,6 +1,7 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
 import OrganizationUser from './OrganizationUser';
+import User from './User';
 import VolunteerHireStep from './VolunteerHireStep';
 
 export enum VolunteerFormStatus {
@@ -10,24 +11,28 @@ export enum VolunteerFormStatus {
 }
 
 @Entity('FormVolunteerSubmissions')
+@Index(['user', 'step'], { unique: true })
 export default class FormVolunteerSubmission {
     @PrimaryGeneratedColumn()
     id!: number;
 
+    @ManyToOne(() => User, (user) => user.volunteerSubmission, { nullable: false })
+    user!: User;
+
     @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { nullable: false })
     step!: VolunteerHireStep;
 
-    @Column({ type: 'enum', enum: VolunteerFormStatus })
+    @Column({ type: 'enum', enum: VolunteerFormStatus, default: VolunteerFormStatus.IN_PROGRESS })
     status!: string;
 
     @Column({ nullable: true, default: null })
-    reason!: string;
+    reason?: string;
 
-    @ManyToOne(() => OrganizationUser, (user) => user.volunteerReviews, { onDelete: 'CASCADE' })
-    reviewer!: OrganizationUser;
+    @ManyToOne(() => OrganizationUser, (user) => user.volunteerReviews, { nullable: true, onDelete: 'CASCADE' })
+    reviewer?: OrganizationUser;
 
-    @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true })
-    answers!: FormVolunteerAnswer[];
+    @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true, nullable: true })
+    answers?: FormVolunteerAnswer[];
 
     @CreateDateColumn({ type: 'date' })
     submissionDate!: Date;

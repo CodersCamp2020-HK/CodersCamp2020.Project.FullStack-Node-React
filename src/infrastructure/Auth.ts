@@ -47,14 +47,8 @@ export async function expressAuthentication(
 
             const organizationUserRepository = getConnection().getRepository(OrganizationUser);
             const organizationUser = await organizationUserRepository.findOne({
-                where: {
-                    user: {
-                        id: user.id,
-                    },
-                    organization: {
-                        id: 1,
-                    },
-                },
+                user: { id: user.id },
+                organization: { id: 1 },
             });
             const role = organizationUser === undefined ? UserType.NORMAL : organizationUser.role;
             if (role !== decoded.role) throw new ApiError('Bad Request', 400, 'Invalid token');
