@@ -46,7 +46,10 @@ export async function expressAuthentication(
             if (user.activated === false) throw new ApiError('Bad Request', 400, 'Account not activated!');
 
             const organizationUserRepository = getConnection().getRepository(OrganizationUser);
-            const organizationUser = await organizationUserRepository.findOne(user.id);
+            const organizationUser = await organizationUserRepository.findOne({
+                user: { id: user.id },
+                organization: { id: 1 },
+            });
             const role = organizationUser === undefined ? UserType.NORMAL : organizationUser.role;
             if (role !== decoded.role) throw new ApiError('Bad Request', 400, 'Invalid token');
             return decoded;

@@ -2,6 +2,7 @@ import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGenerate
 import FormVolunteerAnswer from './FormVolunteerAnswer';
 import OrganizationUser from './OrganizationUser';
 import VolunteerHireStep from './VolunteerHireStep';
+import { IsDate, Length } from 'class-validator';
 
 export enum VolunteerFormStatus {
     IN_PROGRESS = 'in progress',
@@ -20,6 +21,7 @@ export default class FormVolunteerSubmission {
     @Column({ type: 'enum', enum: VolunteerFormStatus })
     status!: string;
 
+    @Length(3, 300)
     @Column({ nullable: true, default: null })
     reason!: string;
 
@@ -29,9 +31,11 @@ export default class FormVolunteerSubmission {
     @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormVolunteerAnswer[];
 
-    @CreateDateColumn({ type: 'date' })
+    @IsDate()
+    @CreateDateColumn()
     submissionDate!: Date;
 
-    @Column({ type: 'date', nullable: true })
+    @IsDate()
+    @Column({ nullable: true })
     reviewDate?: Date;
 }
