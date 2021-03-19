@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Grid, Toolbar } from '@material-ui/core';
+import { AppBar, Toolbar } from '@material-ui/core';
 import NavbarList from '../NavbarList/NavbarList';
 import NavbarLoginBtn from '../NavbarLoginBtn/NavbarLoginBtn';
 import { Link as RouterLink } from 'react-router-dom';
