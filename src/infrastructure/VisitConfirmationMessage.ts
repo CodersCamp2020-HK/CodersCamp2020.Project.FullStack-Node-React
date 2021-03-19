@@ -21,4 +21,4 @@ export default class VisitConfirmationMessage {
                     </div>`,
         };
     }
-} 
+}
