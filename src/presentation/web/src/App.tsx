@@ -14,9 +14,9 @@ import Navbar from './components/Navbar/Navbar';
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Navbar></Navbar>
-            <Container style={{ backgroundColor: 'brown' }}>
-                <Switch>
+            <Switch>
+                <Navbar></Navbar>
+                <Container style={{ backgroundColor: 'brown' }}>
                     <Route exact path="/about">
                         <About />
                     </Route>
@@ -32,8 +32,8 @@ const App: React.FC = () => {
                     <Route exact path="/">
                         <Home />
                     </Route>
-                </Switch>
-            </Container>
+                </Container>
+            </Switch>
         </ThemeProvider>
     );
 };
