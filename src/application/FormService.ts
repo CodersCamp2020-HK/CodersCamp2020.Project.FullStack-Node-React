@@ -2,6 +2,7 @@ import Form from '@infrastructure/postgres/Form';
 import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
 import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
+import { validate } from 'class-validator';
 
 interface Question {
     question: string;
@@ -28,7 +29,12 @@ export class FormService {
         }
 
         const form = this.formRepository.create(formCreationParams);
-        await this.formRepository.save(form);
+        const errors = await validate(form);
+        if (errors.length > 0) {
+            throw new Error(`Validation failed!`);
+        } else {
+            await this.formRepository.save(form);
+        }
     }
 
     public async get(id: number): Promise<Form> {
