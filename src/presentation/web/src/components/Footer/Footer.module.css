@@ -1,0 +1,15 @@
+.footer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-left: auto;
+    position: absolute;
+    bottom: 0;
+}
+
+.footerColumn {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}

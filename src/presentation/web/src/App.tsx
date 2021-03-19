@@ -10,6 +10,7 @@ import Home from './components/Pages/Home';
 import Donation from './components/Pages/Donation';
 import Adoption from './components/Pages/Adoption';
 import Navbar from './components/Navbar/Navbar';
+import Footer from './components/Footer/Footer';
 
 const App: React.FC = () => {
     return (
@@ -34,6 +35,7 @@ const App: React.FC = () => {
                     </Route>
                 </Container>
             </Switch>
+            <Footer />
         </ThemeProvider>
     );
 };
