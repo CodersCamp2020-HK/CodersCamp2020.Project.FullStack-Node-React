@@ -1,10 +1,12 @@
 import React from 'react';
 import styles from './Footer.module.css';
 import { Typography, Box } from '@material-ui/core';
+import { useTheme } from '@material-ui/styles';
 
 const Footer = () => {
+    const theme = useTheme();
     return (
-            <Box boxShadow={8} p={18}>
+            <Box boxShadow={8} p={18} bgcolor={ theme.common.white }>
             <footer className={styles.footer}>
                 <div className={styles.footerColumn}>
                     <Typography color='textSecondary' variant='subtitle2'>Telefon:</Typography>
