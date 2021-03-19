@@ -1,11 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AppBar, Grid, Toolbar } from '@material-ui/core';
-import NavbarList from '../NavbarList/NavbarList';
-import NavbarLoginBtn from '../NavbarLoginBtn/NavbarLoginBtn';
+import NavbarList from '../navbarList/NavbarList';
 import { Link as RouterLink } from 'react-router-dom';
 import { Link } from '@material-ui/core';
+import NavbarLoginBtn from '../navbarLoginBtn/NavbarLoginBtn';
+import Drawer from '@material-ui/core/Drawer';
+import IconButton from '@material-ui/core/IconButton';
+import MenuIcon from '@material-ui/icons/Menu';
 
 const Navbar = () => {
+    const [mobileView, setMobileView] = useState(false);
+    const [showDrawer, setShowDrawer] = useState(false);
+
+    const checkView = () => {
+        window.innerWidth < 900 ? setMobileView(true) : setMobileView(false);
+    };
+
+    const show = () => {
+        setShowDrawer(true);
+    };
+    const hide = () => {
+        setShowDrawer(false);
+    };
+
+    useEffect(() => {
+        checkView();
+        window.addEventListener('resize', checkView);
+    }, []);
+
     return (
         <nav>
             <AppBar color="default" position="static">
@@ -13,7 +35,17 @@ const Navbar = () => {
                     <Link component={RouterLink} to="/">
                         LOGO
                     </Link>
-                    <NavbarList />
+                    {mobileView ? (
+                        <IconButton onClick={show} color="primary" style={{ marginLeft: 'auto' }}>
+                            <MenuIcon />
+                        </IconButton>
+                    ) : (
+                        <NavbarList />
+                    )}
+                    <Drawer anchor="left" open={showDrawer} onClose={hide}>
+                        <NavbarList />
+                    </Drawer>
+
                     <NavbarLoginBtn />
                 </Toolbar>
             </AppBar>
