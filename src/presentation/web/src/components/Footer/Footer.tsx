@@ -4,7 +4,7 @@ import { Typography, Box } from '@material-ui/core';
 
 const Footer = () => {
     return (
-            <Box boxShadow={8}>
+            <Box boxShadow={8} p={18}>
             <footer className={styles.footer}>
                 <div className={styles.footerColumn}>
                     <Typography color='textSecondary' variant='subtitle2'>Telefon:</Typography>
