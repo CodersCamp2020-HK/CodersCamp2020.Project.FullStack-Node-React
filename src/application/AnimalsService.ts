@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 import Specie from '@infrastructure/postgres/Specie';
-import PaginationParams from '@infrastructure/pagination';
+import PaginationParams from '@infrastructure/Pagination';
 
 //type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
 //type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
@@ -111,9 +111,8 @@ export class AnimalsService {
     }
 
     public async getAll(queryParams: AnimalQueryParams, paginationParams?: PaginationParams): Promise<Animal[]> {
-        
         const isFirstPage = paginationParams?.page == 1 ? true : false;
-        
+
         const SKIP =
             paginationParams?.perPage && paginationParams?.page ? paginationParams.perPage * paginationParams.page : 0;
 

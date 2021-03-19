@@ -149,8 +149,8 @@ export class AnimalsController extends Controller {
         @Query() acceptsOtherAnimals?: boolean,
         @Query() activeLevel?: AnimalActiveLevel,
         @Query() size?: AnimalSize,
-        @Query() page?: number | undefined,
-        @Query() perPage?: number | undefined,
+        @Query() page?: number,
+        @Query() perPage?: number,
     ): Promise<Animal[]> {
         const foundedAnimals = await this.animalsService.getAll(
             {
