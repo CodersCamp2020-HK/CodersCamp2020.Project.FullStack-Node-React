@@ -117,7 +117,7 @@ export class AnimalSubmissionsController extends Controller {
 
     @Security('jwt', ['admin', 'normal'])
     @Response<ApiError>(400, 'Bad Request')
-    @SuccessResponse(201, 'Created')
+    @SuccessResponse(204, 'Created')
     @Post('add')
     public async postAnimalSubmission(
         @Body() requestBody: PostAnimalSubmissionParams,
