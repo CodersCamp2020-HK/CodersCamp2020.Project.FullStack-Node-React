@@ -22,18 +22,16 @@ const TextInput = ({
     required = false,
     color = 'secondary',
 }: TextInputProps) => {
-    let endAndorment;
-    if (type === 'date') {
-        endAndorment = {
-            endAdornment: (
-                <InputAdornment position="end">
-                    <Today />
-                </InputAdornment>
-            ),
-        };
-    } else {
-        endAndorment = undefined;
-    }
+    const endAndorment =
+        type === 'date'
+            ? {
+                  endAdornment: (
+                      <InputAdornment position="end">
+                          <Today />
+                      </InputAdornment>
+                  ),
+              }
+            : undefined;
     return (
         <TextField
             id={id}
