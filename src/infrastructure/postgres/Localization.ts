@@ -1,12 +1,14 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import Organization from './Organization';
 import User from './User';
+import { Length } from 'class-validator';
 
 @Entity('Localizations')
 export default class Localization {
     @PrimaryGeneratedColumn()
     id!: number;
 
+    @Length(3, 100)
     @Column({
         type: 'varchar',
         length: 50,

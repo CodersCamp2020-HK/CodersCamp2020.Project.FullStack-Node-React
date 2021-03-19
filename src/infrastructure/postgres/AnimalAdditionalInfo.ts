@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Length, IsBoolean, IsDate } from 'class-validator';
 
 export enum AnimalActiveLevel {
     LOW = 'low',
@@ -33,40 +34,45 @@ export default class AnimalAdditionalInfo {
     })
     size!: AnimalSize;
 
+    @Length(3, 100)
     @Column({
         type: 'text',
         nullable: true,
     })
     specialDiet?: string;
 
+    @Length(3, 300)
     @Column({
         type: 'text',
         nullable: true,
     })
     comments?: string;
 
+    @IsBoolean()
     @Column()
     temporaryHome!: boolean;
 
+    @IsBoolean()
     @Column()
     needDonations!: boolean;
 
+    @IsBoolean()
     @Column()
     virtualAdoption!: boolean;
 
-    @Column({
-        type: 'date',
-    })
+    @IsDate()
+    @Column()
     adoptionDate!: Date;
 
-    @Column({
-        type: 'date',
-    })
+    @IsDate()
+    @Column()
     admissionToShelter!: Date;
 
+    @IsBoolean()
     @Column()
     acceptsKids!: boolean;
 
+    @IsBoolean()
     @Column()
     acceptsOtherAnimals!: boolean;
 }

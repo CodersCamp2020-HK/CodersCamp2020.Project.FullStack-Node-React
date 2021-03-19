@@ -5,6 +5,7 @@ import AnimalAdditionalInfo, { AnimalSize, AnimalActiveLevel } from '@infrastruc
 import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
+import { validate } from 'class-validator';
 
 type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
 type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
@@ -41,10 +42,15 @@ export class AnimalsService {
 
     public async create({ additionalInfo, ...animalParams }: AnimalCreationParams): Promise<void> {
         const animal = this.animalRepository.create(animalParams);
-        const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
-        animal.additionalInfo = animalAdditionalInfo;
+        const errors = await validate(animal);
+        if (errors.length > 0) {
+            throw new Error(`Validation failed!`);
+        } else {
+            const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
+            animal.additionalInfo = animalAdditionalInfo;
 
-        await this.animalRepository.save(animal);
+            await this.animalRepository.save(animal);
+        }
     }
 
     public async delete(id: number): Promise<Animal> {
