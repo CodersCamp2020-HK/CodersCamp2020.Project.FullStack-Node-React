@@ -14,7 +14,7 @@ export default class GoalDonation {
     /**
      * The goal of donation.
      */
-    @ManyToOne(() => Goal, (goal) => goal.goalDonation, { cascade: true })
+    @ManyToOne(() => Goal, (goal) => goal.goalDonation)
     goal!: Goal;
 
     /**
