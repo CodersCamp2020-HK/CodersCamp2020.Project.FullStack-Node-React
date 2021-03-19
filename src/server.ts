@@ -9,11 +9,7 @@ import { Container } from './IocContainerSetup';
 import 'express-async-errors';
 import 'reflect-metadata';
 import dotenv from 'dotenv';
-<<<<<<< HEAD
-// import seedDatabase from '@infrastructure/postgres/seedDatabase';
-=======
 import seedDatabase from '@infrastructure/postgres/seedDatabase';
->>>>>>> 9782a37006ad48dd50c464213d497ee027388863
 
 dotenv.config();
 

@@ -1,8 +1,4 @@
 import { getConnection } from 'typeorm';
-<<<<<<< HEAD
-// import { connectToDb } from '../postgres/DatabaseConnection';
-=======
->>>>>>> 9782a37006ad48dd50c464213d497ee027388863
 
 import { seedLocalizations } from './dummyData/localizations';
 import Localization from './Localization';
