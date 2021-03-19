@@ -90,8 +90,6 @@ export class AnimalsService {
             ...animalParams,
             specie: { id: specieRow.id },
         });
-        const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
-        animal.additionalInfo = animalAdditionalInfo;
 
         const errors = await validate(animal);
         if (errors.length > 0) {
