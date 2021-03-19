@@ -77,17 +77,26 @@ export default class User {
     @Column({ default: false })
     activated!: boolean;
 
-    @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, { cascade: true, onDelete: 'CASCADE' })
-    animalDonations!: AnimalDonation[];
+    @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, {
+        cascade: true,
+        onDelete: 'CASCADE',
+        nullable: true,
+    })
+    animalDonations?: AnimalDonation[];
 
     @OneToMany(() => OrganizationDonation, (organizationDonation) => organizationDonation.user, {
         cascade: true,
         onDelete: 'CASCADE',
+        nullable: true,
     })
-    organizationDonations!: OrganizationDonation[];
+    organizationDonations?: OrganizationDonation[];
 
-    @OneToMany(() => GoalDonation, (goalDonation) => goalDonation.user, { cascade: true, onDelete: 'CASCADE' })
-    goalDonations!: GoalDonation[];
+    @OneToMany(() => GoalDonation, (goalDonation) => goalDonation.user, {
+        cascade: true,
+        onDelete: 'CASCADE',
+        nullable: true,
+    })
+    goalDonations?: GoalDonation[];
 
     @ManyToOne(() => Localization, (localization) => localization.users)
     localization!: Localization;
@@ -99,13 +108,17 @@ export default class User {
     animalSubmissions!: FormAnimalSubmission[];
 
     @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, {
-        cascade: true,
         nullable: true,
+        cascade: true,
         onDelete: 'CASCADE',
     })
-    organizationUsers!: OrganizationUser[];
+    organizationUsers?: OrganizationUser[];
 
-    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, { nullable: true, cascade: true })
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, {
+        cascade: true,
+        onDelete: 'CASCADE',
+        nullable: true,
+    })
     volunteerSubmission?: FormVolunteerSubmission[];
 
     @OneToMany(() => Calendar, (calendar) => calendar.user, { onDelete: 'CASCADE' })

@@ -1,12 +1,13 @@
 import { ValidateErrorJSON } from '@application/UsersErrors';
 import {
     ChangeStatusForVolunterFormParams,
+    PostVolunteerSubmissionParams,
     VolunteerSubmissionsService,
 } from '@application/VolunteerSubmissionsService';
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
-import { Body, Get, Path, Put, Query, Route, Tags, Response, Security, SuccessResponse, Request } from 'tsoa';
+import { Body, Get, Path, Put, Query, Route, Tags, Response, Security, SuccessResponse, Post, Request } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 
 @Tags('Volunteer Submissions')
@@ -73,5 +74,16 @@ export class VolunteerSubmissionsController {
         @Request() request: IAuthUserInfoRequest,
     ): Promise<FormVolunteerSubmission> {
         return this.submissionService.getVolunteerSubmission(id, request.user as IUserInfo);
+    }
+
+    @Security('jwt', ['normal', 'admin'])
+    @SuccessResponse(201, 'Created')
+    @Response<ApiError>(400, 'Bad Request')
+    @Post('add')
+    public async postVolunteerSubmission(
+        @Body() requestBody: PostVolunteerSubmissionParams,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        this.submissionService.createVolunteerSubmission(requestBody, request);
     }
 }

@@ -1,4 +1,13 @@
-import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    Index,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
 import OrganizationUser from './OrganizationUser';
 import User from './User';
@@ -21,6 +30,7 @@ export default class FormVolunteerSubmission {
     user!: User;
 
     @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { nullable: false })
+    @JoinColumn()
     step!: VolunteerHireStep;
 
     @Column({ type: 'enum', enum: VolunteerFormStatus, default: VolunteerFormStatus.IN_PROGRESS })
