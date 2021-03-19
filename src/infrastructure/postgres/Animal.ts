@@ -40,7 +40,7 @@ export default class Animal {
      * The description of the animal.
      * Extra information deliverd by user
      */
-    @Length(300)
+    @Length(0, 300)
     @Column()
     description!: string;
 

@@ -61,11 +61,17 @@ export default class AnimalAdditionalInfo {
     virtualAdoption!: boolean;
 
     @IsDate()
-    @Column()
+    @Column({
+        nullable: true,
+        default: null,
+    })
     adoptionDate!: Date;
 
     @IsDate()
-    @Column()
+    @Column({
+        nullable: true,
+        default: new Date(),
+    })
     admissionToShelter!: Date;
 
     @IsBoolean()

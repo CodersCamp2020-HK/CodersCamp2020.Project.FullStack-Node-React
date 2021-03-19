@@ -91,17 +91,15 @@ export class AnimalsService {
             specie: { id: specieRow.id },
         });
 
+        const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
+        animal.additionalInfo = animalAdditionalInfo;
+
         const errors = await validate(animal);
         if (errors.length > 0) {
             throw new Error(`Validation failed!`);
         } else {
-            const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
-            animal.additionalInfo = animalAdditionalInfo;
-
             await this.animalRepository.save(animal);
         }
-
-        await this.animalRepository.save(animal);
     }
 
     public async delete(id: number): Promise<Animal> {
