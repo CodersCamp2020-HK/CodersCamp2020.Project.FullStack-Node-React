@@ -76,17 +76,17 @@ export class VolunteerSubmissionsController {
         @Path() id: number,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<FormVolunteerSubmission> {
-        return this.submissionService.getVolunteerSubmission(id, request.user as IUserInfo);
+        return await this.submissionService.getVolunteerSubmission(id, request.user as IUserInfo);
     }
 
     @Security('jwt', ['normal', 'admin'])
-    @SuccessResponse(201, 'Created')
+    @SuccessResponse(204, 'Created')
     @Response<ApiError>(400, 'Bad Request')
     @Post('add')
     public async postVolunteerSubmission(
         @Body() requestBody: PostVolunteerSubmissionParams,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
-        this.submissionService.createVolunteerSubmission(requestBody, request);
+        return await this.submissionService.createVolunteerSubmission(requestBody, request);
     }
 }

@@ -115,18 +115,17 @@ export class AnimalSubmissionsController extends Controller {
         @Path() id: number,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<FormAnimalSubmission> {
-        return this.submissionService.getAnimalSubmission(id, request.user as IUserInfo);
+        return await this.submissionService.getAnimalSubmission(id, request.user as IUserInfo);
     }
 
     @Security('jwt', ['admin', 'normal'])
     @Response<ApiError>(400, 'Bad Request')
-    @SuccessResponse(201, 'Created')
+    @SuccessResponse(204, 'Created')
     @Post('add')
     public async postAnimalSubmission(
         @Body() requestBody: PostAnimalSubmissionParams,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
-        this.setStatus(201);
-        this.submissionService.createAnimalSubmission(requestBody, request);
+        return await this.submissionService.createAnimalSubmission(requestBody, request);
     }
 }
