@@ -12,6 +12,7 @@ import FormVolunteerAnswer from './FormVolunteerAnswer';
 import OrganizationUser from './OrganizationUser';
 import User from './User';
 import VolunteerHireStep from './VolunteerHireStep';
+import { IsDate, Length } from 'class-validator';
 
 export enum VolunteerFormStatus {
     IN_PROGRESS = 'in progress',
@@ -35,6 +36,7 @@ export default class FormVolunteerSubmission {
     @Column({ type: 'enum', enum: VolunteerFormStatus, default: VolunteerFormStatus.IN_PROGRESS })
     status!: string;
 
+    @Length(3, 300)
     @Column({ nullable: true, default: null })
     reason?: string;
 
@@ -44,9 +46,11 @@ export default class FormVolunteerSubmission {
     @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true, nullable: true })
     answers?: FormVolunteerAnswer[];
 
-    @CreateDateColumn({ type: 'date' })
+    @IsDate()
+    @CreateDateColumn()
     submissionDate!: Date;
 
-    @Column({ type: 'date', nullable: true })
+    @IsDate()
+    @Column({ nullable: true })
     reviewDate?: Date;
 }

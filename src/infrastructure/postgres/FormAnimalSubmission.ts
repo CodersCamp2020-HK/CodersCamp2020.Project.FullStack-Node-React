@@ -4,6 +4,7 @@ import Animal from './Animal';
 import FormAnimalAnswer from './FormAnimalAnswer';
 import OrganizationUser from './OrganizationUser';
 import User from './User';
+import { IsDate, Length } from 'class-validator';
 
 export enum AnimalFormStatus {
     IN_PROGRESS = 'in progress',
@@ -17,7 +18,7 @@ export default class FormAnimalSubmission {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @ManyToOne(() => Animal, (animal) => animal.submissions, { nullable: false })
+    @ManyToOne(() => Animal, (animal) => animal.submissions, { nullable: false, onDelete: 'CASCADE' })
     animal!: Animal;
 
     @ManyToOne(() => User, (user) => user.animalSubmissions, { nullable: false, onDelete: 'CASCADE' })
@@ -29,6 +30,7 @@ export default class FormAnimalSubmission {
     @Column({ type: 'enum', enum: AnimalFormStatus, default: AnimalFormStatus.IN_PROGRESS })
     status?: string;
 
+    @Length(3, 300)
     @Column({ nullable: true, default: null })
     reason?: string;
 
@@ -38,9 +40,11 @@ export default class FormAnimalSubmission {
     @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormAnimalAnswer[];
 
-    @CreateDateColumn({ type: 'date' })
+    @IsDate()
+    @CreateDateColumn()
     submissionDate!: Date;
 
-    @Column({ type: 'date', nullable: true })
+    @IsDate()
+    @Column({ nullable: true })
     reviewDate?: Date;
 }

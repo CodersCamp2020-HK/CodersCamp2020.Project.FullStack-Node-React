@@ -1,36 +1,41 @@
-
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-import { useGetUser } from './client';
+import theme from './themes/theme';
+import { Container, ThemeProvider } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import About from './components/Pages/About';
+import Contact from './components/Pages/Contact';
+import Home from './components/Pages/Home';
+import Donation from './components/Pages/Donation';
+import Adoption from './components/Pages/Adoption';
+import Navbar from './components/Navbar/Navbar';
 
-function App() {
-  const { data, refetch, loading, error } = useGetUser({ userId: 1})
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        {
-          error ? <span>Error {error.data}</span>
-                : loading
-                    ? <span>Loading...</span>
-                    : <span>{data?.mail}</span>
-        }
-        <button onClick={() => refetch()}> Refetch </button>
-      </header>
-    </div>
-  );
-}
+const App: React.FC = () => {
+    return (
+        <ThemeProvider theme={theme}>
+            <Switch>
+                <Navbar></Navbar>
+                <Container style={{ backgroundColor: 'brown' }}>
+                    <Route exact path="/about">
+                        <About />
+                    </Route>
+                    <Route exact path="/adoption">
+                        <Adoption />
+                    </Route>
+                    <Route exact path="/donation">
+                        <Donation />
+                    </Route>
+                    <Route exact path="/contact">
+                        <Contact />
+                    </Route>
+                    <Route exact path="/">
+                        <Home />
+                    </Route>
+                </Container>
+            </Switch>
+        </ThemeProvider>
+    );
+};
 
 export default App;

@@ -7,6 +7,7 @@ import FormAnimalSubmission from './FormAnimalSubmission';
 import AnimalHandler from './AnimalHandler';
 import Specie from './Specie';
 import Calendar from './Calendar';
+import { Length, Min, Max, IsBoolean } from 'class-validator';
 
 @Entity('Animals')
 export default class Animal {
@@ -16,35 +17,37 @@ export default class Animal {
     /**
      * The name of the animal used to register its in database.
      */
-    @Column({
-        length: 50,
-    })
+
+    @Column()
+    @Length(3, 100)
     name!: string;
 
     /**
      * The age of the animal used to register its in database.
      */
+    @Min(0)
+    @Max(50)
     @Column()
     age!: number;
 
     /**
      * The animal's spieces (cat/dog) used to register its in database.
      */
-    @ManyToOne(() => Specie, (specie) => specie.animals)
+    @ManyToOne(() => Specie, (specie) => specie.animals, { cascade: true })
     specie!: Specie;
 
     /**
      * The description of the animal.
      * Extra information deliverd by user
      */
-    @Column({
-        type: 'text',
-    })
+    @Length(0, 300)
+    @Column()
     description!: string;
 
     /**
      * The animal is ready for adoption
      */
+    @IsBoolean()
     @Column()
     readyForAdoption!: boolean;
 

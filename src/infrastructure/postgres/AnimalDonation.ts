@@ -1,6 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import Animal from './Animal';
 import User from './User';
+import { Min, Max } from 'class-validator';
 
 @Entity('AnimalDonations')
 export default class AnimalDonation {
@@ -10,6 +11,8 @@ export default class AnimalDonation {
     /**
      * The amount of the animal donation.
      */
+    @Min(1)
+    @Max(1000000)
     @Column()
     amount!: number;
 
