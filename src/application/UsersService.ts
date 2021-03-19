@@ -14,6 +14,7 @@ import ResetPasswordMessage from '@infrastructure/ResetPasswordMessage';
 import SomeoneAdoptedMessage from '@infrastructure/SomeoneAdoptedMessage';
 import VisitConfirmationMessage from '@infrastructure/VisitConfirmationMessage';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
+import PaginationParams from '@infrastructure/Pagination';
 
 const SALT_ROUNDS = 10;
 
@@ -66,9 +67,20 @@ export class UsersService {
         return user;
     }
 
-    public async getAll(email?: string): Promise<User[]> {
+    public async getAll(email?: string, paginationParams?: PaginationParams): Promise<User[]> {
+        const isFirstPage = paginationParams?.page == 1 ? true : false;
+
+        const SKIP =
+            paginationParams?.perPage && paginationParams?.page ? paginationParams.perPage * paginationParams.page : 0;
+
+        const LIMIT = paginationParams?.perPage ? paginationParams.perPage : undefined;
+
         return new OptionalWhereSelectQueryBuilder(
-            this.userRepository.createQueryBuilder('user').where('user.id >= :zero', { zero: 0 }),
+            this.userRepository
+                .createQueryBuilder('user')
+                .where('user.id >= :zero', { zero: 0 })
+                .skip(isFirstPage ? 0 : SKIP)
+                .limit(LIMIT),
         )
             .optAndWhere('user.mail = ', email)
             .selectQueryBuilder.getMany();
