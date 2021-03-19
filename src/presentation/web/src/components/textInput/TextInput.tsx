@@ -1,5 +1,7 @@
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import Today from '@material-ui/icons/Today';
 
 interface TextInputProps {
     id: string;
@@ -18,10 +20,31 @@ const TextInput = ({
     variant = 'outlined',
     size = 'medium',
     required = false,
-    color = 'primary',
+    color = 'secondary',
 }: TextInputProps) => {
+    let endAndorment;
+    if (type === 'date') {
+        endAndorment = {
+            endAdornment: (
+                <InputAdornment position="end">
+                    <Today />
+                </InputAdornment>
+            ),
+        };
+    } else {
+        endAndorment = undefined;
+    }
     return (
-        <TextField id={id} label={label} type={type} variant={variant} size={size} required={required} color={color} />
+        <TextField
+            id={id}
+            label={label}
+            type={type}
+            variant={variant}
+            size={size}
+            required={required}
+            color={color}
+            InputProps={endAndorment}
+        />
     );
 };
 
