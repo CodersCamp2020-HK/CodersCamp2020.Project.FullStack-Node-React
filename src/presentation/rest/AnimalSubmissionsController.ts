@@ -112,7 +112,7 @@ export class AnimalSubmissionsController extends Controller {
         @Path() id: number,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<FormAnimalSubmission> {
-        return this.submissionService.getAnimalSubmission(id, request.user as IUserInfo);
+        return await this.submissionService.getAnimalSubmission(id, request.user as IUserInfo);
     }
 
     @Security('jwt', ['admin', 'normal'])
@@ -123,7 +123,6 @@ export class AnimalSubmissionsController extends Controller {
         @Body() requestBody: PostAnimalSubmissionParams,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
-        this.setStatus(201);
-        this.submissionService.createAnimalSubmission(requestBody, request);
+        return await this.submissionService.createAnimalSubmission(requestBody, request);
     }
 }

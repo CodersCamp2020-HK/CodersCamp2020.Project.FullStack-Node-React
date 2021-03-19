@@ -73,7 +73,7 @@ export class VolunteerSubmissionsController {
         @Path() id: number,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<FormVolunteerSubmission> {
-        return this.submissionService.getVolunteerSubmission(id, request.user as IUserInfo);
+        return await this.submissionService.getVolunteerSubmission(id, request.user as IUserInfo);
     }
 
     @Security('jwt', ['normal', 'admin'])
@@ -84,6 +84,6 @@ export class VolunteerSubmissionsController {
         @Body() requestBody: PostVolunteerSubmissionParams,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
-        this.submissionService.createVolunteerSubmission(requestBody, request);
+        return await this.submissionService.createVolunteerSubmission(requestBody, request);
     }
 }
