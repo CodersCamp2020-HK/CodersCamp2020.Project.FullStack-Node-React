@@ -2,6 +2,7 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Today from '@material-ui/icons/Today';
+import styles from './TextInput.module.css';
 
 interface TextInputProps {
     id: string;
@@ -27,7 +28,7 @@ const TextInput = ({
             ? {
                   endAdornment: (
                       <InputAdornment position="end">
-                          <Today />
+                          <Today className={styles.calendarIcon} />
                       </InputAdornment>
                   ),
               }
