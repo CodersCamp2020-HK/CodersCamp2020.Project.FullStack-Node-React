@@ -6,7 +6,7 @@ import styles from './Footer.module.css';
 const Footer = () => {
     const theme = useTheme();
     return (
-            <Box width='100%' boxShadow={8} paddingTop={9} paddingBottom={9} className={styles.footer}>
+            <Box width='100%' boxShadow={8} paddingTop={2} paddingBottom={2} className={styles.footer}>
                 <div className={styles.footerColumn}>
                     <Typography color='textSecondary' variant='subtitle2'>Telefon:</Typography>
                     <Typography color='textSecondary' variant='subtitle2'>111-222-333</Typography>
