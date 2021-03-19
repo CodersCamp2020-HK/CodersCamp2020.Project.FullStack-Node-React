@@ -6,6 +6,7 @@ import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 import Specie from '@infrastructure/postgres/Specie';
+import PaginationParams from '@infrastructure/pagination';
 
 //type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
 //type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
@@ -109,13 +110,23 @@ export class AnimalsService {
         return animal;
     }
 
-    public async getAll(queryParams: AnimalQueryParams): Promise<Animal[]> {
+    public async getAll(queryParams: AnimalQueryParams, paginationParams?: PaginationParams): Promise<Animal[]> {
+        
+        const isFirstPage = paginationParams?.page == 1 ? true : false;
+        
+        const SKIP =
+            paginationParams?.perPage && paginationParams?.page ? paginationParams.perPage * paginationParams.page : 0;
+
+        const LIMIT = paginationParams?.perPage ? paginationParams.perPage : undefined;
+
         return new OptionalWhereSelectQueryBuilder(
             this.animalRepository
                 .createQueryBuilder('animal')
                 .leftJoinAndSelect('animal.additionalInfo', 'info')
                 .leftJoinAndSelect('animal.specie', 'specie')
-                .where('animal.id >= :zero', { zero: 0 }),
+                .where('animal.id >= :zero', { zero: 0 })
+                .skip(isFirstPage ? 0 : SKIP)
+                .take(LIMIT),
         )
             .optAndWhere('animal.readyForAdoption = ', queryParams.readyForAdoption)
             .optAndWhere('info.temporaryHome = ', queryParams.temporaryHome)
