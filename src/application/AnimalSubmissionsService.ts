@@ -1,5 +1,6 @@
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import PaginationParams from '@infrastructure/Pagination';
 import Animal from '@infrastructure/postgres/Animal';
 import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
@@ -81,6 +82,7 @@ export class AnimalSubmissionsService {
     public async getAllAnimalSubmissions(
         queryParams: GetAllAnimalSubmissionsParams,
         currentUser: IUserInfo,
+        paginationParams?: PaginationParams,
     ): Promise<FormAnimalSubmission[]> {
         if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
             const submission = await this.animalSubmissionRepository
@@ -93,12 +95,22 @@ export class AnimalSubmissionsService {
                 throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submissions');
             }
         }
+
+        const isFirstPage = paginationParams?.page == 1 ? true : false;
+
+        const SKIP =
+            paginationParams?.perPage && paginationParams?.page ? paginationParams.perPage * paginationParams.page : 0;
+
+        const LIMIT = paginationParams?.perPage ? paginationParams.perPage : undefined;
+
         const submissions = await new OptionalWhereSelectQueryBuilder(
             this.animalSubmissionRepository
                 .createQueryBuilder('submission')
                 .leftJoinAndSelect('submission.animal', 'animal')
                 .leftJoinAndSelect('submission.applicant', 'applicant')
-                .leftJoinAndSelect('submission.reviewer', 'reviewer'),
+                .leftJoinAndSelect('submission.reviewer', 'reviewer')
+                .skip(isFirstPage ? 0 : SKIP)
+                .limit(LIMIT),
         )
             .optAndWhere('submission.status = ', queryParams.status)
             .optAndWhere('submission.submissionDate = ', queryParams.submissionDate)

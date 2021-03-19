@@ -51,10 +51,13 @@ export class VolunteerSubmissionsController {
         @Query() status?: VolunteerFormStatus,
         @Query() userName?: string,
         @Query() reviewerName?: string,
+        @Query() page?: number,
+        @Query() perPage?: number,
     ): Promise<FormVolunteerSubmission[]> {
         return this.submissionService.getAllSubmissions(
             { submissionDate, status, userName, reviewerName },
             request.user as IUserInfo,
+            { page, perPage },
         );
     }
 
