@@ -2,12 +2,14 @@ import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 import FormQuestion from './FormQuestion';
 import VolunteerHireStep from './VolunteerHireStep';
+import { Length } from 'class-validator';
 
 @Entity('Forms')
 export default class Form {
     @PrimaryGeneratedColumn()
     id!: number;
 
+    @Length(3, 100)
     @Column({ unique: true })
     name!: string;
 

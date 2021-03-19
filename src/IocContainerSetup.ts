@@ -21,6 +21,7 @@ import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService'
 import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
 import { WinstonLogger } from '@infrastructure/WinstonLogger';
 import Specie from '@infrastructure/postgres/Specie';
+import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
 
 Container.bind(AnimalsService)
@@ -60,7 +61,6 @@ Container.bind(CalendarService).factory(
             getConnection().getRepository(User),
         ),
 );
-
 Container.bind(AnimalSubmissionsService).factory(
     () =>
         new AnimalSubmissionsService(
@@ -70,9 +70,12 @@ Container.bind(AnimalSubmissionsService).factory(
         ),
 );
 Container.bind(VolunteerSubmissionsService).factory(
-    () => new VolunteerSubmissionsService(getConnection().getRepository(FormVolunteerSubmission)),
+    () =>
+        new VolunteerSubmissionsService(
+            getConnection().getRepository(FormVolunteerSubmission),
+            getConnection().getRepository(FormVolunteerAnswer),
+        ),
 );
-
 Container.bind(WinstonLogger).to(WinstonLogger).scope(Scope.Singleton);
 
 export { Container };

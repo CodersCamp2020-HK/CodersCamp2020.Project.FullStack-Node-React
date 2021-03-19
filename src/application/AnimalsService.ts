@@ -30,6 +30,7 @@ export interface AnimalCreationParams {
 
 //export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
 //export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
+import { validate } from 'class-validator';
 
 export interface AnimalUpdateParams {
     name?: string;
@@ -91,6 +92,17 @@ export class AnimalsService {
         });
         const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
         animal.additionalInfo = animalAdditionalInfo;
+
+        const errors = await validate(animal);
+        if (errors.length > 0) {
+            throw new Error(`Validation failed!`);
+        } else {
+            const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
+            animal.additionalInfo = animalAdditionalInfo;
+
+            await this.animalRepository.save(animal);
+        }
+
         await this.animalRepository.save(animal);
     }
 

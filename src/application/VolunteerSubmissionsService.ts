@@ -1,8 +1,11 @@
 import ApiError from '@infrastructure/ApiError';
-import { IUserInfo } from '@infrastructure/Auth';
+import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
+import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
 import { UserType } from '@infrastructure/postgres/OrganizationUser';
 import { Repository } from 'typeorm';
+import hasDuplicates from 'utils/HasDuplicates';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
 export interface ChangeStatusForVolunterFormParams {
@@ -17,8 +20,21 @@ interface SubmissionQueryParams {
     reviewerName?: string;
 }
 
+export interface VolunteerAnswer {
+    question: number;
+    answer: AnswerForm;
+}
+
+export interface PostVolunteerSubmissionParams {
+    stepNumber: number;
+    answers: VolunteerAnswer[];
+}
+
 export class VolunteerSubmissionsService {
-    constructor(private volunteerSubmissionRepository: Repository<FormVolunteerSubmission>) {}
+    constructor(
+        private volunteerSubmissionRepository: Repository<FormVolunteerSubmission>,
+        private volunteerAnswerRepository: Repository<FormVolunteerAnswer>,
+    ) {}
 
     public async changeStatusForVolunteerForm(changeStatusParams: ChangeStatusForVolunterFormParams): Promise<void> {
         await this.volunteerSubmissionRepository
@@ -79,5 +95,41 @@ export class VolunteerSubmissionsService {
         if (!submission) throw new ApiError('Not Found', 404, `Submission with ${id} not found`);
 
         return submission;
+    }
+
+    public async createVolunteerSubmission(
+        { stepNumber, answers }: PostVolunteerSubmissionParams,
+        request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        if (hasDuplicates(answers)) throw new ApiError('Bad Request', 400, `Question's ids must be unique!`);
+        const user = request.user as IUserInfo;
+        const isSubmission = await this.volunteerSubmissionRepository.findOne({
+            user: { id: user.id },
+            step: {
+                organization: { id: 1 },
+                number: stepNumber,
+            },
+        });
+        if (isSubmission) throw new ApiError('Bad Request', 400, 'Submission already exists!');
+
+        const answersList: FormVolunteerAnswer[] = [];
+        for (const obj of answers) {
+            const submissionAnswer = this.volunteerAnswerRepository.create({
+                question: { id: obj.question },
+                answer: obj.answer,
+            });
+            answersList.push(submissionAnswer);
+        }
+
+        const submission = this.volunteerSubmissionRepository.create({
+            user: { id: user.id },
+            step: {
+                organization: { id: 1 },
+                number: stepNumber,
+            },
+            answers: answersList,
+        });
+
+        await this.volunteerSubmissionRepository.save(submission);
     }
 }
