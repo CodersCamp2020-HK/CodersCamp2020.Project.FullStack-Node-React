@@ -1,9 +1,10 @@
 import React from 'react';
 import styles from './Footer.module.css';
-import { Typography } from '@material-ui/core';
+import { Typography, Box } from '@material-ui/core';
 
 const Footer = () => {
     return (
+            <Box boxShadow={8}>
             <footer className={styles.footer}>
                 <div className={styles.footerColumn}>
                     <Typography color='textSecondary' variant='subtitle2'>Telefon:</Typography>
@@ -18,6 +19,7 @@ const Footer = () => {
                     <Typography color='textSecondary' variant='subtitle2'>00-000 Psary</Typography>
                 </div>
             </footer>
+            </Box>
     );
 };
 
