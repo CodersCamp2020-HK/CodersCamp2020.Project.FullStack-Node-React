@@ -12,6 +12,12 @@ const theme = createMuiTheme({
             main: '#827717',
             dark: '#524C00',
         },
+        common: {
+            white: '#FFFDF6'
+        },
+        text: {
+            secondary: 'rgba(0, 0, 0, 0.54)'
+        },
     },
     props: {
         MuiLink: {
@@ -32,5 +38,17 @@ const theme = createMuiTheme({
         },
     },
 });
+
+// typography {
+//     subtitle2: {
+//         fontFamily: [
+//             'Roboto'
+//         ],
+//         fontSize: 14,
+//         fontStyle: 'normal',
+//         fontWeight: 500,
+        
+//     }
+// },
 
 export default theme;
