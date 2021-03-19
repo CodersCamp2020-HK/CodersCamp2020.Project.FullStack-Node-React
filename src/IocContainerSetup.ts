@@ -20,6 +20,7 @@ import { VolunteerSubmissionsService } from '@application/VolunteerSubmissionsSe
 import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
 import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
 import { WinstonLogger } from '@infrastructure/WinstonLogger';
+import Specie from '@infrastructure/postgres/Specie';
 import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
 
@@ -30,6 +31,7 @@ Container.bind(AnimalsService)
                 getConnection().getRepository(Animal),
                 getConnection().getRepository(AnimalAdditionalInfo),
                 getConnection().getRepository(AnimalPhoto),
+                getConnection().getRepository(Specie),
             ),
     )
     .scope(Scope.Local);

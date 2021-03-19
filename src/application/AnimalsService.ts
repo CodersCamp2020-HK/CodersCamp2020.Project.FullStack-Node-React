@@ -5,12 +5,50 @@ import AnimalAdditionalInfo, { AnimalSize, AnimalActiveLevel } from '@infrastruc
 import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
+import Specie from '@infrastructure/postgres/Specie';
+
+//type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
+//type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
+//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
+export interface AnimalCreationParams {
+    name: string;
+    age: number;
+    specie: string;
+    description: string;
+    readyForAdoption: boolean;
+    additionalInfo: {
+        activeLevel: AnimalActiveLevel;
+        size: AnimalSize;
+        specialDiet: string;
+        temporaryHome: boolean;
+        needDonations: boolean;
+        virtualAdoption: boolean;
+        acceptsKids: boolean;
+        acceptsOtherAnimals: boolean;
+    };
+}
+
+//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
+//export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
 import { validate } from 'class-validator';
 
-type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
-type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
-export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
-export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
+export interface AnimalUpdateParams {
+    name?: string;
+    age?: number;
+    specie?: string;
+    description?: string;
+    readyForAdoption?: boolean;
+    additionalInfo?: {
+        activeLevel?: AnimalActiveLevel;
+        size?: AnimalSize;
+        specialDiet?: string;
+        temporaryHome?: boolean;
+        needDonations?: boolean;
+        virtualAdoption?: boolean;
+        acceptsKids?: boolean;
+        acceptsOtherAnimals?: boolean;
+    };
+}
 
 interface AnimalQueryParams {
     minAge?: number;
@@ -31,6 +69,7 @@ export class AnimalsService {
         private animalRepository: Repository<Animal>,
         private animalAdditionalInfo: Repository<AnimalAdditionalInfo>,
         private animalPhotos: Repository<AnimalPhoto>,
+        private speciesRepository: Repository<Specie>,
     ) {}
 
     public async get(id: number): Promise<Animal> {
@@ -40,15 +79,25 @@ export class AnimalsService {
         return animal;
     }
 
-    public async create({ additionalInfo, ...animalParams }: AnimalCreationParams): Promise<void> {
-        const animal = this.animalRepository.create(animalParams);
+    public async create({ additionalInfo, specie, ...animalParams }: AnimalCreationParams): Promise<void> {
+        const specieRow = await this.speciesRepository.findOne({ where: { specie } });
+
+        if (!specieRow) {
+            throw new ApiError('Not Found', 404, `specie with name: ${specie} not found!`);
+        }
+
+        const animal = this.animalRepository.create({
+            ...animalParams,
+            specie: { id: specieRow.id },
+        });
+
+        const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
+        animal.additionalInfo = animalAdditionalInfo;
+
         const errors = await validate(animal);
         if (errors.length > 0) {
             throw new Error(`Validation failed!`);
         } else {
-            const animalAdditionalInfo = this.animalAdditionalInfo.create(additionalInfo);
-            animal.additionalInfo = animalAdditionalInfo;
-
             await this.animalRepository.save(animal);
         }
     }
@@ -65,6 +114,7 @@ export class AnimalsService {
             this.animalRepository
                 .createQueryBuilder('animal')
                 .leftJoinAndSelect('animal.additionalInfo', 'info')
+                .leftJoinAndSelect('animal.specie', 'specie')
                 .where('animal.id >= :zero', { zero: 0 }),
         )
             .optAndWhere('animal.readyForAdoption = ', queryParams.readyForAdoption)
@@ -77,19 +127,23 @@ export class AnimalsService {
             .optAndWhere('info.activeLevel = ', queryParams.activeLevel)
             .optAndWhere('animal.age >= ', queryParams.minAge)
             .optAndWhere('animal.age <= ', queryParams.maxAge)
-            .optAndWhere('animal.specie = ', queryParams.specie)
+            .optAndWhere('specie.specie = ', queryParams.specie)
             .selectQueryBuilder.getMany();
     }
 
-    public async update(id: number, { additionalInfo, ...animalParams }: AnimalUpdateParams): Promise<Animal> {
-        const animal = await this.animalRepository.findOne(id, { relations: ['additional_info'] });
+    public async update(id: number, { additionalInfo, specie, ...animalParams }: AnimalUpdateParams): Promise<Animal> {
+        const animal = await this.animalRepository.findOne(id, { relations: ['additionalInfo', 'specie'] });
         if (!animal) throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
-        if (areAllPropertiesUndefined({ additionalInfo, ...animalParams }))
+
+        const specieRow = await this.speciesRepository.findOne({ where: { specie } });
+
+        if (areAllPropertiesUndefined({ additionalInfo, specie, ...animalParams }))
             throw new ApiError('Bad Request', 400, 'No data provided!');
         const updatedAnimal = {
             ...animal,
             ...animalParams,
-            additional_info: { ...animal.additionalInfo, ...additionalInfo },
+            specie: specieRow ? specieRow : animal.specie,
+            additionalInfo: { ...animal.additionalInfo, ...additionalInfo },
         };
 
         return await this.animalRepository.save(updatedAnimal);

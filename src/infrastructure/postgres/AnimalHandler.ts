@@ -9,7 +9,11 @@ export default class AnimalHandler {
     @ManyToOne(() => OrganizationUser, (user) => user.caregivers, { primary: true, nullable: false })
     organizationUser!: OrganizationUser;
 
-    @ManyToOne(() => Animal, (animal) => animal.animalsHandlers, { primary: true, nullable: false })
+    @ManyToOne(() => Animal, (animal) => animal.animalsHandlers, {
+        primary: true,
+        nullable: false,
+        onDelete: 'CASCADE',
+    })
     animal!: Animal;
 
     @Length(3, 100)

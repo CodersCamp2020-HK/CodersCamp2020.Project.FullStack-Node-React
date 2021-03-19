@@ -18,7 +18,7 @@ export default class FormAnimalSubmission {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @ManyToOne(() => Animal, (animal) => animal.submissions, { nullable: false })
+    @ManyToOne(() => Animal, (animal) => animal.submissions, { nullable: false, onDelete: 'CASCADE' })
     animal!: Animal;
 
     @ManyToOne(() => User, (user) => user.animalSubmissions, { nullable: false, onDelete: 'CASCADE' })
