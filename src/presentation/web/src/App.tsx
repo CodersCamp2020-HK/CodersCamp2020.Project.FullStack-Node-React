@@ -15,7 +15,7 @@ import TextInput from './components/textInput/TextInput';
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <TextInput />
+            <TextInput id="login" label="Imię" />
             <Switch>
                 <Navbar></Navbar>
                 <Container style={{ backgroundColor: 'brown' }}>
