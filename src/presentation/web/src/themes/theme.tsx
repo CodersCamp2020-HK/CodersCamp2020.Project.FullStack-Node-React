@@ -36,6 +36,13 @@ const theme = createMuiTheme({
                 borderRadius: 21,
             },
         },
+        MuiTextField: {
+            root: {
+                '& fieldset': {
+                    borderRadius: 15
+                }
+            }
+        }
     },
 });
 
