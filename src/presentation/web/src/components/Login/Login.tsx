@@ -1,4 +1,4 @@
-import { Avatar, Paper, TextField, Theme, Typography, useTheme, Button } from '@material-ui/core';
+import { Avatar, Button, Paper, TextField, Theme, Typography, useTheme } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
@@ -39,8 +39,11 @@ const Login = () => {
                     error={isErrors}
                     helperText={isErrors && 'Nieprawidłowy e-mail lub hasło'}
                 />
-                <Button variant='contained' size='large' color='primary' type='submit' >Zaloguj się</Button>
+                <Button variant="contained" size="large" color="primary" type="submit">
+                    Zaloguj się
+                </Button>
             </form>
+            <Typography variant="body2">Zapomniałeś hasła?</Typography>
         </Paper>
     );
 };
