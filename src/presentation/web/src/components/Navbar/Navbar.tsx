@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AppBar, Grid, Toolbar } from '@material-ui/core';
+import { AppBar, Toolbar } from '@material-ui/core';
 import NavbarList from '../navbarList/NavbarList';
 import { Link as RouterLink } from 'react-router-dom';
 import { Link } from '@material-ui/core';
@@ -7,6 +7,7 @@ import NavbarLoginBtn from '../navbarLoginBtn/NavbarLoginBtn';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import { createStyles } from '@material-ui/styles';
 
 const Navbar = () => {
     const [mobileView, setMobileView] = useState(false);
@@ -28,6 +29,8 @@ const Navbar = () => {
         window.addEventListener('resize', checkView);
     }, []);
 
+    const useStyles = createStyles({});
+
     return (
         <nav>
             <AppBar color="default" position="static">
@@ -40,10 +43,10 @@ const Navbar = () => {
                             <MenuIcon />
                         </IconButton>
                     ) : (
-                        <NavbarList />
+                        <NavbarList view="desktop" />
                     )}
                     <Drawer anchor="left" open={showDrawer} onClose={hide}>
-                        <NavbarList />
+                        <NavbarList view="mobile" />
                     </Drawer>
 
                     <NavbarLoginBtn />

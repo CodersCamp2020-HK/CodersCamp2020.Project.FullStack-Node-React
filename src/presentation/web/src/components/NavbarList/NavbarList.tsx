@@ -1,15 +1,36 @@
+import { makeStyles } from '@material-ui/styles';
 import React from 'react';
 import NavbarListItem from '../navbarListItem/NavbarListItem';
-import { Grid } from '@material-ui/core';
-import styles from './NavbarList.module.css';
 
-const NavbarList = () => {
+type View = 'mobile' | 'desktop';
+
+interface Props {
+    view: View;
+}
+
+const useStyles = makeStyles({
+    mobile: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '0 20px',
+    },
+    desktop: {
+        display: 'flex',
+        marginLeft: 'auto',
+    },
+});
+
+const NavbarList: React.FC<Props> = ({ view }) => {
+    const classes = useStyles();
+
     return (
-        <ul className={styles.navbarList}>
-            <NavbarListItem text="O nas" path={'/about'} />
-            <NavbarListItem text="Adoptuj" path={'/adoption'} />
-            <NavbarListItem text="Wesprzyj nas" path={'/donation'} />
-            <NavbarListItem text="Kontakt" path={'/contact'} />
+        <ul className={view === 'mobile' ? classes.mobile : classes.desktop}>
+            <NavbarListItem text="O nas" path={'/about'} view={view} />
+            <NavbarListItem text="Adoptuj" path={'/adoption'} view={view} />
+            <NavbarListItem text="Wesprzyj nas" path={'/donation'} view={view} />
+            <NavbarListItem text="Kontakt" path={'/contact'} view={view} />
         </ul>
     );
 };
