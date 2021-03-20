@@ -1,22 +1,22 @@
-import React from 'react';
-import './App.css';
-import theme from './themes/theme';
 import { Container, ThemeProvider } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
-import About from './components/Pages/About';
-import Contact from './components/Pages/Contact';
-import Home from './components/Pages/Home';
-import Donation from './components/Pages/Donation';
-import Adoption from './components/Pages/Adoption';
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import './App.css';
+import Login from './components/Login/Login';
 import Navbar from './components/Navbar/Navbar';
+import About from './components/Pages/About';
+import Adoption from './components/Pages/Adoption';
+import Contact from './components/Pages/Contact';
+import Donation from './components/Pages/Donation';
+import Home from './components/Pages/Home';
+import theme from './themes/theme';
 
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Switch>
-                <Navbar></Navbar>
-                <Container style={{ backgroundColor: 'brown' }}>
+            <Navbar />
+            <Container style={{ backgroundColor: 'brown' }}>
+                <Switch>
                     <Route exact path="/about">
                         <About />
                     </Route>
@@ -29,11 +29,14 @@ const App: React.FC = () => {
                     <Route exact path="/contact">
                         <Contact />
                     </Route>
+                    <Route exact path="/login">
+                        <Login />
+                    </Route>
                     <Route exact path="/">
                         <Home />
                     </Route>
-                </Container>
-            </Switch>
+                </Switch>
+            </Container>
         </ThemeProvider>
     );
 };
