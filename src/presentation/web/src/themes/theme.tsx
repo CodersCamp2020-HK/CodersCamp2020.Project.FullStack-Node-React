@@ -46,16 +46,4 @@ const theme = createMuiTheme({
     },
 });
 
-// typography {
-//     subtitle2: {
-//         fontFamily: [
-//             'Roboto'
-//         ],
-//         fontSize: 14,
-//         fontStyle: 'normal',
-//         fontWeight: 500,
-        
-//     }
-// },
-
 export default theme;
