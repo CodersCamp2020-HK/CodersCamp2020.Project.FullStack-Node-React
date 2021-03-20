@@ -1,13 +1,13 @@
-import React from 'react';
-import { Paper, TextField, Avatar, useTheme } from '@material-ui/core';
+import { Avatar, Paper, Theme, useTheme } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
+import React from 'react';
 
 const Login = () => {
-    const theme = useTheme()
+    const theme = useTheme<Theme>()
     return (
         <Paper variant='outlined' square={false}>
-            <Avatar>
-                <LockOutlined />
+            <Avatar variant='circle' color={theme.palette.secondary.dark}>
+                <LockOutlined htmlColor={theme.palette.secondary.contrastText} />
             </Avatar>
         </Paper>
     );
