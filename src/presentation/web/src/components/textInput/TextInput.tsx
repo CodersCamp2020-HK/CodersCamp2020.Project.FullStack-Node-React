@@ -3,25 +3,29 @@ import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Today from '@material-ui/icons/Today';
 import styles from './TextInput.module.css';
+import { FieldElement } from 'react-hook-form';
+import { Inputs } from '../registerForm/RegisterForm';
 
 interface TextInputProps {
-    id: string;
+    name: string;
     label: string;
     type?: string;
     variant?: 'filled' | 'outlined' | 'standard';
     size?: 'medium' | 'small';
     required?: boolean;
     color?: 'primary' | 'secondary';
+    ref?: FieldElement<Inputs>
 }
 
 const TextInput = ({
-    id,
+    name,
     label,
     type = 'text',
     variant = 'outlined',
     size = 'medium',
     required = false,
     color = 'secondary',
+    ref
 }: TextInputProps) => {
     const endAndorment =
         type === 'date'
@@ -35,7 +39,7 @@ const TextInput = ({
             : undefined;
     return (
         <TextField
-            id={id}
+            name={name}
             label={label}
             type={type}
             variant={variant}
@@ -43,6 +47,7 @@ const TextInput = ({
             required={required}
             color={color}
             InputProps={endAndorment}
+            ref={ref}
         />
     );
 };
