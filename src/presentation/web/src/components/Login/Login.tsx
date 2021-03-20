@@ -1,4 +1,4 @@
-import { Avatar, Paper, TextField, Theme, Typography, useTheme } from '@material-ui/core';
+import { Avatar, Paper, TextField, Theme, Typography, useTheme, Button } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
@@ -10,18 +10,37 @@ const Login = () => {
         greenBackground: {
             backgroundColor: theme.palette.secondary.dark,
         },
-    })
+    });
 
     const classes = useStyle();
 
     return (
-        <Paper variant="outlined" square={false} >
+        <Paper variant="outlined" square={false}>
             <Avatar variant="circle" className={classes.greenBackground}>
                 <LockOutlined htmlColor={theme.palette.secondary.contrastText} />
             </Avatar>
-            <Typography variant='h5'>Zaloguj się</Typography>
-            <TextField label='E-mail' type='email' variant='outlined' size='medium' required error={isErrors} autoFocus />
-            <TextField label='Password' type='password' variant='outlined' size='medium' required error={isErrors} helperText={isErrors && 'Nieprawidłowy e-mail lub hasło'}/>
+            <form>
+                <Typography variant="h5">Zaloguj się</Typography>
+                <TextField
+                    label="E-mail"
+                    type="email"
+                    variant="outlined"
+                    size="medium"
+                    required
+                    error={isErrors}
+                    autoFocus
+                />
+                <TextField
+                    label="Password"
+                    type="password"
+                    variant="outlined"
+                    size="medium"
+                    required
+                    error={isErrors}
+                    helperText={isErrors && 'Nieprawidłowy e-mail lub hasło'}
+                />
+                <Button variant='contained' size='large' color='primary' type='submit' >Zaloguj się</Button>
+            </form>
         </Paper>
     );
 };
