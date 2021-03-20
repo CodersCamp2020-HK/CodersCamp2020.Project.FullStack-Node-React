@@ -20,31 +20,28 @@ const Login = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-        }
+        },
+        forgetPassword: {
+            alignSelf: 'right',
+        },
     });
 
     const classes = useStyle();
 
     return (
-        <Grid
-            container
-            spacing={0}
-            direction="column"
-            alignItems="center"
-            justify="center"
-            style={{ minHeight: '100vh' }}
-        >
+        <Grid container spacing={0} alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
             <Paper className={classes.paper} variant="outlined" square={false}>
                 <Avatar variant="circle" className={classes.greenBackground}>
                     <LockOutlined htmlColor={theme.palette.secondary.contrastText} />
                 </Avatar>
                 <Typography variant="h5">Zaloguj się</Typography>
-                <form className={classes.form}> 
+                <form className={classes.form}>
                     <TextField
                         label="E-mail"
                         type="email"
                         variant="outlined"
                         size="medium"
+                        fullWidth
                         required
                         error={isErrors}
                         autoFocus
@@ -54,15 +51,18 @@ const Login = () => {
                         type="password"
                         variant="outlined"
                         size="medium"
+                        fullWidth
                         required
                         error={isErrors}
                         helperText={isErrors && 'Nieprawidłowy e-mail lub hasło'}
                     />
-                    <Button variant="contained" size="large" color="primary" type="submit">
+                    <Button variant="contained" size="large" fullWidth color="primary" type="submit">
                         Zaloguj się
                     </Button>
                 </form>
-                <Typography variant="body2">Zapomniałeś hasła?</Typography>
+                <Typography className={classes.forgetPassword} variant="body2">
+                    Zapomniałeś hasła?
+                </Typography>
             </Paper>
         </Grid>
     );
