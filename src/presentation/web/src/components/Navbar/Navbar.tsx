@@ -29,8 +29,6 @@ const Navbar = () => {
         window.addEventListener('resize', checkView);
     }, []);
 
-    const useStyles = createStyles({});
-
     return (
         <nav>
             <AppBar color="default" position="static">
@@ -48,7 +46,6 @@ const Navbar = () => {
                     <Drawer anchor="left" open={showDrawer} onClose={hide}>
                         <NavbarList view="mobile" />
                     </Drawer>
-
                     <NavbarLoginBtn />
                 </Toolbar>
             </AppBar>

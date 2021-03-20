@@ -24,7 +24,6 @@ const useStyles = makeStyles({
 
 const NavbarList: React.FC<Props> = ({ view }) => {
     const classes = useStyles();
-
     return (
         <ul className={view === 'mobile' ? classes.mobile : classes.desktop}>
             <NavbarListItem text="O nas" path={'/about'} view={view} />
