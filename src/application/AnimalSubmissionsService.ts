@@ -96,12 +96,17 @@ export class AnimalSubmissionsService {
             }
         }
 
-        const isFirstPage = paginationParams?.page == 1 ? true : false;
-
-        const SKIP =
-            paginationParams?.perPage && paginationParams?.page ? paginationParams.perPage * paginationParams.page : 0;
-
-        const LIMIT = paginationParams?.perPage ? paginationParams.perPage : undefined;
+        let isFirstPage;
+        let SKIP;
+        let LIMIT;
+        if (paginationParams) {
+            isFirstPage = paginationParams.page == 1 ? true : false;
+            SKIP =
+                paginationParams.perPage && paginationParams.page
+                    ? paginationParams.perPage * paginationParams.page
+                    : 0;
+            LIMIT = paginationParams.perPage ? paginationParams.perPage : undefined;
+        }
 
         const submissions = await new OptionalWhereSelectQueryBuilder(
             this.animalSubmissionRepository
