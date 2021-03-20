@@ -4,7 +4,6 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Today from '@material-ui/icons/Today';
 import styles from './TextInput.module.css';
 import { FieldElement } from 'react-hook-form';
-import { Inputs } from '../registerForm/RegisterForm';
 
 interface TextInputProps {
     name: string;
@@ -14,7 +13,7 @@ interface TextInputProps {
     size?: 'medium' | 'small';
     required?: boolean;
     color?: 'primary' | 'secondary';
-    ref?: FieldElement<Inputs>
+    ref?: FieldElement<any>
 }
 
 const TextInput = ({
