@@ -1,8 +1,8 @@
 import { Avatar, Button, Grid, Paper, TextField, Theme, Typography, useTheme } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
+import React from 'react';
 import { useForm } from "react-hook-form";
-import React, { useState } from 'react';
 
 interface IFormValues {
     "E-mail": string;
@@ -11,8 +11,8 @@ interface IFormValues {
 
 const Login = () => {
     const theme = useTheme<Theme>();
-    const [isErrors, setErrors] = useState<boolean>(false);
-    const { register, handleSubmit } = useForm();
+    //const [isErrors, setErrors] = useState<boolean>(false);
+    const { register, handleSubmit, errors } = useForm<IFormValues>();
     const onSubmit = (data: IFormValues) => console.log(data);
     const useStyle = makeStyles({
         greenBackground: {
@@ -51,10 +51,10 @@ const Login = () => {
                         variant="outlined"
                         size="medium"
                         fullWidth
-                        required
-                        error={isErrors}
+                        error={errors['E-mail'] ? true : false}
                         autoFocus
-                        inputRef={register}
+                        inputRef={register({ required: true })}
+                        helperText={errors['E-mail'] && 'E-mail jest wymagany'}
                     />
                     <TextField
                         label="Password"
@@ -63,10 +63,9 @@ const Login = () => {
                         variant="outlined"
                         size="medium"
                         fullWidth
-                        required
-                        error={isErrors}
-                        helperText={isErrors && 'Nieprawidłowy e-mail lub hasło'}
-                        inputRef={register}
+                        error={errors.Password ? true : false}
+                        helperText={errors.Password && 'Hasło jest wymagane'}
+                        inputRef={register({ required: true })}
                     />
                     <Button variant="contained" size="large" fullWidth color="primary" type="submit">
                         Zaloguj się

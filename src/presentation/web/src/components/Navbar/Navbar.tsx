@@ -14,7 +14,9 @@ const Navbar = () => {
                         LOGO
                     </Link>
                     <NavbarList />
-                    <NavbarLoginBtn />
+                    <Link component={RouterLink} to="/login">
+                        <NavbarLoginBtn />
+                    </Link>
                 </Toolbar>
             </AppBar>
         </nav>
