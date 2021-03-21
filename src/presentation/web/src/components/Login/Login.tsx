@@ -109,7 +109,7 @@ const Login = () => {
             <Paper variant="outlined" square={false}>
                 <Typography variant="subtitle1">Nie masz jeszcze konta?</Typography>
                 <Link component={RouterLink} to="/register">
-                    <Button variant="outlined" size="medium">
+                    <Button variant="outlined" size="medium" color='primary'>
                         Zarejestruj się
                     </Button>
                 </Link>
