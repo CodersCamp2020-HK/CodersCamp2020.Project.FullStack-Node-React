@@ -3,12 +3,6 @@ import './App.css';
 import theme from './themes/theme';
 import { Container, ThemeProvider } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
-import About from './components/pages/About';
-import Contact from './components/pages/Contact';
-import Home from './components/pages/Home';
-import Donation from './components/pages/Donation';
-import Adoption from './components/pages/Adoption';
-import Navbar from './components/navbar/Navbar';
 
 const App: React.FC = () => {
     return (
