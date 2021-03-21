@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/styles';
 import React from 'react';
-import NavbarListItem from '../navbarListItem/NavbarListItem';
+import NavbarListItem from '../NavbarListItem/NavbarListItem';
 
 type View = 'mobile' | 'desktop';
 
