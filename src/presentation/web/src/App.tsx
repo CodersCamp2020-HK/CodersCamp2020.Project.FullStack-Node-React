@@ -10,6 +10,7 @@ import Donation from './components/pages/Donation';
 import Contact from './components/pages/Contact';
 import Home from './components/pages/Home';
 import Footer from './components/footer/Footer';
+import ActivationSent from './components/activationSent/ActivationSent';
 
 const App: React.FC = () => {
     return (
@@ -28,6 +29,9 @@ const App: React.FC = () => {
                     </Route>
                     <Route exact path="/contact">
                         <Contact />
+                    </Route>
+                    <Route exact path="/register/sent">
+                        <ActivationSent />
                     </Route>
                     <Route exact path="/">
                         <Home />
