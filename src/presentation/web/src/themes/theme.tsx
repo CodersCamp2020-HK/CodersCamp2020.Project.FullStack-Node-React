@@ -12,6 +12,12 @@ const theme = createMuiTheme({
             main: '#827717',
             dark: '#524C00',
         },
+        common: {
+            white: '#FFFDF6'
+        },
+        text: {
+            secondary: 'rgba(0, 0, 0, 0.54)'
+        },
     },
     props: {
         MuiLink: {

@@ -149,20 +149,28 @@ export class AnimalsController extends Controller {
         @Query() acceptsOtherAnimals?: boolean,
         @Query() activeLevel?: AnimalActiveLevel,
         @Query() size?: AnimalSize,
+        @Query() page?: number,
+        @Query() perPage?: number,
     ): Promise<Animal[]> {
-        const foundedAnimals = await this.animalsService.getAll({
-            minAge,
-            maxAge,
-            specie,
-            readyForAdoption,
-            temporaryHome,
-            needDonations,
-            virtualAdoption,
-            acceptsKids,
-            acceptsOtherAnimals,
-            size,
-            activeLevel,
-        });
+        const foundedAnimals = await this.animalsService.getAll(
+            {
+                minAge,
+                maxAge,
+                specie,
+                readyForAdoption,
+                temporaryHome,
+                needDonations,
+                virtualAdoption,
+                acceptsKids,
+                acceptsOtherAnimals,
+                size,
+                activeLevel,
+            },
+            {
+                page,
+                perPage,
+            },
+        );
 
         /**
          * Throws error if it cannot find a match

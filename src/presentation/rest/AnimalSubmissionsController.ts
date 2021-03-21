@@ -54,6 +54,8 @@ export class AnimalSubmissionsController extends Controller {
         @Query() animalName?: string,
         @Query() userName?: string,
         @Query() reviewerName?: string,
+        @Query() page?: number,
+        @Query() perPage?: number,
     ): Promise<FormAnimalSubmission[]> {
         return this.submissionService.getAllAnimalSubmissions(
             {
@@ -65,6 +67,7 @@ export class AnimalSubmissionsController extends Controller {
                 reviewerName,
             },
             request.user as IUserInfo,
+            { page, perPage },
         );
     }
 
