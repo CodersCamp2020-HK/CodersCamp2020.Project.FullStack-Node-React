@@ -39,7 +39,7 @@ const Login = () => {
     return (
         <Grid container spacing={0} alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
             <Paper className={classes.paper} variant="outlined" square={false}>
-                <Avatar variant="circle" className={classes.greenBackground}>
+                <Avatar variant="circular" className={classes.greenBackground}>
                     <LockOutlined htmlColor={theme.palette.secondary.contrastText} />
                 </Avatar>
                 <Typography variant="h5">Zaloguj się</Typography>
