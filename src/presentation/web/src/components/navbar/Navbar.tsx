@@ -5,8 +5,8 @@ import { Link } from '@material-ui/core';
 import Drawer from '@material-ui/core/Drawer';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import NavbarList from '../NavbarList/NavbarList';
 import NavbarLoginBtn from '../navbarLoginButton/NavbarLoginBtn';
+import NavbarList from '../navbarList/NavbarList';
 
 const Navbar = () => {
     const [mobileView, setMobileView] = useState(false);
