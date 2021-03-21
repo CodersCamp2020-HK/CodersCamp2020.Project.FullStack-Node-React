@@ -53,9 +53,13 @@ const Login = () => {
             width: '100%',
         },
         forgetPassword: {
-            float: 'right',
+            alignSelf: 'flex-end',
             color: theme.palette.info.dark,
         },
+        submit: {
+            marginTop: theme.spacing(2),
+            marginBottom: theme.spacing(2)
+        }
     });
 
     const classes = useStyle();
@@ -80,6 +84,7 @@ const Login = () => {
                             autoFocus
                             inputRef={register({ required: true })}
                             helperText={errors['E-mail'] && 'E-mail jest wymagany'}
+                            margin="normal"
                         />
                         <TextField
                             label="Password"
@@ -91,8 +96,9 @@ const Login = () => {
                             error={errors.Password ? true : false}
                             helperText={errors.Password && 'Hasło jest wymagane'}
                             inputRef={register({ required: true })}
+                            margin="normal"
                         />
-                        <Button variant="contained" size="large" fullWidth color="primary" type="submit">
+                        <Button className={classes.submit} variant="contained" size="large" fullWidth color="primary" type="submit">
                             Zaloguj się
                         </Button>
                         {loginError && (
@@ -101,15 +107,18 @@ const Login = () => {
                             </Typography>
                         )}
                     </form>
-                    <Link component={RouterLink} to="/forget">
-                        <Typography className={classes.forgetPassword} variant="body2">
-                            Zapomniałeś hasła?
-                        </Typography>
+                    <Link component={RouterLink} className={classes.forgetPassword} to="/forget">
+                        <Typography variant="body2">Zapomniałeś hasła?</Typography>
                     </Link>
                 </Paper>
             </Grid>
             <Grid item xs>
-                <Paper className={classes.paper} style={{ flexDirection: 'row', justifyContent: 'space-between'}} variant="outlined" square={false}>
+                <Paper
+                    className={classes.paper}
+                    style={{ flexDirection: 'row', justifyContent: 'space-between' }}
+                    variant="outlined"
+                    square={false}
+                >
                     <Typography variant="subtitle1">Nie masz jeszcze konta?</Typography>
                     <Link component={RouterLink} to="/register">
                         <Button variant="outlined" size="medium" color="primary">
