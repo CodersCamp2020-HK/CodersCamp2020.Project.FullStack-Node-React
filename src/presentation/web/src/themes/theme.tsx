@@ -26,7 +26,8 @@ const theme = createMuiTheme({
         MuiTextField: {
             color: 'secondary',
             variant: 'outlined',
-            size: 'medium'
+            size: 'medium',
+            fullWidth: true
         }
     },
     overrides: {
