@@ -1,0 +1,14 @@
+.footer {
+    background-color: #FFFDF6;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-left: auto;
+    bottom: 0;
+}
+
+.footerColumn {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}

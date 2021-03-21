@@ -4,11 +4,13 @@ import theme from './themes/theme';
 import { Container, ThemeProvider } from '@material-ui/core';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import Navbar from './components/Navbar/Navbar';
-import About from './components/Pages/About';
 import Adoption from './components/Pages/Adoption';
+import About from './components/Pages/About';
 import Donation from './components/Pages/Donation';
 import Contact from './components/Pages/Contact';
 import Home from './components/Pages/Home';
+import Footer from './components/footer/Footer';
+
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
@@ -32,6 +34,7 @@ const App: React.FC = () => {
                     </Route>
                 </Container>
             </Switch>
+            <Footer />
         </ThemeProvider>
     );
 };

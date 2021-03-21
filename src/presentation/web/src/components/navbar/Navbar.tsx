@@ -3,7 +3,7 @@ import { AppBar, Grid, Toolbar } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import { Link } from '@material-ui/core';
 import NavbarList from '../NavbarList/NavbarList';
-import NavbarLoginBtn from '../NavbarLoginBtn/NavbarLoginBtn';
+import NavbarLoginBtn from '../navbarLoginButton/NavbarLoginBtn';
 
 const Navbar = () => {
     return (
