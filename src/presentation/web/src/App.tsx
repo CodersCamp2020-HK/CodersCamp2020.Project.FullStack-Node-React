@@ -4,12 +4,21 @@ import theme from './themes/theme';
 import { Container, ThemeProvider } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+<<<<<<< HEAD
 import About from './components/pages/About';
 import Contact from './components/pages/Contact';
 import Home from './components/pages/Home';
 import Donation from './components/pages/Donation';
 import Adoption from './components/pages/Adoption';
 import Navbar from './components/navbar/Navbar';
+=======
+import About from './components/pages1/About';
+import Contact from './components/pages1/Contact';
+import Home from './components/pages1/Home';
+import Donation from './components/pages1/Donation';
+import Adoption from './components/pages1/Adoption';
+import Navbar from './components/navbar1/Navbar';
+>>>>>>> eadd18c6b77b94e3156570de5fad32dbcd01d09b
 
 const App: React.FC = () => {
     return (
