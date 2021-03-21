@@ -109,7 +109,7 @@ const Login = () => {
                 </Paper>
             </Grid>
             <Grid item xs>
-                <Paper variant="outlined" square={false}>
+                <Paper className={classes.paper} style={{ flexDirection: 'row', justifyContent: 'space-between'}} variant="outlined" square={false}>
                     <Typography variant="subtitle1">Nie masz jeszcze konta?</Typography>
                     <Link component={RouterLink} to="/register">
                         <Button variant="outlined" size="medium" color="primary">
