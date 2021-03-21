@@ -2,7 +2,6 @@ import React from 'react'
 import TextInput from '../textInput/TextInput'
 import { useForm } from 'react-hook-form'
 import Button from '@material-ui/core/Button'
-import { ErrorMessage } from '@hookform/error-message';
 
 export interface Inputs {
     name: string;
@@ -19,10 +18,12 @@ function RegisterForm() {
         console.log(data);
     }
 
+    const isError = errors.name ? true : false
+    const errorNameMsg = errors.name && ((errors.name.type === 'required' && 'Imię jest wymagane!') || (errors.name.type === 'minLength' && 'Imię za krótkie!'))
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <TextInput name="name" label="Imię" required inputRef={register({ required: 'Imię jest wymagane', minLength: { value: 2, message: 'Imię za krótkie' }})} error={errors.name ? true : false} />
-            <ErrorMessage errors={errors} name="name" as="span" />
+            <TextInput name="name" label="Imię" required inputRef={register({ required: 'Imię jest wymagane!' })} error={isError} helperText={errorNameMsg} />
 
             <TextInput name="surname" label="Nazwisko" required inputRef={register({ required: true })} />
             {errors.surname && <p>Nazwisko jest wymagane!</p>}
