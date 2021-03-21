@@ -16,7 +16,11 @@ const theme = createMuiTheme({
             white: '#FFFDF6',
         },
         text: {
+            primary: 'rgba(0, 0, 0, 0.87)',
             secondary: 'rgba(0, 0, 0, 0.54)',
+        },
+        background: {
+            default: '#FFFDF6',
         },
     },
     props: {
@@ -28,8 +32,8 @@ const theme = createMuiTheme({
             variant: 'outlined',
             size: 'medium',
             fullWidth: true,
-            margin: 'normal'
-        }
+            margin: 'normal',
+        },
     },
     overrides: {
         MuiButton: {
