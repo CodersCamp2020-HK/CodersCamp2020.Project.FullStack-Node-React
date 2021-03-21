@@ -27,7 +27,8 @@ const theme = createMuiTheme({
             color: 'secondary',
             variant: 'outlined',
             size: 'medium',
-            fullWidth: true
+            fullWidth: true,
+            margin: 'normal'
         }
     },
     overrides: {
