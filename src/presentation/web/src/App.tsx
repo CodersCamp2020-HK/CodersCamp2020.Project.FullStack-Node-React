@@ -10,12 +10,12 @@ import Home from './components/Pages/Home';
 import Donation from './components/Pages/Donation';
 import Adoption from './components/Pages/Adoption';
 import Navbar from './components/Navbar/Navbar';
-import TextInput from './components/textInput/TextInput';
+import RegisterForm from './components/registerForm/RegisterForm';
 
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <TextInput name="name" label="Imię" type="date" />
+            <RegisterForm />
             <Switch>
                 <Navbar></Navbar>
                 <Container style={{ backgroundColor: 'brown' }}>
