@@ -1,11 +1,10 @@
-import { Avatar, Button, Grid, Paper, TextField, Theme, Typography, useTheme } from '@material-ui/core';
+import { Avatar, Button, Grid, Link, Paper, TextField, Theme, Typography, useTheme } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useMutate } from 'restful-react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Link } from '@material-ui/core';
+import { useMutate } from 'restful-react';
 
 interface IFormValues {
     'E-mail': string;
@@ -51,9 +50,10 @@ const Login = () => {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            width: '100%',
         },
         forgetPassword: {
-            alignSelf: 'right',
+            float: 'right',
             color: theme.palette.info.dark,
         },
     });
@@ -61,59 +61,63 @@ const Login = () => {
     const classes = useStyle();
 
     return (
-        <Grid container spacing={0} alignItems="center" justify="center" style={{ minHeight: '100vh' }}>
-            <Paper className={classes.paper} variant="outlined" square={false}>
-                <Avatar variant="circular" className={classes.greenBackground}>
-                    <LockOutlined htmlColor={theme.palette.secondary.contrastText} />
-                </Avatar>
-                <Typography variant="h5">Zaloguj się</Typography>
-                <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-                    <TextField
-                        label="E-mail"
-                        type="email"
-                        name="E-mail"
-                        variant="outlined"
-                        size="medium"
-                        fullWidth
-                        error={errors['E-mail'] ? true : false}
-                        autoFocus
-                        inputRef={register({ required: true })}
-                        helperText={errors['E-mail'] && 'E-mail jest wymagany'}
-                    />
-                    <TextField
-                        label="Password"
-                        type="password"
-                        name="Password"
-                        variant="outlined"
-                        size="medium"
-                        fullWidth
-                        error={errors.Password ? true : false}
-                        helperText={errors.Password && 'Hasło jest wymagane'}
-                        inputRef={register({ required: true })}
-                    />
-                    <Button variant="contained" size="large" fullWidth color="primary" type="submit">
-                        Zaloguj się
-                    </Button>
-                    {loginError && (
-                        <Typography variant="body2" color="primary">
-                            {loginError}
+        <Grid spacing={2} container direction="column" item xs={4}>
+            <Grid item xs>
+                <Paper className={classes.paper} variant="outlined" square={false}>
+                    <Avatar variant="circular" className={classes.greenBackground}>
+                        <LockOutlined htmlColor={theme.palette.secondary.contrastText} />
+                    </Avatar>
+                    <Typography variant="h5">Zaloguj się</Typography>
+                    <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+                        <TextField
+                            label="E-mail"
+                            type="email"
+                            name="E-mail"
+                            variant="outlined"
+                            size="medium"
+                            fullWidth
+                            error={errors['E-mail'] ? true : false}
+                            autoFocus
+                            inputRef={register({ required: true })}
+                            helperText={errors['E-mail'] && 'E-mail jest wymagany'}
+                        />
+                        <TextField
+                            label="Password"
+                            type="password"
+                            name="Password"
+                            variant="outlined"
+                            size="medium"
+                            fullWidth
+                            error={errors.Password ? true : false}
+                            helperText={errors.Password && 'Hasło jest wymagane'}
+                            inputRef={register({ required: true })}
+                        />
+                        <Button variant="contained" size="large" fullWidth color="primary" type="submit">
+                            Zaloguj się
+                        </Button>
+                        {loginError && (
+                            <Typography variant="body2" color="primary">
+                                {loginError}
+                            </Typography>
+                        )}
+                    </form>
+                    <Link component={RouterLink} to="/forget">
+                        <Typography className={classes.forgetPassword} variant="body2">
+                            Zapomniałeś hasła?
                         </Typography>
-                    )}
-                </form>
-                <Link component={RouterLink} to="/forget">
-                    <Typography className={classes.forgetPassword} variant="body2">
-                        Zapomniałeś hasła?
-                    </Typography>
-                </Link>
-            </Paper>
-            <Paper variant="outlined" square={false}>
-                <Typography variant="subtitle1">Nie masz jeszcze konta?</Typography>
-                <Link component={RouterLink} to="/register">
-                    <Button variant="outlined" size="medium" color='primary'>
-                        Zarejestruj się
-                    </Button>
-                </Link>
-            </Paper>
+                    </Link>
+                </Paper>
+            </Grid>
+            <Grid item xs>
+                <Paper variant="outlined" square={false}>
+                    <Typography variant="subtitle1">Nie masz jeszcze konta?</Typography>
+                    <Link component={RouterLink} to="/register">
+                        <Button variant="outlined" size="medium" color="primary">
+                            Zarejestruj się
+                        </Button>
+                    </Link>
+                </Paper>
+            </Grid>
         </Grid>
     );
 };
