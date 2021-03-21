@@ -14,7 +14,7 @@ import Footer from './components/footer/Footer';
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Container style={{ backgroundColor: 'brown' }}>
+            <Container>
                 <Router>
                     <Navbar />
                     <Switch>
