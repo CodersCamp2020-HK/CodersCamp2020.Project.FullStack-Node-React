@@ -2,16 +2,21 @@ import { Avatar, Button, Grid, Paper, TextField, Theme, Typography, useTheme } f
 import { LockOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
 import React from 'react';
-import { useForm } from "react-hook-form";
+import { useForm } from 'react-hook-form';
+import { useMutate } from 'restful-react';
 
 interface IFormValues {
-    "E-mail": string;
-    "Password": string;
-  }
+    'E-mail': string;
+    Password: string;
+}
 
 const Login = () => {
     const theme = useTheme<Theme>();
-    //const [isErrors, setErrors] = useState<boolean>(false);
+    const {error, mutate: auth} = useMutate({
+        verb: 'POST',
+        base: '/users/auth',
+        path: 'localhost:3000/api',
+    });
     const { register, handleSubmit, errors } = useForm<IFormValues>();
     const onSubmit = (data: IFormValues) => console.log(data);
     const useStyle = makeStyles({
