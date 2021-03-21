@@ -22,16 +22,7 @@ function RegisterForm() {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <TextInput name="name" label="Imię" required inputRef={register({ required: 'Imię jest wymagane', minLength: { value: 2, message: 'Imię za krótkie' }})} error={errors.name ? true : false} />
-            <ErrorMessage errors={errors} name="name" >
-                {({ messages }: any) => {
-                    console.log("messages", messages);
-                    return messages
-                        ? Object.entries(messages).map(([type, message]: any) => (
-                            <p key={type}>{message}</p>
-                        ))
-                        : undefined;
-              }}
-            </ErrorMessage>
+            <ErrorMessage errors={errors} name="name" as="span" />
 
             <TextInput name="surname" label="Nazwisko" required inputRef={register({ required: true })} />
             {errors.surname && <p>Nazwisko jest wymagane!</p>}
