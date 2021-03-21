@@ -14,8 +14,7 @@ const Login = () => {
     const theme = useTheme<Theme>();
     const {error, mutate: auth} = useMutate({
         verb: 'POST',
-        base: '/users/auth',
-        path: 'localhost:3000/api',
+        path: '/users/auth',
     });
     const { register, handleSubmit, errors } = useForm<IFormValues>();
     const onSubmit = (data: IFormValues) => console.log(data);
