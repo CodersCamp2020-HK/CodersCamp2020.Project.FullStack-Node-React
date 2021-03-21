@@ -80,6 +80,7 @@ const Login = () => {
                             variant="outlined"
                             size="medium"
                             fullWidth
+                            required
                             error={errors['E-mail'] ? true : false}
                             autoFocus
                             inputRef={register({ required: true })}
@@ -93,6 +94,7 @@ const Login = () => {
                             variant="outlined"
                             size="medium"
                             fullWidth
+                            required
                             error={errors.Password ? true : false}
                             helperText={errors.Password && 'Hasło jest wymagane'}
                             inputRef={register({ required: true })}
