@@ -2,6 +2,7 @@ import React from 'react'
 import TextInput from '../textInput/TextInput'
 import { useForm } from 'react-hook-form'
 import Button from '@material-ui/core/Button'
+import { ErrorMessage } from '@hookform/error-message';
 
 export interface Inputs {
     name: string;
@@ -13,19 +14,40 @@ export interface Inputs {
 }
 
 function RegisterForm() {   
-    const { register } = useForm<Inputs>()
-    const onSubmit = (data: any) => {
+    const { register, handleSubmit, errors } = useForm<Inputs>({ criteriaMode: 'all' })
+    const onSubmit = (data: Inputs) => {
         console.log(data);
     }
 
     return (
-        <form>
-            <TextInput name="name" label="Imię" inputRef={register} />
-            <TextInput name="surname" label="Nazwisko" inputRef={register} />
-            <TextInput name="mail" label="Email" type="email" inputRef={register} />
-            <TextInput name="password" label="Password" type="password" inputRef={register} />
-            <TextInput name="repPassword" label="Powtórz hasło" type="password" inputRef={register} />
-            <TextInput name="phone" label="Telefon" inputRef={register} />
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <TextInput name="name" label="Imię" required inputRef={register({ required: 'Imię jest wymagane', minLength: { value: 2, message: 'Imię za krótkie' }})} error={errors.name ? true : false} />
+            <ErrorMessage errors={errors} name="name" >
+                {({ messages }: any) => {
+                    console.log("messages", messages);
+                    return messages
+                        ? Object.entries(messages).map(([type, message]: any) => (
+                            <p key={type}>{message}</p>
+                        ))
+                        : undefined;
+              }}
+            </ErrorMessage>
+
+            <TextInput name="surname" label="Nazwisko" required inputRef={register({ required: true })} />
+            {errors.surname && <p>Nazwisko jest wymagane!</p>}
+
+            <TextInput name="mail" label="Email" type="email" required inputRef={register({ required: true })} />
+            {errors.mail && <p>Nazwisko jest wymagane!</p>}
+
+            <TextInput name="password" label="Password" type="password" required inputRef={register({ required: true })} />
+            {errors.password && <p>Nazwisko jest wymagane!</p>}
+
+            <TextInput name="repPassword" label="Powtórz hasło" type="password" required inputRef={register({ required: true })} />
+            {errors.repPassword && <p>Nazwisko jest wymagane!</p>}
+
+            <TextInput name="phone" label="Telefon" required inputRef={register({ required: true, valueAsNumber: true })} />
+            {errors.phone && <p>Nazwisko jest wymagane!</p>}
+
             <Button variant="contained" color="primary" type="submit" >Zarejestruj się</Button>
         </form>
     )

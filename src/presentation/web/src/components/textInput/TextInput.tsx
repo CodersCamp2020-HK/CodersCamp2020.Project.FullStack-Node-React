@@ -13,6 +13,8 @@ interface TextInputProps {
     required?: boolean;
     color?: 'primary' | 'secondary';
     inputRef?: any
+    helperText?: boolean | string
+    error?: boolean
 }
 
 const TextInput = ({
@@ -23,7 +25,9 @@ const TextInput = ({
     size = 'medium',
     required = false,
     color = 'secondary',
-    inputRef: inputRef
+    inputRef,
+    helperText,
+    error
 }: TextInputProps) => {
     const endAndorment =
         type === 'date'
@@ -46,6 +50,8 @@ const TextInput = ({
             color={color}
             InputProps={endAndorment}
             inputRef={inputRef}
+            helperText={helperText}
+            error={error}
         />
     );
 };
