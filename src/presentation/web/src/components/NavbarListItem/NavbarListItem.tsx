@@ -1,9 +1,6 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import { Link } from '@material-ui/core';
-import { useTheme } from '@material-ui/core/styles';
-import theme from '../../themes/theme';
-import { makeStyles } from '@material-ui/core/styles';
 
 interface Props {
     text: string;
