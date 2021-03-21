@@ -306,8 +306,13 @@ export class UsersController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(201, ' Email sended')
     @Security('jwt', ['admin', 'employee'])
-    public async sendVisitConfirmationEmail(@Query() petName: string, @Query() adopterEmail: Email): Promise<void> {
-        const adopters = await this.usersService.getAll(adopterEmail);
+    public async sendVisitConfirmationEmail(
+        @Query() petName: string,
+        @Query() adopterEmail: Email,
+        @Query() page?: number,
+        @Query() perPage?: number,
+    ): Promise<void> {
+        const adopters = await this.usersService.getAll(adopterEmail, { page, perPage });
 
         if (adopters) {
             const adopter = adopters[0];
