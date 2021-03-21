@@ -1,11 +1,19 @@
 import { Avatar, Button, Grid, Paper, TextField, Theme, Typography, useTheme } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
+import { useForm } from "react-hook-form";
 import React, { useState } from 'react';
+
+interface IFormValues {
+    "E-mail": string;
+    "Password": string;
+  }
 
 const Login = () => {
     const theme = useTheme<Theme>();
     const [isErrors, setErrors] = useState<boolean>(false);
+    const { register, handleSubmit } = useForm();
+    const onSubmit = (data: IFormValues) => console.log(data);
     const useStyle = makeStyles({
         greenBackground: {
             backgroundColor: theme.palette.secondary.dark,
@@ -35,26 +43,30 @@ const Login = () => {
                     <LockOutlined htmlColor={theme.palette.secondary.contrastText} />
                 </Avatar>
                 <Typography variant="h5">Zaloguj się</Typography>
-                <form className={classes.form}>
+                <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                     <TextField
                         label="E-mail"
                         type="email"
+                        name="E-mail"
                         variant="outlined"
                         size="medium"
                         fullWidth
                         required
                         error={isErrors}
                         autoFocus
+                        inputRef={register}
                     />
                     <TextField
                         label="Password"
                         type="password"
+                        name="Password"
                         variant="outlined"
                         size="medium"
                         fullWidth
                         required
                         error={isErrors}
                         helperText={isErrors && 'Nieprawidłowy e-mail lub hasło'}
+                        inputRef={register}
                     />
                     <Button variant="contained" size="large" fullWidth color="primary" type="submit">
                         Zaloguj się
