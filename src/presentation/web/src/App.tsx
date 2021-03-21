@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import theme from './themes/theme';
 import { Container, ThemeProvider } from '@material-ui/core';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import Navbar from './components/navbar/Navbar';
 import About from './components/pages/About';
 import Adoption from './components/pages/Adoption';
@@ -15,29 +15,31 @@ import ActivationSent from './components/activationSent/ActivationSent';
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Switch>
-                <Navbar></Navbar>
-                <Container style={{ backgroundColor: 'brown' }}>
-                    <Route exact path="/about">
-                        <About />
-                    </Route>
-                    <Route exact path="/adoption">
-                        <Adoption />
-                    </Route>
-                    <Route exact path="/donation">
-                        <Donation />
-                    </Route>
-                    <Route exact path="/contact">
-                        <Contact />
-                    </Route>
-                    <Route exact path="/register/sent">
-                        <ActivationSent />
-                    </Route>
-                    <Route exact path="/">
-                        <Home />
-                    </Route>
-                </Container>
-            </Switch>
+            <Container style={{ backgroundColor: 'brown' }}>
+                <Router>
+                    <Navbar />
+                    <Switch>
+                        <Route exact path="/">
+                            <Home />
+                        </Route>
+                        <Route exact path="/about">
+                            <About />
+                        </Route>
+                        <Route exact path="/adoption">
+                            <Adoption />
+                        </Route>
+                        <Route exact path="/donation">
+                            <Donation />
+                        </Route>
+                        <Route exact path="/contact">
+                            <Contact />
+                        </Route>
+                        <Route exact path="/contact">
+                            <ActivationSent />
+                        </Route>
+                    </Switch>
+                </Router>
+            </Container>
             <Footer />
         </ThemeProvider>
     );
