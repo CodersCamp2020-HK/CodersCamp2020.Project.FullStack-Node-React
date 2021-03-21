@@ -23,6 +23,13 @@ const theme = createMuiTheme({
         MuiLink: {
             underline: 'none',
         },
+        MuiTextField: {
+            color: 'secondary',
+            variant: 'outlined',
+            size: 'medium',
+            fullWidth: true,
+            margin: 'normal'
+        }
     },
     overrides: {
         MuiButton: {
