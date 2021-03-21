@@ -3,12 +3,12 @@ import './App.css';
 import theme from './themes/theme';
 import { Container, ThemeProvider } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
-import Navbar from './components/Navbar/Navbar';
-import Adoption from './components/Pages/Adoption';
-import About from './components/Pages/About';
-import Donation from './components/Pages/Donation';
-import Contact from './components/Pages/Contact';
-import Home from './components/Pages/Home';
+import Navbar from './components/navbar/Navbar';
+import About from './components/pages/About';
+import Adoption from './components/pages/Adoption';
+import Donation from './components/pages/Donation';
+import Contact from './components/pages/Contact';
+import Home from './components/pages/Home';
 import Footer from './components/footer/Footer';
 
 const App: React.FC = () => {
