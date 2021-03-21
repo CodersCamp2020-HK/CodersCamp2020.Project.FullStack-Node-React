@@ -12,12 +12,24 @@ interface IFormValues {
 
 const Login = () => {
     const theme = useTheme<Theme>();
-    const {error, mutate: auth} = useMutate({
+    const { error, mutate: auth } = useMutate({
         verb: 'POST',
         path: '/users/auth',
     });
     const { register, handleSubmit, errors } = useForm<IFormValues>();
-    const onSubmit = (data: IFormValues) => console.log(data);
+    const onSubmit = async (data: IFormValues) => {
+        console.log(data);
+        try {
+            const response = await auth({
+                mail: data['E-mail'],
+                password: data.Password,
+            });
+            console.log(response);
+            localStorage.setItem('apiKey', response.apiKey);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     const useStyle = makeStyles({
         greenBackground: {
             backgroundColor: theme.palette.secondary.dark,
