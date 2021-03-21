@@ -13,29 +13,6 @@ interface IFormValues {
 
 const Login = () => {
     const theme = useTheme<Theme>();
-    const [loginError, setLoginError] = useState<string>(null!);
-    const { error, mutate: auth } = useMutate({
-        verb: 'POST',
-        path: '/users/auth',
-    });
-    const { register, handleSubmit, errors } = useForm<IFormValues>();
-    const onSubmit = async (data: IFormValues) => {
-        console.log(data);
-        try {
-            const response = await auth({
-                mail: data['E-mail'],
-                password: data.Password,
-            });
-            console.log(response);
-            localStorage.setItem('apiKey', response.apiKey);
-        } catch (error) {
-            if (error.status == 400 || error.status == 422) {
-                setLoginError('Błędny e-mail lub hasło!');
-            } else {
-                setLoginError('Błąd serwera! Spróbuj ponownie później.');
-            }
-        }
-    };
     const useStyle = makeStyles({
         greenBackground: {
             backgroundColor: theme.palette.secondary.dark,
@@ -61,9 +38,31 @@ const Login = () => {
             marginBottom: theme.spacing(2)
         }
     });
-
     const classes = useStyle();
 
+    const [loginError, setLoginError] = useState<string>(null!);
+    const { error, mutate: auth } = useMutate({
+        verb: 'POST',
+        path: '/users/auth',
+    });
+
+    const { register, handleSubmit, errors } = useForm<IFormValues>();
+    const onSubmit = async (data: IFormValues) => {
+        try {
+            const response = await auth({
+                mail: data['E-mail'],
+                password: data.Password,
+            });
+            localStorage.setItem('apiKey', response.apiKey);
+        } catch (error) {
+            if (error.status == 400 || error.status == 422) {
+                setLoginError('Błędny e-mail lub hasło!');
+            } else {
+                setLoginError('Błąd serwera! Spróbuj ponownie później.');
+            }
+        }
+    };
+    
     return (
         <Grid spacing={2} container direction="column" item xs={4}>
             <Grid item xs>
