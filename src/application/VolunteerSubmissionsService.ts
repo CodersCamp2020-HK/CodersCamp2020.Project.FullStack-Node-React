@@ -1,5 +1,6 @@
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import PaginationParams from '@infrastructure/Pagination';
 import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
 import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
@@ -49,6 +50,7 @@ export class VolunteerSubmissionsService {
     public async getAllSubmissions(
         queryParams: SubmissionQueryParams,
         currentUser: IUserInfo,
+        paginationParams?: PaginationParams,
     ): Promise<FormVolunteerSubmission[]> {
         console.log(currentUser);
         // if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
@@ -63,12 +65,26 @@ export class VolunteerSubmissionsService {
         //     // }
         // }
 
+        let isFirstPage;
+        let SKIP;
+        let LIMIT;
+        if (paginationParams) {
+            isFirstPage = paginationParams.page == 1 ? true : false;
+            SKIP =
+                paginationParams.perPage && paginationParams.page
+                    ? paginationParams.perPage * paginationParams.page
+                    : 0;
+            LIMIT = paginationParams.perPage ? paginationParams.perPage : undefined;
+        }
+
         const submissions = await new OptionalWhereSelectQueryBuilder(
             this.volunteerSubmissionRepository
                 .createQueryBuilder('submission')
                 .leftJoinAndSelect('submission.user', 'user')
                 .leftJoinAndSelect('submission.reviewer', 'reviewer')
-                .leftJoinAndSelect('submission.answers', 'answers'),
+                .leftJoinAndSelect('submission.answers', 'answers')
+                .skip(isFirstPage ? 0 : SKIP)
+                .limit(LIMIT),
         )
             .optAndWhere('submission.status = ', queryParams.status)
             .optAndWhere('submission.submissionDate = ', queryParams.submissionDate)

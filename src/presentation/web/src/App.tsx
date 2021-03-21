@@ -3,6 +3,13 @@ import './App.css';
 import theme from './themes/theme';
 import { Container, ThemeProvider } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
+import Navbar from './components/Navbar/Navbar';
+import Adoption from './components/Pages/Adoption';
+import About from './components/Pages/About';
+import Donation from './components/Pages/Donation';
+import Contact from './components/Pages/Contact';
+import Home from './components/Pages/Home';
+import Footer from './components/footer/Footer';
 
 const App: React.FC = () => {
     return (
@@ -27,6 +34,7 @@ const App: React.FC = () => {
                     </Route>
                 </Container>
             </Switch>
+            <Footer />
         </ThemeProvider>
     );
 };
