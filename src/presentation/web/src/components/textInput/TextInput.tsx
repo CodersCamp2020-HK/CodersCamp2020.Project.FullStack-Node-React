@@ -13,7 +13,7 @@ interface TextInputProps {
     size?: 'medium' | 'small';
     required?: boolean;
     color?: 'primary' | 'secondary';
-    ref?: FieldElement<any>
+    ref?: any
 }
 
 const TextInput = ({
