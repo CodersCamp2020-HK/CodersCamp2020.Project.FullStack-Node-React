@@ -13,10 +13,10 @@ const theme = createMuiTheme({
             dark: '#524C00',
         },
         common: {
-            white: '#FFFDF6'
+            white: '#FFFDF6',
         },
         text: {
-            secondary: 'rgba(0, 0, 0, 0.54)'
+            secondary: 'rgba(0, 0, 0, 0.54)',
         },
     },
     props: {
@@ -46,10 +46,10 @@ const theme = createMuiTheme({
         MuiTextField: {
             root: {
                 '& fieldset': {
-                    borderRadius: 15
-                }
-            }
-        }
+                    borderRadius: 15,
+                },
+            },
+        },
     },
 });
 
