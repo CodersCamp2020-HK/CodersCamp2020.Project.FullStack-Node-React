@@ -1,7 +1,7 @@
 import { Avatar, Button, Grid, Paper, TextField, Theme, Typography, useTheme } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutate } from 'restful-react';
 
@@ -12,6 +12,7 @@ interface IFormValues {
 
 const Login = () => {
     const theme = useTheme<Theme>();
+    const [loginError, setLoginError] = useState<string>(null!)
     const { error, mutate: auth } = useMutate({
         verb: 'POST',
         path: '/users/auth',
@@ -27,7 +28,12 @@ const Login = () => {
             console.log(response);
             localStorage.setItem('apiKey', response.apiKey);
         } catch (error) {
-            console.log(error);
+            if(error.status == 400 || error.status == 422) {
+                setLoginError('Błędny e-mail lub hasło!');
+            }
+            else {
+                setLoginError('Błąd serwera! Spróbuj ponownie później.')
+            }
         }
     };
     const useStyle = makeStyles({
@@ -86,6 +92,9 @@ const Login = () => {
                     <Button variant="contained" size="large" fullWidth color="primary" type="submit">
                         Zaloguj się
                     </Button>
+                    {loginError && <Typography variant="body2" color='primary'>
+                    {loginError}
+                </Typography>}
                 </form>
                 <Typography className={classes.forgetPassword} variant="body2">
                     Zapomniałeś hasła?
