@@ -34,7 +34,7 @@ const App: React.FC = () => {
                         <Route exact path="/contact">
                             <Contact />
                         </Route>
-                        <Route exact path="/contact">
+                        <Route exact path="/register/sent">
                             <ActivationSent />
                         </Route>
                     </Switch>
