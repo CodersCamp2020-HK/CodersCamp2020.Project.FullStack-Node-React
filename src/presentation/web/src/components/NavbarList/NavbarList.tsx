@@ -1,5 +1,5 @@
 import React from 'react';
-import NavbarListItem from '../NavbarListItem/NavbarListItem';
+import NavbarListItem from '../navbarListItem/NavbarListItem';
 import { Grid } from '@material-ui/core';
 import styles from './NavbarList.module.css';
 
