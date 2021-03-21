@@ -4,6 +4,8 @@ import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useMutate } from 'restful-react';
+import { Link as RouterLink } from 'react-router-dom';
+import { Link } from '@material-ui/core';
 
 interface IFormValues {
     'E-mail': string;
@@ -12,7 +14,7 @@ interface IFormValues {
 
 const Login = () => {
     const theme = useTheme<Theme>();
-    const [loginError, setLoginError] = useState<string>(null!)
+    const [loginError, setLoginError] = useState<string>(null!);
     const { error, mutate: auth } = useMutate({
         verb: 'POST',
         path: '/users/auth',
@@ -28,11 +30,10 @@ const Login = () => {
             console.log(response);
             localStorage.setItem('apiKey', response.apiKey);
         } catch (error) {
-            if(error.status == 400 || error.status == 422) {
+            if (error.status == 400 || error.status == 422) {
                 setLoginError('Błędny e-mail lub hasło!');
-            }
-            else {
-                setLoginError('Błąd serwera! Spróbuj ponownie później.')
+            } else {
+                setLoginError('Błąd serwera! Spróbuj ponownie później.');
             }
         }
     };
@@ -53,6 +54,7 @@ const Login = () => {
         },
         forgetPassword: {
             alignSelf: 'right',
+            color: theme.palette.info.dark,
         },
     });
 
@@ -92,13 +94,25 @@ const Login = () => {
                     <Button variant="contained" size="large" fullWidth color="primary" type="submit">
                         Zaloguj się
                     </Button>
-                    {loginError && <Typography variant="body2" color='primary'>
-                    {loginError}
-                </Typography>}
+                    {loginError && (
+                        <Typography variant="body2" color="primary">
+                            {loginError}
+                        </Typography>
+                    )}
                 </form>
-                <Typography className={classes.forgetPassword} variant="body2">
-                    Zapomniałeś hasła?
-                </Typography>
+                <Link component={RouterLink} to="/forget">
+                    <Typography className={classes.forgetPassword} variant="body2">
+                        Zapomniałeś hasła?
+                    </Typography>
+                </Link>
+            </Paper>
+            <Paper variant="outlined" square={false}>
+                <Typography variant="subtitle1">Nie masz jeszcze konta?</Typography>
+                <Link component={RouterLink} to="/register">
+                    <Button variant="outlined" size="medium">
+                        Zarejestruj się
+                    </Button>
+                </Link>
             </Paper>
         </Grid>
     );
