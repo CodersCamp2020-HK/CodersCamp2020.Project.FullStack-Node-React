@@ -2,14 +2,13 @@ import React from 'react';
 import './App.css';
 import theme from './themes/theme';
 import { Container, ThemeProvider } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
+import Navbar from './components/navbar/Navbar';
 import About from './components/pages/About';
+import Adoption from './components/pages/Adoption';
+import Donation from './components/pages/Donation';
 import Contact from './components/pages/Contact';
 import Home from './components/pages/Home';
-import Donation from './components/pages/Donation';
-import Adoption from './components/pages/Adoption';
-import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
 
 const App: React.FC = () => {
