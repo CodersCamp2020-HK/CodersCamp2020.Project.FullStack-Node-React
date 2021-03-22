@@ -57,7 +57,7 @@ const ForgetPassword = () => {
             });
         } catch (error) {
             if (error.status == 404) {
-                setEmailError('Podane e-mail nie istnieje w bazie');
+                setEmailError('Podany e-mail nie istnieje w bazie');
             } else if (error.status == 400) {
                 setEmailError('Niepoprawny format e-mail');
             } else {
@@ -102,6 +102,7 @@ const ForgetPassword = () => {
                         >
                             Zresetuj hasło
                         </Button>
+                        <Typography variant="body2" color='error'>{emailError}</Typography>
                     </form>
                     <Link component={RouterLink} className={classes.backToLogin} to="/login">
                         <Typography variant="body2">Wróć do logowania</Typography>
