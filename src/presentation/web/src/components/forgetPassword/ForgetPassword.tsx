@@ -1,7 +1,7 @@
 import { Avatar, Button, Grid, Link, Paper, TextField, Theme, Typography, useTheme } from '@material-ui/core';
 import { LockOutlined } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/styles';
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { useMutate } from 'restful-react';
@@ -47,15 +47,24 @@ const ForgetPassword = () => {
         path: '/users/reset',
     });
 
+    const [emailError, setEmailError] = useState<string>(null!)
+
     const { register, handleSubmit, errors } = useForm<Email>();
     const onSubmit = async (data: Email) => {
         try {
             const response = await sendResetLink({
                 mail: data['E-mail'],
             });
-            localStorage.setItem('apiKey', response.apiKey);
         } catch (error) {
-            console.log('Podany e-mail nie istnieje w bazie');
+            if(error.status == 404) {
+                setEmailError('Podane e-mail nie istnieje w bazie');
+            }
+            else if(error.status == 400) {
+                setEmailError('Niepoprawny format e-mail');
+            }
+            else {
+                setEmailError('Błąd serwera! Spróbuj ponownie później.');
+            }
         }
     };
 
