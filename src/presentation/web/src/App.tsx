@@ -10,6 +10,7 @@ import Donation from './components/pages/Donation';
 import Contact from './components/pages/Contact';
 import Home from './components/pages/Home';
 import Footer from './components/footer/Footer';
+import RegisterForm from './components/registerForm/RegisterForm';
 
 const App: React.FC = () => {
     return (
@@ -35,6 +36,7 @@ const App: React.FC = () => {
                         </Route>
                     </Switch>
                 </Router>
+                <RegisterForm />
             </Container>
             <Footer />
         </ThemeProvider>

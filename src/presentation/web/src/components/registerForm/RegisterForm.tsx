@@ -1,9 +1,9 @@
 import React from 'react'
-import TextInput from '../textInput/TextInput'
 import { useForm } from 'react-hook-form'
 import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 
-export interface Inputs {
+interface Inputs {
     name: string;
     surname: string;
     mail: string;
@@ -13,34 +13,72 @@ export interface Inputs {
 }
 
 function RegisterForm() {   
-    const { register, handleSubmit, errors } = useForm<Inputs>({ criteriaMode: 'all' })
+    const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const { register, handleSubmit, errors, getValues, formState, trigger } = useForm<Inputs>()
     const onSubmit = (data: Inputs) => {
         console.log(data);
     }
+    const validateRepeat = () => {
+        if (formState.isSubmitted) trigger('repPassword')
+    }
 
-    const isError = errors.name ? true : false
-    const errorNameMsg = errors.name && ((errors.name.type === 'required' && errors.name.message) || (errors.name.type === 'minLength' && 'Imię za krótkie!' && errors.name.message))
-    console.log(errors)
+    const repeatPassowrd = (value: string) => value === getValues().password || 'hasła muszą być takie same!'
+
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <TextInput name="name" label="Imię" required inputRef={register({ required: 'Imię jest wymagane!', minLength: { value: 2, message: 'Imię za krótkie!' } })} error={isError} helperText={errorNameMsg} />
-
-            <TextInput name="surname" label="Nazwisko" required inputRef={register({ required: true })} />
-            {errors.surname && <p>Nazwisko jest wymagane!</p>}
-
-            <TextInput name="mail" label="Email" type="email" required inputRef={register({ required: true })} />
-            {errors.mail && <p>Nazwisko jest wymagane!</p>}
-
-            <TextInput name="password" label="Password" type="password" required inputRef={register({ required: true })} />
-            {errors.password && <p>Nazwisko jest wymagane!</p>}
-
-            <TextInput name="repPassword" label="Powtórz hasło" type="password" required inputRef={register({ required: true })} />
-            {errors.repPassword && <p>Nazwisko jest wymagane!</p>}
-
-            <TextInput name="phone" label="Telefon" required inputRef={register({ required: true, valueAsNumber: true })} />
-            {errors.phone && <p>Nazwisko jest wymagane!</p>}
-
+            <TextField
+                name="name"
+                label="Imię"
+                required 
+                inputRef={register({ required: 'Imię jest wymagane!', minLength: { value: 2, message: 'Imię za krótkie!' }, maxLength: { value: 50, message: 'Imię za długie'} })}
+                error={errors.name ? true : false}
+                helperText={errors.name ? errors.name.message : undefined}
+            />
+            <TextField
+                name="surname"
+                label="Nazwisko"
+                required
+                inputRef={register({ required: 'Nazwisko jest wymagane!', minLength: { value: 2, message: 'Nazwisko za krótkie' }, maxLength: { value: 50, message: 'Nazwisko za długie' } })}
+                error={errors.surname ? true : false}
+                helperText={errors.surname ? errors.surname.message : undefined}
+            />
+            <TextField
+                name="mail"
+                label="Email"
+                type="email"
+                required
+                inputRef={register({ required: 'Email jest wymagany!', pattern: { value: emailPattern, message: 'Nieprawidłowy email!'} })}
+                error={errors.mail ? true : false}
+                helperText={errors.mail ? errors.mail.message : undefined}
+            />
+            <TextField
+                name="password"
+                label="Password"
+                type="password"
+                required
+                onChange={validateRepeat}
+                inputRef={register({ required: 'Hasło jest wymagane', pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, message: 'Hasło musi zawierać co najmniej jedną małą literę, jedną wielką literę, jedną liczbę oraz jeden znak specjalny (@$!%*?&)!' } })}
+                error={errors.password ? true : false}
+                helperText={errors.password ? errors.password.message : undefined}
+            />
+            <TextField
+                name="repPassword"
+                label="Powtórz hasło"
+                type="password"
+                required
+                inputRef={register({ required: true, validate: { repeatPassowrd } })}
+                error={errors.repPassword ? true : false}
+                helperText={errors.repPassword ? errors.repPassword.message : undefined}
+            />
+            <TextField
+                name="phone"
+                label="Telefon"
+                required
+                inputRef={register({ required: 'Telefon jest wymagany!', pattern: { value: /^\d{9}$/, message: 'Telefon musi zawierać 9 cyfr'}, valueAsNumber: true })}
+                error={errors.phone ? true : false}
+                helperText={errors.phone ? errors.phone.message : undefined}
+            />
             <Button variant="contained" color="primary" type="submit" >Zarejestruj się</Button>
         </form>
     )
