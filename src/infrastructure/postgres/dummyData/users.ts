@@ -18,6 +18,13 @@ export const seedUsers = async (amount: number): Promise<DeepPartial<User>[]> =>
             mail: faker.internet.email(),
             password: password,
             activated: true,
+            birthDate: faker.date.past(
+                faker.random.number({
+                    min: 18,
+                    max: 90,
+                    precision: 1,
+                }),
+            ),
             localization: { id: i + 1 },
         });
     }

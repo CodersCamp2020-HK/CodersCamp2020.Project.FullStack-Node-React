@@ -71,6 +71,9 @@ export default class User {
     })
     password!: Password;
 
+    @Column({ type: 'date' })
+    birthDate!: Date;
+
     @CreateDateColumn()
     registrationDate!: Date;
 

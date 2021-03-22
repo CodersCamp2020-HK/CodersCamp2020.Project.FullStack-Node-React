@@ -24,6 +24,7 @@ export type UserCreationParams = {
     mail: Email;
     password: Password;
     repPassword: Password;
+    birthDate: Date;
     phone: number;
 };
 
@@ -127,6 +128,7 @@ export class UsersService {
                 password: hash,
                 name: userCreationParams.name,
                 surname: userCreationParams.surname,
+                birthDate: userCreationParams.birthDate,
                 phone: userCreationParams.phone,
             });
 

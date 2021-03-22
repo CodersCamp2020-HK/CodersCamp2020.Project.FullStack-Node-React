@@ -24,18 +24,17 @@ function RegisterForm() {
         path: '/users'
     })
     const onSubmit = async ({name, surname, mail, password, repPassword, birthDate, phone}: Inputs) => {
-            // mutate({
-            //     name,
-            //     surname,
-            //     mail,
-            //     password,
-            //     repPassword,
-            //     phone
-            // }).catch((error) => {
-            //     setError('mail', { message: error.data.message })
-            // })
-            console.log(errors)
-            console.log(name, surname, mail, password, repPassword, birthDate, phone)
+        mutate({
+            name,
+            surname,
+            mail,
+            password,
+            repPassword,
+            birthDate: new Date(birthDate).toISOString(),
+            phone
+        }).catch((error) => {
+            if (error.data.status === 400) setError('mail', { message: error.data.message })
+        })
         
     }
     const validateRepeat = () => {
@@ -106,6 +105,7 @@ function RegisterForm() {
                 maxDateMessage="Podaj wcześniejszą datę!"
                 value={date}
                 onChange={date => date && setDate(date)}
+                inputRef={register({ required: 'Data urodzenia jest wymagana '})}
             />
             <TextField
                 name="phone"
