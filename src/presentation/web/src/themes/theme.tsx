@@ -12,11 +12,24 @@ const theme = createMuiTheme({
             main: '#827717',
             dark: '#524C00',
         },
+        common: {
+            white: '#FFFDF6',
+        },
+        text: {
+            secondary: 'rgba(0, 0, 0, 0.54)',
+        },
     },
     props: {
         MuiLink: {
             underline: 'none',
         },
+        MuiTextField: {
+            color: 'secondary',
+            variant: 'outlined',
+            size: 'medium',
+            fullWidth: true,
+            margin: 'normal'
+        }
     },
     overrides: {
         MuiButton: {
@@ -33,10 +46,10 @@ const theme = createMuiTheme({
         MuiTextField: {
             root: {
                 '& fieldset': {
-                    borderRadius: 15
-                }
-            }
-        }
+                    borderRadius: 15,
+                },
+            },
+        },
     },
 });
 
