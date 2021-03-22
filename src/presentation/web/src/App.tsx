@@ -15,7 +15,7 @@ import ActivationSent from './components/activationSent/ActivationSent';
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Container style={{ backgroundColor: 'brown' }}>
+            <Container>
                 <Router>
                     <Navbar />
                     <Switch>
