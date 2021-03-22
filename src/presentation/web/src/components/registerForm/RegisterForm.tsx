@@ -2,6 +2,7 @@ import React from 'react'
 import { useForm } from 'react-hook-form'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
+import { useMutate } from 'restful-react';
 
 interface Inputs {
     name: string;
@@ -14,15 +15,26 @@ interface Inputs {
 
 function RegisterForm() {   
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const { register, handleSubmit, errors, getValues, formState, trigger } = useForm<Inputs>()
-    const onSubmit = (data: Inputs) => {
-        console.log(data);
+    const { register, handleSubmit, errors, setError, getValues, formState, trigger } = useForm<Inputs>()
+    const { mutate } = useMutate({
+        verb: 'POST',
+        path: '/users'
+    })
+    const onSubmit = async (data: Inputs) => {
+            mutate({
+                mail: data.mail,
+                password: data.password,
+                repPassword: data.repPassword
+            }).catch((error) => {
+                setError('mail', { message: error.data.message })
+            })
+        
     }
     const validateRepeat = () => {
         if (formState.isSubmitted) trigger('repPassword')
     }
 
-    const repeatPassowrd = (value: string) => value === getValues().password || 'hasła muszą być takie same!'
+    const repeatPassowrd = (value: string) => value === getValues().password || 'Hasła muszą być takie same!'
 
 
     return (
@@ -75,7 +87,7 @@ function RegisterForm() {
                 name="phone"
                 label="Telefon"
                 required
-                inputRef={register({ required: 'Telefon jest wymagany!', pattern: { value: /^\d{9}$/, message: 'Telefon musi zawierać 9 cyfr'}, valueAsNumber: true })}
+                inputRef={register({ required: 'Telefon jest wymagany!', pattern: { value: /^\d{9}$/, message: 'Telefon musi zawierać 9 cyfr' }, valueAsNumber: true })}
                 error={errors.phone ? true : false}
                 helperText={errors.phone ? errors.phone.message : undefined}
             />

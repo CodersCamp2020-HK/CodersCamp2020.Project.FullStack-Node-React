@@ -11,33 +11,36 @@ import Contact from './components/pages/Contact';
 import Home from './components/pages/Home';
 import Footer from './components/footer/Footer';
 import RegisterForm from './components/registerForm/RegisterForm';
+import { RestfulProvider } from 'restful-react';
 
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Container>
-                <Router>
-                    <Navbar />
-                    <Switch>
-                        <Route exact path="/">
-                            <Home />
-                        </Route>
-                        <Route exact path="/about">
-                            <About />
-                        </Route>
-                        <Route exact path="/adoption">
-                            <Adoption />
-                        </Route>
-                        <Route exact path="/donation">
-                            <Donation />
-                        </Route>
-                        <Route exact path="/contact">
-                            <Contact />
-                        </Route>
-                    </Switch>
-                </Router>
-                <RegisterForm />
-            </Container>
+            <RestfulProvider base="http://localhost:8000/api">
+                <Container>
+                    <Router>
+                        <Navbar />
+                        <Switch>
+                            <Route exact path="/">
+                                <Home />
+                            </Route>
+                            <Route exact path="/about">
+                                <About />
+                            </Route>
+                            <Route exact path="/adoption">
+                                <Adoption />
+                            </Route>
+                            <Route exact path="/donation">
+                                <Donation />
+                            </Route>
+                            <Route exact path="/contact">
+                                <Contact />
+                            </Route>
+                        </Switch>
+                    </Router>
+                    <RegisterForm />
+                </Container>
+            </RestfulProvider>
             <Footer />
         </ThemeProvider>
     );

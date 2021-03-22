@@ -1,7 +1,7 @@
 import ApiError from '@infrastructure/ApiError';
 import OrganizationUser, { UserType } from '@infrastructure/postgres/OrganizationUser';
 import User, { Email, Password, UUID } from '@infrastructure/postgres/User';
-import { PasswordRequirementsError, UniqueUserEmailError } from './UsersErrors';
+import { PasswordRequirementsError } from './UsersErrors';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -126,7 +126,7 @@ export class UsersService {
 
             return this.userRepository.save(user);
         } else {
-            throw new UniqueUserEmailError(userCreationParams.mail);
+            throw new ApiError('Bad Request', 400, 'Użytkownik z takim adresem email już istnieje!');
         }
     }
 
