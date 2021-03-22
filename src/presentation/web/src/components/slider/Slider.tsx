@@ -1,4 +1,4 @@
-import { Card, CardMedia, Container, IconButton, makeStyles, Theme, useTheme } from '@material-ui/core';
+import { Card, CardMedia, Container, IconButton, makeStyles, MobileStepper, Theme, useTheme } from '@material-ui/core';
 import { ArrowBack, ArrowForward } from '@material-ui/icons';
 import React from 'react';
 
@@ -40,6 +40,15 @@ const Slider = ({ photos }: SliderProps) => {
             <IconButton className={classes.buttonBackground}>
                 <ArrowForward />
             </IconButton>
+            <MobileStepper
+                color="secondary"
+                variant="dots"
+                steps={6}
+                position="static"
+                activeStep={1}
+                backButton={<IconButton />}
+                nextButton={<IconButton />}
+            />
         </Container>
     );
 };
