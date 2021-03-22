@@ -10,6 +10,7 @@ import Donation from './components/pages/Donation';
 import Contact from './components/pages/Contact';
 import Home from './components/pages/Home';
 import Footer from './components/footer/Footer';
+import ForgetPassword from './components/forgetPassword/ForgetPassword';
 
 const App: React.FC = () => {
     return (
@@ -32,6 +33,9 @@ const App: React.FC = () => {
                         </Route>
                         <Route exact path="/contact">
                             <Contact />
+                        </Route>
+                        <Route exact path="/forget">
+                            <ForgetPassword />
                         </Route>
                     </Switch>
                 </Router>
