@@ -55,6 +55,7 @@ const ForgetPassword = () => {
             const response = await sendResetLink({
                 email: data['E-mail'],
             });
+            setEmailError('');
         } catch (error) {
             if (error.status == 404) {
                 setEmailError('Podany e-mail nie istnieje w bazie');
