@@ -47,22 +47,20 @@ const ForgetPassword = () => {
         path: '/users/reset',
     });
 
-    const [emailError, setEmailError] = useState<string>(null!)
+    const [emailError, setEmailError] = useState<string>(null!);
 
     const { register, handleSubmit, errors } = useForm<Email>();
     const onSubmit = async (data: Email) => {
         try {
             const response = await sendResetLink({
-                mail: data['E-mail'],
+                email: data['E-mail'],
             });
         } catch (error) {
-            if(error.status == 404) {
+            if (error.status == 404) {
                 setEmailError('Podane e-mail nie istnieje w bazie');
-            }
-            else if(error.status == 400) {
+            } else if (error.status == 400) {
                 setEmailError('Niepoprawny format e-mail');
-            }
-            else {
+            } else {
                 setEmailError('Błąd serwera! Spróbuj ponownie później.');
             }
         }
