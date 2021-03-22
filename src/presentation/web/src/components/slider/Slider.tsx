@@ -23,6 +23,9 @@ const Slider = ({ photos }: SliderProps) => {
             width: '100%',
             height: '100%',
         },
+        dotActive: {
+            backgroundColor: theme.palette.secondary.main,
+        },
     });
     const classes = useStyle();
     return (
@@ -41,7 +44,9 @@ const Slider = ({ photos }: SliderProps) => {
                 <ArrowForward />
             </IconButton>
             <MobileStepper
-                color="secondary"
+                classes={{
+                    dotActive: classes.dotActive,
+                }}
                 variant="dots"
                 steps={6}
                 position="static"
