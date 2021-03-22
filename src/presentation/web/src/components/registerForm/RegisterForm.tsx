@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { useMutate } from 'restful-react';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 
 interface Inputs {
     name: string;
@@ -10,27 +11,31 @@ interface Inputs {
     mail: string;
     password: string;
     repPassword: string;
-    phone: number
+    birthDate: Date;
+    phone: number;
 }
 
-function RegisterForm() {   
+function RegisterForm() {
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const { register, handleSubmit, errors, setError, getValues, formState, trigger } = useForm<Inputs>()
+    const { register, handleSubmit, errors, setError, getValues, formState, trigger } = useForm<Inputs>({})
+    const [date, setDate] = useState(new Date());
     const { mutate } = useMutate({
         verb: 'POST',
         path: '/users'
     })
-    const onSubmit = async ({name, surname, mail, password, repPassword, phone}: Inputs) => {
-            mutate({
-                name,
-                surname,
-                mail,
-                password,
-                repPassword,
-                phone
-            }).catch((error) => {
-                setError('mail', { message: error.data.message })
-            })
+    const onSubmit = async ({name, surname, mail, password, repPassword, birthDate, phone}: Inputs) => {
+            // mutate({
+            //     name,
+            //     surname,
+            //     mail,
+            //     password,
+            //     repPassword,
+            //     phone
+            // }).catch((error) => {
+            //     setError('mail', { message: error.data.message })
+            // })
+            console.log(errors)
+            console.log(name, surname, mail, password, repPassword, birthDate, phone)
         
     }
     const validateRepeat = () => {
@@ -85,6 +90,22 @@ function RegisterForm() {
                 inputRef={register({ required: true, validate: { repeatPassowrd } })}
                 error={errors.repPassword ? true : false}
                 helperText={errors.repPassword ? errors.repPassword.message : undefined}
+            />
+            <KeyboardDatePicker
+                required
+                name="birthDate"
+                disableFuture
+                minDate="1900-01-01"
+                minDateMessage="Podaj późniejszą datę!"
+                openTo="year"
+                format="dd/MM/yyyy"
+                placeholder="DD/MM/YYYY"
+                views={['year', 'month', 'date']}
+                label="Data urodzenia"
+                invalidDateMessage="Podaj datę w formacie DD/MM/RRRR"
+                maxDateMessage="Podaj wcześniejszą datę!"
+                value={date}
+                onChange={date => date && setDate(date)}
             />
             <TextField
                 name="phone"

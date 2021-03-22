@@ -13,13 +13,13 @@ import Footer from './components/footer/Footer';
 import RegisterForm from './components/registerForm/RegisterForm';
 import { RestfulProvider } from 'restful-react';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DayjsUtils from '@date-io/dayjs'
+import DateFnsUtils from '@date-io/date-fns';
 
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <RestfulProvider base="http://localhost:8000/api">
-                <MuiPickersUtilsProvider utils={DayjsUtils}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Container>
                         <Router>
                             <Navbar />
