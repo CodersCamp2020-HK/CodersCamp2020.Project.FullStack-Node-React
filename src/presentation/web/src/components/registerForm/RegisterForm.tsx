@@ -20,11 +20,14 @@ function RegisterForm() {
         verb: 'POST',
         path: '/users'
     })
-    const onSubmit = async (data: Inputs) => {
+    const onSubmit = async ({name, surname, mail, password, repPassword, phone}: Inputs) => {
             mutate({
-                mail: data.mail,
-                password: data.password,
-                repPassword: data.repPassword
+                name,
+                surname,
+                mail,
+                password,
+                repPassword,
+                phone
             }).catch((error) => {
                 setError('mail', { message: error.data.message })
             })

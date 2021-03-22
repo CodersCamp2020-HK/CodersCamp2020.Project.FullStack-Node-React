@@ -19,9 +19,12 @@ import PaginationParams from '@infrastructure/Pagination';
 const SALT_ROUNDS = 10;
 
 export type UserCreationParams = {
+    name: string;
+    surname: string;
     mail: Email;
     password: Password;
     repPassword: Password;
+    phone: number;
 };
 
 export type UserLoginParams = Pick<User, 'mail' | 'password'>;
@@ -122,6 +125,9 @@ export class UsersService {
             const user = this.userRepository.create({
                 mail: userCreationParams.mail,
                 password: hash,
+                name: userCreationParams.name,
+                surname: userCreationParams.surname,
+                phone: userCreationParams.phone,
             });
 
             return this.userRepository.save(user);
