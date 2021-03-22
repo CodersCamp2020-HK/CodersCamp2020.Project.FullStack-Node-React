@@ -10,6 +10,7 @@ const ActivationSent = () => {
             backgroundColor: theme.palette.secondary.dark,
             width: '200px',
             height: '200px',
+            marginBottom: theme.spacing(1),
         },
         paper: {
             padding: theme.spacing(2),
@@ -17,7 +18,13 @@ const ActivationSent = () => {
             flexDirection: 'column',
             alignItems: 'center',
         },
+        message: {
+            textAlign: 'center',
+            paddingLeft: theme.spacing(3),
+            paddingRight: theme.spacing(3),
+        },
         returnToLogin: {
+            marginTop: theme.spacing(1),
             color: theme.palette.info.dark,
         },
         icon: {
@@ -32,8 +39,11 @@ const ActivationSent = () => {
                     <Avatar variant="circular" className={classes.greenBackground}>
                         <FaEnvelopeOpenText size="100" color={theme.palette.secondary.contrastText} />
                     </Avatar>
-                    <Typography variant="body1">
-                        Sprawdź swoją skrzynkę mailową. Mail z linkiem aktywacyjnym powienien zostać dostarczony w
+                    <Typography className={classes.message} variant="body1">
+                        Sprawdź swoją skrzynkę mailową.
+                    </Typography>
+                    <Typography className={classes.message} variant="body1">
+                    Mail z linkiem aktywacyjnym powienien zostać dostarczony w
                         przeciągu kilku minut.
                     </Typography>
                     <Link component={RouterLink} className={classes.returnToLogin} to="/login">
