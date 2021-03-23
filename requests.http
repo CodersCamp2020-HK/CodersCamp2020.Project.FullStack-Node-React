@@ -1,31 +1,38 @@
 ## TODO
-# User nie ma daty urodzenia*
-# UserCreationParams zmienić*
 # Animal do zmiany dummy data
 # Endpointy do zmiany
-# 
+# Zmienić filtry dla pojedynczego formularza po mailu i ustawić autoryzację
+# Pobieranie kroków adopcyjnych po pagtunku
+# Pobieranie formularza po gatunku
+
+@baseUrl = https://coders-camp-schronisko.herokuapp.com/api
  
 ### Get all animals
-GET https://coders-camp-schronisko.herokuapp.com/api/animals
+GET {{baseUrl}}/animals
 
 ### Get animal
-GET https://coders-camp-schronisko.herokuapp.com/api/animals/1
+GET {{baseUrl}}/animals/1
 
 ### Register user
-POST https://coders-camp-schronisko.herokuapp.com/api/users
+POST {{baseUrl}}/users
 Content-Type: application/json
 
 {
+    "name": "Testowy",
+    "surname": "Uytkownik",
+    "phone": 123456789,
     "repPassword": "ZAQ!2wsx",
     "password": "ZAQ!2wsx",
-    "mail": "elo@elo.elo"
+    "mail": "elo@elo.elo",
+    "birthDate": "2000-12-30"
 }
 
 ### Activate user
-GET https://coders-camp-schronisko.herokuapp.com/api/users/activate/32195d9c-a7cb-4931-94d7-65c67bce12b9
+GET {{baseUrl}}/users/activate/c6845061-f7d8-4cd0-b659-785cdfbcdaeb
 
 ### Login user
-POST https://coders-camp-schronisko.herokuapp.com/api/users/auth
+# @name login
+POST {{baseUrl}}/users/auth
 Content-Type: application/json
 
 {
@@ -33,13 +40,16 @@ Content-Type: application/json
     "password": "ZAQ!2wsx"
 }
 
+### Auth token
+@authToken = {{login.response.body.apiKey}}
+
 ### Get adoption form
-GET https://coders-camp-schronisko.herokuapp.com/api/forms/2
-access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoibm9ybWFsIiwiaWQiOjYsImlhdCI6MTYxNjUzNTI5M30.02-wBPGdYx-ewFkL6aIZqixstrauzC2OigOwRitwfMs
+GET {{baseUrl}}/forms/2
+access_token: {{authToken}}
 
 ### Post adoption form
-POST https://coders-camp-schronisko.herokuapp.com/api/adoptionSubmissions/add
-access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoibm9ybWFsIiwiaWQiOjYsImlhdCI6MTYxNjUzNTI5M30.02-wBPGdYx-ewFkL6aIZqixstrauzC2OigOwRitwfMs
+POST {{baseUrl}}/adoptionSubmissions/add
+access_token: {{authToken}}
 Content-Type: application/json
 
 {
@@ -63,5 +73,8 @@ Content-Type: application/json
     ]
 }
 
-### Get user's submissions
-GET https://coders-camp-schronisko.herokuapp.com/api/adoptionSubmissions/add
+### Get submissions in progress
+GET {{baseUrl}}/adoptionSubmissions?status=in+progress
+access_token: {{authToken}}
+
+### Accept submission

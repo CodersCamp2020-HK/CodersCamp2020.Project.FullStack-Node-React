@@ -43,8 +43,7 @@ interface GetAllAnimalSubmissionsParams {
 
 export interface ChangeStatusForAdoptionFormParams {
     status: AnimalFormStatus;
-    userId: number;
-    animalId: number;
+    submissionId: number;
 }
 
 interface AnimalAnswer {
@@ -129,15 +128,14 @@ export class AnimalSubmissionsService {
         return submissions;
     }
 
-    public async changeStatusForAdoptionForm(changeStatusParams: ChangeStatusForAdoptionFormParams): Promise<void> {
-        await this.animalSubmissionRepository
-            .createQueryBuilder()
-            .update()
-            .set({ status: changeStatusParams.status })
-            .where('applicantId = :id', { id: changeStatusParams.userId })
-            .andWhere('animalId = :id', { id: changeStatusParams.animalId })
-            .execute();
-        return;
+    public async changeStatusForAdoptionForm({
+        status,
+        submissionId,
+    }: ChangeStatusForAdoptionFormParams): Promise<void> {
+        const submission = await this.animalSubmissionRepository.findOne(submissionId);
+        if (!submission) throw new ApiError('Not Found', 404, `Submission with id: ${submissionId} not found!`);
+        submission.status = status;
+        this.animalSubmissionRepository.save(submission);
     }
 
     public async getAnimalSubmission(id: number, currentUser: IUserInfo): Promise<FormAnimalSubmission> {
