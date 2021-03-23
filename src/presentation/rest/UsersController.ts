@@ -273,8 +273,7 @@ export class UsersController extends Controller {
         @Request() request: ExRequest,
     ): Promise<void> {
         const ACTIVATION_PATH = request.get('host') + '/api/users/reset/';
-        this.usersService.sendResetPasswordLink(email, ACTIVATION_PATH);
-        this.setStatus(200);
+        return await this.usersService.sendResetPasswordLink(email, ACTIVATION_PATH);
     }
 
     /**
