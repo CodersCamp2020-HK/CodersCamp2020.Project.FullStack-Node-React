@@ -48,6 +48,24 @@ export const seedFormQuestion = (): DeepPartial<FormQuestion>[] => {
             },
             form: { id: 1 },
         },
+        {
+            id: 6,
+            question: 'Czemu chcą Państwo zostać wolontariuszem?',
+            placeholder: {
+                type: AnswerType.TEXT,
+                answer: '...',
+            },
+            form: { id: 3 },
+        },
+        {
+            id: 7,
+            question: 'Czy pracowali Państwo charytatywnie?',
+            placeholder: {
+                type: AnswerType.RADIO,
+                answer: ['Tak', 'Nie'],
+            },
+            form: { id: 3 },
+        },
     ];
 
     return formQuestion;
