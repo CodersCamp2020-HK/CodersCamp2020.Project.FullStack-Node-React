@@ -1,21 +1,22 @@
 import React from 'react';
-import './App.css';
-import theme from './themes/theme';
 import { Container, ThemeProvider } from '@material-ui/core';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
+import './App.css';
+import Login from './components/login/Login';
 import Navbar from './components/navbar/Navbar';
 import About from './components/pages/About';
 import Adoption from './components/pages/Adoption';
-import Donation from './components/pages/Donation';
 import Contact from './components/pages/Contact';
+import Donation from './components/pages/Donation';
 import Home from './components/pages/Home';
+import theme from './themes/theme';
 import Footer from './components/footer/Footer';
 import ActivationSent from './components/activationSent/ActivationSent';
 
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Container>
+            <Container style={{ marginTop: 64 }}>
                 <Router>
                     <Navbar />
                     <Switch>
@@ -37,6 +38,9 @@ const App: React.FC = () => {
                         <Route exact path="/register/sent">
                             <ActivationSent />
                         </Route>
+                      <Route exact path="/login">
+                        <Login />
+                    </Route>
                     </Switch>
                 </Router>
             </Container>
