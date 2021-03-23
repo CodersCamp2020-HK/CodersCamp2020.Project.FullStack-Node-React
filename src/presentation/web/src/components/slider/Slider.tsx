@@ -42,13 +42,16 @@ const Slider = ({ photos }: SliderProps) => {
             height: '100%',
         },
         dot: {
-            //backgroundColor: theme.palette.secondary.main,
-            // width: 50,
-            // height: 50,
-            // borderRadius: '50%',
+            color: theme.palette.action.disabled,
+            fontSize: 24,
+            '&:hover': {
+                cursor: 'pointer',
+                fontSize: 30,
+            },
         },
         dotActive: {
-            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.secondary.main,
+            fontSize: 30,
         },
     });
     const classes = useStyle();
@@ -79,8 +82,8 @@ const Slider = ({ photos }: SliderProps) => {
                 </IconButton>
             </Container>
             <Container style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                <GoPrimitiveDot />
-                <GoPrimitiveDot />
+                <GoPrimitiveDot className={classes.dot} onClick={() => setSlideIndex(0)} />
+                <GoPrimitiveDot className={classes.dotActive} onClick={() => setSlideIndex(1)} />
             </Container>
         </Container>
     );
