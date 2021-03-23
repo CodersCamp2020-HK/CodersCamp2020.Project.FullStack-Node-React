@@ -59,7 +59,7 @@ const Slider = ({ photos }: SliderProps) => {
                 <IconButton className={classes.buttonBackground} onClick={() => setSlideIndex(slideIndex - 1)}>
                     <ArrowBack />
                 </IconButton>
-                <SwipeableViews index={slideIndex} enableMouseEvents={true}>
+                <SwipeableViews index={slideIndex} enableMouseEvents={true} onChangeIndex={(index) => setSlideIndex(index)}>
                     {photos.map((photo, index) => 
                          <Card>
                             <CardMedia
