@@ -30,7 +30,7 @@ const Navbar = () => {
 
     return (
         <nav>
-            <AppBar color="default" position="static">
+            <AppBar color="default" position="fixed">
                 <Toolbar>
                     <Link component={RouterLink} to="/">
                         LOGO

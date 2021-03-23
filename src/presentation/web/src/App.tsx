@@ -22,36 +22,36 @@ const App: React.FC = () => {
         <ThemeProvider theme={theme}>
             <RestfulProvider base="http://localhost:8000/api">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Grid container justify="center" alignItems="center">
-                        <Container>
+                    <Container style={{marginTop: 64}}>
                             <Router>
                                 <Navbar />
                                 <Switch>
-                                    <Route exact path="/">
-                                        <Home />
-                                    </Route>
-                                    <Route exact path="/about">
-                                        <About />
-                                    </Route>
-                                    <Route exact path="/adoption">
-                                        <Adoption />
-                                    </Route>
-                                    <Route exact path="/donation">
-                                        <Donation />
-                                    </Route>
-                                    <Route exact path="/contact">
-                                        <Contact />
-                                    </Route>
-                                    <Route exact path="/register">
-                                        <RegisterForm />
-                                    </Route>
-                                    <Route exact path="/login">
-                                        <Login />
-                                    </Route>
+                                    <Grid container>
+                                        <Route exact path="/">
+                                            <Home />
+                                        </Route>
+                                        <Route exact path="/about">
+                                            <About />
+                                        </Route>
+                                        <Route exact path="/adoption">
+                                            <Adoption />
+                                        </Route>
+                                        <Route exact path="/donation">
+                                            <Donation />
+                                        </Route>
+                                        <Route exact path="/contact">
+                                            <Contact />
+                                        </Route>
+                                        <Route exact path="/register">
+                                            <RegisterForm />
+                                        </Route>
+                                        <Route exact path="/login">
+                                            <Login />
+                                        </Route>
+                                    </Grid>
                                 </Switch>
                             </Router>
-                        </Container>
-                    </Grid>
+                    </Container>
                 </MuiPickersUtilsProvider>
             </RestfulProvider>
             <Footer />

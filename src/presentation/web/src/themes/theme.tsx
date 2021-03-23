@@ -28,7 +28,11 @@ const theme = createMuiTheme({
             variant: 'outlined',
             size: 'medium',
             fullWidth: true,
-            margin: 'normal'
+            // margin: 'normal'
+        },
+        MuiGrid: {
+            alignItems: 'center',
+            justify: 'center'
         }
     },
     overrides: {
@@ -48,8 +52,16 @@ const theme = createMuiTheme({
                 '& fieldset': {
                     borderRadius: 15,
                 },
+                paddingBottom: 20,
+                marginBottom: 10
             },
         },
+        MuiFormHelperText: {
+            root: {
+                position: 'absolute',
+                bottom: 0
+            }
+        }
     },
 });
 

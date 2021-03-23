@@ -86,7 +86,7 @@ function RegisterForm() {
 
 
     return (
-        <Grid container item xs={5} direction="column" justify="space-between" alignItems="center">
+        <Grid item xs={5} direction="column" justify="space-between" alignItems="center">
             <Paper className={classes.paper} variant="outlined" square={false}>
                 <SvgIcon className={classes.lockBackground}>
                     <LockOutlinedIcon className={classes.lockIcon} />
