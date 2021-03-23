@@ -1,16 +1,8 @@
-import {
-    Card,
-    CardMedia,
-    Container,
-    IconButton,
-    makeStyles,
-    Theme,
-    useTheme,
-} from '@material-ui/core';
+import { Card, CardMedia, Container, IconButton, makeStyles, Theme, useTheme } from '@material-ui/core';
 import { ArrowBack, ArrowForward } from '@material-ui/icons';
 import React, { useState } from 'react';
-import SwipeableViews from 'react-swipeable-views';
 import { GoPrimitiveDot } from 'react-icons/go';
+import SwipeableViews from 'react-swipeable-views';
 
 interface SliderProps {
     photos: string[];
@@ -18,26 +10,43 @@ interface SliderProps {
 
 const Slider = ({ photos }: SliderProps) => {
     const [slideIndex, setSlideIndex] = useState<number>(0);
-    const [isLastIndex, setIsLastIndex] = useState<boolean>(false);
-    const MAX_SLIDE_INDEX = photos.length;
+    const MAX_SLIDE_INDEX = photos.length - 1;
+
+    const handleNext = () => {
+        if (slideIndex !== MAX_SLIDE_INDEX) setSlideIndex(slideIndex + 1);
+    };
+
+    const handleBack = () => {
+        if (slideIndex !== 0) setSlideIndex(slideIndex - 1);
+    };
 
     const theme = useTheme<Theme>();
     const useStyle = makeStyles({
-        buttonBackground: {
+        arrowButton: {
             backgroundColor: theme.palette.secondary.main,
             color: theme.palette.secondary.contrastText,
             '&:hover': {
                 backgroundColor: theme.palette.secondary.light,
             },
         },
-        slideContainer: {
+        prevButton: {
+            marginRight: theme.spacing(3),
+        },
+        nextButton: {
+            marginLeft: theme.spacing(3),
+        },
+        carouselContainer: {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            marginBottom: theme.spacing(2),
         },
         image: {
             width: '100%',
             height: '100%',
+            '&:hover': {
+                cursor: 'grab',
+            },
         },
         dot: {
             color: theme.palette.action.disabled,
@@ -55,27 +64,32 @@ const Slider = ({ photos }: SliderProps) => {
     const classes = useStyle();
     return (
         <Container>
-            <Container className={classes.slideContainer}>
-                <IconButton className={classes.buttonBackground} onClick={() => setSlideIndex(slideIndex - 1)}>
+            <Container className={classes.carouselContainer}>
+                <IconButton className={`${classes.arrowButton} ${classes.prevButton}`} onClick={handleBack}>
                     <ArrowBack />
                 </IconButton>
-                <SwipeableViews index={slideIndex} enableMouseEvents={true} onChangeIndex={(index) => setSlideIndex(index)}>
-                    {photos.map((photo, index) => 
-                         <Card>
-                            <CardMedia
-                                className={classes.image}
-                                component="img"
-                                image={photo}
-                            />
+                <SwipeableViews
+                    index={slideIndex}
+                    enableMouseEvents={true}
+                    onChangeIndex={(index) => setSlideIndex(index)}
+                >
+                    {photos.map((photo, index) => (
+                        <Card>
+                            <CardMedia className={classes.image} component="img" image={photo} />
                         </Card>
-                    )}
+                    ))}
                 </SwipeableViews>
-                <IconButton className={classes.buttonBackground} onClick={() => setSlideIndex(slideIndex + 1)}>
+                <IconButton className={`${classes.arrowButton} ${classes.nextButton}`} onClick={handleNext}>
                     <ArrowForward />
                 </IconButton>
             </Container>
-            <Container style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                {photos.map((photo, index) => <GoPrimitiveDot className={index == slideIndex ? classes.dotActive : classes.dot} onClick={() => setSlideIndex(index)} />)}
+            <Container style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {photos.map((photo, index) => (
+                    <GoPrimitiveDot
+                        className={index == slideIndex ? classes.dotActive : classes.dot}
+                        onClick={() => setSlideIndex(index)}
+                    />
+                ))}
             </Container>
         </Container>
     );
