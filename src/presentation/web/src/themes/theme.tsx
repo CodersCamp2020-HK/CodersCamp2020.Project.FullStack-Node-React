@@ -34,6 +34,9 @@ const theme = createMuiTheme({
             fullWidth: true,
             margin: 'normal',
         },
+        MuiCheckbox: {
+            color: 'secondary'
+        }
     },
     overrides: {
         MuiButton: {
