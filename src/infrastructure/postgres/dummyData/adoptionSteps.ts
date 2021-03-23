@@ -1,18 +1,38 @@
 import { DeepPartial } from 'typeorm';
-import * as faker from 'faker';
 import AdoptionStep from '../AdoptionStep';
 
-export const seedAdoptionStep = (amount: number): DeepPartial<AdoptionStep>[] => {
-    const adoptionStep: DeepPartial<AdoptionStep>[] = [];
-    for (let i = 0; i < amount; i++) {
-        adoptionStep.push({
-            name: faker.random.word(),
-            description: faker.lorem.words(3),
+export const seedAdoptionStep = (): DeepPartial<AdoptionStep>[] => {
+    const adoptionStep: DeepPartial<AdoptionStep>[] = [
+        {
+            name: 'Krok 1 - wypełnienie formularza',
+            description: 'Krok zawierający formularz adopcyjny dla psa. Wymagany do adopcji',
+            number: 1,
             organization: { id: 1 },
-            number: i + 1,
-            form: { id: i + 1 },
-            specie: { id: (i % 2) + 1 },
-        });
-    }
+            specie: { id: 1 },
+            form: { id: 1 },
+        },
+        {
+            name: 'Krok 2 - spotkanie w schronisku',
+            description: 'Jednorazowe spotkanie adoptującego z psem w schronisku',
+            number: 2,
+            organization: { id: 1 },
+            specie: { id: 1 },
+        },
+        {
+            name: 'Krok 1 - wypełnienie formularza',
+            description: 'Krok zawierający formularz adopcyjny dla kota. Wymagany do adopcji',
+            number: 1,
+            organization: { id: 1 },
+            specie: { id: 2 },
+            form: { id: 2 },
+        },
+        {
+            name: 'Krok 2 - spotkanie w schronisku',
+            description: 'Jednorazowe spotkanie adoptującego z kotem w schronisku',
+            number: 2,
+            organization: { id: 1 },
+            specie: { id: 2 },
+        },
+    ];
     return adoptionStep;
 };
