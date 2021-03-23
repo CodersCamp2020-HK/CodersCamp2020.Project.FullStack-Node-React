@@ -3,24 +3,51 @@ import * as faker from 'faker';
 import FormAnimalSubmission from '../FormAnimalSubmission';
 import { AnimalFormStatus } from '../FormAnimalSubmission';
 
-export const seedFormAnimalSubmission = (amount: number): DeepPartial<FormAnimalSubmission>[] => {
-    const formAnimalSubmission: DeepPartial<FormAnimalSubmission>[] = [];
+export const seedFormAnimalSubmission = (): DeepPartial<FormAnimalSubmission>[] => {
     const randomStatus = faker.random.arrayElement(Object.values(AnimalFormStatus));
-    for (let i = 0; i < amount; i++) {
-        formAnimalSubmission.push({
+    const formAnimalSubmission: DeepPartial<FormAnimalSubmission>[] = [
+        {
             status: randomStatus,
             reason: faker.lorem.sentence(),
             submissionDate: faker.date.past(),
             reviewDate: faker.date.past(),
-            animal: { id: i + 1 },
-            applicant: { id: i + 1 },
-            reviewer: { user: { id: i + 1 }, organization: { id: 1 } },
+            animal: { id: 1 },
+            applicant: { id: 2 },
+            reviewer: { user: { id: 1 }, organization: { id: 1 } },
             adoptionStep: {
                 organization: { id: 1 },
-                specie: { id: (i % 2) + 1 },
-                number: i + 1,
+                specie: { id: 1 },
+                number: 1,
             },
-        });
-    }
+        },
+        {
+            status: randomStatus,
+            reason: faker.lorem.sentence(),
+            submissionDate: faker.date.past(),
+            reviewDate: faker.date.past(),
+            animal: { id: 2 },
+            applicant: { id: 2 },
+            reviewer: { user: { id: 1 }, organization: { id: 1 } },
+            adoptionStep: {
+                organization: { id: 1 },
+                specie: { id: 2 },
+                number: 1,
+            },
+        },
+        {
+            status: randomStatus,
+            reason: faker.lorem.sentence(),
+            submissionDate: faker.date.past(),
+            reviewDate: faker.date.past(),
+            animal: { id: 2 },
+            applicant: { id: 3 },
+            reviewer: { user: { id: 1 }, organization: { id: 1 } },
+            adoptionStep: {
+                organization: { id: 1 },
+                specie: { id: 2 },
+                number: 1,
+            },
+        },
+    ];
     return formAnimalSubmission;
 };
