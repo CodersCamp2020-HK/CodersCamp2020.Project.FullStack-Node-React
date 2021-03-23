@@ -1,12 +1,15 @@
 import { Card, CardMedia, Container, IconButton, makeStyles, MobileStepper, Theme, useTheme } from '@material-ui/core';
 import { ArrowBack, ArrowForward } from '@material-ui/icons';
-import React from 'react';
+import React, { useState } from 'react';
+import SwipeableViews from 'react-swipeable-views';
 
 interface SliderProps {
     photos: string[];
 }
 
 const Slider = ({ photos }: SliderProps) => {
+    const [slideIndex, setSlideIndex] = useState<number>(0);
+
     const theme = useTheme<Theme>();
     const useStyle = makeStyles({
         buttonBackground: {
@@ -15,9 +18,6 @@ const Slider = ({ photos }: SliderProps) => {
             '&:hover': {
                 backgroundColor: theme.palette.secondary.light,
             },
-        },
-        card: {
-            maxWidth: '50%',
         },
         image: {
             width: '100%',
@@ -30,17 +30,26 @@ const Slider = ({ photos }: SliderProps) => {
     const classes = useStyle();
     return (
         <Container>
-            <Card className={classes.card}>
-                <CardMedia
-                    className={classes.image}
-                    component="img"
-                    image="https://images.pexels.com/photos/2817421/pexels-photo-2817421.jpeg"
-                />
-            </Card>
-            <IconButton className={classes.buttonBackground}>
+            <SwipeableViews index={slideIndex}>
+                <Card>
+                    <CardMedia
+                        className={classes.image}
+                        component="img"
+                        image="https://images.pexels.com/photos/2817421/pexels-photo-2817421.jpeg"
+                    />
+                </Card>
+                <Card>
+                    <CardMedia
+                        className={classes.image}
+                        component="img"
+                        image="https://images.pexels.com/photos/416160/pexels-photo-416160.jpeg"
+                    />
+                </Card>
+            </SwipeableViews>
+            <IconButton className={classes.buttonBackground} onClick={() => setSlideIndex(slideIndex - 1)}>
                 <ArrowBack />
             </IconButton>
-            <IconButton className={classes.buttonBackground}>
+            <IconButton className={classes.buttonBackground} onClick={() => setSlideIndex(slideIndex + 1)}>
                 <ArrowForward />
             </IconButton>
             <MobileStepper
