@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Typography from '@material-ui/core/Typography'
+import Paper from '@material-ui/core/Paper';
 import { Theme, useTheme, makeStyles } from '@material-ui/core';
 import { useMutate } from 'restful-react';
 import { KeyboardDatePicker } from '@material-ui/pickers';
@@ -34,6 +35,17 @@ function RegisterForm() {
         },
         submit: {
             filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))'
+        },
+        paper: {
+            color: theme.palette.background.paper,
+            padding: theme.spacing(4),
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        text: {
+            color: theme.palette.text.primary
         }
     })
     const classes = useStyle();
@@ -66,83 +78,85 @@ function RegisterForm() {
 
 
     return (
-        <Grid container item xs={4} direction="column" justify="center" alignItems="center" >
-            <SvgIcon className={classes.lockBackground}>
-                <LockOutlinedIcon className={classes.lockIcon} />
-            </SvgIcon>
-            <Typography variant="h5">Zarejestruj się</Typography>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <TextField
-                    name="name"
-                    label="Imię"
-                    required
-                    inputRef={register({ required: 'Imię jest wymagane!', minLength: { value: 2, message: 'Imię za krótkie!' }, maxLength: { value: 50, message: 'Imię za długie'} })}
-                    error={errors.name ? true : false}
-                    helperText={errors.name ? errors.name.message : undefined}
-                />
-                <TextField
-                    name="surname"
-                    label="Nazwisko"
-                    required
-                    inputRef={register({ required: 'Nazwisko jest wymagane!', minLength: { value: 2, message: 'Nazwisko za krótkie' }, maxLength: { value: 50, message: 'Nazwisko za długie' } })}
-                    error={errors.surname ? true : false}
-                    helperText={errors.surname ? errors.surname.message : undefined}
-                />
-                <TextField
-                    name="mail"
-                    label="Email"
-                    type="email"
-                    required
-                    inputRef={register({ required: 'Email jest wymagany!', pattern: { value: emailPattern, message: 'Nieprawidłowy email!'} })}
-                    error={errors.mail ? true : false}
-                    helperText={errors.mail ? errors.mail.message : undefined}
-                />
-                <TextField
-                    name="password"
-                    label="Password"
-                    type="password"
-                    required
-                    onChange={validateRepeat}
-                    inputRef={register({ required: 'Hasło jest wymagane', pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, message: 'Hasło musi zawierać co najmniej jedną małą literę, jedną wielką literę, jedną liczbę oraz jeden znak specjalny (@$!%*?&)!' } })}
-                    error={errors.password ? true : false}
-                    helperText={errors.password ? errors.password.message : undefined}
-                />
-                <TextField
-                    name="repPassword"
-                    label="Powtórz hasło"
-                    type="password"
-                    required
-                    inputRef={register({ required: true, validate: { repeatPassowrd } })}
-                    error={errors.repPassword ? true : false}
-                    helperText={errors.repPassword ? errors.repPassword.message : undefined}
-                />
-                <KeyboardDatePicker
-                    required
-                    name="birthDate"
-                    disableFuture
-                    minDate="1900-01-01"
-                    minDateMessage="Podaj późniejszą datę!"
-                    openTo="year"
-                    format="dd/MM/yyyy"
-                    placeholder="DD/MM/YYYY"
-                    views={['year', 'month', 'date']}
-                    label="Data urodzenia"
-                    invalidDateMessage="Podaj datę w formacie DD/MM/RRRR"
-                    maxDateMessage="Podaj wcześniejszą datę!"
-                    value={date}
-                    onChange={date => date && setDate(date)}
-                    inputRef={register({ required: 'Data urodzenia jest wymagana '})}
-                />
-                <TextField
-                    name="phone"
-                    label="Telefon"
-                    required
-                    inputRef={register({ required: 'Telefon jest wymagany!', pattern: { value: /^\d{9}$/, message: 'Telefon musi zawierać 9 cyfr' }, valueAsNumber: true })}
-                    error={errors.phone ? true : false}
-                    helperText={errors.phone ? errors.phone.message : undefined}
-                />
-                <Button className={classes.submit} fullWidth variant="contained" color="primary" type="submit">Zarejestruj się</Button>
-            </form>
+        <Grid container item xs={5} direction="column" justify="center" alignItems="center" >
+            <Paper className={classes.paper} variant="outlined" square={false}>
+                <SvgIcon className={classes.lockBackground}>
+                    <LockOutlinedIcon className={classes.lockIcon} />
+                </SvgIcon>
+                <Typography className={classes.text} variant="h5">Zarejestruj się</Typography>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <TextField
+                        name="name"
+                        label="Imię"
+                        required
+                        inputRef={register({ required: 'Imię jest wymagane!', minLength: { value: 2, message: 'Imię za krótkie!' }, maxLength: { value: 50, message: 'Imię za długie'} })}
+                        error={errors.name ? true : false}
+                        helperText={errors.name ? errors.name.message : undefined}
+                    />
+                    <TextField
+                        name="surname"
+                        label="Nazwisko"
+                        required
+                        inputRef={register({ required: 'Nazwisko jest wymagane!', minLength: { value: 2, message: 'Nazwisko za krótkie' }, maxLength: { value: 50, message: 'Nazwisko za długie' } })}
+                        error={errors.surname ? true : false}
+                        helperText={errors.surname ? errors.surname.message : undefined}
+                    />
+                    <TextField
+                        name="mail"
+                        label="Email"
+                        type="email"
+                        required
+                        inputRef={register({ required: 'Email jest wymagany!', pattern: { value: emailPattern, message: 'Nieprawidłowy email!'} })}
+                        error={errors.mail ? true : false}
+                        helperText={errors.mail ? errors.mail.message : undefined}
+                    />
+                    <TextField
+                        name="password"
+                        label="Hasło"
+                        type="password"
+                        required
+                        onChange={validateRepeat}
+                        inputRef={register({ required: 'Hasło jest wymagane', pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, message: 'Hasło musi zawierać co najmniej jedną małą literę, jedną wielką literę, jedną liczbę oraz jeden znak specjalny (@$!%*?&)!' } })}
+                        error={errors.password ? true : false}
+                        helperText={errors.password ? errors.password.message : undefined}
+                    />
+                    <TextField
+                        name="repPassword"
+                        label="Powtórz hasło"
+                        type="password"
+                        required
+                        inputRef={register({ required: true, validate: { repeatPassowrd } })}
+                        error={errors.repPassword ? true : false}
+                        helperText={errors.repPassword ? errors.repPassword.message : undefined}
+                    />
+                    <KeyboardDatePicker
+                        required
+                        name="birthDate"
+                        disableFuture
+                        minDate="1900-01-01"
+                        minDateMessage="Podaj późniejszą datę!"
+                        openTo="year"
+                        format="dd/MM/yyyy"
+                        placeholder="DD/MM/YYYY"
+                        views={['year', 'month', 'date']}
+                        label="Data urodzenia"
+                        invalidDateMessage="Podaj datę w formacie DD/MM/RRRR"
+                        maxDateMessage="Podaj wcześniejszą datę!"
+                        value={date}
+                        onChange={date => date && setDate(date)}
+                        inputRef={register({ required: 'Data urodzenia jest wymagana '})}
+                    />
+                    <TextField
+                        name="phone"
+                        label="Telefon"
+                        required
+                        inputRef={register({ required: 'Telefon jest wymagany!', pattern: { value: /^\d{9}$/, message: 'Telefon musi zawierać 9 cyfr' }, valueAsNumber: true })}
+                        error={errors.phone ? true : false}
+                        helperText={errors.phone ? errors.phone.message : undefined}
+                    />
+                    <Button className={classes.submit} fullWidth variant="contained" color="primary" type="submit">Zarejestruj się</Button>
+                </form>
+            </Paper>
         </Grid>
     )
 }
