@@ -1,9 +1,9 @@
 ## TODO
-# Link z mailem w responsie rejestracji
-# User nie ma daty urodzenia
+# User nie ma daty urodzenia*
 # UserCreationParams zmienić*
 # Animal do zmiany dummy data
 # Endpointy do zmiany
+# 
  
 ### Get all animals
 GET https://coders-camp-schronisko.herokuapp.com/api/animals
@@ -21,6 +21,9 @@ Content-Type: application/json
     "mail": "elo@elo.elo"
 }
 
+### Activate user
+GET https://coders-camp-schronisko.herokuapp.com/api/users/activate/32195d9c-a7cb-4931-94d7-65c67bce12b9
+
 ### Login user
 POST https://coders-camp-schronisko.herokuapp.com/api/users/auth
 Content-Type: application/json
@@ -31,21 +34,34 @@ Content-Type: application/json
 }
 
 ### Get adoption form
-GET https://coders-camp-schronisko.herokuapp.com/api/adoptionSubmissions
-Authorization: : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoibm9ybWFsIiwiaWQiOjcsImlhdCI6MTYxNjUyOTc4N30.uKewT20Qhcwy54Lu6t5OzzyNL8BX8j-tSsVzfYQw0m8
+GET https://coders-camp-schronisko.herokuapp.com/api/forms/2
+access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoibm9ybWFsIiwiaWQiOjYsImlhdCI6MTYxNjUzNTI5M30.02-wBPGdYx-ewFkL6aIZqixstrauzC2OigOwRitwfMs
 
 ### Post adoption form
 POST https://coders-camp-schronisko.herokuapp.com/api/adoptionSubmissions/add
+access_token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoibm9ybWFsIiwiaWQiOjYsImlhdCI6MTYxNjUzNTI5M30.02-wBPGdYx-ewFkL6aIZqixstrauzC2OigOwRitwfMs
+Content-Type: application/json
+
 {
-    "animalId": 3,
+    "animalId": 2,
     "stepNumber": 1,
     "answers": [
         {
-        "questionId": 0,
-        "answer": {
-            "type": "checkbox",
-            "answer": "string"
-        }
+            "questionId": 3,
+            "answer": {
+                "type": "checkbox",
+                "answer": "Tak"
+            }
+        },
+        {
+            "questionId": 4,
+            "answer": {
+                "type": "checkbox",
+                "answer": "Nie"
+            }
         }
     ]
 }
+
+### Get user's submissions
+GET https://coders-camp-schronisko.herokuapp.com/api/adoptionSubmissions/add
