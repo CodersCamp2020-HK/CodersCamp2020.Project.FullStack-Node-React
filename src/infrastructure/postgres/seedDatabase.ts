@@ -75,12 +75,12 @@ export default async function seedDatabase(): Promise<void> {
     await getConnection().getRepository(AnimalHandler).save(seedAnimalHandlers(5));
     await getConnection().getRepository(Calendar).save(seedCalendars(5));
     await getConnection().getRepository(OrganizationUser).save(organizationUsers);
-    await getConnection().getRepository(VolunteerHireStep).save(seedVolunteerHireStep(5));
+    await getConnection().getRepository(VolunteerHireStep).save(seedVolunteerHireStep());
     await getConnection().getRepository(FormAnimalSubmission).save(seedFormAnimalSubmission());
     await getConnection().getRepository(FormQuestion).save(seedFormQuestion());
-    await getConnection().getRepository(FormVolunteerSubmission).save(seedFormVolunteerSubmission(5));
+    await getConnection().getRepository(FormVolunteerSubmission).save(seedFormVolunteerSubmission());
     await getConnection().getRepository(FormAnimalAnswer).save(seedFormAnimalAnswer());
-    await getConnection().getRepository(FormVolunteerAnswer).save(seedFormVolunteerAnswer(5));
+    await getConnection().getRepository(FormVolunteerAnswer).save(seedFormVolunteerAnswer());
 }
 
 // async function seedAndClose() {
