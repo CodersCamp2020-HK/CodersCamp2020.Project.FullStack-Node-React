@@ -70,7 +70,7 @@ export default async function seedDatabase(): Promise<void> {
         .getRepository(User)
         .save(await seedUsers(5));
     await getConnection().getRepository(Organization).save(organizations);
-    await getConnection().getRepository(Form).save(seedForms(5));
+    await getConnection().getRepository(Form).save(seedForms());
     await getConnection().getRepository(AdoptionStep).save(seedAdoptionStep(5));
     await getConnection().getRepository(AnimalHandler).save(seedAnimalHandlers(5));
     await getConnection().getRepository(Calendar).save(seedCalendars(5));
