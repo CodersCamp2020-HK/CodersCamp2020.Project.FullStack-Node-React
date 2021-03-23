@@ -29,6 +29,10 @@ const theme = createMuiTheme({
             size: 'medium',
             fullWidth: true,
             margin: 'normal'
+        },
+        MuiGrid: {
+            alignContent: 'center',
+            alignItems: 'center'
         }
     },
     overrides: {
