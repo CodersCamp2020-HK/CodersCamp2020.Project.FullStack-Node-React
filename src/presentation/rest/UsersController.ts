@@ -45,6 +45,11 @@ import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService'
 import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import { omit } from '../../utils/omit';
 import { DeepPartial } from 'typeorm';
+
+interface uuidResponse {
+    uuid: string;
+}
+
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
@@ -124,12 +129,12 @@ export class UsersController extends Controller {
         @Body() requestBody: UserCreationParams,
         @Res() badRequestResponse: TsoaResponse<400, { reason: string }>,
         @Request() request: ExRequest,
-    ): Promise<string> {
+    ): Promise<uuidResponse> {
         try {
             const createdUser = await this.usersService.create(requestBody);
             const uuid = await this.sendActivationLink(createdUser.id, request);
             this.setStatus(201);
-            return uuid;
+            return { uuid };
         } catch (error) {
             if (
                 error instanceof UniqueUserEmailError ||

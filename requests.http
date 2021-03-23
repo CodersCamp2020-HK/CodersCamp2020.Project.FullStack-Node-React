@@ -14,6 +14,7 @@ GET {{baseUrl}}/animals
 GET {{baseUrl}}/animals/1
 
 ### Register user
+# @name register
 POST {{baseUrl}}/users
 Content-Type: application/json
 
@@ -27,8 +28,11 @@ Content-Type: application/json
     "birthDate": "2000-12-30"
 }
 
+### uuid
+@uuid = {{register.response.body.uuid}}
+
 ### Activate user
-GET {{baseUrl}}/users/activate/c6845061-f7d8-4cd0-b659-785cdfbcdaeb
+GET {{baseUrl}}/users/activate/{{uuid}}
 
 ### Login user
 # @name login
@@ -40,8 +44,19 @@ Content-Type: application/json
     "password": "ZAQ!2wsx"
 }
 
+### Login admin
+# @name adminLogin
+POST {{baseUrl}}/users/auth
+Content-Type: application/json
+
+{
+    "mail": "Rudy.Lowe35@hotmail.com",
+    "password": "ZAQ!2wsx"
+}
+
 ### Auth token
 @authToken = {{login.response.body.apiKey}}
+@adminToken = {{adminLogin.response.body.apiKey}}
 
 ### Get adoption form
 GET {{baseUrl}}/forms/2
@@ -78,3 +93,11 @@ GET {{baseUrl}}/adoptionSubmissions?status=in+progress
 access_token: {{authToken}}
 
 ### Accept submission
+PUT {{baseUrl}}/adoptionSubmissions/changeAdoptionFormStatus
+access_token: {{adminToken}}
+Content-Type: application/json
+
+{
+    "status": "accepted",
+    "submissionId": 4
+}
