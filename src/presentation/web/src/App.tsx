@@ -14,7 +14,7 @@ import Footer from './components/footer/Footer';
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-            <Container>
+            <Container style={{ marginTop: 64 }}>
                 <Router>
                     <Navbar />
                     <Switch>
