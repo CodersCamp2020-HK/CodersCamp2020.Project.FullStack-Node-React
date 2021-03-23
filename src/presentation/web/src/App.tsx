@@ -14,35 +14,38 @@ import RegisterForm from './components/registerForm/RegisterForm';
 import { RestfulProvider } from 'restful-react';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import Grid from '@material-ui/core/Grid';
 
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <RestfulProvider base="http://localhost:8000/api">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                    <Container>
-                        <Router>
-                            <Navbar />
-                            <Switch>
-                                <Route exact path="/">
-                                    <Home />
-                                </Route>
-                                <Route exact path="/about">
-                                    <About />
-                                </Route>
-                                <Route exact path="/adoption">
-                                    <Adoption />
-                                </Route>
-                                <Route exact path="/donation">
-                                    <Donation />
-                                </Route>
-                                <Route exact path="/contact">
-                                    <Contact />
-                                </Route>
-                            </Switch>
-                        </Router>
-                        <RegisterForm />
-                    </Container>
+                    <Grid container justify="center" alignItems="center">
+                        <Container>
+                            <Router>
+                                <Navbar />
+                                <Switch>
+                                    <Route exact path="/">
+                                        <Home />
+                                    </Route>
+                                    <Route exact path="/about">
+                                        <About />
+                                    </Route>
+                                    <Route exact path="/adoption">
+                                        <Adoption />
+                                    </Route>
+                                    <Route exact path="/donation">
+                                        <Donation />
+                                    </Route>
+                                    <Route exact path="/contact">
+                                        <Contact />
+                                    </Route>
+                                </Switch>
+                            </Router>
+                            <RegisterForm />
+                        </Container>
+                    </Grid>
                 </MuiPickersUtilsProvider>
             </RestfulProvider>
             <Footer />

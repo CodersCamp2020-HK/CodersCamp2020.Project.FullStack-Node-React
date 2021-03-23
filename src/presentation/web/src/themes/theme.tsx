@@ -30,10 +30,10 @@ const theme = createMuiTheme({
             fullWidth: true,
             margin: 'normal'
         },
-        MuiGrid: {
-            alignContent: 'center',
-            alignItems: 'center'
-        }
+        // MuiGrid: {
+        //     alignContent: 'center',
+        //     alignItems: 'center'
+        // }
     },
     overrides: {
         MuiButton: {
