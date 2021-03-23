@@ -6,10 +6,12 @@ import Grid from '@material-ui/core/Grid';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import Typography from '@material-ui/core/Typography'
 import Paper from '@material-ui/core/Paper';
+import Link from '@material-ui/core/Link';
 import { Theme, useTheme, makeStyles } from '@material-ui/core';
 import { useMutate } from 'restful-react';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { Link as RouterLink } from 'react-router-dom';
 
 interface Inputs {
     name: string;
@@ -34,18 +36,24 @@ function RegisterForm() {
             opacity: .87
         },
         submit: {
-            filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))'
+            filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
+            margin: '10px 0'
         },
         paper: {
             color: theme.palette.background.paper,
-            padding: theme.spacing(4),
+            padding: '20px 50px',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
             alignItems: 'center'
         },
         text: {
             color: theme.palette.text.primary
+        },
+        link: {
+            color: theme.palette.info.main,
+            alignSelf: 'flex-end',
+            marginTop: 10
         }
     })
     const classes = useStyle();
@@ -78,7 +86,7 @@ function RegisterForm() {
 
 
     return (
-        <Grid container item xs={5} direction="column" justify="center" alignItems="center" >
+        <Grid container item xs={5} direction="column" justify="space-between" alignItems="center">
             <Paper className={classes.paper} variant="outlined" square={false}>
                 <SvgIcon className={classes.lockBackground}>
                     <LockOutlinedIcon className={classes.lockIcon} />
@@ -156,6 +164,7 @@ function RegisterForm() {
                     />
                     <Button className={classes.submit} fullWidth variant="contained" color="primary" type="submit">Zarejestruj się</Button>
                 </form>
+                <Link className={classes.link} component={RouterLink} to="/login">Masz już konto? Zaloguj się</Link>
             </Paper>
         </Grid>
     )

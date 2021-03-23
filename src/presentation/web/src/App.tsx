@@ -41,9 +41,11 @@ const App: React.FC = () => {
                                     <Route exact path="/contact">
                                         <Contact />
                                     </Route>
+                                    <Route exact path="/register">
+                                        <RegisterForm />
+                                    </Route>
                                 </Switch>
                             </Router>
-                            <RegisterForm />
                         </Container>
                     </Grid>
                 </MuiPickersUtilsProvider>
