@@ -7,6 +7,7 @@ export const seedFormAnimalSubmission = (): DeepPartial<FormAnimalSubmission>[] 
     const randomStatus = faker.random.arrayElement(Object.values(AnimalFormStatus));
     const formAnimalSubmission: DeepPartial<FormAnimalSubmission>[] = [
         {
+            id: 1,
             status: randomStatus,
             reason: faker.lorem.sentence(),
             submissionDate: faker.date.past(),
@@ -21,6 +22,7 @@ export const seedFormAnimalSubmission = (): DeepPartial<FormAnimalSubmission>[] 
             },
         },
         {
+            id: 2,
             status: randomStatus,
             reason: faker.lorem.sentence(),
             submissionDate: faker.date.past(),
@@ -35,6 +37,7 @@ export const seedFormAnimalSubmission = (): DeepPartial<FormAnimalSubmission>[] 
             },
         },
         {
+            id: 3,
             status: randomStatus,
             reason: faker.lorem.sentence(),
             submissionDate: faker.date.past(),
