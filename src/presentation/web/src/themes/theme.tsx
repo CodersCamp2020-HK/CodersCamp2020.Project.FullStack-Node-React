@@ -36,6 +36,9 @@ const theme = createMuiTheme({
         },
         MuiCheckbox: {
             color: 'secondary'
+        },
+        MuiFormControlLabel: {
+            labelPlacement: 'end',
         }
     },
     overrides: {
