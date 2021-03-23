@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid';
 import SvgIcon from '@material-ui/core/SvgIcon';
+import Typography from '@material-ui/core/Typography'
 import { Theme, useTheme, makeStyles } from '@material-ui/core';
 import { useMutate } from 'restful-react';
 import { KeyboardDatePicker } from '@material-ui/pickers';
@@ -30,6 +31,9 @@ function RegisterForm() {
         lockIcon: {
             color: '#FFF',
             opacity: .87
+        },
+        submit: {
+            filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))'
         }
     })
     const classes = useStyle();
@@ -62,10 +66,11 @@ function RegisterForm() {
 
 
     return (
-        <Grid container item xs={4} spacing={2} direction="column" justify="center" alignItems="center" >
+        <Grid container item xs={4} direction="column" justify="center" alignItems="center" >
             <SvgIcon className={classes.lockBackground}>
                 <LockOutlinedIcon className={classes.lockIcon} />
             </SvgIcon>
+            <Typography variant="h5">Zarejestruj się</Typography>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     name="name"
@@ -136,7 +141,7 @@ function RegisterForm() {
                     error={errors.phone ? true : false}
                     helperText={errors.phone ? errors.phone.message : undefined}
                 />
-                <Button fullWidth variant="contained" color="primary" type="submit">Zarejestruj się</Button>
+                <Button className={classes.submit} fullWidth variant="contained" color="primary" type="submit">Zarejestruj się</Button>
             </form>
         </Grid>
     )
