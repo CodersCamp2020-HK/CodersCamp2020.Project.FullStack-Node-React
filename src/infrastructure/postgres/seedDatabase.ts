@@ -77,7 +77,7 @@ export default async function seedDatabase(): Promise<void> {
     await getConnection().getRepository(OrganizationUser).save(organizationUsers);
     await getConnection().getRepository(VolunteerHireStep).save(seedVolunteerHireStep(5));
     await getConnection().getRepository(FormAnimalSubmission).save(seedFormAnimalSubmission(5));
-    await getConnection().getRepository(FormQuestion).save(seedFormQuestion(5));
+    await getConnection().getRepository(FormQuestion).save(seedFormQuestion());
     await getConnection().getRepository(FormVolunteerSubmission).save(seedFormVolunteerSubmission(5));
     await getConnection().getRepository(FormAnimalAnswer).save(seedFormAnimalAnswer(5));
     await getConnection().getRepository(FormVolunteerAnswer).save(seedFormVolunteerAnswer(5));
