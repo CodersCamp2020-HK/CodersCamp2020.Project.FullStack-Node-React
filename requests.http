@@ -4,6 +4,7 @@
 # Zmienić filtry dla pojedynczego formularza po mailu i ustawić autoryzację
 # Pobieranie kroków adopcyjnych po pagtunku
 # Pobieranie formularza po gatunku
+# Przy akceptacji formularza dodawać datę oraz recenzenta
 
 @baseUrl = https://coders-camp-schronisko.herokuapp.com/api
  
@@ -50,7 +51,7 @@ POST {{baseUrl}}/users/auth
 Content-Type: application/json
 
 {
-    "mail": "Rudy.Lowe35@hotmail.com",
+    "mail": "Meghan26@yahoo.com",
     "password": "ZAQ!2wsx"
 }
 
@@ -89,7 +90,7 @@ Content-Type: application/json
 }
 
 ### Get submissions in progress
-GET {{baseUrl}}/adoptionSubmissions?status=in+progress
+GET {{baseUrl}}/adoptionSubmissions?status=accepted
 access_token: {{authToken}}
 
 ### Accept submission
