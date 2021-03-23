@@ -153,8 +153,9 @@ export class UsersController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Get('activate/{generatedUUID}')
     public async activateUser(@Path() generatedUUID: string): Promise<void> {
-        await this.usersService.activateUser(generatedUUID);
+        const uuid = await this.usersService.activateUser(generatedUUID);
         this.setStatus(200);
+        return uuid;
     }
 
     /**
@@ -165,7 +166,7 @@ export class UsersController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'Sent')
     @Post('{userId}/sendActivationLink')
-    public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
+    public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<string> {
         try {
             const ACTIVATION_PATH = request.get('host') + '/api/users/activate/';
             const createdUser = await this.usersService.get(userId);
@@ -175,12 +176,10 @@ export class UsersController extends Controller {
             await this.emailService.sendEmail(createdUser.mail, message);
 
             this.setStatus(200);
-            return;
+            return personalUUID;
         } catch (error) {
             throw error;
         }
-
-        return;
     }
 
     /**
