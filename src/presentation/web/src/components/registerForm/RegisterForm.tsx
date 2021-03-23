@@ -91,7 +91,7 @@ function RegisterForm() {
                 <SvgIcon className={classes.lockBackground}>
                     <LockOutlinedIcon className={classes.lockIcon} />
                 </SvgIcon>
-                <Typography className={classes.text} variant="h5">Zarejestruj się</Typography>
+                <Typography className={classes.text} variant="h5" component="span">Zarejestruj się</Typography>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <TextField
                         name="name"
