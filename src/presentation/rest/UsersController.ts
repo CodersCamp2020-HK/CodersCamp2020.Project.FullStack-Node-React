@@ -124,13 +124,12 @@ export class UsersController extends Controller {
         @Body() requestBody: UserCreationParams,
         @Res() badRequestResponse: TsoaResponse<400, { reason: string }>,
         @Request() request: ExRequest,
-    ): Promise<void> {
+    ): Promise<string> {
         try {
             const createdUser = await this.usersService.create(requestBody);
-
-            await this.sendActivationLink(createdUser.id, request);
-
+            const uuid = await this.sendActivationLink(createdUser.id, request);
             this.setStatus(201);
+            return uuid;
         } catch (error) {
             if (
                 error instanceof UniqueUserEmailError ||

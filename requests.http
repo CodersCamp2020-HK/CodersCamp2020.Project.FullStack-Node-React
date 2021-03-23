@@ -18,7 +18,7 @@ Content-Type: application/json
 {
     "repPassword": "ZAQ!2wsx",
     "password": "ZAQ!2wsx",
-    "mail": "najlepszyteamcc@gmail.com"
+    "mail": "elo@elo.elo"
 }
 
 ### Login user
@@ -26,7 +26,7 @@ POST https://coders-camp-schronisko.herokuapp.com/api/users/auth
 Content-Type: application/json
 
 {
-    "mail": "najlepszyteamcc@gmail.com",
+    "mail": "elo@elo.elo",
     "password": "ZAQ!2wsx"
 }
 
