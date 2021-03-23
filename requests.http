@@ -1,0 +1,34 @@
+## TODO
+# Link z mailem w responsie rejestracji
+# User nie ma daty urodzenia
+# UserCreationParams zmienić*
+# Animal do zmiany dummy data
+# Endpointy do zmiany
+ 
+### Get all animals
+GET https://coders-camp-schronisko.herokuapp.com/api/animals
+
+### Get animal
+GET https://coders-camp-schronisko.herokuapp.com/api/animals/1
+
+### Register user
+POST https://coders-camp-schronisko.herokuapp.com/api/users
+Content-Type: application/json
+
+{
+    "repPassword": "ZAQ!2wsx",
+    "password": "ZAQ!2wsx",
+    "mail": "new.user@gmail.com"
+}
+
+### Login user
+POST https://coders-camp-schronisko.herokuapp.com/api/users/auth
+Content-Type: application/json
+
+{
+    "mail": "new.user@gmail.com",
+    "password": "ZAQ!2wsx"
+}
+
+### Adoption form
+POST 
