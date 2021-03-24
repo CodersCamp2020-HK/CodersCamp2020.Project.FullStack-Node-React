@@ -17,7 +17,7 @@ Content-Type: application/json
     "phone": 123456789,
     "repPassword": "ZAQ!2wsx",
     "password": "ZAQ!2wsx",
-    "mail": "elo@elo.elo",
+    "mail": "new.user@gmail.com",
     "birthDate": "2000-12-30"
 }
 
@@ -33,7 +33,7 @@ POST {{baseUrl}}/users/auth
 Content-Type: application/json
 
 {
-    "mail": "elo@elo.elo",
+    "mail": "new.user@gmail.com",
     "password": "ZAQ!2wsx"
 }
 
