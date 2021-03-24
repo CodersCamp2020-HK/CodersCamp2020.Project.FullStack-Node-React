@@ -45,6 +45,11 @@ import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService'
 import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import { omit } from '../../utils/omit';
 import { DeepPartial } from 'typeorm';
+
+interface uuidResponse {
+    uuid: string;
+}
+
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
@@ -124,13 +129,12 @@ export class UsersController extends Controller {
         @Body() requestBody: UserCreationParams,
         @Res() badRequestResponse: TsoaResponse<400, { reason: string }>,
         @Request() request: ExRequest,
-    ): Promise<void> {
+    ): Promise<uuidResponse> {
         try {
             const createdUser = await this.usersService.create(requestBody);
-
-            await this.sendActivationLink(createdUser.id, request);
-
+            const uuid = await this.sendActivationLink(createdUser.id, request);
             this.setStatus(201);
+            return { uuid };
         } catch (error) {
             if (
                 error instanceof UniqueUserEmailError ||
@@ -153,8 +157,9 @@ export class UsersController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Get('activate/{generatedUUID}')
     public async activateUser(@Path() generatedUUID: string): Promise<void> {
-        await this.usersService.activateUser(generatedUUID);
+        const uuid = await this.usersService.activateUser(generatedUUID);
         this.setStatus(200);
+        return uuid;
     }
 
     /**
@@ -165,7 +170,7 @@ export class UsersController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'Sent')
     @Post('{userId}/sendActivationLink')
-    public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<void> {
+    public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<string> {
         try {
             const ACTIVATION_PATH = request.get('host') + '/api/users/activate/';
             const createdUser = await this.usersService.get(userId);
@@ -175,12 +180,10 @@ export class UsersController extends Controller {
             await this.emailService.sendEmail(createdUser.mail, message);
 
             this.setStatus(200);
-            return;
+            return personalUUID;
         } catch (error) {
             throw error;
         }
-
-        return;
     }
 
     /**
@@ -191,7 +194,7 @@ export class UsersController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Response('401', 'Unauthorized')
     @Response(400, 'Bad request')
-    @SuccessResponse(201, ' Email sended')
+    @SuccessResponse(201, ' Email sent')
     @Post('sendSomeoneAdoptedEmails')
     public async sendSomeoneAdoptedEmails(
         @Query() petName: string,
@@ -267,7 +270,7 @@ export class UsersController extends Controller {
     @Response<ApiError>(404, 'User not found')
     @Response<ApiError>(400, 'Bad Request')
     @Response<Error>(500, 'Internal Server Error')
-    @SuccessResponse(200, 'Email sended')
+    @SuccessResponse(200, 'Email sent')
     @Post('reset')
     public async sendResetPasswordMail(
         @Body() email: EmailResetPassword,
@@ -303,7 +306,7 @@ export class UsersController extends Controller {
     @Response(400, 'Bad request')
     @Response<ApiError>(404, 'Not Found')
     @Response<Error>(500, 'Internal Server Error')
-    @SuccessResponse(201, ' Email sended')
+    @SuccessResponse(201, ' Email sent')
     @Security('jwt', ['admin', 'employee'])
     public async sendVisitConfirmationEmail(
         @Query() petName: string,
