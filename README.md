@@ -114,15 +114,12 @@ Aby uruchomić testy aplikacji, wykonaj następujące kroki:
 1. Zainstaluj zależności za pomocą komendy: `npm ci` (jeśli nie zrobiłeś już tego wcześniej).
 2. Uruchom wszystkie testy, wykonując komendę: `npm run test`.
 
-Dostępne są także testy tylko dla serwera `npm run server:test
-
+Dostępne są także testy tylko dla serwera `npm run server:test`, dla testów z pokryciem kodu `npm run server:test:cov`.
+Testy tylko dla aplikacji webowej `npm run web:test`, dla testów z pokryciem kodu `npm run web:test:cov`.
 Kod testów umieszczamy w katalogu `test`.
-
-zmieni adres, z jakiego aplikacja będzie korzystać, aby łączyć się z SWApi. Domyślnie jest to zdefiniowane w pliku `.env` na wartość: `https://swapi.dev/api`.
 
 ### Organizacja pracy
 
 Praca zespołu była organizowana przy użyciu narzędzi dostarczanych przez GitHub.
 Zadania opisywaliśmy za pomocą GitHub Issues i dzieliśmy czas ich wykonania na tygodnie za pomocą GitHub Projects.
 Każde z zadań było estymowane przez mentora, dzięki czemu staraliśmy się, aby liczba punktów przypadająca w danym tygodniu na każdą osobę w zespole była podobna.
-Jeśli chcesz zaproponować, jakąś zmianę w aplikacji, utwórz nowy Issue, wzorując się na poprzednich.
