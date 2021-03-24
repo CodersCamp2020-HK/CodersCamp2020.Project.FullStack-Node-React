@@ -48,7 +48,7 @@ POST {{baseUrl}}/users/auth
 Content-Type: application/json
 
 {
-    "mail": "Kallie6@gmail.com",
+    "mail": "admin@admin.com",
     "password": "ZAQ!2wsx"
 }
 
