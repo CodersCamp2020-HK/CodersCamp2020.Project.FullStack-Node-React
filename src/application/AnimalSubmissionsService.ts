@@ -87,6 +87,8 @@ export class AnimalSubmissionsService {
             const submissions = await this.animalSubmissionRepository
                 .createQueryBuilder('submission')
                 .leftJoinAndSelect('submission.applicant', 'applicant')
+                .leftJoinAndSelect('submission.answers', 'answers')
+                .leftJoinAndSelect('answers.question', 'question')
                 .where('applicant.id = :id', { id: currentUser.id })
                 .getMany();
 
@@ -111,6 +113,8 @@ export class AnimalSubmissionsService {
             this.animalSubmissionRepository
                 .createQueryBuilder('submission')
                 .leftJoinAndSelect('submission.animal', 'animal')
+                .leftJoinAndSelect('submission.answers', 'answers')
+                .leftJoinAndSelect('answers.question', 'question')
                 .leftJoinAndSelect('submission.applicant', 'applicant')
                 .leftJoinAndSelect('submission.reviewer', 'reviewer')
                 .skip(isFirstPage ? 0 : SKIP)
