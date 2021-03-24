@@ -194,7 +194,7 @@ export class UsersController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Response('401', 'Unauthorized')
     @Response(400, 'Bad request')
-    @SuccessResponse(201, ' Email sended')
+    @SuccessResponse(201, ' Email sent')
     @Post('sendSomeoneAdoptedEmails')
     public async sendSomeoneAdoptedEmails(
         @Query() petName: string,
@@ -270,7 +270,7 @@ export class UsersController extends Controller {
     @Response<ApiError>(404, 'User not found')
     @Response<ApiError>(400, 'Bad Request')
     @Response<Error>(500, 'Internal Server Error')
-    @SuccessResponse(200, 'Email sended')
+    @SuccessResponse(200, 'Email sent')
     @Post('reset')
     public async sendResetPasswordMail(
         @Body() email: EmailResetPassword,
@@ -306,7 +306,7 @@ export class UsersController extends Controller {
     @Response(400, 'Bad request')
     @Response<ApiError>(404, 'Not Found')
     @Response<Error>(500, 'Internal Server Error')
-    @SuccessResponse(201, ' Email sended')
+    @SuccessResponse(201, ' Email sent')
     @Security('jwt', ['admin', 'employee'])
     public async sendVisitConfirmationEmail(
         @Query() petName: string,

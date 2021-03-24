@@ -84,8 +84,9 @@ export class AnimalSubmissionsController extends Controller {
     @Put('changeAdoptionFormStatus')
     public async changeFormStatusForAdoption(
         @Body() changeStatusParams: ChangeStatusForAdoptionFormParams,
+        @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
-        await this.submissionService.changeStatusForAdoptionForm(changeStatusParams);
+        await this.submissionService.changeStatusForAdoptionForm(changeStatusParams, request.user as IUserInfo);
     }
 
     /**

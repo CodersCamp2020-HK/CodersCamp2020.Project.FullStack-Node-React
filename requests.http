@@ -4,7 +4,6 @@
 # Pobieranie kroków adopcyjnych po pagtunku
 # Pobieranie formularza po gatunku, podajemy id zwierzaka, pobieramy z niego gatunek, później do adoption step dołączamy  fromularz
 # Przy akceptacji formularza dodawać datę oraz recenzenta
-# Przy pobieraniu wypełnionego formularza o adpocję usunąć hasło
 
 @baseUrl = https://coders-camp-schronisko.herokuapp.com/api
 ### @baseUrl = localhost:8080/api
@@ -52,7 +51,7 @@ POST {{baseUrl}}/users/auth
 Content-Type: application/json
 
 {
-    "mail": "Odell.Jaskolski@yahoo.com",
+    "mail": "Jessie_Mraz84@yahoo.com",
     "password": "ZAQ!2wsx"
 }
 
@@ -103,3 +102,11 @@ Content-Type: application/json
     "status": "accepted",
     "submissionId": 4
 }
+
+### Send email
+
+### Add meeting
+
+### Get meetings
+GET {{baseUrl}}/calendars
+access_token: {{adminToken}}

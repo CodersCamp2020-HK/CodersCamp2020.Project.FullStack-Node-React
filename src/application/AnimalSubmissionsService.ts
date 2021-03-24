@@ -5,7 +5,7 @@ import Animal from '@infrastructure/postgres/Animal';
 import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
-import { UserType } from '@infrastructure/postgres/OrganizationUser';
+import OrganizationUser, { UserType } from '@infrastructure/postgres/OrganizationUser';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
@@ -62,6 +62,7 @@ export class AnimalSubmissionsService {
         private animalSubmissionRepository: Repository<FormAnimalSubmission>,
         private animalRepository: Repository<Animal>,
         private animalAnswerRepository: Repository<FormAnimalAnswer>,
+        private organizationUserRepository: Repository<OrganizationUser>,
     ) {}
 
     public async adoptWillingnessCounter(petName: string): Promise<AdoptersCount> {
@@ -156,13 +157,16 @@ export class AnimalSubmissionsService {
         return submissions;
     }
 
-    public async changeStatusForAdoptionForm({
-        status,
-        submissionId,
-    }: ChangeStatusForAdoptionFormParams): Promise<void> {
+    public async changeStatusForAdoptionForm(
+        { status, submissionId }: ChangeStatusForAdoptionFormParams,
+        user: IUserInfo,
+    ): Promise<void> {
         const submission = await this.animalSubmissionRepository.findOne(submissionId);
         if (!submission) throw new ApiError('Not Found', 404, `Submission with id: ${submissionId} not found!`);
+        const organizationUser = await this.organizationUserRepository.findOne({ user: { id: user.id } });
         submission.status = status;
+        submission.reviewer = organizationUser;
+        submission.reviewDate = new Date();
         this.animalSubmissionRepository.save(submission);
     }
 
