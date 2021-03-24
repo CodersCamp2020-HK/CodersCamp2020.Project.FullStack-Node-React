@@ -1,5 +1,6 @@
 # CodersCamp 2020 - Projekt końcowy (FullStack — Node.js + React)
-**CodersCamp (coderscamp.edu.pl) - Największy otwarty kurs programowania webowego** 
+
+**CodersCamp (coderscamp.edu.pl) - Największy otwarty kurs programowania webowego**
 
 ## Zespół projektowy
 
@@ -20,7 +21,7 @@ Zachęcamy do odwiedzenia profili członków zespołu, w celu zapoznania się z 
 
 ## Demo
 
-Wersja demonstracyjna aplikacji jest dostępna [TUTAJ](https://coders-camp-schronisko.herokuapp.com/).
+Wersja demonstracyjna aplikacji jest dostępna [TUTAJ](https://coders-camp-schronisko.herokuapp.com/api).
 
 Aplikacja została wykonana wg dostarczonych przez organizatorów CodersCamp wymagań.
 Szablon projektu dostępny jest [TUTAJ](https://github.com/CodersCamp2020/CodersCamp2020.Project.FullStack-Node-React.Cinema).
@@ -28,68 +29,64 @@ Szablon projektu dostępny jest [TUTAJ](https://github.com/CodersCamp2020/Coders
 ## Cel projektu
 
 Celem projektu było napisanie aplikacji wykorzystującej dotychczas nabytą wiedzę z następujących technologi: html, css, javascript, typescript, nodejs, reactjs.
-Zespół projektowy zdecydował się na stworzenie aplikacji schroniska dla zwierząt. 
+Zespół projektowy zdecydował się na stworzenie aplikacji schroniska dla zwierząt.
 
 ## Wymagania funkcjonalne
-### Aplikacja umożliwia:
-- założenie konta przez użytkownika,
-- autoryzacja i autentykacja użytkownika,
-- złożenie formularza na adopcje zwierzęta,
-- złożenie formularza na adopcje wolontariusza,
-- umówienienie się na spotkanie w schronisku w celu poznania zwierzęcia,
-- wybór daty spotkania w schornisku,
-- dodanie zwierząt do bazy przez admina,
-- utworzenie formularza zgłoszeniowego do adopcji zwierzęcia,
-- złożenie dotacji dla schroniska,
-- 
 
+### Aplikacja umożliwia:
+
+-   założenie konta przez użytkownika,
+-   wysyłanie powiadomień przy pomocy skrzynki pocztowej,
+-   aktywacja konta uytkownika,
+-   operacje typu CRUD dla uytkownika, zwierząt, formularzy, wniosków
+-   autoryzacja i uwierzytelnianie użytkownika,
+-   złożenie formularza adopcyjnego,
+-   złożenie formularza kandydata na wolontariusza,
+-   utworzenie formularza zgłoszeniowego do adopcji zwierzęcia,
+-   utworzenie formularza kandydata na wolontariusza,
+-   wybór daty spotkania w schornisku,
+-   złożenie dotacji dla schroniska,
+-   złożenie dotacji dla zwierzęcia,
 
 ### Wymagania funkcjonalne (szczegółowo):
-1. Użytkownik może zarejestrować się w systemie, podając imię, nazwisko, hasło i adres e-mail.
-2. Użytkownik może zalogować się w systemie, podając adres e-mail i hasło.
-3. Użytkownik otrzymuje wiadomość mailową z informacją o założeniu konta.
-4. Użytkownik może zresetować swoje hasło do konta.
-5. Użytkownik otrzymuje wiadomość mailową z informacją o nowym haśle.
-6. Użytkownik może przeglądać zwierzęta. Czyli takie, które są dostępne do adopcji.
-7. Użytkownik wybiera formularz adopcyjny i wypełnia go danymi.
-8. Użytkownik może zapisać formularz adopcyjny na swoim profilu. Zapisany może mieć tylko jeden formularz dla jednego zwierzęcia.
-9. Użytkownik może wybrać interesujące go zwierze i złożyć na nie formularz.
-10. Użytkownik otrzymuje wiadomość mailową z informacją o złożeniu formularza na wybrane zwierze.
-11. Uzytkownik może wybrać date spotkania ze zwierzęciem.
-12. Użytkownik może przeczytać szczegóły dotyczące zwierzęcia takie jak: wiek zwierzęcia, wielkość zwierzęcia, poziom aktywności zwierzęcia, dodatkowe informacje o zwierzęciu.
-13. Użytkownik może obserwować status złożenia swojego formularza na swoim koncie.
-14. Użytkownik może złożyć formularz tylko w przypadku założonego i potwierdzonego mailowo konta.
-15. Użytkownik zostaje poinformowany mailowo o statusie możliwości adopcji.
-16. Pozsotali użytkownicy zostają poinformowani mailowo o negatywnym statusie formularza adopcji, w przypadku gdy inny użytkownik zaadoptował już dane zwierze.
-17. Użytkownik zostaje poinformowany mailowo o negatywnym rozpatrzeniu formularza przez pracownika schroniska.
-18. Użytkownik może złożyć formularz na wolontariusza.
-19. Użytkownik zostaje poinformowany mailowo o zostaniu wolontariuszem.
 
+1. Użytkownik ma możliwość zarejestrować się w systemie, podając imię, nazwisko, hasło, powtórzone hasło, telefon, datę urodzenia i adres e-mail.
+2. Użytkownik ma możliwość zalogować się w systemie, podając adres e-mail i hasło.
+3. Użytkownik otrzymuje wiadomość mailową z informacją o założeniu konta i linkiem aktywacyjnym.
+4. Użytkownik ma możliwość zresetować swoje hasło do konta.
+5. Użytkownik otrzymuje wiadomość mailową z informacją o nowym haśle.
+6. Użytkownik ma możliwość aktualizować dane osobowe.
+7. Użytkownik ma możliwość usunąć swoje konto.
+8. Użytkownik ma możliwość przeglądać zwierzęta, które są gotowe do adopcji.
+9. Użytkownik wybiera formularz adopcyjny zwierzęcia i wypełnia go danymi.
+10. Użytkownik ma możliwość złożyć formularz kandydata na wolontariusza.
+11. Użytkownik ma możliwość wypełnić tylko jeden formularz dla jednego zwierzęcia.
+12. Użytkownik otrzymuje wiadomość mailową z informacją o złożeniu formularza.
+13. Po zaakceptowaniu formularza adopcyjnego użytkownik ma możliwość wybrać datę spotkania ze zwierzęciem.
+14. Użytkownik ma możliwość przeczytać szczegóły dotyczące zwierzęcia.
+15. Użytkownik ma możliwość obserwować status swojego formularza na koncie uytkownika.
+16. Użytkownik ma możliwość złożyć formularz tylko w przypadku założonego i potwierdzonego mailowo konta.
+17. Użytkownik zostaje poinformowany mailowo o zmianach statusu wniosków.
+18. Pozsotali użytkownicy zostają poinformowani mailowo o odrzuconym wniosku, w przypadku gdy inny użytkownik zaadoptował już dane zwierzę.
+19. Użytkownik ma możliwość złożyć formularz kandydata na wolontariusza.
 
 ### Zmiany wprowadzone w wymaganiach
 
-Lekkim wizualnym zmianom uległ projekt dostarczony przez grafika. 
-
+Lekkim wizualnym zmianom uległ projekt dostarczony przez grafika.
 
 ### Działanie aplikacji
 
-
 #### Menu Główne
-
 
 ##### Informacje
 
-
-#### 
-
+####
 
 #### Przykładowa funkcjonalność aplikacji
 
 <p align="center">
   <img src="link_do_gifa" alt="gif" />
 </p>
-
-
 
 ### Zrealizowane dodatkowe zadania
 
