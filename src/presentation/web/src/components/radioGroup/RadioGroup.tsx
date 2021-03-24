@@ -34,7 +34,7 @@ const RadioGroup = ({ values, name, getCheckedOption }: RadioGroupProps) => {
 
     return (
         <RadioGroupMui name={name} value={checkedOption} onChange={handleChange}>
-            {values.map((option) => <LabeledRadio label={option.content} /> )}
+            {values.map((option, index) => <LabeledRadio key={index} label={option.content} /> )}
         </RadioGroupMui>
     );
 };
