@@ -13,6 +13,8 @@ import { v4 as uuidv4 } from 'uuid';
 import ResetPasswordMessage from '@infrastructure/ResetPasswordMessage';
 import SomeoneAdoptedMessage from '@infrastructure/SomeoneAdoptedMessage';
 import VisitConfirmationMessage from '@infrastructure/VisitConfirmationMessage';
+import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
+import PaginationParams from '@infrastructure/Pagination';
 
 const SALT_ROUNDS = 10;
 
@@ -54,10 +56,39 @@ export class UsersService {
         private organizationUserRepository: Repository<OrganizationUser>,
     ) {}
 
-    public async get(id: number): Promise<User> {
+    public async get(id: number, currentUser?: IUserInfo): Promise<User> {
+        if (currentUser?.role == UserType.NORMAL || currentUser?.role == UserType.VOLUNTEER) {
+            if (id != currentUser.id) {
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only watch own account');
+            }
+        }
         const user = await this.userRepository.findOne(id);
         if (!user) throw new Error('User not found in database');
         return user;
+    }
+
+    public async getAll(email?: string, paginationParams?: PaginationParams): Promise<User[]> {
+        let isFirstPage;
+        let SKIP;
+        let LIMIT;
+        if (paginationParams) {
+            isFirstPage = paginationParams.page == 1 ? true : false;
+            SKIP =
+                paginationParams.perPage && paginationParams.page
+                    ? paginationParams.perPage * paginationParams.page
+                    : 0;
+            LIMIT = paginationParams.perPage ? paginationParams.perPage : undefined;
+        }
+
+        return new OptionalWhereSelectQueryBuilder(
+            this.userRepository
+                .createQueryBuilder('user')
+                .where('user.id >= :zero', { zero: 0 })
+                .skip(isFirstPage ? 0 : SKIP)
+                .limit(LIMIT),
+        )
+            .optAndWhere('user.mail = ', email)
+            .selectQueryBuilder.getMany();
     }
 
     public async activateUser(generatedUUID: string): Promise<void> {
@@ -134,7 +165,16 @@ export class UsersService {
         return { apiKey: token };
     }
 
-    public async update(id: number, userUpdateParams: Partial<UserUpdateParams>): Promise<User> {
+    public async update(
+        id: number,
+        userUpdateParams: Partial<UserUpdateParams>,
+        currentUser: IUserInfo,
+    ): Promise<User> {
+        if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
+            if (id != currentUser.id) {
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only update own account');
+            }
+        }
         const user = await this.userRepository.findOne(id);
         if (!user) throw new ApiError('Not Found', 404, `User with id: ${id} not found!`);
         const updateUser = { ...user, ...userUpdateParams };

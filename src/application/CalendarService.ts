@@ -3,6 +3,8 @@ import Calendar from '../infrastructure/postgres/Calendar';
 import Animal from '../infrastructure/postgres/Animal';
 import User from '../infrastructure/postgres/User';
 import ApiError from '@infrastructure/ApiError';
+import { IUserInfo } from '@infrastructure/Auth';
+import { UserType } from '@infrastructure/postgres/OrganizationUser';
 
 export interface CalendarCreationParams {
     date: Date;
@@ -29,7 +31,16 @@ export class CalendarService {
         return visit;
     }
 
-    public async create({ date, animalId: animal, userId: user }: CalendarCreationParams): Promise<void> {
+    public async create(
+        { date, animalId: animal, userId: user }: CalendarCreationParams,
+        currentUser: IUserInfo,
+    ): Promise<void> {
+        if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
+            if (user != currentUser.id) {
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only create own calendar');
+            }
+        }
+
         const animalFromDB = await this.animalRepository.findOne(animal);
         if (!animalFromDB) throw new ApiError('Not Found', 404, `Animal with id: ${animal} not found in database`);
         const userFromDB = await this.userRepository.findOne(user);
@@ -38,7 +49,13 @@ export class CalendarService {
         await this.calendarRepository.save(visit);
     }
 
-    public async delete(id: number): Promise<void> {
+    public async delete(id: number, currentUser: IUserInfo): Promise<void> {
+        if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
+            if (id != currentUser.id) {
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only delete own calendar');
+            }
+        }
+
         const visitFromDB = await this.animalRepository.findOne(id);
         if (!visitFromDB) throw new ApiError('Not Found', 404, `Animal with id: ${id} not found in database`);
         await this.calendarRepository.delete(id);

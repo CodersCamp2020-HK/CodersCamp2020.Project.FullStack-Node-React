@@ -1,8 +1,18 @@
-import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
+import {
+    Column,
+    CreateDateColumn,
+    Entity,
+    Index,
+    JoinColumn,
+    ManyToOne,
+    OneToMany,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import FormVolunteerAnswer from './FormVolunteerAnswer';
 import OrganizationUser from './OrganizationUser';
 import User from './User';
 import VolunteerHireStep from './VolunteerHireStep';
+import { IsDate, Length } from 'class-validator';
 
 export enum VolunteerFormStatus {
     IN_PROGRESS = 'in progress',
@@ -10,30 +20,37 @@ export enum VolunteerFormStatus {
     ACCEPTED = 'accepted',
 }
 
-@Index(['user', 'step'], { unique: true })
 @Entity('FormVolunteerSubmissions')
+@Index(['user', 'step'], { unique: true })
 export default class FormVolunteerSubmission {
-    @ManyToOne(() => User, (user) => user.volunteerSubmission, { primary: true, nullable: false })
+    @PrimaryGeneratedColumn()
+    id!: number;
+
+    @ManyToOne(() => User, (user) => user.volunteerSubmission, { nullable: false })
     user!: User;
 
-    @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { primary: true, nullable: false })
+    @ManyToOne(() => VolunteerHireStep, (step) => step.submissions, { nullable: false })
+    @JoinColumn()
     step!: VolunteerHireStep;
 
-    @Column({ type: 'enum', enum: VolunteerFormStatus })
+    @Column({ type: 'enum', enum: VolunteerFormStatus, default: VolunteerFormStatus.IN_PROGRESS })
     status!: string;
 
+    @Length(3, 300)
     @Column({ nullable: true, default: null })
-    reason!: string;
+    reason?: string;
 
-    @ManyToOne(() => OrganizationUser, (user) => user.volunteerReviews)
-    reviewer!: OrganizationUser;
+    @ManyToOne(() => OrganizationUser, (user) => user.volunteerReviews, { nullable: true, onDelete: 'CASCADE' })
+    reviewer?: OrganizationUser;
 
-    @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true })
-    answers!: FormVolunteerAnswer[];
+    @OneToMany(() => FormVolunteerAnswer, (answers) => answers.submission, { cascade: true, nullable: true })
+    answers?: FormVolunteerAnswer[];
 
+    @IsDate()
     @CreateDateColumn()
     submissionDate!: Date;
 
-    @Column({ type: 'date', nullable: true })
+    @IsDate()
+    @Column({ nullable: true })
     reviewDate?: Date;
 }

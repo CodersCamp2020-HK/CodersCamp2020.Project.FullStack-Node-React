@@ -2,11 +2,28 @@ import {
     AdoptersCount,
     AnimalSubmissionsService,
     ChangeStatusForAdoptionFormParams,
+    PostAnimalSubmissionParams,
 } from '@application/AnimalSubmissionsService';
+import { ValidateErrorJSON } from '@application/UsersErrors';
 import ApiError from '@infrastructure/ApiError';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
-import { Body, Put, Get, Query, Route, Tags, Response, SuccessResponse, Controller, Path } from 'tsoa';
+import {
+    Body,
+    Put,
+    Get,
+    Query,
+    Route,
+    Tags,
+    Response,
+    SuccessResponse,
+    Controller,
+    Path,
+    Security,
+    Post,
+    Request,
+} from 'tsoa';
 import { Inject } from 'typescript-ioc';
+import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
 
 @Tags('Adoption Submissions')
 @Route('adoptionSubmissions')
@@ -14,26 +31,56 @@ export class AnimalSubmissionsController extends Controller {
     @Inject
     private submissionService!: AnimalSubmissionsService;
 
+    /**
+     * Get all animal submissions with parameters
+     * @param status Gives information about status of animal that user applied. It can give you information that application is: 'in progress', 'rejected', or 'accepted'
+     * @param submissionDate Gives date when user applied for an animal
+     * @param specie Gives additional informations that was added by a user
+     * @param animalName Gives animal name that user applied
+     * @param userName Gives name of user that applied for animal
+     * @param reviewerName Gives name of shelter worker that who deals with the user application
+     */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Submissions Not Found')
+    @Response<ApiError>(401, 'Unauthorized')
+    @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse(200, 'ok')
     @Get()
     public async getAllAnimalSubmissions(
+        @Request() request: IAuthUserInfoRequest,
         @Query() status?: AnimalFormStatus,
         @Query() submissionDate?: Date,
         @Query() specie?: string,
         @Query() animalName?: string,
         @Query() userName?: string,
         @Query() reviewerName?: string,
+        @Query() page?: number,
+        @Query() perPage?: number,
     ): Promise<FormAnimalSubmission[]> {
-        return this.submissionService.getAllAnimalSubmissions({
-            status,
-            submissionDate,
-            animalName,
-            specie,
-            userName,
-            reviewerName,
-        });
+        return this.submissionService.getAllAnimalSubmissions(
+            {
+                status,
+                submissionDate,
+                animalName,
+                specie,
+                userName,
+                reviewerName,
+            },
+            request.user as IUserInfo,
+            { page, perPage },
+        );
     }
 
+    /**
+     * Method allows shelter worker to change the status of user application for an animal
+     * @param changeStatusParams Information about actual status of application ('in progress', 'rejected', 'accepted')
+     */
+    @Security('jwt', ['admin', 'employee'])
+    @Response<Error>(500, 'Internal Server Error')
+    @Response<ValidateErrorJSON>(422, 'Validation Failed')
+    @Response<ApiError>(400, 'Bad Request')
+    @Response<ApiError>(404, 'Not Found')
+    @SuccessResponse(200, 'ok')
     @Put('changeAdoptionFormStatus')
     public async changeFormStatusForAdoption(
         @Body() changeStatusParams: ChangeStatusForAdoptionFormParams,
@@ -45,8 +92,9 @@ export class AnimalSubmissionsController extends Controller {
      * Get number of adopters wanting to adopt given animal
      * @param petName pet name which adopters want to adopt
      */
-    @Response('500', 'Internal Server Error')
-    @SuccessResponse('200', 'Ok')
+    @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
+    @SuccessResponse(200, 'Ok')
     @Get('allWillignessesToAdoptCount')
     public async getAllWillignessesToAdoptCount(@Query() petName: string): Promise<AdoptersCount> {
         this.setStatus(200);
@@ -54,13 +102,30 @@ export class AnimalSubmissionsController extends Controller {
     }
 
     /**
-     *
+     * Method get information about submission, supplied by unique ID
      * @param id The submission's identifier
-     * @param isInt id
      */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<ApiError>(401, 'Unauthorized')
     @Response<ApiError>(404, 'Submission Not Found')
+    @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse(200, 'ok')
     @Get('{id}')
-    public async getAnimalSubmission(@Path() id: number): Promise<FormAnimalSubmission> {
-        return this.submissionService.getAnimalSubmission(id);
+    public async getAnimalSubmission(
+        @Path() id: number,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<FormAnimalSubmission> {
+        return await this.submissionService.getAnimalSubmission(id, request.user as IUserInfo);
+    }
+
+    @Security('jwt', ['admin', 'normal'])
+    @Response<ApiError>(400, 'Bad Request')
+    @SuccessResponse(204, 'Created')
+    @Post('add')
+    public async postAnimalSubmission(
+        @Body() requestBody: PostAnimalSubmissionParams,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        return await this.submissionService.createAnimalSubmission(requestBody, request);
     }
 }

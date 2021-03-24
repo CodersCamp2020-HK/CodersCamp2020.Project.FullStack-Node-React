@@ -15,7 +15,7 @@ export enum UserType {
 @Index(['user', 'organization'], { unique: true })
 @Entity('OrganizationUsers')
 export default class OrganizationUser {
-    @ManyToOne(() => User, (user) => user.organizationUsers, { primary: true, nullable: false })
+    @ManyToOne(() => User, (user) => user.organizationUsers, { primary: true, nullable: false, onDelete: 'CASCADE' })
     user!: User;
 
     @ManyToOne(() => Organization, (organization) => organization.organizationUsers, { primary: true, nullable: false })
@@ -27,12 +27,12 @@ export default class OrganizationUser {
     })
     role!: UserType;
 
-    @OneToMany(() => FormAnimalSubmission, (submission) => submission.reviewer, { nullable: true, cascade: true })
+    @OneToMany(() => FormAnimalSubmission, (submission) => submission.reviewer, { nullable: true })
     animalReviews?: FormAnimalSubmission[];
 
-    @OneToMany(() => AnimalHandler, (handler) => handler.organizationUser, { cascade: true })
+    @OneToMany(() => AnimalHandler, (handler) => handler.organizationUser)
     caregivers!: AnimalHandler[];
 
-    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.reviewer, { cascade: true })
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.reviewer)
     volunteerReviews!: FormVolunteerSubmission;
 }

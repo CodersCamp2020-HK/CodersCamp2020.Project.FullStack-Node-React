@@ -1,36 +1,52 @@
-
-import logo from './logo.svg';
+import React from 'react';
+import { Container, ThemeProvider } from '@material-ui/core';
+import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
-import { useGetUser } from './client';
+import Login from './components/login/Login';
+import Navbar from './components/navbar/Navbar';
+import About from './components/pages/About';
+import Adoption from './components/pages/Adoption';
+import Contact from './components/pages/Contact';
+import Donation from './components/pages/Donation';
+import Home from './components/pages/Home';
+import theme from './themes/theme';
+import Footer from './components/footer/Footer';
+import ForgetPassword from './components/forgetPassword/ForgetPassword';
 
-function App() {
-  const { data, refetch, loading, error } = useGetUser({ userId: 1})
-
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        {
-          error ? <span>Error {error.data}</span>
-                : loading
-                    ? <span>Loading...</span>
-                    : <span>{data?.mail}</span>
-        }
-        <button onClick={() => refetch()}> Refetch </button>
-      </header>
-    </div>
-  );
-}
+const App: React.FC = () => {
+    return (
+        <ThemeProvider theme={theme}>
+            <Container style={{ marginTop: 64 }}>
+                <Router>
+                    <Navbar />
+                    <Switch>
+                        <Route exact path="/">
+                            <Home />
+                        </Route>
+                        <Route exact path="/about">
+                            <About />
+                        </Route>
+                        <Route exact path="/adoption">
+                            <Adoption />
+                        </Route>
+                        <Route exact path="/donation">
+                            <Donation />
+                        </Route>
+                        <Route exact path="/contact">
+                            <Contact />
+                        </Route>
+                        <Route exact path="/forget">
+                            <ForgetPassword />
+                        </Route>
+                      <Route exact path="/login">
+                        <Login />
+                    </Route>
+                    </Switch>
+                </Router>
+            </Container>
+            <Footer />
+        </ThemeProvider>
+    );
+};
 
 export default App;

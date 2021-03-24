@@ -1,9 +1,10 @@
-import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Index, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import AdoptionStep from './AdoptionStep';
 import Animal from './Animal';
 import FormAnimalAnswer from './FormAnimalAnswer';
 import OrganizationUser from './OrganizationUser';
 import User from './User';
+import { IsDate, Length } from 'class-validator';
 
 export enum AnimalFormStatus {
     IN_PROGRESS = 'in progress',
@@ -14,30 +15,36 @@ export enum AnimalFormStatus {
 @Entity('FormAnimalSubmissions')
 @Index(['animal', 'applicant', 'adoptionStep'], { unique: true })
 export default class FormAnimalSubmission {
-    @ManyToOne(() => Animal, (animal) => animal.submissions, { primary: true, nullable: false })
+    @PrimaryGeneratedColumn()
+    id!: number;
+
+    @ManyToOne(() => Animal, (animal) => animal.submissions, { nullable: false, onDelete: 'CASCADE' })
     animal!: Animal;
 
-    @ManyToOne(() => User, (user) => user.animalSubmissions, { primary: true, nullable: false })
+    @ManyToOne(() => User, (user) => user.animalSubmissions, { nullable: false, onDelete: 'CASCADE' })
     applicant!: User;
 
-    @ManyToOne(() => AdoptionStep, (step) => step.submissions, { primary: true, nullable: false })
+    @ManyToOne(() => AdoptionStep, (step) => step.submissions, { nullable: false })
     adoptionStep!: AdoptionStep;
 
-    @Column({ type: 'enum', enum: AnimalFormStatus })
-    status!: string;
+    @Column({ type: 'enum', enum: AnimalFormStatus, default: AnimalFormStatus.IN_PROGRESS })
+    status?: string;
 
+    @Length(3, 300)
     @Column({ nullable: true, default: null })
-    reason!: string;
+    reason?: string;
 
-    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews)
-    reviewer!: User;
+    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews, { nullable: true, onDelete: 'CASCADE' })
+    reviewer?: OrganizationUser;
 
     @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission, { cascade: true })
     answers!: FormAnimalAnswer[];
 
+    @IsDate()
     @CreateDateColumn()
     submissionDate!: Date;
 
-    @Column({ type: 'date', nullable: true })
+    @IsDate()
+    @Column({ nullable: true })
     reviewDate?: Date;
 }

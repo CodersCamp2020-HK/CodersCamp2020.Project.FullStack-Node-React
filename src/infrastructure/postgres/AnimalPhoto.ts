@@ -9,7 +9,7 @@ export class AnimalPhoto {
     @Column('bytea')
     buffer!: Buffer;
 
-    @ManyToOne(() => Animal, (animal: Animal) => animal.photos)
+    @ManyToOne(() => Animal, (animal: Animal) => animal.photos, { onDelete: 'CASCADE' })
     animal!: Animal;
 }
 
@@ -21,6 +21,6 @@ export class AnimalThumbnailPhoto {
     @Column('bytea')
     buffer!: Buffer;
 
-    @OneToOne(() => Animal, (animal: Animal) => animal.thumbnail)
+    @OneToOne(() => Animal, (animal: Animal) => animal.thumbnail, { onDelete: 'CASCADE' })
     animal!: Animal;
 }

@@ -1,11 +1,10 @@
-import { Entity, Column, PrimaryGeneratedColumn, Generated, CreateDateColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, OneToMany } from 'typeorm';
 import GoalDonation from './GoalDonation';
 import OrganizationDonation from './OrganizationDonation';
 import AnimalDonation from './AnimalDonation';
 import Localization from './Localization';
 import FormAnimalSubmission from './FormAnimalSubmission';
 import OrganizationUser from './OrganizationUser';
-import VolunteerHireStep from './VolunteerHireStep';
 import FormVolunteerSubmission from './FormVolunteerSubmission';
 import Calendar from './Calendar';
 
@@ -78,34 +77,50 @@ export default class User {
     @Column({ default: false })
     activated!: boolean;
 
-    @Column()
-    @Generated('uuid')
-    activationLinkUuid!: UUID;
+    @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, {
+        cascade: true,
+        onDelete: 'CASCADE',
+        nullable: true,
+    })
+    animalDonations?: AnimalDonation[];
 
-    @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, { cascade: true })
-    animalDonations!: AnimalDonation[];
+    @OneToMany(() => OrganizationDonation, (organizationDonation) => organizationDonation.user, {
+        cascade: true,
+        onDelete: 'CASCADE',
+        nullable: true,
+    })
+    organizationDonations?: OrganizationDonation[];
 
-    @OneToMany(() => OrganizationDonation, (organizationDonation) => organizationDonation.user, { cascade: true })
-    organizationDonations!: OrganizationDonation[];
-
-    @OneToMany(() => GoalDonation, (goalDonation) => goalDonation.user, { cascade: true })
-    goalDonations!: GoalDonation[];
+    @OneToMany(() => GoalDonation, (goalDonation) => goalDonation.user, {
+        cascade: true,
+        onDelete: 'CASCADE',
+        nullable: true,
+    })
+    goalDonations?: GoalDonation[];
 
     @ManyToOne(() => Localization, (localization) => localization.users)
     localization!: Localization;
 
-    @OneToMany(() => FormAnimalSubmission, (submission) => submission.applicant, { nullable: true })
+    @OneToMany(() => FormAnimalSubmission, (submission) => submission.applicant, {
+        nullable: true,
+        onDelete: 'CASCADE',
+    })
     animalSubmissions!: FormAnimalSubmission[];
 
-    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, { cascade: true, nullable: true })
-    organizationUsers!: OrganizationUser[];
+    @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, {
+        nullable: true,
+        cascade: true,
+        onDelete: 'CASCADE',
+    })
+    organizationUsers?: OrganizationUser[];
 
-    @OneToMany(() => VolunteerHireStep, (step) => step.user, { cascade: true })
-    steps!: VolunteerHireStep[];
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, {
+        cascade: true,
+        onDelete: 'CASCADE',
+        nullable: true,
+    })
+    volunteerSubmission?: FormVolunteerSubmission[];
 
-    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, { cascade: true })
-    volunteerSubmission!: FormVolunteerSubmission[];
-
-    @OneToMany(() => Calendar, (calendar) => calendar.user)
+    @OneToMany(() => Calendar, (calendar) => calendar.user, { onDelete: 'CASCADE' })
     meetings!: Calendar[];
 }
