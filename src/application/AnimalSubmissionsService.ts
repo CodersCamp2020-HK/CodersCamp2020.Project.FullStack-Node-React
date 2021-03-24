@@ -126,20 +126,18 @@ export class AnimalSubmissionsService {
                 .leftJoinAndSelect('submission.answers', 'answers')
                 .leftJoinAndSelect('answers.question', 'question')
                 .leftJoinAndSelect('submission.applicant', 'applicant')
-                .leftJoinAndSelect('submission.reviewer', 'reviewer')
                 .select([
                     'applicant.id',
                     'applicant.name',
                     'applicant.surname',
                     'applicant.mail',
                     'applicant.phone',
+                    'submission.status',
                     'animal.id',
                     'specie.specie',
                     'animal.age',
                     'question.question',
                     'answers.answer',
-                    'reviewer.name',
-                    'reviewer.surname',
                 ])
                 .skip(isFirstPage ? 0 : SKIP)
                 .limit(LIMIT),
