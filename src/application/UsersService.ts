@@ -1,7 +1,7 @@
 import ApiError from '@infrastructure/ApiError';
 import OrganizationUser, { UserType } from '@infrastructure/postgres/OrganizationUser';
 import User, { Email, Password, UUID } from '@infrastructure/postgres/User';
-import { PasswordRequirementsError, UniqueUserEmailError } from './UsersErrors';
+import { PasswordRequirementsError } from './UsersErrors';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
@@ -19,9 +19,13 @@ import PaginationParams from '@infrastructure/Pagination';
 const SALT_ROUNDS = 10;
 
 export type UserCreationParams = {
+    name: string;
+    surname: string;
     mail: Email;
     password: Password;
     repPassword: Password;
+    birthDate: Date;
+    phone: number;
 };
 
 export type UserLoginParams = Pick<User, 'mail' | 'password'>;
@@ -122,11 +126,15 @@ export class UsersService {
             const user = this.userRepository.create({
                 mail: userCreationParams.mail,
                 password: hash,
+                name: userCreationParams.name,
+                surname: userCreationParams.surname,
+                birthDate: userCreationParams.birthDate,
+                phone: userCreationParams.phone,
             });
 
             return this.userRepository.save(user);
         } else {
-            throw new UniqueUserEmailError(userCreationParams.mail);
+            throw new ApiError('Bad Request', 400, 'Użytkownik z takim adresem email już istnieje!');
         }
     }
 
