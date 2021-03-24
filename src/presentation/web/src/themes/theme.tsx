@@ -34,6 +34,12 @@ const theme = createMuiTheme({
             fullWidth: true,
             margin: 'normal',
         },
+        MuiRadio: {
+            color: 'secondary'
+        },
+        MuiFormControlLabel: {
+            labelPlacement: 'end',
+        }
     },
     overrides: {
         MuiButton: {
