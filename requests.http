@@ -1,7 +1,3 @@
-## TODO
-# Endpointy do zmiany, ścieżki
-# Pobieranie kroków adopcyjnych po pagtunku
-
 @baseUrl = https://coders-camp-schronisko.herokuapp.com/api
  
  
