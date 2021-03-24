@@ -4,14 +4,15 @@ import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
 import Login from './components/login/Login';
 import Navbar from './components/navbar/Navbar';
-import About from './components/pages/About';
-import Adoption from './components/pages/Adoption';
-import Contact from './components/pages/Contact';
-import Donation from './components/pages/Donation';
-import Home from './components/pages/Home';
+import About from './pages/About';
+import Adoption from './pages/Adoption';
+import Contact from './pages/Contact';
+import Donation from './pages/Donation';
+import Home from './pages/Home';
 import theme from './themes/theme';
 import Footer from './components/footer/Footer';
 import ForgetPassword from './components/forgetPassword/ForgetPassword';
+import NotFound from './pages/NotFound';
 
 const App: React.FC = () => {
     return (
@@ -38,9 +39,12 @@ const App: React.FC = () => {
                         <Route exact path="/forget">
                             <ForgetPassword />
                         </Route>
-                      <Route exact path="/login">
-                        <Login />
-                    </Route>
+                        <Route exact path="/login">
+                            <Login />
+                        </Route>
+                        <Route path="*">
+                            <NotFound />
+                        </Route>
                     </Switch>
                 </Router>
             </Container>
