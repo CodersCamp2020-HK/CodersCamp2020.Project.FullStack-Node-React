@@ -90,6 +90,15 @@ export class AnimalSubmissionsService {
                 .leftJoinAndSelect('submission.answers', 'answers')
                 .leftJoinAndSelect('answers.question', 'question')
                 .where('applicant.id = :id', { id: currentUser.id })
+                .select([
+                    'animal.name',
+                    'submission.status',
+                    'submission.reason',
+                    'submission.reviewer',
+                    'submission.submissionDate',
+                    'submission.reviewDate',
+                    'question.question',
+                ])
                 .getMany();
 
             if (submissions.length === 0)
@@ -113,10 +122,26 @@ export class AnimalSubmissionsService {
             this.animalSubmissionRepository
                 .createQueryBuilder('submission')
                 .leftJoinAndSelect('submission.animal', 'animal')
+                .leftJoinAndSelect('animal.specie', 'specie')
                 .leftJoinAndSelect('submission.answers', 'answers')
                 .leftJoinAndSelect('answers.question', 'question')
                 .leftJoinAndSelect('submission.applicant', 'applicant')
                 .leftJoinAndSelect('submission.reviewer', 'reviewer')
+                .select([
+                    'applicant.id',
+                    'applicant.name',
+                    'applicant.surname',
+                    'applicant.mail',
+                    'applicant.phone',
+                    'animal.id',
+                    'specie.specie',
+                    'animal.age',
+                    'question.question',
+                    'answers.answer',
+                    'reviewer.id',
+                    'reviewer.name',
+                    'reviewer.surname',
+                ])
                 .skip(isFirstPage ? 0 : SKIP)
                 .limit(LIMIT),
         )
