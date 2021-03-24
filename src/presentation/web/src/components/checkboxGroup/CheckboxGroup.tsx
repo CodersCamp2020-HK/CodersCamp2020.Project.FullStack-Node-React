@@ -4,6 +4,7 @@ import LabeledCheckBox from '../labeledCheckbox/LabeledCheckbox';
 export interface SingleOption {
     content: string;
     checked: boolean;
+    disabled: boolean;
 }
 
 interface CheckboxGroupProps {
@@ -33,7 +34,7 @@ const CheckboxGroup = ({ values, name, getCheckedData }: CheckboxGroupProps) => 
         if (foundedItemIndex > -1) {
             const foundedItem = items[foundedItemIndex];
             const modifiedItems = [...items];
-            modifiedItems[foundedItemIndex] = { content: foundedItem.content, checked: !foundedItem.checked };
+            modifiedItems[foundedItemIndex] = { content: foundedItem.content, checked: !foundedItem.checked, disabled: foundedItem.disabled };
             setItems(modifiedItems);
         }
     };
@@ -43,6 +44,7 @@ const CheckboxGroup = ({ values, name, getCheckedData }: CheckboxGroupProps) => 
                 <LabeledCheckBox
                     key={index}
                     checked={el.checked}
+                    disabled={el.disabled}
                     name={name}
                     label={el.content}
                     onChange={() => handleChange(el.content)}

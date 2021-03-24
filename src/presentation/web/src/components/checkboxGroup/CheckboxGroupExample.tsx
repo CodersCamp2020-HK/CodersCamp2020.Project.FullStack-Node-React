@@ -15,10 +15,10 @@ const CheckBoxGroupExample = () => {
         <div>
             <CheckBoxGroup
                 values={[
-                    { content: 'asd', checked: false },
-                    { content: 'qwe', checked: true },
-                    { content: 'zxc', checked: true },
-                    { content: 'tyu', checked: false },
+                    { content: 'asd', checked: false, disabled: false },
+                    { content: 'qwe', checked: true, disabled: true },
+                    { content: 'zxc', checked: true, disabled: false},
+                    { content: 'tyu', checked: false, disabled: true },
                 ]}
                 name="animalGroup"
                 getCheckedData={handleData}
@@ -26,10 +26,10 @@ const CheckBoxGroupExample = () => {
             <br />
             <CheckBoxGroup
                 values={[
-                    { content: 'hgfd', checked: true },
-                    { content: 'qpoiwe', checked: false },
-                    { content: 'mnbjrt', checked: false },
-                    { content: 'yred', checked: false },
+                    { content: 'hgfd', checked: true, disabled: false},
+                    { content: 'qpoiwe', checked: false, disabled: true },
+                    { content: 'mnbjrt', checked: false, disabled: false},
+                    { content: 'yred', checked: false, disabled: false},
                 ]}
                 name="personGroup"
                 getCheckedData={handleData}
