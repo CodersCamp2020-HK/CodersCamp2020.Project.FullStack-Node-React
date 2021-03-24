@@ -94,6 +94,11 @@ W trakcie developmentu wykorzystujemy:
 -   ReactJS
 -   TypeORM
 -   PostgreSQL
+-   GitHub workflow
+
+### Schemat bazy danych
+
+<img src=".github/images/DB.png">
 
 ### Uruchomienie projektu
 
