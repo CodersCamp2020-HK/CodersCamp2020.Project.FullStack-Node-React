@@ -52,7 +52,7 @@ POST {{baseUrl}}/users/auth
 Content-Type: application/json
 
 {
-    "mail": "Angus.McGlynn56@yahoo.com",
+    "mail": "Odell.Jaskolski@yahoo.com",
     "password": "ZAQ!2wsx"
 }
 
@@ -91,7 +91,7 @@ Content-Type: application/json
 }
 
 ### Get submissions in progress
-GET {{baseUrl}}/adoptionSubmissions?status=in+progress
+GET {{baseUrl}}/adoptionSubmissions?status=accepted
 access_token: {{adminToken}}
 
 ### Accept submission
