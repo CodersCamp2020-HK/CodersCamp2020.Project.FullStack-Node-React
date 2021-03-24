@@ -1,6 +1,5 @@
 @baseUrl = https://coders-camp-schronisko.herokuapp.com/api
  
- 
 ### Get all animals
 GET {{baseUrl}}/animals
 
@@ -57,7 +56,7 @@ GET {{baseUrl}}/forms/2
 access_token: {{authToken}}
 
 ### Post adoption form
-POST {{baseUrl}}/adoptionSubmissions/add
+POST {{baseUrl}}/submissons/animal/add
 access_token: {{authToken}}
 Content-Type: application/json
 
@@ -83,11 +82,11 @@ Content-Type: application/json
 }
 
 ### Get submissions in progress
-GET {{baseUrl}}/adoptionSubmissions?status=in+progress
+GET {{baseUrl}}/submissions/animal?status=in+progress
 access_token: {{adminToken}}
 
 ### Accept submission
-PUT {{baseUrl}}/adoptionSubmissions/changeAdoptionFormStatus
+PUT {{baseUrl}}/submissions/animal/changeAdoptionFormStatus
 access_token: {{adminToken}}
 Content-Type: application/json
 
@@ -97,7 +96,7 @@ Content-Type: application/json
 }
 
 ### Get accpeted submissions
-GET {{baseUrl}}/adoptionSubmissions?status=accepted
+GET {{baseUrl}}/submissions/animal?status=accepted
 access_token: {{adminToken}}
 
 ### Add meeting
