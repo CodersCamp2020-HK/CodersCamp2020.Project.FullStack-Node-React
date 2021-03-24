@@ -100,8 +100,6 @@ Content-Type: application/json
 GET {{baseUrl}}/adoptionSubmissions?status=accepted
 access_token: {{adminToken}}
 
-### Send email
-
 ### Add meeting
 
 ### Get meetings
