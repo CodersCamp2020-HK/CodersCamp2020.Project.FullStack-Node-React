@@ -2,7 +2,6 @@
 # Animal do zmiany dummy data
 # Endpointy do zmiany, ścieżki
 # Pobieranie kroków adopcyjnych po pagtunku
-# Pobieranie formularza po gatunku, podajemy id zwierzaka, pobieramy z niego gatunek, później do adoption step dołączamy  fromularz
 
 ### @baseUrl = https://coders-camp-schronisko.herokuapp.com/api
  @baseUrl = http://localhost:8080/api
