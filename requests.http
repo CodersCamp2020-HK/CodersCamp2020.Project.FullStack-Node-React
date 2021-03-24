@@ -3,10 +3,9 @@
 # Endpointy do zmiany, ścieżki
 # Pobieranie kroków adopcyjnych po pagtunku
 # Pobieranie formularza po gatunku, podajemy id zwierzaka, pobieramy z niego gatunek, później do adoption step dołączamy  fromularz
-# Przy akceptacji formularza dodawać datę oraz recenzenta
 
-@baseUrl = https://coders-camp-schronisko.herokuapp.com/api
-### @baseUrl = localhost:8080/api
+### @baseUrl = https://coders-camp-schronisko.herokuapp.com/api
+ @baseUrl = http://localhost:8080/api
  
 ### Get all animals
 GET {{baseUrl}}/animals
@@ -51,7 +50,7 @@ POST {{baseUrl}}/users/auth
 Content-Type: application/json
 
 {
-    "mail": "Peyton_Gutkowski61@gmail.com",
+    "mail": "Kallie6@gmail.com",
     "password": "ZAQ!2wsx"
 }
 
@@ -90,7 +89,7 @@ Content-Type: application/json
 }
 
 ### Get submissions in progress
-GET {{baseUrl}}/adoptionSubmissions?status=accepted
+GET {{baseUrl}}/adoptionSubmissions?status=in+progress
 access_token: {{adminToken}}
 
 ### Accept submission
@@ -102,6 +101,10 @@ Content-Type: application/json
     "status": "accepted",
     "submissionId": 4
 }
+
+### Get submissions in progress
+GET {{baseUrl}}/adoptionSubmissions?status=accepted
+access_token: {{adminToken}}
 
 ### Send email
 

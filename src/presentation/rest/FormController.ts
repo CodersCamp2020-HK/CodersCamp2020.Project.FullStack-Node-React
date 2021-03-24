@@ -4,6 +4,7 @@ import { FormCreationParams, FormService } from '@application/FormService';
 import ApiError from '@infrastructure/ApiError';
 import Form from '@infrastructure/postgres/Form';
 import { ValidateErrorJSON } from '@application/UsersErrors';
+import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
 
 @Tags('Form')
 @Route('forms')
@@ -37,7 +38,7 @@ export class FormController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'ok')
     @Get('{surveyId}')
-    public async getForm(@Path() surveyId: number): Promise<Form> {
+    public async getForm(@Path() surveyId: number): Promise<AdoptionStep> {
         return this.formService.get(surveyId);
     }
 
