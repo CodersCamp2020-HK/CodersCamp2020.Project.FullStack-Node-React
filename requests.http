@@ -2,8 +2,8 @@
 # Endpointy do zmiany, ścieżki
 # Pobieranie kroków adopcyjnych po pagtunku
 
-### @baseUrl = https://coders-camp-schronisko.herokuapp.com/api
- @baseUrl = http://localhost:8080/api
+@baseUrl = https://coders-camp-schronisko.herokuapp.com/api
+ 
  
 ### Get all animals
 GET {{baseUrl}}/animals
@@ -100,7 +100,7 @@ Content-Type: application/json
     "submissionId": 4
 }
 
-### Get submissions in progress
+### Get accpeted submissions
 GET {{baseUrl}}/adoptionSubmissions?status=accepted
 access_token: {{adminToken}}
 
