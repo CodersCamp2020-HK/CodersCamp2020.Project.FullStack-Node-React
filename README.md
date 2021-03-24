@@ -76,7 +76,7 @@ Zespół projektowy zdecydował się na stworzenie aplikacji schroniska dla zwie
 
 ### Zrealizowane dodatkowe zadania
 
-1. Utowrzony został szablon graficzny aplikacji w programie Figma.
+1. Utowrzony został szablon graficzny aplikacji w programie Figma. [Link do Figmy](https://www.figma.com/file/DKIdy7VNeGNmGy5RNB8v9P/Schronisko?node-id=6363%3A15378)
 
 ## Development aplikacji
 
@@ -90,7 +90,7 @@ W trakcie developmentu wykorzystujemy:
 -   Swagger
 -   Tsoa
 -   Docker
--   Herokz
+-   Heroku
 -   ReactJS
 -   TypeORM
 -   PostgreSQL
