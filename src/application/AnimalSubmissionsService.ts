@@ -84,15 +84,15 @@ export class AnimalSubmissionsService {
         paginationParams?: PaginationParams,
     ): Promise<FormAnimalSubmission[]> {
         if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
-            const submission = await this.animalSubmissionRepository
+            const submissions = await this.animalSubmissionRepository
                 .createQueryBuilder('submission')
                 .leftJoinAndSelect('submission.applicant', 'applicant')
                 .where('applicant.id = :id', { id: currentUser.id })
-                .getOne();
+                .getMany();
 
-            if (submission?.applicant.id != currentUser.id) {
-                throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submissions');
-            }
+            if (submissions.length === 0)
+                throw new ApiError('Not Found', 404, `User with id: ${currentUser.id} does'nt have any submissions!`);
+            return submissions;
         }
 
         let isFirstPage;
