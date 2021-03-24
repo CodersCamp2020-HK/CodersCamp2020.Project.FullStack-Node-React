@@ -138,7 +138,6 @@ export class AnimalSubmissionsService {
                     'animal.age',
                     'question.question',
                     'answers.answer',
-                    'reviewer.id',
                     'reviewer.name',
                     'reviewer.surname',
                 ])

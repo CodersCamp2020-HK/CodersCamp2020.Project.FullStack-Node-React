@@ -7,6 +7,7 @@
 # Przy pobieraniu wypełnionego formularza o adpocję usunąć hasło
 
 @baseUrl = https://coders-camp-schronisko.herokuapp.com/api
+# @baseUrl = localhost:8080/api
  
 ### Get all animals
 GET {{baseUrl}}/animals
@@ -51,7 +52,7 @@ POST {{baseUrl}}/users/auth
 Content-Type: application/json
 
 {
-    "mail": "Gordon_Crist@gmail.com",
+    "mail": "Kamryn85@hotmail.com",
     "password": "ZAQ!2wsx"
 }
 
