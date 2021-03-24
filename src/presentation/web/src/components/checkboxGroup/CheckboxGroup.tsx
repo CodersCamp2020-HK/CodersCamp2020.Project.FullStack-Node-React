@@ -1,7 +1,7 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import LabeledCheckBox from '../labeledCheckbox/LabeledCheckbox';
 
-interface SingleOption {
+export interface SingleOption {
     content: string;
     checked: boolean;
 }
@@ -9,25 +9,44 @@ interface SingleOption {
 interface CheckboxGroupProps {
     values: SingleOption[];
     name: string;
+    getCheckedData: (name: string, data: SingleOption[]) => void;
 }
-const CheckboxGroup = ({ values, name }: CheckboxGroupProps) => {
+const CheckboxGroup = ({ values, name, getCheckedData }: CheckboxGroupProps) => {
     const [items, setItems] = useState(values);
-    //const checkedItems = items.filter((el) => el.checked);
+
+    useEffect(() => {
+        getCheckedData(
+            name,
+            values.filter((el) => el.checked),
+        );
+    }, []);
+
+    useEffect(() => {
+        getCheckedData(
+            name,
+            items.filter((el) => el.checked),
+        );
+    }, [items]);
 
     const handleChange = (content: string) => {
-        console.log(content);
-        const foundedItemIndex = items.findIndex((item) => item.content == content)
-        if(foundedItemIndex > -1) {
+        const foundedItemIndex = items.findIndex((item) => item.content == content);
+        if (foundedItemIndex > -1) {
             const foundedItem = items[foundedItemIndex];
-            const modifiedItems = [...items]
-            modifiedItems[foundedItemIndex] = {content: foundedItem.content, checked: !foundedItem.checked}
+            const modifiedItems = [...items];
+            modifiedItems[foundedItemIndex] = { content: foundedItem.content, checked: !foundedItem.checked };
             setItems(modifiedItems);
         }
-    }
+    };
     return (
-        <div style={{display: 'flex', flexDirection: 'column'}}>
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
             {items.map((el, index) => (
-                <LabeledCheckBox key={index} checked={el.checked} name={name} label={el.content} onChange={() => handleChange(el.content)} />
+                <LabeledCheckBox
+                    key={index}
+                    checked={el.checked}
+                    name={name}
+                    label={el.content}
+                    onChange={() => handleChange(el.content)}
+                />
             ))}
         </div>
     );
