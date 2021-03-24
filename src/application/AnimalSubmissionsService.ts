@@ -163,7 +163,10 @@ export class AnimalSubmissionsService {
     ): Promise<void> {
         const submission = await this.animalSubmissionRepository.findOne(submissionId);
         if (!submission) throw new ApiError('Not Found', 404, `Submission with id: ${submissionId} not found!`);
-        const organizationUser = await this.organizationUserRepository.findOne({ user: { id: user.id } });
+        const organizationUser = await this.organizationUserRepository.findOne({
+            user: { id: user.id },
+            organization: { id: 1 },
+        });
         submission.status = status;
         submission.reviewer = organizationUser;
         submission.reviewDate = new Date();
