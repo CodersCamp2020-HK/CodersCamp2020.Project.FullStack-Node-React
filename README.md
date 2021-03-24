@@ -72,9 +72,7 @@ Zespół projektowy zdecydował się na stworzenie aplikacji schroniska dla zwie
 
 #### Przykładowa funkcjonalność aplikacji
 
-<p align="center">
-  <img src="![apiheroku](https://user-images.githubusercontent.com/56504859/112295862-9f43c800-8c94-11eb-94a5-1d25bc7a737d.gif)" alt="gif" />
-</p>
+![apiheroku](https://user-images.githubusercontent.com/56504859/112295862-9f43c800-8c94-11eb-94a5-1d25bc7a737d.gif)
 
 ### Zrealizowane dodatkowe zadania
 
