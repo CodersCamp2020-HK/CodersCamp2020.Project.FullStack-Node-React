@@ -28,7 +28,7 @@ Szablon projektu dostępny jest [TUTAJ](https://github.com/CodersCamp2020/Coders
 
 ## Cel projektu
 
-Celem projektu było napisanie aplikacji wykorzystującej dotychczas nabytą wiedzę z następujących technologi: html, css, javascript, typescript, nodejs, reactjs.
+Celem projektu było napisanie wpełni funkcjionalnego REST API wykorzystując dotychczas nabytą wiedzę z następujących technologi: html, css, javascript, typescript, nodejs, reactjs.
 Zespół projektowy zdecydował się na stworzenie aplikacji schroniska dla zwierząt.
 
 ## Wymagania funkcjonalne
@@ -70,18 +70,6 @@ Zespół projektowy zdecydował się na stworzenie aplikacji schroniska dla zwie
 18. Pozsotali użytkownicy zostają poinformowani mailowo o odrzuconym wniosku, w przypadku gdy inny użytkownik zaadoptował już dane zwierzę.
 19. Użytkownik ma możliwość złożyć formularz kandydata na wolontariusza.
 
-### Zmiany wprowadzone w wymaganiach
-
-Lekkim wizualnym zmianom uległ projekt dostarczony przez grafika.
-
-### Działanie aplikacji
-
-#### Menu Główne
-
-##### Informacje
-
-####
-
 #### Przykładowa funkcjonalność aplikacji
 
 <p align="center">
@@ -90,11 +78,7 @@ Lekkim wizualnym zmianom uległ projekt dostarczony przez grafika.
 
 ### Zrealizowane dodatkowe zadania
 
-Nasz zespół zrealizował także zadania dodatkowe, wykraczające poza zakres kursu
-
 1. Utowrzony został szablon graficzny aplikacji w programie Figma.
-
-2.
 
 ## Development aplikacji
 
@@ -108,39 +92,31 @@ W trakcie developmentu wykorzystujemy:
 -   Swagger
 -   Tsoa
 -   Docker
--   Heroku
--   Json Web Token
+-   Herokz
 -   ReactJS
-
-Pozostałe narzędzia wspomagające pracę:
-
-### Wykorzystane technologie
-
--   xxx
--   xxx
--   xxx
--   xxx
--   xxx
--   xxx
+-   TypeORM
+-   PostgreSQL
 
 ### Uruchomienie projektu
 
 Aby uruchomić aplikację na lokalnej maszynie, wykonaj następujące kroki:
 
-1. Zainstaluj zależności za pomocą komendy: `npm install`
-2. Wystartuj serwer developerski `npm run dev`
+1. Zainstaluj zależności za pomocą komendy: `npm ci`
+2. Uruchom kontenery z bazą danych oraz narzędziem pgAdmin: `docker-compose up`
+3. Wystartuj serwer developerski `npm run dev`
 
-Aplikacja będzie dostępna pod adresem [localhost:8080/](http://localhost:8080)
+Aplikacja będzie dostępna pod adresem [localhost:3080/](http://localhost:3080), natomiast API pod adresem [localhost:8000/](http://localhost:8000/api)
 
-Kod produkcyjny aplikacji umieszczamy w katalogu `dist`.
+Kod produkcyjny aplikacji umieszczamy w katalogu `build`.
 
 ### Uruchomienie testów
 
-Dodając swoje 5 groszy do naszej aplikacji, pamiętaj o pokryciu kodu testami.
 Aby uruchomić testy aplikacji, wykonaj następujące kroki:
 
-1. Zainstaluj zależności za pomocą komendy: `npm install` (jeśli nie zrobiłeś już tego wcześniej).
-2. Uruchom testy, wykonując komendę: `npm run test`. Testy z raportem pokrycia uruchomisz za pomocą: `npm run test:cov`.
+1. Zainstaluj zależności za pomocą komendy: `npm ci` (jeśli nie zrobiłeś już tego wcześniej).
+2. Uruchom wszystkie testy, wykonując komendę: `npm run test`.
+
+Dostępne są także testy tylko dla serwera `npm run server:test
 
 Kod testów umieszczamy w katalogu `test`.
 
