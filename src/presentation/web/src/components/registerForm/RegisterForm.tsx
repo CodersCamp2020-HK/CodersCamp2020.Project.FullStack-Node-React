@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -58,12 +58,16 @@ function RegisterForm() {
     })
     const classes = useStyle();
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const { register, handleSubmit, errors, setError, getValues, formState, trigger } = useForm<Inputs>({})
-    const [date, setDate] = useState(new Date());
+    const { register, handleSubmit, setError, errors, getValues, setValue, formState, trigger } = useForm<Inputs>({})
+    const handleDateChange = (date: Date | null): void => {
+        setValue("birthDate", date);
+      };
+    const birthDate = getValues().birthDate;
     const { mutate } = useMutate({
         verb: 'POST',
         path: '/users'
     })
+
     const onSubmit = async ({name, surname, mail, password, repPassword, birthDate, phone}: Inputs) => {
         mutate({
             name,
@@ -76,17 +80,23 @@ function RegisterForm() {
         }).catch((error) => {
             if (error.data.status === 400) setError('mail', { message: error.data.message })
         })
-        
     }
-    const validateRepeat = () => {
+
+    const validateRepeatPassword = () => {
         if (formState.isSubmitted) trigger('repPassword')
     }
+    const validateRepeatBirthDate = () => {
+        if (formState.isSubmitted) trigger('birthDate')
+    }
+    const repeatPassword = (value: string) => value === getValues().password || 'Hasła muszą być takie same!'
+    const validatebirthDateAfterToday = (value: Date) => value < new Date() || 'Data musi być wcześniejsza!'
+    const validateBirthDateBefore = (value: Date) => value > new Date(1900, 1) || "Data musi być późniejsza!"
 
-    const repeatPassowrd = (value: string) => value === getValues().password || 'Hasła muszą być takie same!'
-
-
+    useEffect(() => {
+        register({ name: 'birthDate', type: 'custom'}, { required: 'Data urodzenia jest wymagana!', validate: { validateBirthDateBefore, validatebirthDateAfterToday } })
+    }, [])
     return (
-        <Grid item xs={5} direction="column" justify="space-between" alignItems="center">
+        <Grid item xs={12} md={8} lg={6}>
             <Paper className={classes.paper} variant="outlined" square={false}>
                 <SvgIcon className={classes.lockBackground}>
                     <LockOutlinedIcon className={classes.lockIcon} />
@@ -98,16 +108,16 @@ function RegisterForm() {
                         label="Imię"
                         required
                         inputRef={register({ required: 'Imię jest wymagane!', minLength: { value: 2, message: 'Imię za krótkie!' }, maxLength: { value: 50, message: 'Imię za długie'} })}
-                        error={errors.name ? true : false}
-                        helperText={errors.name ? errors.name.message : undefined}
+                        error={errors.hasOwnProperty('name')}
+                        helperText={errors.name && errors.name.message}
                     />
                     <TextField
                         name="surname"
                         label="Nazwisko"
                         required
                         inputRef={register({ required: 'Nazwisko jest wymagane!', minLength: { value: 2, message: 'Nazwisko za krótkie' }, maxLength: { value: 50, message: 'Nazwisko za długie' } })}
-                        error={errors.surname ? true : false}
-                        helperText={errors.surname ? errors.surname.message : undefined}
+                        error={errors.hasOwnProperty('surname')}
+                        helperText={errors.surname && errors.surname.message}
                     />
                     <TextField
                         name="mail"
@@ -115,52 +125,53 @@ function RegisterForm() {
                         type="email"
                         required
                         inputRef={register({ required: 'Email jest wymagany!', pattern: { value: emailPattern, message: 'Nieprawidłowy email!'} })}
-                        error={errors.mail ? true : false}
-                        helperText={errors.mail ? errors.mail.message : undefined}
+                        error={errors.hasOwnProperty('mail')}
+                        helperText={errors.mail && errors.mail.message}
                     />
                     <TextField
                         name="password"
                         label="Hasło"
                         type="password"
                         required
-                        onChange={validateRepeat}
+                        onChange={validateRepeatPassword}
                         inputRef={register({ required: 'Hasło jest wymagane', pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, message: 'Hasło musi zawierać co najmniej jedną małą literę, jedną wielką literę, jedną liczbę oraz jeden znak specjalny (@$!%*?&)!' } })}
-                        error={errors.password ? true : false}
-                        helperText={errors.password ? errors.password.message : undefined}
+                        error={errors.hasOwnProperty('password')}
+                        helperText={errors.password && errors.password.message}
                     />
                     <TextField
                         name="repPassword"
                         label="Powtórz hasło"
                         type="password"
                         required
-                        inputRef={register({ required: true, validate: { repeatPassowrd } })}
-                        error={errors.repPassword ? true : false}
-                        helperText={errors.repPassword ? errors.repPassword.message : undefined}
+                        inputRef={register({ required: true, validate: { repeatPassowrd: repeatPassword } })}
+                        error={errors.hasOwnProperty('repPassword')}
+                        helperText={errors.repPassword && errors.repPassword.message}
                     />
                     <KeyboardDatePicker
                         required
                         name="birthDate"
                         disableFuture
-                        minDate="1900-01-01"
-                        minDateMessage="Podaj późniejszą datę!"
+                        value={birthDate}
                         openTo="year"
                         format="dd/MM/yyyy"
                         placeholder="DD/MM/YYYY"
                         views={['year', 'month', 'date']}
                         label="Data urodzenia"
-                        invalidDateMessage="Podaj datę w formacie DD/MM/RRRR"
-                        maxDateMessage="Podaj wcześniejszą datę!"
-                        value={date}
-                        onChange={date => date && setDate(date)}
-                        inputRef={register({ required: 'Data urodzenia jest wymagana '})}
+                        invalidDateMessage=""
+                        onChange={(date: Date | null) => {
+                            handleDateChange(date)
+                            validateRepeatBirthDate()
+                        }}
+                        error={errors.hasOwnProperty('birthDate')}
+                        helperText={errors.birthDate && errors.birthDate.message}
                     />
                     <TextField
                         name="phone"
                         label="Telefon"
                         required
                         inputRef={register({ required: 'Telefon jest wymagany!', pattern: { value: /^\d{9}$/, message: 'Telefon musi zawierać 9 cyfr' }, valueAsNumber: true })}
-                        error={errors.phone ? true : false}
-                        helperText={errors.phone ? errors.phone.message : undefined}
+                        error={errors.hasOwnProperty('phone')}
+                        helperText={errors.phone && errors.phone.message}
                     />
                     <Button className={classes.submit} fullWidth variant="contained" color="primary" type="submit">Zarejestruj się</Button>
                 </form>
