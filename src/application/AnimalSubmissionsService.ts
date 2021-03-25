@@ -167,7 +167,6 @@ export class AnimalSubmissionsService {
             user: { id: user.id },
             organization: { id: 1 },
         });
-        console.log(organizationUser);
         submission.status = status;
         submission.reviewer = organizationUser;
         submission.reviewDate = new Date();
