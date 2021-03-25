@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { ReactComponent as Cat } from './icons/CatIcon.svg';
 import { ReactComponent as Dog } from './icons/DogIcon.svg';
@@ -40,22 +40,29 @@ const useStyles = makeStyles({
     },
 });
 
+interface FormState {
+    animal: string;
+    home: string;
+    getAnimals: string;
+    getChildren: string;
+}
+
 const FilterPanel = () => {
-    const [state, setstate] = useState({
+    const [state, setstate] = useState<FormState>({
         animal: 'cat',
         home: 'building',
         getAnimals: 'Nie mam zwierząt',
         getChildren: 'Nie mam dzieci',
     });
 
-    const handleChange = (e: any) => {
+    const handleChange = (e: React.ChangeEvent<any>) => {
         setstate({
             ...state,
             [e.target.name]: e.target.value,
         });
     };
 
-    const handleSubmit = (e: any) => {
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(state);
     };
@@ -203,13 +210,13 @@ const FilterPanel = () => {
                                     type="radio"
                                     name="home"
                                     id="house"
-                                    value="house"
+                                    value={'house'}
                                     checked={state.home === 'house'}
                                     onChange={handleChange}
                                 />
                             </label>
                         </Grid>
-                        <Grid item container xs={12} sm={6} md={3} lg={2} justify="center" alignItems="center">
+                        <Grid item container xs={12} sm={6} md={3} lg={2} justify="center" alignItems="baseline">
                             <FormControl margin="normal">
                                 <InputLabel id="getAnimals">Zwierzęta</InputLabel>
                                 <Select
@@ -224,7 +231,7 @@ const FilterPanel = () => {
                                 </Select>
                             </FormControl>
                         </Grid>
-                        <Grid item container xs={12} sm={6} md={3} lg={2} justify="center" alignItems="center">
+                        <Grid item container xs={12} sm={6} md={3} lg={2} justify="center" alignItems="baseline">
                             <FormControl margin="normal">
                                 <InputLabel id="getChildren">Dzieci</InputLabel>
                                 <Select
@@ -240,7 +247,7 @@ const FilterPanel = () => {
                                 <FormHelperText>poniżej 15 roku życia</FormHelperText>
                             </FormControl>
                         </Grid>
-                        <Grid item container xs={12} sm={12} md={12} lg={2} justify="center" alignItems="center">
+                        <Grid item container xs={12} lg={2} justify="center" alignItems="center">
                             <Button color="primary" variant="contained" type="submit">
                                 Filtruj zwierzaki
                             </Button>
