@@ -163,14 +163,24 @@ export class AnimalSubmissionsService {
     ): Promise<void> {
         const submission = await this.animalSubmissionRepository.findOne(submissionId, { relations: ['reviewer'] });
         if (!submission) throw new ApiError('Not Found', 404, `Submission with id: ${submissionId} not found!`);
-        const organizationUser = await this.organizationUserRepository.findOne({
-            user: { id: user.id },
-            organization: { id: 1 },
-        });
-        submission.status = status;
-        submission.reviewer = organizationUser;
-        submission.reviewDate = new Date();
-        this.animalSubmissionRepository.save(submission);
+        const organizationUser = await this.organizationUserRepository.findOne(
+            {
+                user: { id: user.id },
+                organization: { id: 1 },
+            },
+            { relations: ['organization', 'user'] },
+        );
+        if (!organizationUser) throw new ApiError('Not Found', 404, `Organization user not found!`);
+        const updatedSubmission = {
+            id: submission.id,
+            status: status,
+            reviewer: {
+                user: { id: organizationUser.user.id },
+                organization: { id: organizationUser.organization.id },
+            },
+            reviewDate: new Date(),
+        };
+        this.animalSubmissionRepository.save(updatedSubmission);
     }
 
     public async getAnimalSubmission(id: number, currentUser: IUserInfo): Promise<FormAnimalSubmission> {
