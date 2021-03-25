@@ -40,25 +40,14 @@ export default class User {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({
-        length: 50,
-        nullable: true,
-        default: null,
-    })
-    name?: string;
+    @Column({ length: 50 })
+    name!: string;
 
-    @Column({
-        length: 50,
-        nullable: true,
-        default: null,
-    })
-    surname?: string;
+    @Column({ length: 50 })
+    surname!: string;
 
-    @Column({
-        nullable: true,
-        default: null,
-    })
-    phone?: number;
+    @Column({ nullable: true })
+    phone!: number;
 
     @Column({
         length: 50,
@@ -70,6 +59,9 @@ export default class User {
         length: 255,
     })
     password!: Password;
+
+    @Column({ type: 'date' })
+    birthDate!: Date;
 
     @CreateDateColumn()
     registrationDate!: Date;
