@@ -34,9 +34,9 @@ const App: React.FC = () => {
                         <Route exact path="/contact">
                             <Contact />
                         </Route>
-                      <Route exact path="/login">
-                        <Login />
-                    </Route>
+                        <Route exact path="/login">
+                            <Login />
+                        </Route>
                     </Switch>
                 </Router>
             </Container>
