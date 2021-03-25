@@ -1,35 +1,72 @@
 import { DeepPartial } from 'typeorm';
-import * as faker from 'faker';
 import FormQuestion, { AnswerType } from '../FormQuestion';
 
-export const seedFormQuestion = (amount: number): DeepPartial<FormQuestion>[] => {
-    const formQuestion: DeepPartial<FormQuestion>[] = [];
-
-    for (let j = 0; j < 3; j++) {
-        let currentEnum: AnswerType = AnswerType.CHECKBOX;
-        if (j == 0) {
-            currentEnum = AnswerType.CHECKBOX;
-        }
-        if (j == 1) {
-            currentEnum = AnswerType.RADIO;
-        }
-        if (j == 2) {
-            currentEnum = AnswerType.TEXT;
-        }
-        for (let i = 0; i < amount; i++) {
-            formQuestion.push({
-                question: faker.hacker.phrase(),
-                placeholder: {
-                    type: currentEnum,
-                    answer:
-                        currentEnum == AnswerType.TEXT
-                            ? faker.random.word()
-                            : [faker.random.word(), faker.random.word()],
-                },
-                form: { id: i + 1 },
-            });
-        }
-    }
+export const seedFormQuestion = (): DeepPartial<FormQuestion>[] => {
+    const formQuestion: DeepPartial<FormQuestion>[] = [
+        {
+            id: 1,
+            question: 'Czy mają państwo dzieci?',
+            placeholder: {
+                type: AnswerType.RADIO,
+                answer: ['Tak', 'Nie'],
+            },
+            form: { id: 1 },
+        },
+        {
+            id: 2,
+            question: 'Czy mają państwo uczulenie na sierść',
+            placeholder: {
+                type: AnswerType.RADIO,
+                answer: ['Tak', 'Nie', 'Nie wiem'],
+            },
+            form: { id: 1 },
+        },
+        {
+            id: 3,
+            question: 'Czy mają państwo dzieci?',
+            placeholder: {
+                type: AnswerType.RADIO,
+                answer: ['Tak', 'Nie'],
+            },
+            form: { id: 2 },
+        },
+        {
+            id: 4,
+            question: 'Czy mają państwo uczulenie na sierść',
+            placeholder: {
+                type: AnswerType.RADIO,
+                answer: ['Tak', 'Nie', 'Nie wiem'],
+            },
+            form: { id: 2 },
+        },
+        {
+            id: 5,
+            question: 'Czemu akurat teraz zdecydowali się Państwo na adopcję psa?',
+            placeholder: {
+                type: AnswerType.TEXT,
+                answer: '...',
+            },
+            form: { id: 1 },
+        },
+        {
+            id: 6,
+            question: 'Czemu chcą Państwo zostać wolontariuszem?',
+            placeholder: {
+                type: AnswerType.TEXT,
+                answer: '...',
+            },
+            form: { id: 3 },
+        },
+        {
+            id: 7,
+            question: 'Czy pracowali Państwo charytatywnie?',
+            placeholder: {
+                type: AnswerType.RADIO,
+                answer: ['Tak', 'Nie'],
+            },
+            form: { id: 3 },
+        },
+    ];
 
     return formQuestion;
 };

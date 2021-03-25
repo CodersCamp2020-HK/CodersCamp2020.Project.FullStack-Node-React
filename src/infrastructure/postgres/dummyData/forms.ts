@@ -1,13 +1,20 @@
 import { DeepPartial } from 'typeorm';
 import Form from '../Form';
-import * as faker from 'faker';
 
-export const seedForms = (amount: number): DeepPartial<Form>[] => {
-    const forms: DeepPartial<Form>[] = [];
-    for (let i = 0; i < amount; i++) {
-        forms.push({
-            name: faker.company.companyName(),
-        });
-    }
-    return forms;
+export const seedForms = (): DeepPartial<Form>[] => {
+    const form: DeepPartial<Form>[] = [
+        {
+            id: 1,
+            name: 'Formularz adopcji psa',
+        },
+        {
+            id: 2,
+            name: 'Formularz adopcji kota',
+        },
+        {
+            id: 3,
+            name: 'Formularz na wolontariusza',
+        },
+    ];
+    return form;
 };
