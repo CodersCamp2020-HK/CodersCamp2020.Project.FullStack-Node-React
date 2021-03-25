@@ -1,0 +1,115 @@
+@baseUrl = https://coders-camp-schronisko.herokuapp.com/api
+ 
+### Get all animals
+GET {{baseUrl}}/animals
+
+### Get animal
+GET {{baseUrl}}/animals/1
+
+### Register user
+# @name register
+POST {{baseUrl}}/users
+Content-Type: application/json
+
+{
+    "name": "Testowy",
+    "surname": "Uytkownik",
+    "phone": 123456789,
+    "repPassword": "ZAQ!2wsx",
+    "password": "ZAQ!2wsx",
+    "mail": "new.user@gmail.com",
+    "birthDate": "2000-12-30"
+}
+
+### uuid
+@uuid = {{register.response.body.uuid}}
+
+### Activate user
+GET {{baseUrl}}/users/activate/{{uuid}}
+
+### Login user
+# @name login
+POST {{baseUrl}}/users/auth
+Content-Type: application/json
+
+{
+    "mail": "new.user@gmail.com",
+    "password": "ZAQ!2wsx"
+}
+
+### Login admin
+# @name adminLogin
+POST {{baseUrl}}/users/auth
+Content-Type: application/json
+
+{
+    "mail": "admin@admin.com",
+    "password": "ZAQ!2wsx"
+}
+
+### Auth token
+@authToken = {{login.response.body.apiKey}}
+@adminToken = {{adminLogin.response.body.apiKey}}
+
+### Get adoption form
+GET {{baseUrl}}/forms/2
+access_token: {{authToken}}
+
+### Post adoption form
+POST {{baseUrl}}/submissions/animals/add
+access_token: {{authToken}}
+Content-Type: application/json
+
+{
+    "animalId": 2,
+    "stepNumber": 1,
+    "answers": [
+        {
+            "questionId": 3,
+            "answer": {
+                "type": "checkbox",
+                "answer": "Tak"
+            }
+        },
+        {
+            "questionId": 4,
+            "answer": {
+                "type": "checkbox",
+                "answer": "Nie"
+            }
+        }
+    ]
+}
+
+### Get submissions in progress
+GET {{baseUrl}}/submissions/animals?status=in+progress
+access_token: {{adminToken}}
+
+### Accept submission
+PUT {{baseUrl}}/submissions/animals/change
+access_token: {{adminToken}}
+Content-Type: application/json
+
+{
+    "status": "accepted",
+    "submissionId": 4
+}
+
+### Get accpeted submissions
+GET {{baseUrl}}/submissions/animals?status=accepted
+access_token: {{adminToken}}
+
+### Add meeting
+POST {{baseUrl}}/calendars
+access_token: {{authToken}}
+Content-Type: application/json
+
+{
+    "date": "2021-03-21",
+    "animalId": 2,
+    "userId": 6
+}
+
+### Get meetings
+GET {{baseUrl}}/calendars
+access_token: {{adminToken}}

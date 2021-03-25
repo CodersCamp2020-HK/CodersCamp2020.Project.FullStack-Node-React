@@ -1,19 +1,44 @@
 import { DeepPartial } from 'typeorm';
-import * as faker from 'faker';
 import FormAnimalAnswer from '../FormAnimalAnswer';
-import { AnswerForm, AnswerType } from '../FormQuestion';
+import { AnswerType } from '../FormQuestion';
 
-export const seedFormAnimalAnswer = (amount: number): DeepPartial<FormAnimalAnswer>[] => {
-    const formAnimalAnswer: DeepPartial<FormAnimalAnswer>[] = [];
-    for (let i = 0; i < amount; i++) {
-        const answerObj: AnswerForm = { type: AnswerType.TEXT, answer: faker.random.word() };
-        formAnimalAnswer.push({
-            answer: answerObj,
-            question: { id: i + 1 },
-            submission: {
-                id: 1,
-            },
-        });
-    }
+export const seedFormAnimalAnswer = (): DeepPartial<FormAnimalAnswer>[] => {
+    const formAnimalAnswer: DeepPartial<FormAnimalAnswer>[] = [
+        {
+            question: { id: 1 },
+            answer: { type: AnswerType.RADIO, answer: 'Tak' },
+            submission: { id: 1 },
+        },
+        {
+            question: { id: 2 },
+            answer: { type: AnswerType.RADIO, answer: 'Nie wiem' },
+            submission: { id: 1 },
+        },
+        {
+            question: { id: 5 },
+            answer: { type: AnswerType.RADIO, answer: 'Bo akurat nie mam psa' },
+            submission: { id: 1 },
+        },
+        {
+            question: { id: 3 },
+            answer: { type: AnswerType.RADIO, answer: 'Tak' },
+            submission: { id: 2 },
+        },
+        {
+            question: { id: 4 },
+            answer: { type: AnswerType.RADIO, answer: 'Nie wiem' },
+            submission: { id: 2 },
+        },
+        {
+            question: { id: 3 },
+            answer: { type: AnswerType.RADIO, answer: 'Nie' },
+            submission: { id: 3 },
+        },
+        {
+            question: { id: 4 },
+            answer: { type: AnswerType.RADIO, answer: 'Nie' },
+            submission: { id: 3 },
+        },
+    ];
     return formAnimalAnswer;
 };

@@ -33,7 +33,7 @@ export class CalendarController extends Controller {
     @Response<ApiError>(404, 'Not Found')
     @SuccessResponse(200, 'ok')
     @Get()
-    public async getAllVisits(): Promise<Calendar> {
+    public async getAllVisits(): Promise<Calendar[]> {
         return this.calendarService.getAll();
     }
 
