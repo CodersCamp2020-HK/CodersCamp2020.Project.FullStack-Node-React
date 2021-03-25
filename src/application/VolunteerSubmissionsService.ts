@@ -69,11 +69,6 @@ export class VolunteerSubmissionsService {
             reviewDate: new Date(),
         };
         this.volunteerSubmissionRepository.save(updatedSubmission);
-
-        submission.status = changeStatusParams.status;
-        submission.reviewer = organizationUser;
-        submission.reviewDate = new Date();
-        this.volunteerSubmissionRepository.save(submission);
     }
 
     public async getAllSubmissions(
