@@ -9,11 +9,9 @@ import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import { Theme, useTheme, makeStyles } from '@material-ui/core';
 import { useMutate } from 'restful-react';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
+import { KeyboardDatePicker } from '@material-ui/pickers';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Link as RouterLink } from 'react-router-dom';
-import FnsUtils from '@date-io/date-fns';
-import plLocale from 'date-fns/locale/pl';
 
 interface Inputs {
     name: string;
@@ -24,8 +22,7 @@ interface Inputs {
     birthDate: Date;
     phone: number;
 }
-
-function RegisterForm() {
+const RegisterForm = () => {
     const theme = useTheme<Theme>();
     const useStyle = makeStyles({
         lockBackground: {
@@ -55,6 +52,9 @@ function RegisterForm() {
         link: {
             color: theme.palette.info.main,
             alignSelf: 'flex-end',
+        },
+        textField: {
+            marginBottom: 35,
         }
     })
     const classes = useStyle();
@@ -99,7 +99,7 @@ function RegisterForm() {
         register({ name: 'birthDate', type: 'custom'}, { required: 'Data urodzenia jest wymagana!', validate: { validateBirthDateBefore, validatebirthDateAfterToday } })
     }, [])
     return (
-        <Grid item xs={12} md={8} lg={6}>
+        <Grid item xs={12} md={8} lg={5}>
             <Paper className={classes.paper} variant="outlined" square={false}>
                 <SvgIcon className={classes.lockBackground}>
                     <LockOutlinedIcon className={classes.lockIcon} />
@@ -107,6 +107,7 @@ function RegisterForm() {
                 <Typography className={classes.text} variant="h5" component="span">Zarejestruj się</Typography>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <TextField
+                        className={classes.textField}
                         name="name"
                         label="Imię"
                         required
@@ -115,6 +116,7 @@ function RegisterForm() {
                         helperText={errors.name && errors.name.message}
                     />
                     <TextField
+                        className={classes.textField}
                         name="surname"
                         label="Nazwisko"
                         required
@@ -123,6 +125,7 @@ function RegisterForm() {
                         helperText={errors.surname && errors.surname.message}
                     />
                     <TextField
+                        className={classes.textField}
                         name="mail"
                         label="Email"
                         type="email"
@@ -132,6 +135,7 @@ function RegisterForm() {
                         helperText={errors.mail && errors.mail.message}
                     />
                     <TextField
+                        className={classes.textField}
                         name="password"
                         label="Hasło"
                         type="password"
@@ -142,6 +146,7 @@ function RegisterForm() {
                         helperText={errors.password && errors.password.message}
                     />
                     <TextField
+                        className={classes.textField}
                         name="repPassword"
                         label="Powtórz hasło"
                         type="password"
@@ -150,28 +155,27 @@ function RegisterForm() {
                         error={errors.hasOwnProperty('repPassword')}
                         helperText={errors.repPassword && errors.repPassword.message}
                     />
-                    <MuiPickersUtilsProvider utils={FnsUtils} locale={plLocale}>
-                        <KeyboardDatePicker
-                            required
-                            name="birthDate"
-                            disableFuture
-                            value={date}
-                            openTo="year"
-                            format="dd/MM/yyyy"
-                            placeholder="DD/MM/YYYY"
-                            lang="pl"
-                            views={['year', 'month', 'date']}
-                            label="Data urodzenia"
-                            invalidDateMessage=""
-                            onChange={(date: Date | null) => {
-                                handleDateChange(date)
-                                validateRepeatBirthDate()
-                            }}
-                            error={errors.hasOwnProperty('birthDate')}
-                            helperText={errors.birthDate && errors.birthDate.message}
-                        />
-                    </MuiPickersUtilsProvider>
+                    <KeyboardDatePicker
+                        className={classes.textField}
+                        required
+                        name="birthDate"
+                        disableFuture
+                        value={date}
+                        openTo="year"
+                        format="dd/MM/yyyy"
+                        placeholder="DD/MM/YYYY"
+                        views={['year', 'month', 'date']}
+                        label="Data urodzenia"
+                        invalidDateMessage=""
+                        onChange={(date: Date | null) => {
+                            handleDateChange(date)
+                            validateRepeatBirthDate()
+                        }}
+                        error={errors.hasOwnProperty('birthDate')}
+                        helperText={errors.birthDate && errors.birthDate.message}
+                    />
                     <TextField
+                        className={classes.textField}
                         name="phone"
                         label="Telefon"
                         required
@@ -179,7 +183,7 @@ function RegisterForm() {
                         error={errors.hasOwnProperty('phone')}
                         helperText={errors.phone && errors.phone.message}
                     />
-                    <Button className={classes.submit} fullWidth variant="contained" color="primary" type="submit">Zarejestruj się</Button>
+                    <Button className={classes.submit} fullWidth size="medium" variant="contained" color="primary" type="submit">Zarejestruj się</Button>
                 </form>
                 <Link className={classes.link} component={RouterLink} to="/login">Masz już konto? Zaloguj się</Link>
             </Paper>
