@@ -1,5 +1,5 @@
 import React from 'react';
-import FilterPanel from '../filterPanel/FilterPanel';
+import FilterPanel from '../components/filterPanel/FilterPanel';
 
 const Home = () => {
     return (
