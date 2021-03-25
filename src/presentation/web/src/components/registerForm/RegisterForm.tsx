@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -9,9 +9,11 @@ import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import { Theme, useTheme, makeStyles } from '@material-ui/core';
 import { useMutate } from 'restful-react';
-import { KeyboardDatePicker } from '@material-ui/pickers';
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Link as RouterLink } from 'react-router-dom';
+import FnsUtils from '@date-io/date-fns';
+import plLocale from 'date-fns/locale/pl';
 
 interface Inputs {
     name: string;
@@ -37,7 +39,7 @@ function RegisterForm() {
         },
         submit: {
             filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
-            margin: '10px 0'
+            marginBottom: 10
         },
         paper: {
             color: theme.palette.background.paper,
@@ -53,16 +55,17 @@ function RegisterForm() {
         link: {
             color: theme.palette.info.main,
             alignSelf: 'flex-end',
-            marginTop: 10
         }
     })
     const classes = useStyle();
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const { register, handleSubmit, setError, errors, getValues, setValue, formState, trigger } = useForm<Inputs>({})
+
+    const [date, setDate] = useState(new Date());
     const handleDateChange = (date: Date | null): void => {
+        date && setDate(date);
         setValue("birthDate", date);
       };
-    const birthDate = getValues().birthDate;
     const { mutate } = useMutate({
         verb: 'POST',
         path: '/users'
@@ -147,24 +150,27 @@ function RegisterForm() {
                         error={errors.hasOwnProperty('repPassword')}
                         helperText={errors.repPassword && errors.repPassword.message}
                     />
-                    <KeyboardDatePicker
-                        required
-                        name="birthDate"
-                        disableFuture
-                        value={birthDate}
-                        openTo="year"
-                        format="dd/MM/yyyy"
-                        placeholder="DD/MM/YYYY"
-                        views={['year', 'month', 'date']}
-                        label="Data urodzenia"
-                        invalidDateMessage=""
-                        onChange={(date: Date | null) => {
-                            handleDateChange(date)
-                            validateRepeatBirthDate()
-                        }}
-                        error={errors.hasOwnProperty('birthDate')}
-                        helperText={errors.birthDate && errors.birthDate.message}
-                    />
+                    <MuiPickersUtilsProvider utils={FnsUtils} locale={plLocale}>
+                        <KeyboardDatePicker
+                            required
+                            name="birthDate"
+                            disableFuture
+                            value={date}
+                            openTo="year"
+                            format="dd/MM/yyyy"
+                            placeholder="DD/MM/YYYY"
+                            lang="pl"
+                            views={['year', 'month', 'date']}
+                            label="Data urodzenia"
+                            invalidDateMessage=""
+                            onChange={(date: Date | null) => {
+                                handleDateChange(date)
+                                validateRepeatBirthDate()
+                            }}
+                            error={errors.hasOwnProperty('birthDate')}
+                            helperText={errors.birthDate && errors.birthDate.message}
+                        />
+                    </MuiPickersUtilsProvider>
                     <TextField
                         name="phone"
                         label="Telefon"

@@ -56,7 +56,7 @@ const theme = createMuiTheme({
                     borderRadius: 15,
                 },
                 paddingBottom: 20,
-                marginBottom: 10
+                marginBottom: 15
             },
         },
         MuiFormHelperText: {
