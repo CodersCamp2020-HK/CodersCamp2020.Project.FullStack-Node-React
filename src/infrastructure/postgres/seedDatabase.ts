@@ -70,17 +70,17 @@ export default async function seedDatabase(): Promise<void> {
         .getRepository(User)
         .save(await seedUsers(5));
     await getConnection().getRepository(Organization).save(organizations);
-    await getConnection().getRepository(Form).save(seedForms(5));
-    await getConnection().getRepository(AdoptionStep).save(seedAdoptionStep(5));
+    await getConnection().getRepository(Form).save(seedForms());
+    await getConnection().getRepository(AdoptionStep).save(seedAdoptionStep());
     await getConnection().getRepository(AnimalHandler).save(seedAnimalHandlers(5));
     await getConnection().getRepository(Calendar).save(seedCalendars(5));
     await getConnection().getRepository(OrganizationUser).save(organizationUsers);
-    await getConnection().getRepository(VolunteerHireStep).save(seedVolunteerHireStep(5));
-    await getConnection().getRepository(FormAnimalSubmission).save(seedFormAnimalSubmission(5));
-    await getConnection().getRepository(FormQuestion).save(seedFormQuestion(5));
-    await getConnection().getRepository(FormVolunteerSubmission).save(seedFormVolunteerSubmission(5));
-    await getConnection().getRepository(FormAnimalAnswer).save(seedFormAnimalAnswer(5));
-    await getConnection().getRepository(FormVolunteerAnswer).save(seedFormVolunteerAnswer(5));
+    await getConnection().getRepository(VolunteerHireStep).save(seedVolunteerHireStep());
+    await getConnection().getRepository(FormAnimalSubmission).save(seedFormAnimalSubmission());
+    await getConnection().getRepository(FormQuestion).save(seedFormQuestion());
+    await getConnection().getRepository(FormVolunteerSubmission).save(seedFormVolunteerSubmission());
+    await getConnection().getRepository(FormAnimalAnswer).save(seedFormAnimalAnswer());
+    await getConnection().getRepository(FormVolunteerAnswer).save(seedFormVolunteerAnswer());
 }
 
 // async function seedAndClose() {
