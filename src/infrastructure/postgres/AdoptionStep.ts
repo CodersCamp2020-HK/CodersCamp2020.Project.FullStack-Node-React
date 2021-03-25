@@ -27,9 +27,9 @@ export default class AdoptionStep {
     @Column({ primary: true, nullable: false })
     number!: number;
 
-    @ManyToOne(() => Form, (survey) => survey.adoptionSteps)
-    form!: Form;
+    @ManyToOne(() => Form, (survey) => survey.adoptionSteps, { nullable: true })
+    form?: Form;
 
-    @OneToMany(() => FormAnimalSubmission, (submission) => submission.adoptionStep, { cascade: true })
-    submissions!: FormAnimalSubmission[];
+    @OneToMany(() => FormAnimalSubmission, (submission) => submission.adoptionStep, { nullable: true, cascade: true })
+    submissions?: FormAnimalSubmission[];
 }

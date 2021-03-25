@@ -17,14 +17,4 @@ export const organizationUsers: DeepPartial<OrganizationUser>[] = [
         organization: { id: 1 },
         user: { id: 3 },
     },
-    {
-        role: UserType.EMPLOYEE,
-        organization: { id: 1 },
-        user: { id: 4 },
-    },
-    {
-        role: UserType.VOLUNTEER,
-        organization: { id: 1 },
-        user: { id: 5 },
-    },
 ];

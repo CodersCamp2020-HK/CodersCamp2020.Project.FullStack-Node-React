@@ -26,7 +26,7 @@ import { Inject } from 'typescript-ioc';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
 
 @Tags('Adoption Submissions')
-@Route('adoptionSubmissions')
+@Route('submissions/animals')
 export class AnimalSubmissionsController extends Controller {
     @Inject
     private submissionService!: AnimalSubmissionsService;
@@ -81,11 +81,12 @@ export class AnimalSubmissionsController extends Controller {
     @Response<ApiError>(400, 'Bad Request')
     @Response<ApiError>(404, 'Not Found')
     @SuccessResponse(200, 'ok')
-    @Put('changeAdoptionFormStatus')
+    @Put('change')
     public async changeFormStatusForAdoption(
         @Body() changeStatusParams: ChangeStatusForAdoptionFormParams,
+        @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
-        await this.submissionService.changeStatusForAdoptionForm(changeStatusParams);
+        await this.submissionService.changeStatusForAdoptionForm(changeStatusParams, request.user as IUserInfo);
     }
 
     /**
@@ -95,7 +96,7 @@ export class AnimalSubmissionsController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
     @SuccessResponse(200, 'Ok')
-    @Get('allWillignessesToAdoptCount')
+    @Get('count')
     public async getAllWillignessesToAdoptCount(@Query() petName: string): Promise<AdoptersCount> {
         this.setStatus(200);
         return this.submissionService.adoptWillingnessCounter(petName);

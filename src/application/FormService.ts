@@ -3,6 +3,8 @@ import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
 import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
 import { validate } from 'class-validator';
+import Animal from '@infrastructure/postgres/Animal';
+import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
 
 interface Question {
     question: string;
@@ -15,7 +17,11 @@ export interface FormCreationParams {
 }
 
 export class FormService {
-    constructor(private formRepository: Repository<Form>) {}
+    constructor(
+        private formRepository: Repository<Form>,
+        private animalRepository: Repository<Animal>,
+        private adoptionStepRepository: Repository<AdoptionStep>,
+    ) {}
 
     public async create(formCreationParams: FormCreationParams): Promise<void> {
         const potentialForm = await this.formRepository.findOne({
@@ -37,8 +43,16 @@ export class FormService {
         }
     }
 
-    public async get(id: number): Promise<Form> {
-        const form = await this.formRepository.findOne(id, { relations: ['questions'] });
+    public async get(animalId: number): Promise<AdoptionStep> {
+        const animal = await this.animalRepository.findOne(animalId, { relations: ['specie'] });
+        if (!animal) throw new ApiError('Not Found', 404, 'Animal not found in database!');
+        const form = await this.adoptionStepRepository
+            .createQueryBuilder('step')
+            .leftJoinAndSelect('step.form', 'form')
+            .leftJoin('step.specie', 'specie')
+            .leftJoinAndSelect('form.questions', 'questions')
+            .where('specie.id = :id', { id: animal.specie.id })
+            .getOne();
         if (!form) throw new ApiError('Not Found', 404, 'Survey not found in database');
         return form;
     }
