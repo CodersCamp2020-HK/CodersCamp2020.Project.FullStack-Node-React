@@ -20,14 +20,18 @@ export class VolunterHireStepsController extends Controller {
     @Response<ApiError>(400, 'Bad Request')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'OK')
-    @Example<DeepPartial<VolunteerHireStep>>({
-        name: 'Step 1: Lorem ipsum',
-        number: 1,
-        description: 'Step description lorem ipsum',
-        organization: {
-            id: 1,
+    @Example<DeepPartial<VolunteerHireStep>[]>([
+        {
+            name: 'Step 1: Lorem ipsum',
+            number: 1,
+            description: 'Step description lorem ipsum',
         },
-    })
+        {
+            name: 'Step 2: Lorem ipsum',
+            number: 2,
+            description: 'Step 2 description lorem ipsum',
+        },
+    ])
     @Get('')
     public async getAll(): Promise<VolunteerHireStep[]> {
         return await this.volunterHireStepService.getAll();
