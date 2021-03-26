@@ -38,10 +38,7 @@ const App: React.FC = () => {
                             <Route exact path="/contact">
                                 <Contact />
                             </Route>
-                            <Route exact path="/forget">
-                                <ForgetPassword />
-                            </Route>
-                            <Route exact path="/login">
+                            <Route path="/login">
                                 <Login />
                             </Route>
                             <Route path="*">
