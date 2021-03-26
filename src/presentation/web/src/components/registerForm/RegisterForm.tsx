@@ -202,7 +202,7 @@ const RegisterForm: React.FC = () => {
                 </form>
                 <Link className={classes.link} component={RouterLink} to="/login">Masz już konto? Zaloguj się</Link>
             </Paper>
-            {fireRedirect && <Redirect to={'/login'} />}
+            {fireRedirect && <Redirect to={'/register/sent'} />}
         </Grid>
     )
 }
