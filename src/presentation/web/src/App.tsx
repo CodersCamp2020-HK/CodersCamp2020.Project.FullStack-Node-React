@@ -23,11 +23,11 @@ const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
-                <Container style={{marginTop: 64}}>
+                <Container style={{ marginTop: 64 }}>
                     <Router>
                         <Navbar />
-                        <Switch>
-                            <Grid container>
+                        <Grid container>
+                            <Switch>
                                 <Route exact path="/">
                                     <Home />
                                 </Route>
@@ -43,24 +43,24 @@ const App: React.FC = () => {
                                 <Route exact path="/contact">
                                     <Contact />
                                 </Route>
-                                <Route exact path="/register">
-                                    <Register />
-                                </Route>
                                 <Route exact path="/forget">
                                     <ForgetPassword />
                                 </Route>
                                 <Route exact path="/login">
                                     <Login />
                                 </Route>
+                                <Route exact path="/register">
+                                    <Register />
+                                </Route>
                                 <Route path="*">
                                     <NotFound />
                                 </Route>
-                            </Grid>
-                        </Switch>
+                            </Switch>
+                        </Grid>
                     </Router>
                 </Container>
-            </MuiPickersUtilsProvider>            
             <Footer />
+            </MuiPickersUtilsProvider>
         </ThemeProvider>
     );
 };

@@ -11,7 +11,7 @@ import { Theme, useTheme, makeStyles } from '@material-ui/core';
 import { useMutate } from 'restful-react';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, Redirect } from 'react-router-dom';
 
 interface Inputs {
     name: string;
@@ -22,17 +22,18 @@ interface Inputs {
     birthDate: Date;
     phone: number;
 }
-const RegisterForm = () => {
+const RegisterForm: React.FC = () => {
     const theme = useTheme<Theme>();
     const useStyle = makeStyles({
         lockBackground: {
             backgroundColor: theme.palette.secondary.dark,
             borderRadius: 90,
-            padding: 8
+            padding: 8,
+            marginBottom: 10
         },
         lockIcon: {
             color: '#FFF',
-            opacity: .87
+            opacity: .87,
         },
         submit: {
             filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
@@ -40,6 +41,7 @@ const RegisterForm = () => {
         },
         paper: {
             color: theme.palette.background.paper,
+            margin: '3rem 0',
             padding: '20px 50px',
             display: 'flex',
             flexDirection: 'column',
@@ -47,7 +49,8 @@ const RegisterForm = () => {
             alignItems: 'center'
         },
         text: {
-            color: theme.palette.text.primary
+            color: theme.palette.text.primary,
+            marginBottom: 35
         },
         link: {
             color: theme.palette.info.main,
@@ -61,6 +64,7 @@ const RegisterForm = () => {
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const { register, handleSubmit, setError, errors, getValues, setValue, formState, trigger } = useForm<Inputs>({})
 
+    const [fireRedirect, setFireRedirect] = useState<boolean>(false);
     const [date, setDate] = useState(new Date());
     const handleDateChange = (date: Date | null): void => {
         date && setDate(date);
@@ -72,17 +76,20 @@ const RegisterForm = () => {
     })
 
     const onSubmit = async ({name, surname, mail, password, repPassword, birthDate, phone}: Inputs) => {
-        mutate({
-            name,
-            surname,
-            mail,
-            password,
-            repPassword,
-            birthDate: new Date(birthDate).toISOString(),
-            phone
-        }).catch((error) => {
+        try {
+            await mutate({
+                name,
+                surname,
+                mail,
+                password,
+                repPassword,
+                birthDate: new Date(birthDate).toISOString(),
+                phone
+            })
+            setFireRedirect(true);
+        } catch (error) {
             if (error.data.status === 400) setError('mail', { message: error.data.message })
-        })
+        }
     }
 
     const validateRepeatPassword = () => {
@@ -99,7 +106,7 @@ const RegisterForm = () => {
         register({ name: 'birthDate', type: 'custom'}, { required: 'Data urodzenia jest wymagana!', validate: { validateBirthDateBefore, validatebirthDateAfterToday } })
     }, [])
     return (
-        <Grid item xs={12} md={8} lg={5}>
+        <Grid item xs={12} sm={10} md={6}>
             <Paper className={classes.paper} variant="outlined" square={false}>
                 <SvgIcon className={classes.lockBackground}>
                     <LockOutlinedIcon className={classes.lockIcon} />
@@ -141,7 +148,7 @@ const RegisterForm = () => {
                         type="password"
                         required
                         onChange={validateRepeatPassword}
-                        inputRef={register({ required: 'Hasło jest wymagane', pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, message: 'Hasło musi zawierać co najmniej jedną małą literę, jedną wielką literę, jedną liczbę oraz jeden znak specjalny (@$!%*?&)!' } })}
+                        inputRef={register({ required: 'Hasło jest wymagane', pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, message: 'Hasło musi zawierać co najmniej 8 znaków, jedną małą literę, jedną wielką literę, jedną liczbę oraz jeden znak specjalny (@$!%*?&)!' } })}
                         error={errors.hasOwnProperty('password')}
                         helperText={errors.password && errors.password.message}
                     />
@@ -183,10 +190,19 @@ const RegisterForm = () => {
                         error={errors.hasOwnProperty('phone')}
                         helperText={errors.phone && errors.phone.message}
                     />
-                    <Button className={classes.submit} fullWidth size="medium" variant="contained" color="primary" type="submit">Zarejestruj się</Button>
+                    <Button
+                        className={classes.submit}
+                        fullWidth
+                        size="medium"
+                        variant="contained"
+                        color="primary"
+                        type="submit">
+                            Zarejestruj się
+                    </Button>
                 </form>
                 <Link className={classes.link} component={RouterLink} to="/login">Masz już konto? Zaloguj się</Link>
             </Paper>
+            {fireRedirect && <Redirect to={'/login'} />}
         </Grid>
     )
 }
