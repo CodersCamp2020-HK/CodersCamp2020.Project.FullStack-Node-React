@@ -5,12 +5,34 @@ import Specie from '@infrastructure/postgres/Specie';
 
 export class AdoptionStepService {
     constructor(
-        private AdoptionStepRepository: Repository<AdoptionStep>,
-        private SpecieRepository: Repository<Specie>,
+        private adoptionStepRepository: Repository<AdoptionStep>,
+        private specieRepository: Repository<Specie>,
     ) {}
 
     public async getAll(specie?: string): Promise<AdoptionStep[]> {
-        const adoptionSteps = await this.AdoptionStepRepository.find({
+        if (specie) {
+            const foundedSpecie = await this.specieRepository.findOne({
+                where: {
+                    specie,
+                },
+            });
+            if (!foundedSpecie) throw new ApiError('Specie not found', 404, 'Specie not found');
+
+            const adoptionSteps = await this.adoptionStepRepository.find({
+                where: {
+                    organization: {
+                        id: 1,
+                    },
+                    specie: {
+                        id: foundedSpecie.id,
+                    },
+                },
+            });
+            if (!adoptionSteps) throw new ApiError('Not found', 404, 'Adoption steps not found');
+            return adoptionSteps;
+        }
+
+        const adoptionSteps = await this.adoptionStepRepository.find({
             where: {
                 organization: {
                     id: 1,
