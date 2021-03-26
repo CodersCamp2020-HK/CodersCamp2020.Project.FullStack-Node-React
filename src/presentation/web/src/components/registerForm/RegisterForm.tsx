@@ -53,7 +53,7 @@ const RegisterForm: React.FC = () => {
             marginBottom: 35
         },
         link: {
-            color: theme.palette.info.main,
+            color: theme.palette.info.dark,
             alignSelf: 'flex-end',
         },
         textField: {
