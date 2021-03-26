@@ -11,6 +11,7 @@ import {
     Response,
     SuccessResponse,
     Request,
+    Example,
 } from 'tsoa';
 import Calendar from '../../infrastructure/postgres/Calendar';
 import { CalendarService, CalendarCreationParams } from '../../application/CalendarService';
@@ -18,6 +19,7 @@ import { Inject } from 'typescript-ioc';
 import ApiError from '@infrastructure/ApiError';
 import { ValidateErrorJSON } from '@application/UsersErrors';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import { DeepPartial } from 'typeorm';
 
 @Tags('Calendar')
 @Route('calendars')
@@ -32,6 +34,34 @@ export class CalendarController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
     @SuccessResponse(200, 'ok')
+    @Example<DeepPartial<Calendar>[]>([
+        {
+            id: 1,
+            date: '2021-03-26T20:10:31.934Z',
+            user: {
+                id: 1,
+                name: 'Jan',
+                surname: 'Kowalski',
+            },
+            animal: {
+                id: 1,
+                name: 'Puszek',
+            },
+        },
+        {
+            id: 2,
+            date: '2021-03-27T11:10:31.934Z',
+            user: {
+                id: 2,
+                name: 'Adam',
+                surname: 'Kowal',
+            },
+            animal: {
+                id: 2,
+                name: 'Kłębek',
+            },
+        },
+    ])
     @Get()
     public async getAllVisits(): Promise<Calendar[]> {
         return this.calendarService.getAll();
@@ -45,6 +75,19 @@ export class CalendarController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Response<ApiError>(404, 'Not Found')
     @SuccessResponse(200, 'ok')
+    @Example<DeepPartial<Calendar>>({
+        id: 1,
+        date: '2021-03-26T20:10:31.934Z',
+        user: {
+            id: 1,
+            name: 'Jan',
+            surname: 'Kowalski',
+        },
+        animal: {
+            id: 1,
+            name: 'Puszek',
+        },
+    })
     @Get('{visitId}')
     public async getVisit(@Path() visitId: number): Promise<Calendar> {
         return this.calendarService.get(visitId);
