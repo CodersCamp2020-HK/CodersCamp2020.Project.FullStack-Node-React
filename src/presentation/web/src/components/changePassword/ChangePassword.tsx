@@ -99,7 +99,7 @@ const ChangePassword: React.FC = () => {
                     label="Powtórz nowe hasło"
                     type="password"
                     required
-                    inputRef={register({ required: true, validate: { repeatPassowrd: repeatPassword } })}
+                    inputRef={register({ required: true, validate: { repeatPassword } })}
                     error={errors.hasOwnProperty('repPassword')}
                     helperText={errors.repPassword && errors.repPassword.message}
                 />
@@ -110,7 +110,7 @@ const ChangePassword: React.FC = () => {
                     variant="contained"
                     color="primary"
                     type="submit">
-                        Zarejestruj się
+                        Zresetuj hasło
                 </Button>
                 </form>
                 <Link className={classes.link} component={RouterLink} to="/login">Wróć do logowania</Link>
