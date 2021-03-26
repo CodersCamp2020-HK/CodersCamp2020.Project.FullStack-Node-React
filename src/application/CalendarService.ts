@@ -20,13 +20,6 @@ export class CalendarService {
     ) {}
 
     public async getAll(): Promise<Calendar[]> {
-
-        // .createQueryBuilder('calendar')
-        //     .leftJoinAndSelect('calendar.user', 'user')
-        //     .leftJoinAndSelect('calendar.animal', 'animal')
-        //     .select(['user.id', 'user.name', 'user.surname', 'animal.id', 'animal.name'])
-        //     .getMany();
-
         const visit = await this.calendarRepository
             .createQueryBuilder('calendar')
             .leftJoinAndSelect('calendar.user', 'user')
