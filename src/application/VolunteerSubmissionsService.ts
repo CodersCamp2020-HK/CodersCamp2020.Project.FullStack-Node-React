@@ -4,7 +4,7 @@ import PaginationParams from '@infrastructure/Pagination';
 import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
 import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
-import { UserType } from '@infrastructure/postgres/OrganizationUser';
+import OrganizationUser, { UserType } from '@infrastructure/postgres/OrganizationUser';
 import { Repository } from 'typeorm';
 import hasDuplicates from 'utils/HasDuplicates';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
@@ -35,16 +35,40 @@ export class VolunteerSubmissionsService {
     constructor(
         private volunteerSubmissionRepository: Repository<FormVolunteerSubmission>,
         private volunteerAnswerRepository: Repository<FormVolunteerAnswer>,
+        private organizationUserRepository: Repository<OrganizationUser>,
     ) {}
 
-    public async changeStatusForVolunteerForm(changeStatusParams: ChangeStatusForVolunterFormParams): Promise<void> {
-        await this.volunteerSubmissionRepository
-            .createQueryBuilder()
-            .update()
-            .set({ status: changeStatusParams.status })
-            .where('userId = :id', { id: changeStatusParams.userId })
-            .execute();
-        return;
+    public async changeStatusForVolunteerForm(
+        changeStatusParams: ChangeStatusForVolunterFormParams,
+        user: IUserInfo,
+    ): Promise<void> {
+        const submission = await this.volunteerSubmissionRepository.findOne(
+            { user: { id: changeStatusParams.userId } },
+            {
+                relations: ['reviewer'],
+            },
+        );
+        if (!submission)
+            throw new ApiError('Not Found', 404, `Submission with user id: ${changeStatusParams.userId} not found!`);
+
+        const organizationUser = await this.organizationUserRepository.findOne(
+            {
+                user: { id: user.id },
+                organization: { id: 1 },
+            },
+            { relations: ['organization', 'user'] },
+        );
+        if (!organizationUser) throw new ApiError('Not Found', 404, `Organization user not found!`);
+        const updatedSubmission = {
+            id: submission.id,
+            status: changeStatusParams.status,
+            reviewer: {
+                user: { id: organizationUser.user.id },
+                organization: { id: organizationUser.organization.id },
+            },
+            reviewDate: new Date(),
+        };
+        this.volunteerSubmissionRepository.save(updatedSubmission);
     }
 
     public async getAllSubmissions(
