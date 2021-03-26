@@ -7,7 +7,7 @@ import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
 
 @Tags('Adoption Steps')
 @Route('adoption-steps')
-export class VolunterHireStepsController extends Controller {
+export class AdoptionStepController extends Controller {
     @Inject
     private adoptionStepService!: AdoptionStepService;
 
@@ -27,9 +27,9 @@ export class VolunterHireStepsController extends Controller {
             description: 'Step description lorem ipsum',
         },
         {
-            name: 'Step 1: Lorem ipsum',
-            number: 1,
-            description: 'Step description lorem ipsum',
+            name: 'Step 2: Lorem ipsum',
+            number: 2,
+            description: 'Step 2 description lorem ipsum',
         },
     ])
     @Get('')
