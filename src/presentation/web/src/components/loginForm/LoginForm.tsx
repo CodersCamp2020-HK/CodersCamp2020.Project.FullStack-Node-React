@@ -11,7 +11,7 @@ interface IFormValues {
     Password: string;
 }
 
-const Login = () => {
+const LoginForm = () => {
     const theme = useTheme<Theme>();
     const useStyle = makeStyles({
         greenBackground: {
@@ -132,4 +132,4 @@ const Login = () => {
     );
 };
 
-export default Login;
+export default LoginForm;
