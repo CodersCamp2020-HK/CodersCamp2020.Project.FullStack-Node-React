@@ -87,7 +87,9 @@ Container.bind(VolunteerSubmissionsService).factory(
             getConnection().getRepository(OrganizationUser),
         ),
 );
-Container.bind(AdoptionStepService).factory(() => new AdoptionStepService(getConnection().getRepository(AdoptionStep)));
+Container.bind(AdoptionStepService).factory(
+    () => new AdoptionStepService(getConnection().getRepository(AdoptionStep), getConnection().getRepository(Specie)),
+);
 Container.bind(WinstonLogger).to(WinstonLogger).scope(Scope.Singleton);
 
 export { Container };
