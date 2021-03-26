@@ -12,6 +12,7 @@ import Home from './components/pages/Home';
 import theme from './themes/theme';
 import Footer from './components/footer/Footer';
 import ForgetPassword from './components/forgetPassword/ForgetPassword';
+import ContactPage from "./components/contactPage/ContactPage";
 
 const App: React.FC = () => {
     return (
@@ -34,13 +35,14 @@ const App: React.FC = () => {
                         </Route>
                         <Route exact path="/contact">
                             <Contact />
+                            <ContactPage />
                         </Route>
                         <Route exact path="/forget">
                             <ForgetPassword />
                         </Route>
-                      <Route exact path="/login">
-                        <Login />
-                    </Route>
+                        <Route exact path="/login">
+                            <Login />
+                        </Route>
                     </Switch>
                 </Router>
             </Container>
