@@ -2,12 +2,15 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { Theme, useTheme, makeStyles } from '@material-ui/core';
 import { useMutate } from 'restful-react';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { Link as RouterLink } from 'react-router-dom';
 
 
 interface Inputs {
@@ -30,12 +33,12 @@ const ChangePassword: React.FC = () => {
         },
         submit: {
             filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
-            marginBottom: 10
+            marginBottom: 35
         },
         paper: {
             color: theme.palette.background.paper,
             margin: '3rem 0',
-            padding: '20px 50px',
+            padding: '60px 50px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -77,7 +80,7 @@ const ChangePassword: React.FC = () => {
                 <SvgIcon className={classes.lockBackground}>
                     <LockOutlinedIcon className={classes.lockIcon} />
                 </SvgIcon>
-                <Typography className={classes.text} variant="h5" component="span">Zarejestruj się</Typography>
+                <Typography className={classes.text} variant="h5" component="span">Ustaw nowe hasło</Typography>
                 <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     className={classes.textField}
@@ -100,7 +103,17 @@ const ChangePassword: React.FC = () => {
                     error={errors.hasOwnProperty('repPassword')}
                     helperText={errors.repPassword && errors.repPassword.message}
                 />
+                <Button
+                    className={classes.submit}
+                    fullWidth
+                    size="large"
+                    variant="contained"
+                    color="primary"
+                    type="submit">
+                        Zarejestruj się
+                </Button>
                 </form>
+                <Link className={classes.link} component={RouterLink} to="/login">Wróć do logowania</Link>
             </Paper>
         </Grid>
     )
