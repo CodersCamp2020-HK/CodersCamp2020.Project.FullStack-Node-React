@@ -20,10 +20,18 @@ export class CalendarService {
     ) {}
 
     public async getAll(): Promise<Calendar[]> {
+
+        // .createQueryBuilder('calendar')
+        //     .leftJoinAndSelect('calendar.user', 'user')
+        //     .leftJoinAndSelect('calendar.animal', 'animal')
+        //     .select(['user.id', 'user.name', 'user.surname', 'animal.id', 'animal.name'])
+        //     .getMany();
+
         const visit = await this.calendarRepository
             .createQueryBuilder('calendar')
             .leftJoinAndSelect('calendar.user', 'user')
             .leftJoinAndSelect('calendar.animal', 'animal')
+            .select(['calendar', 'user.id', 'user.name', 'user.surname', 'animal.id', 'animal.name'])
             .getMany();
         if (visit.length === 0) throw new ApiError('Not Found', 404, 'Visit in calendar not found');
         return visit;
