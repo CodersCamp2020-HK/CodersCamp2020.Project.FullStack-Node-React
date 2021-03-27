@@ -61,6 +61,11 @@ export class CalendarController extends Controller {
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Response<ApiError>(404, 'Not Found')
     @SuccessResponse(201, 'created')
+    @Example<CalendarCreationParams>({
+        date: new Date('2021-03-28 18:00'),
+        animalId: 1,
+        userId: 1,
+    })
     @Post()
     public async createVisit(
         @Body() requestBody: CalendarCreationParams,
@@ -80,11 +85,6 @@ export class CalendarController extends Controller {
     @Response<Error>(500, 'Internal Server Error')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @SuccessResponse(204, 'Success')
-    @Example({
-        date: '2021-03-28 18:00',
-        animalId: 1,
-        userId: 1,
-    })
     @Delete('{visitId}')
     public async deleteVisit(@Path() visitId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {
         return await this.calendarService.delete(visitId, request.user as IUserInfo);
