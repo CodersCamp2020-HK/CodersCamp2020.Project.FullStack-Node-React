@@ -1,6 +1,7 @@
 import ApiError from '@infrastructure/ApiError';
 import { IUserInfo } from '@infrastructure/Auth';
 import { UserType } from '@infrastructure/postgres/OrganizationUser';
+import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
 import Animal from '../infrastructure/postgres/Animal';
 import Calendar from '../infrastructure/postgres/Calendar';
@@ -74,7 +75,13 @@ export class CalendarService {
         if (!userFromDB) throw new ApiError('Not Found', 404, `User with id: ${user} not found in database`);
 
         const visit = this.calendarRepository.create({ date, animal: animalFromDB, user: userFromDB });
-        await this.calendarRepository.save(visit);
+
+        const errors = await validate(visit);
+        if (errors.length > 0) {
+            throw new Error(`Validation failed!`);
+        } else {
+            await this.calendarRepository.save(visit);
+        }
     }
 
     public async delete(id: number, currentUser: IUserInfo): Promise<void> {
