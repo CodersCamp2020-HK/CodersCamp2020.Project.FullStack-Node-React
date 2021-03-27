@@ -13,9 +13,9 @@ import theme from './themes/theme';
 import Footer from './components/footer/Footer';
 import NotFound from './pages/NotFound';
 import GridContainer from './components/gridContainer/GridContainer';
-import MuiPickersUtilsProvider from '@material-ui/pickers/MuiPickersUtilsProvider';
 import DateFnsUtils from '@date-io/date-fns';
 import plLocale from 'date-fns/locale/pl';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 const App: React.FC = () => {
     return (
