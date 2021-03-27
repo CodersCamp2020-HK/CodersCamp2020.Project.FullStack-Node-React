@@ -104,6 +104,7 @@ dist
 
 # Stores VSCode versions used for testing VSCode extensions
 .vscode-test
+.vscode
 
 # yarn v2
 .yarn/cache
@@ -118,3 +119,4 @@ build/
 src/presentation/rest/generated/*
 !src/presentation/rest/generated/.gitkeep
 .DS_Store
+.env

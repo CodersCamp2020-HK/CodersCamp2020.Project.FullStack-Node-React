@@ -4,6 +4,7 @@ import { FormCreationParams, FormService } from '@application/FormService';
 import ApiError from '@infrastructure/ApiError';
 import Form from '@infrastructure/postgres/Form';
 import { ValidateErrorJSON } from '@application/UsersErrors';
+import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
 
 @Tags('Form')
 @Route('forms')
@@ -29,16 +30,16 @@ export class FormController extends Controller {
     }
 
     /**
-     * Supply an ID of survey and get it from database
-     * @param surveyId ID of survey (number)
+     * Supply an ID of animal and get it from database
+     * @param animalId ID of animal (number)
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(404, 'Survey not found')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'ok')
-    @Get('{surveyId}')
-    public async getForm(@Path() surveyId: number): Promise<Form> {
-        return this.formService.get(surveyId);
+    @Get('{animalId}')
+    public async getForm(@Path() animalId: number): Promise<AdoptionStep> {
+        return this.formService.get(animalId);
     }
 
     /**
