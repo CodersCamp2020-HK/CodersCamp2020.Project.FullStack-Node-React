@@ -40,6 +40,22 @@ export class CalendarService {
         { date, animalId: animal, userId: user }: CalendarCreationParams,
         currentUser: IUserInfo,
     ): Promise<void> {
+        //check if date format valid
+        const currentDate = new Date();
+        const visitDate = new Date(date);
+
+        if (visitDate < currentDate) {
+            throw new ApiError('Bad request', 400, 'Date cannot be earlier than current date');
+        }
+
+        if (visitDate.getMinutes() > 0 || visitDate.getSeconds() > 0 || visitDate.getMilliseconds() > 0) {
+            throw new ApiError(
+                'Bad request',
+                400,
+                'Wrong format! Minutes, seconds and milliseconds must be equal zero',
+            );
+        }
+
         if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
             if (user != currentUser.id) {
                 throw new ApiError('Unauthorized', 401, 'User and volunteer can only create own calendar');
