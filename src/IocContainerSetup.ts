@@ -83,6 +83,7 @@ Container.bind(VolunteerSubmissionsService).factory(
         new VolunteerSubmissionsService(
             getConnection().getRepository(FormVolunteerSubmission),
             getConnection().getRepository(FormVolunteerAnswer),
+            getConnection().getRepository(OrganizationUser),
         ),
 );
 Container.bind(WinstonLogger).to(WinstonLogger).scope(Scope.Singleton);

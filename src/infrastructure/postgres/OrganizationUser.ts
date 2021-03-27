@@ -33,6 +33,6 @@ export default class OrganizationUser {
     @OneToMany(() => AnimalHandler, (handler) => handler.organizationUser)
     caregivers!: AnimalHandler[];
 
-    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.reviewer)
-    volunteerReviews!: FormVolunteerSubmission;
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.reviewer, { nullable: true })
+    volunteerReviews?: FormVolunteerSubmission[];
 }
