@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, ThemeProvider } from '@material-ui/core';
+import { Container, ThemeProvider, makeStyles } from '@material-ui/core';
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
 import './App.css';
 import Navbar from './components/navbar/Navbar';
@@ -18,10 +18,18 @@ import plLocale from 'date-fns/locale/pl';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 const App: React.FC = () => {
+    const useStyles = makeStyles({
+        mainPage: {
+            boxSizing: 'border-box',
+            minHeight: 'calc(100vh - 10vh - 64px)',
+            marginTop: 64
+        }
+    })
+    const classes = useStyles();
     return (
         <ThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
-                <Container style={{ marginTop: 64 }}>
+                <Container className={classes.mainPage}>
                     <Router>
                         <Navbar />
                         <GridContainer>
