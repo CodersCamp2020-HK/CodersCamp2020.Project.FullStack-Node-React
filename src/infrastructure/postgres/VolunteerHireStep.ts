@@ -24,6 +24,6 @@ export default class VolunteerHireStep {
     @ManyToOne(() => Form, (form) => form.volunteerHireSteps, { nullable: true })
     form?: Form;
 
-    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.step)
+    @OneToMany(() => FormVolunteerSubmission, (submission) => submission.step, { nullable: true, cascade: true })
     submissions!: FormVolunteerSubmission[];
 }
