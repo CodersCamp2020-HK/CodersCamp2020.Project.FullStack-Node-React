@@ -108,7 +108,7 @@ const LoginForm = () => {
                             </Typography>
                         )}
                     </form>
-                    <Link component={RouterLink} className={classes.forgetPassword} to="/login/forget">
+                    <Link component={RouterLink} className={classes.forgetPassword} to="/auth/forget">
                         <Typography variant="body2">Zapomniałeś hasła?</Typography>
                     </Link>
                 </Paper>
@@ -121,7 +121,7 @@ const LoginForm = () => {
                     square={false}
                 >
                     <Typography variant="subtitle1">Nie masz jeszcze konta?</Typography>
-                    <Link component={RouterLink} to="/register">
+                    <Link component={RouterLink} to="/auth/register">
                         <Button variant="outlined" size="medium" color="primary">
                             Zarejestruj się
                         </Button>

@@ -113,7 +113,7 @@ const ChangePassword: React.FC = () => {
                         Zresetuj hasło
                 </Button>
                 </form>
-                <Link className={classes.link} component={RouterLink} to="/login">Wróć do logowania</Link>
+                <Link className={classes.link} component={RouterLink} to="/auth">Wróć do logowania</Link>
             </Paper>
         </Grid>
     )

@@ -7,11 +7,10 @@ import About from './pages/About';
 import Adoption from './pages/Adoption';
 import Contact from './pages/Contact';
 import Donation from './pages/Donation';
-import Login from './pages/Login';
+import Auth from './pages/Auth';
 import Home from './pages/Home';
 import theme from './themes/theme';
 import Footer from './components/footer/Footer';
-import ForgetPassword from './components/forgetPassword/ForgetPassword';
 import NotFound from './pages/NotFound';
 import GridContainer from './components/gridContainer/GridContainer';
 
@@ -38,8 +37,8 @@ const App: React.FC = () => {
                             <Route exact path="/contact">
                                 <Contact />
                             </Route>
-                            <Route path="/login">
-                                <Login />
+                            <Route path="/auth">
+                                <Auth />
                             </Route>
                             <Route path="*">
                                 <NotFound />

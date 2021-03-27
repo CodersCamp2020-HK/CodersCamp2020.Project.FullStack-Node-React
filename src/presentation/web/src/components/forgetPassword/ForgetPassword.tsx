@@ -105,7 +105,7 @@ const ForgetPassword = () => {
                         </Button>
                         <Typography variant="body2" color='error'>{emailError}</Typography>
                     </form>
-                    <Link component={RouterLink} className={classes.backToLogin} to="/login">
+                    <Link component={RouterLink} className={classes.backToLogin} to="/auth">
                         <Typography variant="body2">Wróć do logowania</Typography>
                     </Link>
                 </Paper>
