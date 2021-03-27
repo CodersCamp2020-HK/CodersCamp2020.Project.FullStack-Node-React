@@ -1,10 +1,10 @@
-import { Repository } from 'typeorm';
-import Calendar from '../infrastructure/postgres/Calendar';
-import Animal from '../infrastructure/postgres/Animal';
-import User from '../infrastructure/postgres/User';
 import ApiError from '@infrastructure/ApiError';
 import { IUserInfo } from '@infrastructure/Auth';
 import { UserType } from '@infrastructure/postgres/OrganizationUser';
+import { Repository } from 'typeorm';
+import Animal from '../infrastructure/postgres/Animal';
+import Calendar from '../infrastructure/postgres/Calendar';
+import User from '../infrastructure/postgres/User';
 
 export interface CalendarCreationParams {
     date: Date;
@@ -43,6 +43,17 @@ export class CalendarService {
             if (user != currentUser.id) {
                 throw new ApiError('Unauthorized', 401, 'User and volunteer can only create own calendar');
             }
+        }
+
+        const potentialUserVisit = this.calendarRepository.findOne({
+            where: {
+                user: { id: user },
+                date: date,
+            },
+        });
+
+        if (potentialUserVisit) {
+            throw new ApiError('Unauthorized', 401, 'User already has a visit in this time');
         }
 
         const animalFromDB = await this.animalRepository.findOne(animal);
