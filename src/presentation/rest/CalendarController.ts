@@ -11,6 +11,7 @@ import {
     Response,
     SuccessResponse,
     Request,
+    Example,
 } from 'tsoa';
 import Calendar from '../../infrastructure/postgres/Calendar';
 import { CalendarService, CalendarCreationParams } from '../../application/CalendarService';
@@ -78,7 +79,12 @@ export class CalendarController extends Controller {
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
-    @SuccessResponse(201, 'Success')
+    @SuccessResponse(204, 'Success')
+    @Example({
+        date: '2021-03-28 18:00',
+        animalId: 1,
+        userId: 1,
+    })
     @Delete('{visitId}')
     public async deleteVisit(@Path() visitId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {
         return await this.calendarService.delete(visitId, request.user as IUserInfo);
