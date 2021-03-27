@@ -45,21 +45,34 @@ export class CalendarService {
             }
         }
 
-        const potentialUserVisit = this.calendarRepository.findOne({
+        const potentialCurrentUserVisit = await this.calendarRepository.findOne({
             where: {
                 user: { id: user },
                 date: date,
             },
         });
 
-        if (potentialUserVisit) {
+        if (potentialCurrentUserVisit) {
             throw new ApiError('Unauthorized', 401, 'User already has a visit in this time');
+        }
+
+        const potentialOtherUserVisit = await this.calendarRepository.findOne({
+            where: {
+                animal: { id: animal },
+                date: date,
+            },
+        });
+
+        if (potentialOtherUserVisit) {
+            throw new ApiError('Unauthorized', 401, 'Someone other has a visit with this animal in this time');
         }
 
         const animalFromDB = await this.animalRepository.findOne(animal);
         if (!animalFromDB) throw new ApiError('Not Found', 404, `Animal with id: ${animal} not found in database`);
+
         const userFromDB = await this.userRepository.findOne(user);
         if (!userFromDB) throw new ApiError('Not Found', 404, `User with id: ${user} not found in database`);
+
         const visit = this.calendarRepository.create({ date, animal: animalFromDB, user: userFromDB });
         await this.calendarRepository.save(visit);
     }
