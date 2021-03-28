@@ -53,7 +53,7 @@ const useStyles = makeStyles({
         color: '#FFF',
         opacity: .87,
     },
-    test: {
+    imageWrapper: {
         height: '100%',
         width: '100%',
         backgroundImage: `url(${shelterPhoto})`,
@@ -61,7 +61,6 @@ const useStyles = makeStyles({
         backgroundSize: 'cover',
         borderRadius: '15px',
         padding: 0,
-        ustify: 'center',
     },
     shelterContainer: {
         display: 'flex',
@@ -119,7 +118,7 @@ const ContactPage: React.FC = () => {
                 </Paper>
             </Grid>
             <Grid item xs={12} sm={6} className={classes.shelterContainer} >
-                <div className={classes.test}></div>
+                <div className={classes.imageWrapper}></div>
             </Grid>
             <Grid item xs={12}>
                 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d20004.80284408307!2d17.0311458676758!3d51.189588443602666!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x173c5b990e04fcc2!2zUHNhcnkgNTEtMTgwLCBHxYLDs3duYSA1MGM!5e0!3m2!1spl!2spl!4v1616853103897!5m2!1spl!2spl" className={classes.mapPhoto} aria-hidden="false"></iframe>
