@@ -32,7 +32,6 @@ export interface AnimalCreationParams {
     };
 }
 
-
 export interface AnimalUpdateParams {
     name?: string;
     age?: number;
@@ -63,6 +62,7 @@ interface AnimalQueryParams {
     acceptsOtherAnimals?: boolean;
     size?: AnimalSize;
     activeLevel?: AnimalActiveLevel;
+    count?: boolean;
 }
 
 export class AnimalsService {
@@ -110,7 +110,10 @@ export class AnimalsService {
         return animal;
     }
 
-    public async getAll(queryParams: AnimalQueryParams, paginationParams?: PaginationParams): Promise<Animal[]> {
+    public async getAll(
+        queryParams: AnimalQueryParams,
+        paginationParams?: PaginationParams,
+    ): Promise<Animal[] | { count: number }> {
         let isFirstPage;
         let SKIP;
         let LIMIT;
@@ -123,7 +126,7 @@ export class AnimalsService {
             LIMIT = paginationParams.perPage ? paginationParams.perPage : undefined;
         }
 
-        return new OptionalWhereSelectQueryBuilder(
+        const animalQuery = new OptionalWhereSelectQueryBuilder(
             this.animalRepository
                 .createQueryBuilder('animal')
                 .leftJoinAndSelect('animal.additionalInfo', 'info')
@@ -142,9 +145,15 @@ export class AnimalsService {
             .optAndWhere('info.activeLevel = ', queryParams.activeLevel)
             .optAndWhere('animal.age >= ', queryParams.minAge)
             .optAndWhere('animal.age <= ', queryParams.maxAge)
-            .optAndWhere('specie.specie = ', queryParams.specie)
-            .selectQueryBuilder.addOrderBy('info.admissionToShelter', 'DESC')
-            .getMany();
+            .optAndWhere('specie.specie = ', queryParams.specie);
+
+        if (queryParams.count) {
+            return {
+                count: await animalQuery.selectQueryBuilder.getCount(),
+            };
+        }
+
+        return animalQuery.selectQueryBuilder.addOrderBy('info.admissionToShelter', 'DESC').getMany();
     }
 
     public async update(id: number, { additionalInfo, specie, ...animalParams }: AnimalUpdateParams): Promise<Animal> {

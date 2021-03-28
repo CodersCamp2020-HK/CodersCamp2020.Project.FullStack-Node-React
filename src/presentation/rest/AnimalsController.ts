@@ -1,31 +1,31 @@
+import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@application/AnimalsService';
+import { PhotosService } from '@application/PhotosService';
+import { ValidateErrorJSON } from '@application/UsersErrors';
+import ApiError from '@infrastructure/ApiError';
+import Animal from '@infrastructure/postgres/Animal';
+import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
+import { Request as ExRequest } from 'express';
 import {
     Body,
     Controller,
+    Delete,
+    Example,
     Get,
     Path,
     Post,
     Put,
-    Route,
-    SuccessResponse,
-    Response,
-    Tags,
-    Delete,
     Query,
-    TsoaResponse,
-    Res,
-    Security,
-    Example,
     Request,
+    Res,
+    Response,
+    Route,
+    Security,
+    SuccessResponse,
+    Tags,
+    TsoaResponse,
 } from 'tsoa';
-import { Inject } from 'typescript-ioc';
-import { AnimalCreationParams, AnimalsService, AnimalUpdateParams } from '@application/AnimalsService';
-import Animal from '@infrastructure/postgres/Animal';
-import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import ApiError from '@infrastructure/ApiError';
-import { ValidateErrorJSON } from '@application/UsersErrors';
 import { DeepPartial } from 'typeorm';
-import { Request as ExRequest } from 'express';
-import { PhotosService } from '@application/PhotosService';
+import { Inject } from 'typescript-ioc';
 
 @Tags('Animals')
 @Route('animals')
@@ -151,7 +151,8 @@ export class AnimalsController extends Controller {
         @Query() size?: AnimalSize,
         @Query() page?: number,
         @Query() perPage?: number,
-    ): Promise<Animal[]> {
+        @Query() count?: boolean,
+    ): Promise<Animal[] | { count: number }> {
         const foundedAnimals = await this.animalsService.getAll(
             {
                 minAge,
@@ -165,6 +166,7 @@ export class AnimalsController extends Controller {
                 acceptsOtherAnimals,
                 size,
                 activeLevel,
+                count,
             },
             {
                 page,
@@ -175,10 +177,12 @@ export class AnimalsController extends Controller {
         /**
          * Throws error if it cannot find a match
          */
-        if (foundedAnimals.length <= 0) {
-            return notFoundResponse(404, { reason: 'Animals not found' });
-        }
 
+        if (Array.isArray(foundedAnimals)) {
+            if (foundedAnimals.length <= 0) {
+                return notFoundResponse(404, { reason: 'Animals not found' });
+            }
+        }
         return foundedAnimals;
     }
 
