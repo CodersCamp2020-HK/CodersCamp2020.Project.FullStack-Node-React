@@ -34,6 +34,9 @@ const theme = createMuiTheme({
             size: 'medium',
             fullWidth: true,
         },
+        MuiRadio: {
+            color: 'secondary'
+        },
         MuiCheckbox: {
             color: 'secondary'
         },
