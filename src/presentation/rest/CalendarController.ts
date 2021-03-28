@@ -103,13 +103,17 @@ export class CalendarController extends Controller {
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @Response<ApiError>(404, 'Not Found')
     @SuccessResponse(201, 'created')
+    @Example<CalendarCreationParams>({
+        date: new Date('2021-03-28 18:00'),
+        animalId: 1,
+        userId: 1,
+    })
     @Post()
     public async createVisit(
         @Body() requestBody: CalendarCreationParams,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
-        this.setStatus(201);
-        this.calendarService.create(requestBody, request.user as IUserInfo);
+        return await this.calendarService.create(requestBody, request.user as IUserInfo);
     }
 
     /**
@@ -122,9 +126,9 @@ export class CalendarController extends Controller {
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
+    @SuccessResponse(204, 'Success')
     @Delete('{visitId}')
     public async deleteVisit(@Path() visitId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {
-        this.setStatus(200);
-        this.calendarService.delete(visitId, request.user as IUserInfo);
+        return await this.calendarService.delete(visitId, request.user as IUserInfo);
     }
 }
