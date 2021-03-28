@@ -6,6 +6,9 @@ import { useMutate } from 'restful-react';
 import { KeyboardDatePicker } from '@material-ui/pickers';
 import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
+import DateFnsUtils from '@date-io/date-fns';
+import plLocale from 'date-fns/locale/pl';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 
 interface Inputs {
     name: string;
@@ -74,95 +77,105 @@ const RegisterForm: React.FC = () => {
     }, [])
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <TextField
-                className={classes.textField}
-                name="name"
-                label="Imię"
-                required
-                inputRef={register({ required: 'Imię jest wymagane!', minLength: { value: 2, message: 'Imię za krótkie!' }, maxLength: { value: 50, message: 'Imię za długie'} })}
-                error={errors.hasOwnProperty('name')}
-                helperText={errors.name && errors.name.message}
-            />
-            <TextField
-                className={classes.textField}
-                name="surname"
-                label="Nazwisko"
-                required
-                inputRef={register({ required: 'Nazwisko jest wymagane!', minLength: { value: 2, message: 'Nazwisko za krótkie' }, maxLength: { value: 50, message: 'Nazwisko za długie' } })}
-                error={errors.hasOwnProperty('surname')}
-                helperText={errors.surname && errors.surname.message}
-            />
-            <TextField
-                className={classes.textField}
-                name="mail"
-                label="Email"
-                type="email"
-                required
-                inputRef={register({ required: 'Email jest wymagany!', pattern: { value: emailPattern, message: 'Nieprawidłowy email!'} })}
-                error={errors.hasOwnProperty('mail')}
-                helperText={errors.mail && errors.mail.message}
-            />
-            <TextField
-                className={classes.textField}
-                name="password"
-                label="Hasło"
-                type="password"
-                required
-                onChange={validateRepeatPassword}
-                inputRef={register({ required: 'Hasło jest wymagane', pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, message: 'Hasło musi zawierać co najmniej 8 znaków, jedną małą literę, jedną wielką literę, jedną liczbę oraz jeden znak specjalny (@$!%*?&)!' } })}
-                error={errors.hasOwnProperty('password')}
-                helperText={errors.password && errors.password.message}
-            />
-            <TextField
-                className={classes.textField}
-                name="repPassword"
-                label="Powtórz hasło"
-                type="password"
-                required
-                inputRef={register({ required: true, validate: { repeatPassowrd: repeatPassword } })}
-                error={errors.hasOwnProperty('repPassword')}
-                helperText={errors.repPassword && errors.repPassword.message}
-            />
-            <KeyboardDatePicker
-                className={classes.textField}
-                required
-                name="birthDate"
-                disableFuture
-                value={date}
-                openTo="year"
-                format="dd/MM/yyyy"
-                placeholder="DD/MM/YYYY"
-                views={['year', 'month', 'date']}
-                label="Data urodzenia"
-                invalidDateMessage=""
-                onChange={(date: Date | null) => {
-                    handleDateChange(date)
-                    validateRepeatBirthDate()
-                }}
-                error={errors.hasOwnProperty('birthDate')}
-                helperText={errors.birthDate && errors.birthDate.message}
-            />
-            <TextField
-                className={classes.textField}
-                name="phone"
-                label="Telefon"
-                required
-                inputRef={register({ required: 'Telefon jest wymagany!', pattern: { value: /^\d{9}$/, message: 'Telefon musi zawierać 9 cyfr' }, valueAsNumber: true })}
-                error={errors.hasOwnProperty('phone')}
-                helperText={errors.phone && errors.phone.message}
-            />
-            <Button
-                className={classes.submit}
-                fullWidth
-                size="medium"
-                variant="contained"
-                color="primary"
-                type="submit">
-                    Zarejestruj się
-            </Button>
-            {fireRedirect && <Redirect to={'/register/sent'} />}
-        </form>
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <TextField
+                    className={classes.textField}
+                    name="name"
+                    label="Imię"
+                    required
+                    inputRef={register({ required: 'Imię jest wymagane!', minLength: { value: 2, message: 'Imię za krótkie!' }, maxLength: { value: 50, message: 'Imię za długie'} })}
+                    error={errors.hasOwnProperty('name')}
+                    helperText={errors.name && errors.name.message}
+                    data-testid="nameInput"
+                />
+                <TextField
+                    className={classes.textField}
+                    name="surname"
+                    label="Nazwisko"
+                    required
+                    inputRef={register({ required: 'Nazwisko jest wymagane!', minLength: { value: 2, message: 'Nazwisko za krótkie' }, maxLength: { value: 50, message: 'Nazwisko za długie' } })}
+                    error={errors.hasOwnProperty('surname')}
+                    helperText={errors.surname && errors.surname.message}
+                    data-testid="surnameInput"
+                />
+                <TextField
+                    className={classes.textField}
+                    name="mail"
+                    label="Email"
+                    type="email"
+                    required
+                    inputRef={register({ required: 'Email jest wymagany!', pattern: { value: emailPattern, message: 'Nieprawidłowy email!'} })}
+                    error={errors.hasOwnProperty('mail')}
+                    helperText={errors.mail && errors.mail.message}
+                    data-testid="mailInput"
+                />
+                <TextField
+                    className={classes.textField}
+                    name="password"
+                    label="Hasło"
+                    type="password"
+                    required
+                    onChange={validateRepeatPassword}
+                    inputRef={register({ required: 'Hasło jest wymagane', pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, message: 'Hasło musi zawierać co najmniej 8 znaków, jedną małą literę, jedną wielką literę, jedną liczbę oraz jeden znak specjalny (@$!%*?&)!' } })}
+                    error={errors.hasOwnProperty('password')}
+                    helperText={errors.password && errors.password.message}
+                    data-testid="passwordInput"
+                />
+                <TextField
+                    className={classes.textField}
+                    name="repPassword"
+                    label="Powtórz hasło"
+                    type="password"
+                    required
+                    inputRef={register({ required: true, validate: { repeatPassowrd: repeatPassword } })}
+                    error={errors.hasOwnProperty('repPassword')}
+                    helperText={errors.repPassword && errors.repPassword.message}
+                    data-testid="repPasswordInput"
+                />
+                <KeyboardDatePicker
+                    className={classes.textField}
+                    required
+                    name="birthDate"
+                    disableFuture
+                    value={date}
+                    openTo="year"
+                    format="dd/MM/yyyy"
+                    placeholder="DD/MM/YYYY"
+                    views={['year', 'month', 'date']}
+                    label="Data urodzenia"
+                    invalidDateMessage=""
+                    onChange={(date: Date | null) => {
+                        handleDateChange(date)
+                        validateRepeatBirthDate()
+                    }}
+                    error={errors.hasOwnProperty('birthDate')}
+                    helperText={errors.birthDate && errors.birthDate.message}
+                    data-testid="birthDateInput"
+                />
+                <TextField
+                    className={classes.textField}
+                    name="phone"
+                    label="Telefon"
+                    required
+                    inputRef={register({ required: 'Telefon jest wymagany!', pattern: { value: /^\d{9}$/, message: 'Telefon musi zawierać 9 cyfr' }, valueAsNumber: true })}
+                    error={errors.hasOwnProperty('phone')}
+                    helperText={errors.phone && errors.phone.message}
+                    data-testid="phoneInput"
+                />
+                <Button
+                    className={classes.submit}
+                    fullWidth
+                    size="medium"
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    data-testid="formSubmit">
+                        Zarejestruj się
+                </Button>
+                {fireRedirect && <Redirect to={'/register/sent'} />}
+            </form>
+        </MuiPickersUtilsProvider>
     )
 }
 

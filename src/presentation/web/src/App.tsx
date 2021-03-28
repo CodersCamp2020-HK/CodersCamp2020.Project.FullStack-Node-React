@@ -13,9 +13,7 @@ import theme from './themes/theme';
 import Footer from './components/footer/Footer';
 import NotFound from './pages/NotFound';
 import GridContainer from './components/gridContainer/GridContainer';
-import DateFnsUtils from '@date-io/date-fns';
-import plLocale from 'date-fns/locale/pl';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+
 
 const App: React.FC = () => {
     const useStyles = makeStyles({
@@ -29,39 +27,37 @@ const App: React.FC = () => {
 
     return (
         <ThemeProvider theme={theme}>
-            <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
-                <Container className={classes.mainPage}>
-                    <Router>
-                        <Navbar />
-                        <GridContainer>
-                            <Switch>
-                                <Route exact path="/">
-                                    <Home />
-                                </Route>
-                                <Route exact path="/about">
-                                    <About />
-                                </Route>
-                                <Route exact path="/adoption">
-                                    <Adoption />
-                                </Route>
-                                <Route exact path="/donation">
-                                    <Donation />
-                                </Route>
-                                <Route exact path="/contact">
-                                    <Contact />
-                                </Route>
-                                <Route path="/auth">
-                                    <Auth />
-                                </Route>
-                                <Route path="*">
-                                    <NotFound />
-                                </Route>
-                            </Switch>
-                        </GridContainer>
-                    </Router>
-                </Container>
-                <Footer />
-            </MuiPickersUtilsProvider>
+            <Container className={classes.mainPage}>
+                <Router>
+                    <Navbar />
+                    <GridContainer>
+                        <Switch>
+                            <Route exact path="/">
+                                <Home />
+                            </Route>
+                            <Route exact path="/about">
+                                <About />
+                            </Route>
+                            <Route exact path="/adoption">
+                                <Adoption />
+                            </Route>
+                            <Route exact path="/donation">
+                                <Donation />
+                            </Route>
+                            <Route exact path="/contact">
+                                <Contact />
+                            </Route>
+                            <Route path="/auth">
+                                <Auth />
+                            </Route>
+                            <Route path="*">
+                                <NotFound />
+                            </Route>
+                        </Switch>
+                    </GridContainer>
+                </Router>
+            </Container>
+            <Footer />
         </ThemeProvider>
     );
 };
