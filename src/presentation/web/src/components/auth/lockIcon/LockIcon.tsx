@@ -1,9 +1,9 @@
+import React from 'react'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import SvgIcon from '@material-ui/core/SvgIcon'
 import { Theme, useTheme, makeStyles } from '@material-ui/core';
-import React from 'react'
 
-const LockIcon = () => {
+const LockIcon: React.FC = () => {
     const theme = useTheme<Theme>();
     const useStyle = makeStyles({
         lockBackground: {

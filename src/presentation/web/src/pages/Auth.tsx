@@ -3,14 +3,14 @@ import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import ChangePassword from '../components/changePassword/ChangePassword';
 import ForgetPassword from '../components/auth/forgetPassword/ForgetPassword';
 import LoginForm from '../components/auth/loginForm/LoginForm';
-import RegisterForm from '../components/auth/registerForm/RegisterForm';
+import RegisterPage from '../components/auth/registerPage/RegisterPage';
 import NotFound from './NotFound';
 
-const Auth = () => {
+const Auth: React.FC = () => {
     const { path } = useRouteMatch();
     return (
         <Switch>
-            <Route exact path={`${path}/register`} component={RegisterForm} />
+            <Route exact path={`${path}/register`} component={RegisterPage} />
             <Route exact path={`${path}/forget`} component={ForgetPassword} />
             <Route exact path={`${path}/change`} component={ChangePassword} />
             <Route exact path={path} component={LoginForm} />
