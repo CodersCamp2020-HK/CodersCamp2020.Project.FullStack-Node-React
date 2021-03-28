@@ -46,7 +46,7 @@ const ActivationSent = () => {
                     Mail z linkiem aktywacyjnym powinien zostać dostarczony w
                         przeciągu kilku minut.
                     </Typography>
-                    <Link component={RouterLink} className={classes.returnToLogin} to="/login">
+                    <Link component={RouterLink} className={classes.returnToLogin} to="/auth">
                         <Typography variant="body2">Wróć do logowania</Typography>
                     </Link>
                 </Paper>
