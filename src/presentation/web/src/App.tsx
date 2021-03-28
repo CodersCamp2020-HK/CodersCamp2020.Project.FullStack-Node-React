@@ -22,36 +22,6 @@ import plLocale from 'date-fns/locale/pl';
 const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
-<<<<<<< HEAD
-            <Container style={{ marginTop: 64 }}>
-                <Router>
-                    <Navbar />
-                    <Switch>
-                        <Route exact path="/">
-                            <Home />
-                        </Route>
-                        <Route exact path="/about">
-                            <About />
-                        </Route>
-                        <Route exact path="/adoption">
-                            <Adoption />
-                        </Route>
-                        <Route exact path="/donation">
-                            <Donation />
-                        </Route>
-                        <Route exact path="/contact">
-                            <Contact />
-                        </Route>
-                        <Route exact path="/forget">
-                            <ForgetPassword />
-                        </Route>
-                        <Route exact path="/login">
-                            <Login />
-                        </Route>
-                    </Switch>
-                </Router>
-            </Container>
-=======
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
                 <Container style={{ marginTop: 64 }}>
                     <Router>
@@ -89,8 +59,7 @@ const App: React.FC = () => {
                         </Grid>
                     </Router>
                 </Container>
->>>>>>> master
-            <Footer />
+                <Footer />
             </MuiPickersUtilsProvider>
         </ThemeProvider>
     );
