@@ -10,6 +10,7 @@ import Grid from '@material-ui/core/Grid';
 import shelterPhoto from "./img/hand.jpg";
 import { createMuiTheme, Paper, Typography } from '@material-ui/core';
 import { Repeat } from '@material-ui/icons';
+import { url } from 'node:inspector';
 
 const themes = createMuiTheme({
     breakpoints: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles({
         flexGrow: 0,
         flexShrink: 0,
         marginBottom: '5%',
-        marginTop: '10%',
+        marginTop: '15%',
     },
     iconContainer: {
         display: 'flex',
@@ -37,14 +38,8 @@ const useStyles = makeStyles({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: theme.palette.background.paper,
-        paddingBottom: '12%',
-        [themes.breakpoints.down('md')]: {
-            paddingBottom: '5%',
-        },
-        [themes.breakpoints.down('sm')]: {
-            marginTop: '5%',
-            marginBottom: '5%',
-        },
+        paddingTop: '6%',
+        paddingBottom: '6%',
     },
     lockBackground: {
         backgroundColor: theme.palette.secondary.dark,
@@ -61,45 +56,32 @@ const useStyles = makeStyles({
         color: '#FFF',
         opacity: .87,
     },
+    test: {
+        height: '100%',
+        width: '100%',
+        backgroundImage: `url(${shelterPhoto})`,
+        backgroundPosition: 'center top',
+        backgroundSize: 'cover',
+        borderRadius: '15px',
+        padding: 0,
+        ustify: 'center',
+    },
     shelterContainer: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        [themes.breakpoints.down('md')]: {
-            padding: 0,
-        },
+        minHeight: '414px',
         [themes.breakpoints.down('xs')]: {
+            marginTop: '5%',
+            alignItems: 'center',
             justifyContent: 'center',
         },
     },
-    shelterPhoto: {
-        borderRadius: '15px',
-        maxWidth: '500px',
-        maxHeight: '544px',
-        alignItems: 'flex-end',
-        padding: 0,
-        ustify: 'center',
-        flexShrink: 0,
-        [themes.breakpoints.down('lg')]: {
-            height: '500px',
-        },
-        [themes.breakpoints.down('md')]: {
-            height: '430px',
-        },
-        [themes.breakpoints.down('sm')]: {
-            height: '370px',
-        },
-        [themes.breakpoints.down('xs')]: {
-            height: '400px',
-        },
-    },
-
     mapPhoto: {
         display: 'flex',
         border: '0',
         frameBoarder: '0',
         allowfullscreen: '0',
-        allowFullScreen: '',
         tabindex: '0',
         margin: 'auto',
         marginTop: '5%',
@@ -109,11 +91,8 @@ const useStyles = makeStyles({
     },
 });
 
-
-
 const ContactPage: React.FC = () => {
     const classes = useStyles();
-    // const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1220px)' })
     return (
         <Grid container className={classes.root}>
             <Grid item xs={12} sm={6}>
@@ -143,7 +122,7 @@ const ContactPage: React.FC = () => {
                 </Paper>
             </Grid>
             <Grid item xs={12} sm={6} className={classes.shelterContainer} >
-                <img src={shelterPhoto} alt="shelter photo" className={classes.shelterPhoto} />
+                <div className={classes.test}></div>
             </Grid>
             <Grid item xs={12}>
                 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d20004.80284408307!2d17.0311458676758!3d51.189588443602666!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x173c5b990e04fcc2!2zUHNhcnkgNTEtMTgwLCBHxYLDs3duYSA1MGM!5e0!3m2!1spl!2spl!4v1616853103897!5m2!1spl!2spl" className={classes.mapPhoto} aria-hidden="false"></iframe>
