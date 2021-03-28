@@ -6,6 +6,7 @@ const theme = createMuiTheme({
             light: '#f9683a',
             main: '#bf360c',
             dark: '#870000',
+            contrastText: '#ffffff',
         },
         secondary: {
             light: '#B4A647',
@@ -34,6 +35,9 @@ const theme = createMuiTheme({
             fullWidth: true,
         },
         MuiRadio: {
+            color: 'secondary'
+        },
+        MuiCheckbox: {
             color: 'secondary'
         },
         MuiFormControlLabel: {
