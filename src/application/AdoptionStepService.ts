@@ -9,7 +9,7 @@ export class AdoptionStepService {
         private specieRepository: Repository<Specie>,
     ) {}
 
-    public async getAll(specie?: string): Promise<AdoptionStep[]> {
+    public async getAllSteps(specie?: string): Promise<AdoptionStep[]> {
         if (specie) {
             const foundedSpecie = await this.specieRepository.findOne({
                 where: {

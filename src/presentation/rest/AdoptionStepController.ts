@@ -34,7 +34,7 @@ export class AdoptionStepController extends Controller {
         },
     ])
     @Get('')
-    public async getAll(@Query() specie?: string): Promise<AdoptionStep[]> {
-        return await this.adoptionStepService.getAll(specie);
+    public async getAllAdoptionSteps(@Query() specie?: string): Promise<AdoptionStep[]> {
+        return await this.adoptionStepService.getAllSteps(specie);
     }
 }
