@@ -33,8 +33,17 @@ const theme = createMuiTheme({
             variant: 'outlined',
             size: 'medium',
             fullWidth: true,
-            margin: 'normal',
         },
+        MuiCheckbox: {
+            color: 'secondary'
+        },
+        MuiFormControlLabel: {
+            labelPlacement: 'end',
+        },
+        MuiGrid: {
+            alignItems: 'center',
+            justify: 'center'
+        }
     },
     overrides: {
         MuiButton: {
@@ -53,8 +62,16 @@ const theme = createMuiTheme({
                 '& fieldset': {
                     borderRadius: 15,
                 },
+                paddingBottom: 20,
+                marginBottom: 15
             },
         },
+        MuiFormHelperText: {
+            root: {
+                position: 'absolute',
+                top: 60
+            }
+        }
     },
 });
 

@@ -29,8 +29,9 @@ export class VolunteerSubmissionsController {
     @Put('change')
     public async changeFormStatusForVolunteer(
         @Body() changeStatusParams: ChangeStatusForVolunterFormParams,
+        @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
-        await this.submissionService.changeStatusForVolunteerForm(changeStatusParams);
+        await this.submissionService.changeStatusForVolunteerForm(changeStatusParams, request.user as IUserInfo);
     }
 
     /**
