@@ -33,6 +33,12 @@ const theme = createMuiTheme({
             size: 'medium',
             fullWidth: true,
         },
+        MuiCheckbox: {
+            color: 'secondary'
+        },
+        MuiFormControlLabel: {
+            labelPlacement: 'end',
+        },
         MuiGrid: {
             alignItems: 'center',
             justify: 'center'
