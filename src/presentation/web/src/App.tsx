@@ -1,7 +1,14 @@
-import React from 'react';
+import DateFnsUtils from '@date-io/date-fns';
 import { Container, ThemeProvider } from '@material-ui/core';
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
+import Grid from '@material-ui/core/Grid';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import plLocale from 'date-fns/locale/pl';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
+import ActivationSent from './components/activationSent/ActivationSent';
+import Footer from './components/footer/Footer';
+import ForgetPassword from './components/forgetPassword/ForgetPassword';
 import Login from './components/login/Login';
 import Navbar from './components/navbar/Navbar';
 import About from './pages/About';
@@ -9,15 +16,9 @@ import Adoption from './pages/Adoption';
 import Contact from './pages/Contact';
 import Donation from './pages/Donation';
 import Home from './pages/Home';
-import theme from './themes/theme';
-import Footer from './components/footer/Footer';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import Grid from '@material-ui/core/Grid';
-import ForgetPassword from './components/forgetPassword/ForgetPassword';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
-import plLocale from 'date-fns/locale/pl';
+import theme from './themes/theme';
 
 const App: React.FC = () => {
     return (
@@ -52,6 +53,9 @@ const App: React.FC = () => {
                                 <Route exact path="/register">
                                     <Register />
                                 </Route>
+                                <Route exact path="/register/sent">
+                                    <ActivationSent />
+                                </Route>
                                 <Route path="*">
                                     <NotFound />
                                 </Route>
@@ -59,7 +63,7 @@ const App: React.FC = () => {
                         </Grid>
                     </Router>
                 </Container>
-            <Footer />
+                <Footer />
             </MuiPickersUtilsProvider>
         </ThemeProvider>
     );
