@@ -59,7 +59,7 @@ const App: React.FC = () => {
                         </Grid>
                     </Router>
                 </Container>
-            <Footer />
+                <Footer />
             </MuiPickersUtilsProvider>
         </ThemeProvider>
     );
