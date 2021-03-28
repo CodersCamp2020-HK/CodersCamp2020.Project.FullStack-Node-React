@@ -11,7 +11,7 @@ import { Body, Get, Path, Put, Query, Route, Tags, Response, Security, SuccessRe
 import { Inject } from 'typescript-ioc';
 
 @Tags('Volunteer Submissions')
-@Route('volunteerSubmissions')
+@Route('submissions/volunteer')
 export class VolunteerSubmissionsController {
     @Inject
     private submissionService!: VolunteerSubmissionsService;
@@ -26,11 +26,12 @@ export class VolunteerSubmissionsController {
     @Response<ApiError>(404, 'Not Found')
     @Response<ValidateErrorJSON>(422, 'Validation Failed')
     @SuccessResponse(200, 'ok')
-    @Put('changeVolunterFormStatus')
+    @Put('change')
     public async changeFormStatusForVolunteer(
         @Body() changeStatusParams: ChangeStatusForVolunterFormParams,
+        @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
-        await this.submissionService.changeStatusForVolunteerForm(changeStatusParams);
+        await this.submissionService.changeStatusForVolunteerForm(changeStatusParams, request.user as IUserInfo);
     }
 
     /**

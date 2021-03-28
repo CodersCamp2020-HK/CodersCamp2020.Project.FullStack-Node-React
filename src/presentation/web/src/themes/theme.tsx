@@ -6,6 +6,7 @@ const theme = createMuiTheme({
             light: '#f9683a',
             main: '#bf360c',
             dark: '#870000',
+            contrastText: '#ffffff',
         },
         secondary: {
             light: '#B4A647',
@@ -32,8 +33,17 @@ const theme = createMuiTheme({
             variant: 'outlined',
             size: 'medium',
             fullWidth: true,
-            margin: 'normal',
         },
+        MuiCheckbox: {
+            color: 'secondary'
+        },
+        MuiFormControlLabel: {
+            labelPlacement: 'end',
+        },
+        MuiGrid: {
+            alignItems: 'center',
+            justify: 'center'
+        }
     },
     overrides: {
         MuiButton: {
@@ -52,8 +62,16 @@ const theme = createMuiTheme({
                 '& fieldset': {
                     borderRadius: 15,
                 },
+                paddingBottom: 20,
+                marginBottom: 15
             },
         },
+        MuiFormHelperText: {
+            root: {
+                position: 'absolute',
+                top: 60
+            }
+        }
     },
 });
 

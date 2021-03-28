@@ -23,6 +23,9 @@ import { WinstonLogger } from '@infrastructure/WinstonLogger';
 import Specie from '@infrastructure/postgres/Specie';
 import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
+import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
+import VolunteerHireStep from '@infrastructure/postgres/VolunteerHireStep';
+import { VolunteerHireStepService } from '@application/VolunteerHireStepService';
 
 Container.bind(AnimalsService)
     .factory(
@@ -43,7 +46,14 @@ Container.bind(UsersService)
     .scope(Scope.Local);
 
 Container.bind(FormService)
-    .factory(() => new FormService(getConnection().getRepository(Form)))
+    .factory(
+        () =>
+            new FormService(
+                getConnection().getRepository(Form),
+                getConnection().getRepository(Animal),
+                getConnection().getRepository(AdoptionStep),
+            ),
+    )
     .scope(Scope.Local);
 Container.bind(PhotosService)
     .factory(() => new PhotosService())
@@ -67,6 +77,7 @@ Container.bind(AnimalSubmissionsService).factory(
             getConnection().getRepository(FormAnimalSubmission),
             getConnection().getRepository(Animal),
             getConnection().getRepository(FormAnimalAnswer),
+            getConnection().getRepository(OrganizationUser),
         ),
 );
 Container.bind(VolunteerSubmissionsService).factory(
@@ -74,7 +85,11 @@ Container.bind(VolunteerSubmissionsService).factory(
         new VolunteerSubmissionsService(
             getConnection().getRepository(FormVolunteerSubmission),
             getConnection().getRepository(FormVolunteerAnswer),
+            getConnection().getRepository(OrganizationUser),
         ),
+);
+Container.bind(VolunteerHireStepService).factory(
+    () => new VolunteerHireStepService(getConnection().getRepository(VolunteerHireStep)),
 );
 Container.bind(WinstonLogger).to(WinstonLogger).scope(Scope.Singleton);
 
