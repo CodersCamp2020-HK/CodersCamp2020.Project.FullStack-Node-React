@@ -25,6 +25,8 @@ import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
 import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
 import { AdoptionStepService } from '@application/AdoptionStepService';
+import VolunteerHireStep from '@infrastructure/postgres/VolunteerHireStep';
+import { VolunteerHireStepService } from '@application/VolunteerHireStepService';
 
 Container.bind(AnimalsService)
     .factory(
@@ -89,6 +91,9 @@ Container.bind(VolunteerSubmissionsService).factory(
 );
 Container.bind(AdoptionStepService).factory(
     () => new AdoptionStepService(getConnection().getRepository(AdoptionStep), getConnection().getRepository(Specie)),
+);
+Container.bind(VolunteerHireStepService).factory(
+    () => new VolunteerHireStepService(getConnection().getRepository(VolunteerHireStep)),
 );
 Container.bind(WinstonLogger).to(WinstonLogger).scope(Scope.Singleton);
 
