@@ -1,12 +1,15 @@
-import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
-import { AnimalPhoto, AnimalThumbnailPhoto } from '@infrastructure/postgres/AnimalPhoto';
-import Animal from '@infrastructure/postgres/Animal';
-import AnimalAdditionalInfo, { AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
-import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
-import Specie from '@infrastructure/postgres/Specie';
 import PaginationParams from '@infrastructure/Pagination';
+import Animal from '@infrastructure/postgres/Animal';
+import AnimalAdditionalInfo, { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
+import { AnimalPhoto, AnimalThumbnailPhoto } from '@infrastructure/postgres/AnimalPhoto';
+import Specie from '@infrastructure/postgres/Specie';
+//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
+//export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
+import { validate } from 'class-validator';
+import { Repository } from 'typeorm';
+import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
+import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
 //type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
 //type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
@@ -29,9 +32,6 @@ export interface AnimalCreationParams {
     };
 }
 
-//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
-//export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
-import { validate } from 'class-validator';
 
 export interface AnimalUpdateParams {
     name?: string;
@@ -143,7 +143,8 @@ export class AnimalsService {
             .optAndWhere('animal.age >= ', queryParams.minAge)
             .optAndWhere('animal.age <= ', queryParams.maxAge)
             .optAndWhere('specie.specie = ', queryParams.specie)
-            .selectQueryBuilder.getMany();
+            .selectQueryBuilder.addOrderBy('info.admissionToShelter', 'DESC')
+            .getMany();
     }
 
     public async update(id: number, { additionalInfo, specie, ...animalParams }: AnimalUpdateParams): Promise<Animal> {
