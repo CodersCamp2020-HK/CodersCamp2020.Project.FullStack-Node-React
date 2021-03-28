@@ -4,10 +4,8 @@
     flex-direction: row;
     justify-content: space-around;
     margin-left: auto;
-    height: 10vh;
+    height: 4rem;
     align-items: center;
-    /* padding: 3vh 0; */
-    /* box-sizing: border-box; */
 }
 
 .footerColumn {

@@ -21,7 +21,7 @@ const App: React.FC = () => {
     const useStyles = makeStyles({
         mainPage: {
             boxSizing: 'border-box',
-            minHeight: 'calc(100vh - 10vh - 64px)',
+            minHeight: 'calc(100vh - 4rem - 64px)',
             marginTop: 64
         }
     })
