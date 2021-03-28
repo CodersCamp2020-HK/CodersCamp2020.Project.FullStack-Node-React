@@ -153,7 +153,7 @@ export class AnimalsService {
             };
         }
 
-        return animalQuery.selectQueryBuilder.getMany();
+        return animalQuery.selectQueryBuilder.addOrderBy('info.admissionToShelter', 'DESC').getMany();
     }
 
     public async update(id: number, { additionalInfo, specie, ...animalParams }: AnimalUpdateParams): Promise<Animal> {

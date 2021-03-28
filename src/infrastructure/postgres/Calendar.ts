@@ -9,7 +9,7 @@ export default class Calendar {
     id!: number;
 
     @IsDate()
-    @Column()
+    @Column({ type: 'timestamp without time zone' })
     date!: Date;
 
     @ManyToOne(() => User, (user) => user.meetings, { onDelete: 'CASCADE' })
