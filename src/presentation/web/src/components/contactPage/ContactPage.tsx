@@ -1,5 +1,4 @@
 import React from 'react';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import CallOutlinedIcon from '@material-ui/icons/CallOutlined';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import AlternateEmailOutlinedIcon from '@material-ui/icons/AlternateEmailOutlined';
@@ -9,8 +8,6 @@ import theme from "../../themes/theme";
 import Grid from '@material-ui/core/Grid';
 import shelterPhoto from "./img/hand.jpg";
 import { createMuiTheme, Paper, Typography } from '@material-ui/core';
-import { Repeat } from '@material-ui/icons';
-import { url } from 'node:inspector';
 
 const themes = createMuiTheme({
     breakpoints: {
