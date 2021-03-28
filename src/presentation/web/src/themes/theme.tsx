@@ -23,6 +23,9 @@ const theme = createMuiTheme({
         background: {
             default: '#FFFDF6',
         },
+        action: {
+            selected: '#bf360c',
+        }
     },
     props: {
         MuiLink: {
