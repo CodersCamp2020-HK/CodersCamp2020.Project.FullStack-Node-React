@@ -3,15 +3,12 @@ import { useForm } from 'react-hook-form'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Grid from '@material-ui/core/Grid';
-import SvgIcon from '@material-ui/core/SvgIcon';
-import Typography from '@material-ui/core/Typography'
-import Paper from '@material-ui/core/Paper';
 import Link from '@material-ui/core/Link';
 import { Theme, useTheme, makeStyles } from '@material-ui/core';
 import { useMutate } from 'restful-react';
 import { KeyboardDatePicker } from '@material-ui/pickers';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
+import AuthPaper from '../authPaper/AuthPaper';
 
 interface Inputs {
     name: string;
@@ -25,32 +22,9 @@ interface Inputs {
 const RegisterForm: React.FC = () => {
     const theme = useTheme<Theme>();
     const useStyle = makeStyles({
-        lockBackground: {
-            backgroundColor: theme.palette.secondary.dark,
-            borderRadius: 90,
-            padding: 8,
-            marginBottom: 10
-        },
-        lockIcon: {
-            color: '#FFF',
-            opacity: .87,
-        },
         submit: {
             filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
             marginBottom: 10
-        },
-        paper: {
-            color: theme.palette.background.paper,
-            margin: '3rem 0',
-            padding: '20px 50px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-        },
-        text: {
-            color: theme.palette.text.primary,
-            marginBottom: 35
         },
         link: {
             color: theme.palette.info.dark,
@@ -107,11 +81,7 @@ const RegisterForm: React.FC = () => {
     }, [])
     return (
         <Grid item xs={12} sm={10} md={6}>
-            <Paper className={classes.paper} variant="outlined" square={false}>
-                <SvgIcon className={classes.lockBackground}>
-                    <LockOutlinedIcon className={classes.lockIcon} />
-                </SvgIcon>
-                <Typography className={classes.text} variant="h5" component="span">Zarejestruj się</Typography>
+            <AuthPaper typographyLabel="Zarejestruj się">
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <TextField
                         className={classes.textField}
@@ -201,7 +171,7 @@ const RegisterForm: React.FC = () => {
                     </Button>
                 </form>
                 <Link className={classes.link} component={RouterLink} to="/auth">Masz już konto? Zaloguj się</Link>
-            </Paper>
+            </AuthPaper>
             {fireRedirect && <Redirect to={'/register/sent'} />}
         </Grid>
     )

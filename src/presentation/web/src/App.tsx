@@ -26,6 +26,7 @@ const App: React.FC = () => {
         }
     })
     const classes = useStyles();
+
     return (
         <ThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>

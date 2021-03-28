@@ -1,9 +1,9 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import ChangePassword from '../components/changePassword/ChangePassword';
-import ForgetPassword from '../components/forgetPassword/ForgetPassword';
-import LoginForm from '../components/loginForm/LoginForm';
-import RegisterForm from '../components/registerForm/RegisterForm';
+import ForgetPassword from '../components/auth/forgetPassword/ForgetPassword';
+import LoginForm from '../components/auth/loginForm/LoginForm';
+import RegisterForm from '../components/auth/registerForm/RegisterForm';
 import NotFound from './NotFound';
 
 const Auth = () => {
