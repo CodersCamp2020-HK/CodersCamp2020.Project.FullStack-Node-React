@@ -1,4 +1,4 @@
-import React, { FormEvent, useState } from 'react';
+import React, { FormEvent, useState, useContext } from 'react';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import { ReactComponent as Cat } from './icons/CatIcon.svg';
 import { ReactComponent as Dog } from './icons/DogIcon.svg';
@@ -15,6 +15,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
+import { FormContex } from '../../pages/Home';
 
 const useStyles = makeStyles({
     filterPanel: {
@@ -47,24 +48,24 @@ interface FormState {
     getChildren: string;
 }
 
+interface Props {
+    formState: FormState;
+    setFormState: React.Dispatch<React.SetStateAction<FormState>>;
+}
+
 const FilterPanel = () => {
-    const [state, setstate] = useState<FormState>({
-        animal: 'cat',
-        home: 'building',
-        getAnimals: 'Nie mam zwierząt',
-        getChildren: 'Nie mam dzieci',
-    });
+    const { formState, setFormState } = useContext(FormContex);
 
     const handleChange = (e: React.ChangeEvent<any>) => {
-        setstate({
-            ...state,
+        setFormState({
+            ...formState,
             [e.target.name]: e.target.value,
         });
     };
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(state);
+        console.log(formState);
     };
 
     const classes = useStyles();
@@ -92,10 +93,10 @@ const FilterPanel = () => {
                                 <Typography align="center" color="primary">
                                     Kot
                                 </Typography>
-                                <IconWrapper active={state.animal === 'cat'}>
+                                <IconWrapper active={formState.animal === 'cat'}>
                                     <Cat
                                         fill={
-                                            state.animal === 'cat'
+                                            formState.animal === 'cat'
                                                 ? localTheme.palette.secondary.main
                                                 : localTheme.palette.primary.main
                                         }
@@ -107,7 +108,7 @@ const FilterPanel = () => {
                                     name="animal"
                                     id="cat"
                                     value="cat"
-                                    checked={state.animal === 'cat'}
+                                    checked={formState.animal === 'cat'}
                                     onChange={handleChange}
                                 />
                             </label>
@@ -115,10 +116,10 @@ const FilterPanel = () => {
                                 <Typography align="center" color="primary">
                                     Pies
                                 </Typography>
-                                <IconWrapper active={state.animal === 'dog'}>
+                                <IconWrapper active={formState.animal === 'dog'}>
                                     <Dog
                                         fill={
-                                            state.animal === 'dog'
+                                            formState.animal === 'dog'
                                                 ? localTheme.palette.secondary.main
                                                 : localTheme.palette.primary.main
                                         }
@@ -130,7 +131,7 @@ const FilterPanel = () => {
                                     name="animal"
                                     id="dog"
                                     value="dog"
-                                    checked={state.animal === 'dog'}
+                                    checked={formState.animal === 'dog'}
                                     onChange={handleChange}
                                 />
                             </label>
@@ -138,10 +139,10 @@ const FilterPanel = () => {
                                 <Typography align="center" color="primary">
                                     Obojętnie
                                 </Typography>
-                                <IconWrapper active={state.animal === 'catDog'}>
+                                <IconWrapper active={formState.animal === 'catDog'}>
                                     <CatDog
                                         fill={
-                                            state.animal === 'catDog'
+                                            formState.animal === 'catDog'
                                                 ? localTheme.palette.secondary.main
                                                 : localTheme.palette.primary.main
                                         }
@@ -153,7 +154,7 @@ const FilterPanel = () => {
                                     name="animal"
                                     id="catDog"
                                     value="catDog"
-                                    checked={state.animal === 'catDog'}
+                                    checked={formState.animal === 'catDog'}
                                     onChange={handleChange}
                                 />
                             </label>
@@ -173,10 +174,10 @@ const FilterPanel = () => {
                                 <Typography align="center" color="primary">
                                     Mieszkanie
                                 </Typography>
-                                <IconWrapper active={state.home === 'building'}>
+                                <IconWrapper active={formState.home === 'building'}>
                                     <Building
                                         fill={
-                                            state.home === 'building'
+                                            formState.home === 'building'
                                                 ? localTheme.palette.secondary.main
                                                 : localTheme.palette.primary.main
                                         }
@@ -188,7 +189,7 @@ const FilterPanel = () => {
                                     name="home"
                                     id="building"
                                     value="building"
-                                    checked={state.home === 'building'}
+                                    checked={formState.home === 'building'}
                                     onChange={handleChange}
                                 />
                             </label>
@@ -196,10 +197,10 @@ const FilterPanel = () => {
                                 <Typography align="center" color="primary">
                                     Dom
                                 </Typography>
-                                <IconWrapper active={state.home === 'house'}>
+                                <IconWrapper active={formState.home === 'house'}>
                                     <House
                                         fill={
-                                            state.home === 'house'
+                                            formState.home === 'house'
                                                 ? localTheme.palette.secondary.main
                                                 : localTheme.palette.primary.main
                                         }
@@ -211,7 +212,7 @@ const FilterPanel = () => {
                                     name="home"
                                     id="house"
                                     value={'house'}
-                                    checked={state.home === 'house'}
+                                    checked={formState.home === 'house'}
                                     onChange={handleChange}
                                 />
                             </label>
@@ -223,7 +224,7 @@ const FilterPanel = () => {
                                     name="getAnimals"
                                     labelId="getAnimals"
                                     id="getAnimals"
-                                    value={state.getAnimals}
+                                    value={formState.getAnimals}
                                     onChange={handleChange}
                                 >
                                     <MenuItem value="Nie mam zwierząt">Nie mam zwierząt</MenuItem>
@@ -238,7 +239,7 @@ const FilterPanel = () => {
                                     name="getChildren"
                                     labelId="getChildren"
                                     id="getChildren"
-                                    value={state.getChildren}
+                                    value={formState.getChildren}
                                     onChange={handleChange}
                                 >
                                     <MenuItem value="Nie mam dzieci">Nie mam dzieci</MenuItem>
