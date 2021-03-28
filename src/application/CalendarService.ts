@@ -22,15 +22,22 @@ export class CalendarService {
     public async getAll(): Promise<Calendar[]> {
         const visit = await this.calendarRepository
             .createQueryBuilder('calendar')
-            .leftJoinAndSelect('calendar.user', 'user')
-            .leftJoinAndSelect('calendar.animal', 'animal')
+            .leftJoin('calendar.user', 'user')
+            .leftJoin('calendar.animal', 'animal')
+            .select(['calendar', 'user.id', 'user.name', 'user.surname', 'animal.id', 'animal.name'])
             .getMany();
         if (visit.length === 0) throw new ApiError('Not Found', 404, 'Visit in calendar not found');
         return visit;
     }
 
     public async get(id: number): Promise<Calendar> {
-        const visit = await this.calendarRepository.findOne(id);
+        const visit = await this.calendarRepository
+            .createQueryBuilder('calendar')
+            .leftJoin('calendar.user', 'user')
+            .leftJoin('calendar.animal', 'animal')
+            .select(['calendar', 'user.id', 'user.name', 'user.surname', 'animal.id', 'animal.name'])
+            .where('calendar.id = :calendarId', { calendarId: id })
+            .getOne();
         if (!visit) throw new ApiError('Not Found', 404, `Visit with id: ${id} not found in database`);
         return visit;
     }
