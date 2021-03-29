@@ -1,42 +1,56 @@
-import React, { useState } from 'react';
+import React, { FormEvent, useState, useEffect } from 'react';
 import FilterPanel from '../components/filterPanel/FilterPanel';
 import Gallery from '../components/gallery/Gallery';
+import { useGet } from 'restful-react';
 
-export const FormContex = React.createContext<context>({
-    formState: {
-        animal: 'dog',
-        home: 'building',
-        getAnimals: 'mam',
-        getChildren: 'mam',
-    },
-    setFormState: () => {},
-});
+const initialState = {
+    animal: 'cat',
+    home: 'building',
+    getChildren: 'Nie mam dzieci',
+    getAnimals: 'Nie mam zwierząt',
+};
 
-interface context {
-    formState: FormState;
-    setFormState: React.Dispatch<React.SetStateAction<FormState>>;
-}
-
-interface FormState {
+interface IFormState {
     animal: string;
     home: string;
-    getAnimals: string;
     getChildren: string;
+    getAnimals: string;
 }
 
+interface IFormContex {
+    formState: IFormState;
+    setFormState: React.Dispatch<React.SetStateAction<IFormState>>;
+    handleSubmit: any; // ???
+}
+
+const initialContext = {
+    formState: initialState,
+    setFormState: () => {},
+    handleSubmit: () => {},
+};
+
+export const FormContex = React.createContext<IFormContex>(initialContext);
+export const SubmitContext = React.createContext<IFormState>(initialState);
+
 const Home = () => {
-    const [formState, setFormState] = useState<FormState>({
-        animal: 'cat',
-        home: 'building',
-        getAnimals: 'Nie mam zwierząt',
-        getChildren: 'Nie mam dzieci',
-    });
+    console.log('render home');
+
+    const [formState, setFormState] = useState<IFormState>(initialState);
+    const [submitData, setSubmitData] = useState<IFormState>(initialState);
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setSubmitData(formState);
+    };
+
     return (
         <div>
-            <FormContex.Provider value={{ formState, setFormState }}>
+            <FormContex.Provider value={{ formState, setFormState, handleSubmit }}>
                 <FilterPanel />
-                <Gallery />
             </FormContex.Provider>
+            <SubmitContext.Provider value={submitData}>
+                <Gallery />
+            </SubmitContext.Provider>
         </div>
     );
 };

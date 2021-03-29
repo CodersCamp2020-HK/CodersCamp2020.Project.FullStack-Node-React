@@ -41,31 +41,16 @@ const useStyles = makeStyles({
     },
 });
 
-interface FormState {
-    animal: string;
-    home: string;
-    getAnimals: string;
-    getChildren: string;
-}
-
-interface Props {
-    formState: FormState;
-    setFormState: React.Dispatch<React.SetStateAction<FormState>>;
-}
-
 const FilterPanel = () => {
-    const { formState, setFormState } = useContext(FormContex);
+    console.log('render filterPanel');
+
+    const { formState, setFormState, handleSubmit } = useContext(FormContex);
 
     const handleChange = (e: React.ChangeEvent<any>) => {
         setFormState({
             ...formState,
             [e.target.name]: e.target.value,
         });
-    };
-
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        console.log(formState);
     };
 
     const classes = useStyles();
