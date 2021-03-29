@@ -72,7 +72,7 @@ const theme = createMuiTheme({
         MuiFormHelperText: {
             root: {
                 position: 'absolute',
-                top: 60
+                top: 55
             }
         }
     },

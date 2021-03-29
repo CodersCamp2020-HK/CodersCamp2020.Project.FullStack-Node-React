@@ -95,6 +95,8 @@ const RegisterForm: React.FC = () => {
                     error={errors.hasOwnProperty('name')}
                     helperText={errors.name && errors.name.message}
                     data-testid="nameInput"
+                    // margin="dense"
+                    // style={{ height: 42 }}
                 />
                 <TextField
                     className={classes.textField}
