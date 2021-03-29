@@ -170,7 +170,7 @@ const RegisterForm: React.FC = () => {
                     name="phone"
                     label="Telefon"
                     required
-                    inputRef={register({ required: 'Telefon jest wymagany!', pattern: { value: /^\d{9}$/, message: 'Telefon musi zawierać 9 cyfr' }, valueAsNumber: true })}
+                    inputRef={register({ required: 'Telefon jest wymagany!', pattern: { value: /^\d{9}$/, message: 'Numer telefonu musi zawierać 9 cyfr!' }, valueAsNumber: true })}
                     error={errors.hasOwnProperty('phone')}
                     helperText={errors.phone && errors.phone.message}
                     data-testid="phoneInput"

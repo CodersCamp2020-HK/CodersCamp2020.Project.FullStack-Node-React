@@ -130,4 +130,28 @@ describe('Given: RegisterForm()', () => {
             expect(screen.getByLabelText(/Powtórz hasło/).value).toBe('a'.repeat(4) + 'A'.repeat(4))
         })
     })
+    describe('When: phone number has less than 9 digits', () => {
+        it('Then: invalid phone number error message should be displayed', async () => {    
+            fireEvent.input(screen.getByRole('textbox', { name: 'Telefon' }), { target: { value: 12345678 }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Numer telefonu musi zawierać 9 cyfr!/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Telefon'}).value).toBe('12345678');
+        })
+    })
+    describe('When: phone number has more than 9 digits', () => {
+        it('Then: invalid phone number error message should be displayed', async () => {    
+            fireEvent.input(screen.getByRole('textbox', { name: 'Telefon' }), { target: { value: 12345678910 }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Numer telefonu musi zawierać 9 cyfr!/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Telefon'}).value).toBe('12345678910');
+        })
+    })
+    describe('When: phone number has 9 letters', () => {
+        it('Then: invalid phone number error message should be displayed', async () => {    
+            fireEvent.input(screen.getByRole('textbox', { name: 'Telefon' }), { target: { value: 'a'.repeat(9) }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Numer telefonu musi zawierać 9 cyfr!/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Telefon'}).value).toBe('a'.repeat(9));
+        })
+    })
 })
