@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup } from "@testing-library/react";
 import RegisterForm from '../../components/auth/registerForm/RegisterForm';
 
 const mockRegister = jest.fn((name, surname, mail, password, repPassword, birthDate, phone) => {
@@ -8,10 +8,14 @@ const mockRegister = jest.fn((name, surname, mail, password, repPassword, birthD
 
 describe('Given: RegisterForm()', () => {
     describe('When: name is not provided', () => {
-        beforeEach(() => render(<RegisterForm />))
-        it('Then: required error message should be displayed', () => {
+        beforeEach(() => {
+            render(<RegisterForm />)
+        })
+        afterEach(cleanup)
+        it('Then: required error message should be displayed for all fields', async () => {
             fireEvent.submit(screen.getByTestId('formSubmit'));
-            expect(screen.getAllByRole("alert")).toHaveLength(1);
+
+            expect(await screen.findAllByText(/wymagan/i)).toHaveLength(6);
         })
     })
 })

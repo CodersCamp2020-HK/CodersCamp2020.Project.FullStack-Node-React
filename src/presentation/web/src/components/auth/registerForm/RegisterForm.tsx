@@ -33,10 +33,14 @@ const RegisterForm: React.FC = () => {
     const classes = useStyle();
 
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const { register, handleSubmit, setError, errors, getValues, setValue, formState, trigger } = useForm<Inputs>({})
 
     const [fireRedirect, setFireRedirect] = useState<boolean>(false);
+
     const [date, setDate] = useState(new Date());
+
+    const { register, handleSubmit, setError, errors, getValues, setValue, formState, trigger } = useForm<Inputs>({
+        defaultValues: { birthDate: date }
+    })
     const handleDateChange = (date: Date | null): void => {
         date && setDate(date);
         setValue("birthDate", date);
@@ -78,9 +82,10 @@ const RegisterForm: React.FC = () => {
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <TextField
                     className={classes.textField}
+                    id="name"
                     name="name"
                     label="Imię"
                     required
@@ -91,6 +96,7 @@ const RegisterForm: React.FC = () => {
                 />
                 <TextField
                     className={classes.textField}
+                    id="surname"
                     name="surname"
                     label="Nazwisko"
                     required
@@ -101,6 +107,7 @@ const RegisterForm: React.FC = () => {
                 />
                 <TextField
                     className={classes.textField}
+                    id="mail"
                     name="mail"
                     label="Email"
                     type="email"
@@ -112,6 +119,7 @@ const RegisterForm: React.FC = () => {
                 />
                 <TextField
                     className={classes.textField}
+                    id="password"
                     name="password"
                     label="Hasło"
                     type="password"
@@ -124,6 +132,7 @@ const RegisterForm: React.FC = () => {
                 />
                 <TextField
                     className={classes.textField}
+                    id="repPassword"
                     name="repPassword"
                     label="Powtórz hasło"
                     type="password"
@@ -134,10 +143,11 @@ const RegisterForm: React.FC = () => {
                     data-testid="repPasswordInput"
                 />
                 <KeyboardDatePicker
-                    className={classes.textField}
-                    required
-                    name="birthDate"
                     disableFuture
+                    required
+                    className={classes.textField}
+                    id="birthDate"
+                    name="birthDate"
                     value={date}
                     openTo="year"
                     format="dd/MM/yyyy"
@@ -155,6 +165,7 @@ const RegisterForm: React.FC = () => {
                 />
                 <TextField
                     className={classes.textField}
+                    id="phone"
                     name="phone"
                     label="Telefon"
                     required
