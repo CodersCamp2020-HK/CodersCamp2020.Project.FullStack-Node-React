@@ -7,15 +7,55 @@ const mockRegister = jest.fn((name, surname, mail, password, repPassword, birthD
 });
 
 describe('Given: RegisterForm()', () => {
-    describe('When: name is not provided', () => {
-        beforeEach(() => {
-            render(<RegisterForm />)
-        })
-        afterEach(cleanup)
-        it('Then: required error message should be displayed for all fields', async () => {
-            fireEvent.submit(screen.getByTestId('formSubmit'));
+    beforeEach(() => {
+        render(<RegisterForm />)
+    })
+    afterEach(cleanup)
 
+    describe('When: all fields have default values', () => {
+        it('Then: required error message should be displayed for all fields except date', async () => {
+            fireEvent.submit(screen.getByTestId('formSubmit'));
             expect(await screen.findAllByText(/wymagan/i)).toHaveLength(6);
+        })
+    })
+    describe('When: name has 1 letter', () => {
+        it('Then: min length error message should be displayed', async () => {    
+            fireEvent.input(screen.getByRole('textbox', { name: 'Imię' }), { target: { value: 'a' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Imię za krótkie/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Imię'}).value).toBe('a');
+        })
+    })
+    describe('When: name has 51 letters', () => {
+        it('Then: max length error message should be displayed', async () => {    
+            fireEvent.input(screen.getByRole('textbox', { name: 'Imię' }), { target: { value: 'a'.repeat(51) }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Imię za długie/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Imię'}).value).toBe('a'.repeat(51));
+        })
+    })
+    describe('When: surname has 1 letter', () => {
+        it('Then: min length error message should be displayed', async () => {    
+            fireEvent.input(screen.getByRole('textbox', { name: 'Nazwisko' }), { target: { value: 'a' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Nazwisko za krótkie/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Nazwisko'}).value).toBe('a');
+        })
+    })
+    describe('When: surname has 51 letters', () => {
+        it('Then: max length error message should be displayed', async () => {    
+            fireEvent.input(screen.getByRole('textbox', { name: 'Nazwisko' }), { target: { value: 'a'.repeat(51) }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Nazwisko za długie/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Nazwisko'}).value).toBe('a'.repeat(51));
+        })
+    })
+    describe('When: email has no @', () => {
+        it('Then: invalid email error message should be displayed', async () => {    
+            fireEvent.input(screen.getByRole('textbox', { name: 'Email' }), { target: { value: 'eloelo.elo' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Nieprawidłowy email!/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Email'}).value).toBe('eloelo.elo');
         })
     })
 })
