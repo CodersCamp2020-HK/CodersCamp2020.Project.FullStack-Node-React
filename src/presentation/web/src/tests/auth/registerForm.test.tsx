@@ -88,4 +88,36 @@ describe('Given: RegisterForm()', () => {
             expect(screen.getByLabelText(/Hasło/).value).toBe('a'.repeat(7))
         })
     })
+    describe('When: password has 8 lowercase characters', () => {
+        it('Then: invalid password message should be displayed', async () => {
+            fireEvent.input(screen.getByLabelText(/Hasło/), { target: { value: 'a'.repeat(8) }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Hasło musi zawierać/i)).toHaveLength(1);
+            expect(screen.getByLabelText(/Hasło/).value).toBe('a'.repeat(8))
+        })
+    })
+    describe('When: password has 8 uppercase characters', () => {
+        it('Then: invalid password message should be displayed', async () => {
+            fireEvent.input(screen.getByLabelText(/Hasło/), { target: { value: 'A'.repeat(8) }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Hasło musi zawierać/i)).toHaveLength(1);
+            expect(screen.getByLabelText(/Hasło/).value).toBe('A'.repeat(8))
+        })
+    })
+    describe('When: password has 4 lowercase characters, 4 uppercase characters and number', () => {
+        it('Then: invalid password message should be displayed', async () => {
+            fireEvent.input(screen.getByLabelText(/Hasło/), { target: { value: 'a'.repeat(4) + 'A'.repeat(4) + '5' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Hasło musi zawierać/i)).toHaveLength(1);
+            expect(screen.getByLabelText(/Hasło/).value).toBe('a'.repeat(4) + 'A'.repeat(4) + '5')
+        })
+    })
+    describe('When: password has 4 lowercase characters, 4 uppercase characters and special character', () => {
+        it('Then: invalid password message should be displayed', async () => {
+            fireEvent.input(screen.getByLabelText(/Hasło/), { target: { value: 'a'.repeat(4) + 'A'.repeat(4) + '!' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Hasło musi zawierać/i)).toHaveLength(1);
+            expect(screen.getByLabelText(/Hasło/).value).toBe('a'.repeat(4) + 'A'.repeat(4) + '!')
+        })
+    })
 })
