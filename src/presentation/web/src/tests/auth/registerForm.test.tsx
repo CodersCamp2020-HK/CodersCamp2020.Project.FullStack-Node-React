@@ -154,4 +154,84 @@ describe('Given: RegisterForm()', () => {
             expect(screen.getByRole('textbox', { name: 'Telefon'}).value).toBe('a'.repeat(9));
         })
     })
+    describe('When: input date is 29/02/2017 (dd/MM/yyyy)', () => {
+        it('Then: invalid date format error message should be displayed', async () => {
+            fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '29/02/2017' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Podaj datę w formacie DD\/MM\/RRRR/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('29/02/2017');
+        })
+    })
+    describe('When: input date is 00/01/2021 (dd/MM/yyyy)', () => {
+        it('Then: invalid date format error message should be displayed', async () => {
+            fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '00/01/2021' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Podaj datę w formacie DD\/MM\/RRRR/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('00/01/2021');
+        })
+    })
+    describe('When: input date is 32/01/2021 (dd/MM/yyyy)', () => {
+        it('Then: invalid date format error message should be displayed', async () => {
+            fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '32/01/2021' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Podaj datę w formacie DD\/MM\/RRRR/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('32/01/2021');
+        })
+    })
+    describe('When: input date is 1/01/2021 (dd/MM/yyyy)', () => {
+        it('Then: invalid date format error message should be displayed', async () => {
+            fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '1/01/2021' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Podaj datę w formacie DD\/MM\/RRRR/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('10/12/021_');
+        })
+    })
+    describe('When: input date is 15/00/2021 (dd/MM/yyyy)', () => {
+        it('Then: invalid date format error message should be displayed', async () => {
+            fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '15/00/2021' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Podaj datę w formacie DD\/MM\/RRRR/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('15/00/2021');
+        })
+    })
+    describe('When: input date is 15/14/2021 (dd/MM/yyyy)', () => {
+        it('Then: invalid date format error message should be displayed', async () => {
+            fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '15/14/2021' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Podaj datę w formacie DD\/MM\/RRRR/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('15/14/2021');
+        })
+    })
+    describe('When: input date is 15/1/2021 (dd/MM/yyyy)', () => {
+        it('Then: invalid date format error message should be displayed', async () => {
+            fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '15/1/2021' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Podaj datę w formacie DD\/MM\/RRRR/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('15/12/021_');
+        })
+    })
+    describe('When: input date is 15/01/199 (dd/MM/yyyy)', () => {
+        it('Then: invalid date format error message should be displayed', async () => {
+            fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '15/00/199' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Podaj datę w formacie DD\/MM\/RRRR/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('15/00/199_');
+        })
+    })
+    describe('When: input date is 15/01/2022 (dd/MM/yyyy)', () => {
+        it('Then: invalid date format error message should be displayed', async () => {
+            fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '15/01/2022' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Podaj wcześniejszą datę/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('15/01/2022');
+        })
+    })
+    describe('When: input date is 15/1/1899 (dd/MM/yyyy)', () => {
+        it('Then: invalid date format error message should be displayed', async () => {
+            fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '15/01/1899' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Podaj późniejszą datę/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('15/01/1899');
+        })
+    })
 })

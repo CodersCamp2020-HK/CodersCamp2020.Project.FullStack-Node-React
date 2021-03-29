@@ -75,9 +75,9 @@ const RegisterForm: React.FC = () => {
         if (formState.isSubmitted) trigger('birthDate')
     }
     const repeatPassword = (value: string) => value === getValues().password || 'Hasła muszą być takie same!'
-    const validatebirthDateAfterToday = (value: Date) => value < new Date() || 'Data musi być wcześniejsza!'
-    const validateBirthDateBefore = (value: Date) => value > new Date(1900, 1) || "Data musi być późniejsza!"
-    const validateDate = (value: Date) => value instanceof Date && !isNaN(value.getTime()) || 'Podaj datę w formacie DD/MM/RRRR';
+    const validatebirthDateAfterToday = (value: Date) => value < new Date() || 'Podaj wcześniejszą datę!'
+    const validateBirthDateBefore = (value: Date) => value > new Date(1900, 1) || "Podaj późniejszą datę!"
+    const validateDate = (value: Date) => value instanceof Date && !isNaN(value.getTime()) || 'Podaj datę w formacie DD/MM/RRRR!';
     useEffect(() => {
         register({ name: 'birthDate', type: 'custom'}, { required: 'Data urodzenia jest wymagana!', validate: { validateDate, validateBirthDateBefore, validatebirthDateAfterToday } })
     }, [])
