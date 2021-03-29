@@ -39,7 +39,7 @@ const RegisterForm: React.FC = () => {
 
     const [date, setDate] = useState(new Date());
 
-    const { register, handleSubmit, setError, errors, getValues, setValue, formState, trigger } = useForm<Inputs>({
+    const { register, handleSubmit, setError, errors, getValues, setValue, formState, trigger, watch } = useForm<Inputs>({
         defaultValues: { birthDate: date }
     })
     const handleDateChange = (date: Date | null): void => {
@@ -77,8 +77,9 @@ const RegisterForm: React.FC = () => {
     const repeatPassword = (value: string) => value === getValues().password || 'Hasła muszą być takie same!'
     const validatebirthDateAfterToday = (value: Date) => value < new Date() || 'Data musi być wcześniejsza!'
     const validateBirthDateBefore = (value: Date) => value > new Date(1900, 1) || "Data musi być późniejsza!"
+    const validateDate = (value: Date) => value instanceof Date && !isNaN(value.getTime()) || 'Podaj datę w formacie DD/MM/RRRR';
     useEffect(() => {
-        register({ name: 'birthDate', type: 'custom'}, { required: 'Data urodzenia jest wymagana!', validate: { validateBirthDateBefore, validatebirthDateAfterToday } })
+        register({ name: 'birthDate', type: 'custom'}, { required: 'Data urodzenia jest wymagana!', validate: { validateDate, validateBirthDateBefore, validatebirthDateAfterToday } })
     }, [])
 
     return (
