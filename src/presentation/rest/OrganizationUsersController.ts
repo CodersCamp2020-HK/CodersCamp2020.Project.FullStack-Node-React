@@ -50,6 +50,6 @@ export class OrganizationUsersController extends Controller {
     ])
     @Get('')
     public async getAllOrganizationUsers(@Query() role?: string): Promise<OrganizationUser[]> {
-        return await this.organizationUsersService.getAllSteps(role);
+        return await this.organizationUsersService.getAllUsers(role);
     }
 }
