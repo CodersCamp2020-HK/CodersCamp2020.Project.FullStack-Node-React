@@ -3,7 +3,7 @@ import { Controller, Get, Response, Route, Security, SuccessResponse, Tags, Exam
 import { Inject } from 'typescript-ioc';
 import { DeepPartial } from 'typeorm';
 import OrganizationUser, { UserType } from '@infrastructure/postgres/OrganizationUser';
-
+import { OrganizationUsersService } from '@application/OrganizationUsersService';
 @Tags('Organization Users')
 @Route('organization-users')
 export class OrganizationUsersController extends Controller {
