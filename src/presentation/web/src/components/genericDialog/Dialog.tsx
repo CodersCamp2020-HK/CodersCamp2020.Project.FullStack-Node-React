@@ -6,6 +6,7 @@ import {
     DialogTitle,
     Theme,
     useTheme,
+    Divider
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
@@ -29,13 +30,19 @@ const Dialog = ({ isOpen, title, content, actionText }: DialogProps) => {
             flexDirection: 'row',
             justifyContent: 'center',
         },
+        divider: {
+            marginTop: theme.spacing(2),
+        },
+        content: {
+            paddingTop: 0,
+        },
     });
 
     const classes = useStyles();
     return (
         <MuiDialog classes={{paper: classes.paper}} open={open} maxWidth="sm">
-            <DialogTitle>{title}</DialogTitle>
-            <DialogContent>{content}</DialogContent>
+            <DialogTitle>{title}<Divider className={classes.divider} /></DialogTitle>
+            <DialogContent className={classes.content}>{content}</DialogContent>
             <DialogActions className={classes.buttons}>
                 <Button fullWidth variant="outlined" color="primary" onClick={() => setOpen(false)}>
                     Powrót
