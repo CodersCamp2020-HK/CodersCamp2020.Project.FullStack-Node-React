@@ -5,6 +5,7 @@ import { Theme, useTheme, makeStyles } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import AuthPaper from '../authPaper/AuthPaper';
 import RegisterForm from '../registerForm/RegisterForm';
+import Typography from '@material-ui/core/Typography';
 
 
 const RegisterPage: React.FC = () => {
@@ -28,7 +29,9 @@ const RegisterPage: React.FC = () => {
         <Grid item xs={12} sm={10} md={6}>
             <AuthPaper typographyLabel="Zarejestruj się">
                 <RegisterForm />
-                <Link className={classes.link} component={RouterLink} to="/auth">Masz już konto? Zaloguj się</Link>
+                <Link className={classes.link} component={RouterLink} to="/auth">
+                    <Typography variant="body2">Masz już konto? Zaloguj się</Typography>
+                </Link>
             </AuthPaper>
         </Grid>
     )

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch, Redirect } from 'react-router-dom';
-import ChangePassword from '../components/changePassword/ChangePassword';
+import ChangePassword from '../components/auth/changePassword/ChangePassword';
 import ForgetPassword from '../components/auth/forgetPassword/ForgetPassword';
 import LoginForm from '../components/auth/loginForm/LoginForm';
 import RegisterPage from '../components/auth/registerPage/RegisterPage';
