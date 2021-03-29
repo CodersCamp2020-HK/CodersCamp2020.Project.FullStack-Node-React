@@ -24,7 +24,7 @@ const RegisterForm: React.FC = () => {
     const useStyle = makeStyles({
         submit: {
             filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
-            marginBottom: 10
+            marginBottom: 15
         },
         textField: {
             marginBottom: 35,
@@ -179,7 +179,7 @@ const RegisterForm: React.FC = () => {
                 <Button
                     className={classes.submit}
                     fullWidth
-                    size="medium"
+                    size="large"
                     variant="contained"
                     color="primary"
                     type="submit"

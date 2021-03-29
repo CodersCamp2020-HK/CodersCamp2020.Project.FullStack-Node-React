@@ -1,5 +1,4 @@
-import { Avatar, Button, Grid, Link, Paper, TextField, Theme, Typography, useTheme } from '@material-ui/core';
-import { LockOutlined } from '@material-ui/icons';
+import { Button, Grid, Link, Paper, TextField, Theme, Typography, useTheme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -33,14 +32,17 @@ const LoginForm = () => {
             alignItems: 'center',
             width: '100%',
         },
+        textField: {
+            marginBottom: 35,
+        },
         forgetPassword: {
             alignSelf: 'flex-end',
             color: theme.palette.info.dark,
         },
         submit: {
-            marginTop: theme.spacing(2),
-            marginBottom: theme.spacing(2)
-        }
+            filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
+            marginBottom: 15
+        },
     });
     const classes = useStyle();
 
@@ -69,34 +71,28 @@ const LoginForm = () => {
     
     return (
         <Grid item xs={12} sm={10} md={6}>
-            <AuthPaper typographyLabel="Zaloguj się">aa
+            <AuthPaper typographyLabel="Zaloguj się">
                 <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                     <TextField
                         label="E-mail"
                         type="email"
                         name="E-mail"
-                        variant="outlined"
-                        size="medium"
-                        fullWidth
+                        className={classes.textField}
                         required
-                        error={errors['E-mail'] ? true : false}
                         autoFocus
+                        error={errors['E-mail'] ? true : false}
                         inputRef={register({ required: true })}
                         helperText={errors['E-mail'] && 'E-mail jest wymagany'}
-                        margin="normal"
                     />
                     <TextField
                         label="Password"
                         type="password"
                         name="Password"
-                        variant="outlined"
-                        size="medium"
-                        fullWidth
+                        className={classes.textField}
                         required
                         error={errors.Password ? true : false}
                         helperText={errors.Password && 'Hasło jest wymagane'}
                         inputRef={register({ required: true })}
-                        margin="normal"
                     />
                     <Button className={classes.submit} variant="contained" size="large" fullWidth color="primary" type="submit">
                         Zaloguj się

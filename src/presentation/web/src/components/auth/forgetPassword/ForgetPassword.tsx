@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { useMutate } from 'restful-react';
+import AuthPaper from '../authPaper/AuthPaper';
 
 interface Email {
     'E-mail': string;
@@ -13,15 +14,6 @@ interface Email {
 const ForgetPassword = () => {
     const theme = useTheme<Theme>();
     const useStyle = makeStyles({
-        greenBackground: {
-            backgroundColor: theme.palette.secondary.dark,
-        },
-        paper: {
-            padding: theme.spacing(4),
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-        },
         form: {
             display: 'flex',
             flexDirection: 'column',
@@ -29,15 +21,17 @@ const ForgetPassword = () => {
             width: '100%',
         },
         message: {
-            marginTop: theme.spacing(2),
+            marginBottom: 20
+        },
+        textField: {
+            marginBottom: 35,
         },
         backToLogin: {
             alignSelf: 'flex-end',
             color: theme.palette.info.dark,
         },
         submit: {
-            marginTop: theme.spacing(2),
-            marginBottom: theme.spacing(2),
+            marginBottom: 15
         },
     });
     const classes = useStyle();
@@ -68,48 +62,40 @@ const ForgetPassword = () => {
     };
 
     return (
-        <Grid spacing={2} container direction="column" item xs={4}>
-            <Grid item xs>
-                <Paper className={classes.paper} variant="outlined" square={false}>
-                    <Avatar variant="circular" className={classes.greenBackground}>
-                        <LockOutlined htmlColor={theme.palette.secondary.contrastText} />
-                    </Avatar>
-                    <Typography variant="h5">Zapomniałeś hasła?</Typography>
-                    <Typography className={classes.message} variant="body1">
-                        Wystarczy, że podasz swój e-mail, a my pomożemy Ci ustawić nowe hasło.
-                    </Typography>
-                    <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
-                        <TextField
-                            label="E-mail"
-                            type="email"
-                            name="E-mail"
-                            variant="outlined"
-                            size="medium"
-                            fullWidth
-                            required
-                            error={errors['E-mail'] ? true : false}
-                            autoFocus
-                            inputRef={register({ required: true })}
-                            helperText={errors['E-mail'] && 'E-mail jest wymagany'}
-                            margin="normal"
-                        />
-                        <Button
-                            className={classes.submit}
-                            variant="contained"
-                            size="large"
-                            fullWidth
-                            color="primary"
-                            type="submit"
-                        >
-                            Zresetuj hasło
-                        </Button>
-                        <Typography variant="body2" color='error'>{emailError}</Typography>
-                    </form>
-                    <Link component={RouterLink} className={classes.backToLogin} to="/auth">
-                        <Typography variant="body2">Wróć do logowania</Typography>
-                    </Link>
-                </Paper>
-            </Grid>
+        <Grid item xs={12} sm={10} md={6}>
+            <AuthPaper typographyLabel="Zapomniałeś hasła?">
+                <Typography className={classes.message} variant="body1">
+                    Wystarczy, że podasz swój e-mail, a my pomożemy Ci ustawić nowe hasło.
+                </Typography>
+                <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+                    <TextField
+                        label="E-mail"
+                        type="email"
+                        name="E-mail"
+                        className={classes.textField}
+                        fullWidth
+                        required
+                        autoFocus
+                        error={errors['E-mail'] ? true : false}
+                        inputRef={register({ required: true })}
+                        helperText={errors['E-mail'] && 'E-mail jest wymagany'}
+                    />
+                    <Button
+                        className={classes.submit}
+                        variant="contained"
+                        size="large"
+                        fullWidth
+                        color="primary"
+                        type="submit"
+                    >
+                        Zresetuj hasło
+                    </Button>
+                    <Typography variant="body2" color='error'>{emailError}</Typography>
+                </form>
+                <Link component={RouterLink} className={classes.backToLogin} to="/auth">
+                    <Typography variant="body2">Wróć do logowania</Typography>
+                </Link>
+            </AuthPaper>
         </Grid>
     );
 };
