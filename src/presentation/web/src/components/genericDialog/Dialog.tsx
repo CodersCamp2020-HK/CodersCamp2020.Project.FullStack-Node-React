@@ -21,7 +21,7 @@ const Dialog = ({ isOpen, title, content, actionText }: DialogProps) => {
     const [open, setOpen] = useState<boolean>(isOpen);
     const theme = useTheme<Theme>();
     const useStyles = makeStyles({
-        root: {
+        paper: {
             padding: theme.spacing(2),
         },
         buttons: {
@@ -33,7 +33,7 @@ const Dialog = ({ isOpen, title, content, actionText }: DialogProps) => {
 
     const classes = useStyles();
     return (
-        <MuiDialog className={classes.root} open={open} maxWidth="sm">
+        <MuiDialog classes={{paper: classes.paper}} open={open} maxWidth="sm">
             <DialogTitle>{title}</DialogTitle>
             <DialogContent>{content}</DialogContent>
             <DialogActions className={classes.buttons}>
