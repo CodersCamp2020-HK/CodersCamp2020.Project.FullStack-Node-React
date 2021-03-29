@@ -50,12 +50,34 @@ describe('Given: RegisterForm()', () => {
             expect(screen.getByRole('textbox', { name: 'Nazwisko'}).value).toBe('a'.repeat(51));
         })
     })
-    describe('When: email has no @', () => {
+    describe('When: email has no at sign(@)', () => {
         it('Then: invalid email error message should be displayed', async () => {    
             fireEvent.input(screen.getByRole('textbox', { name: 'Email' }), { target: { value: 'eloelo.elo' }});
             fireEvent.submit(screen.getByTestId('formSubmit'));
             expect(await screen.findAllByText(/Nieprawidłowy email!/i)).toHaveLength(1);
             expect(screen.getByRole('textbox', { name: 'Email'}).value).toBe('eloelo.elo');
+        })
+    })
+    describe('When: email has no domain', () => {
+        it('Then: invalid email error message should be displayed', async () => {    
+            fireEvent.input(screen.getByRole('textbox', { name: 'Email' }), { target: { value: 'elo@.elo' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Nieprawidłowy email!/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Email'}).value).toBe('elo@.elo');
+        })
+    })
+    describe('When: email has wrong domain', () => {
+        it('Then: invalid email error message should be displayed', async () => {    
+            fireEvent.input(screen.getByRole('textbox', { name: 'Email' }), { target: { value: 'elo@.elo' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Nieprawidłowy email!/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Email'}).value).toBe('elo@.elo');
+        })
+        it('Then: invalid email error message should be displayed', async () => {    
+            fireEvent.input(screen.getByRole('textbox', { name: 'Email' }), { target: { value: 'elo@elo.' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Nieprawidłowy email!/i)).toHaveLength(1);
+            expect(screen.getByRole('textbox', { name: 'Email'}).value).toBe('elo@elo.');
         })
     })
 })
