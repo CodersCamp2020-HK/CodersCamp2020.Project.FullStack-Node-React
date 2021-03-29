@@ -80,4 +80,12 @@ describe('Given: RegisterForm()', () => {
             expect(screen.getByRole('textbox', { name: 'Email'}).value).toBe('elo@elo.');
         })
     })
+    describe('When: password has less than 8 characters', () => {
+        it('Then: invalid password message should be displayed', async () => {
+            fireEvent.input(screen.getByLabelText(/Hasło/), { target: { value: 'a'.repeat(7) }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Hasło musi zawierać/i)).toHaveLength(1);
+            expect(screen.getByLabelText(/Hasło/).value).toBe('a'.repeat(7))
+        })
+    })
 })
