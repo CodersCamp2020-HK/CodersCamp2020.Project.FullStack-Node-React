@@ -15,7 +15,6 @@ const Gallery = () => {
 
     return (
         <div>
-            Hello
             <Pagination color="primary" count={5} />
         </div>
     );
