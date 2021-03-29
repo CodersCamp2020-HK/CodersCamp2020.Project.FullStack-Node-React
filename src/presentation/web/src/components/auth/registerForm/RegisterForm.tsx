@@ -39,7 +39,7 @@ const RegisterForm: React.FC = () => {
 
     const [date, setDate] = useState(new Date());
 
-    const { register, handleSubmit, setError, errors, getValues, setValue, formState, trigger, watch } = useForm<Inputs>({
+    const { register, handleSubmit, setError, errors, getValues, setValue, formState, trigger } = useForm<Inputs>({
         defaultValues: { birthDate: date }
     })
     const handleDateChange = (date: Date | null): void => {

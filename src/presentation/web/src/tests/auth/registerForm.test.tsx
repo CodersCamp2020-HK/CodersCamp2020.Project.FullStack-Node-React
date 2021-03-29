@@ -7,6 +7,7 @@ const mockRegister = jest.fn((name, surname, mail, password, repPassword, birthD
 });
 
 describe('Given: RegisterForm()', () => {
+    const handleSubmit = jest.fn();
     beforeEach(() => {
         render(<RegisterForm />)
     })
@@ -249,7 +250,7 @@ describe('Given: RegisterForm()', () => {
             expect(screen.getByRole('textbox', { name: 'Email'}).value).toBe('jan.kowalski@gmail.com');
             expect(screen.getByLabelText(/Hasło/).value).toBe('ZAQ!2wsx');
             expect(screen.getByLabelText(/Powtórz hasło/).value).toBe('ZAQ!2wsx');
-            expect(screen.getByRole('textbox', { name: 'Telefon'}).value).toBe(123456789);
+            expect(screen.getByRole('textbox', { name: 'Telefon'}).value).toBe('123456789');
             expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('19/03/1970');
         })
     })
