@@ -20,7 +20,7 @@ const App: React.FC = () => {
         mainPage: {
             boxSizing: 'border-box',
             minHeight: 'calc(100vh - 4rem - 64px)',
-            marginTop: 64
+            marginTop: 64,
         }
     })
     const classes = useStyles();

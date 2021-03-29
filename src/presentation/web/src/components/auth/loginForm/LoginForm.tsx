@@ -72,7 +72,7 @@ const LoginForm = () => {
     return (
         <Grid item xs={12} sm={10} md={6}>
             <AuthPaper typographyLabel="Zaloguj się">
-                <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
+                <form onSubmit={handleSubmit(onSubmit)} className={classes.form} noValidate>
                     <TextField
                         label="E-mail"
                         type="email"
