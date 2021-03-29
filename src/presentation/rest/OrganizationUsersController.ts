@@ -4,8 +4,8 @@ import { Inject } from 'typescript-ioc';
 import { DeepPartial } from 'typeorm';
 import OrganizationUser, { UserType } from '@infrastructure/postgres/OrganizationUser';
 
-@Tags('Adoption Steps')
-@Route('adoption-steps')
+@Tags('Organization Users')
+@Route('organization-users')
 export class OrganizationUsersController extends Controller {
     @Inject
     private organizationUsersService!: OrganizationUsersService;

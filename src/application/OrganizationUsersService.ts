@@ -4,5 +4,8 @@ import { Repository } from 'typeorm';
 export class OrganizationUsersService {
     constructor(private organizationUsersRepository: Repository<OrganizationUser>) {}
 
-    public async getAllUsers(role?: string): Promise<OrganizationUser[]> {}
+    public async getAllUsers(role?: string): Promise<OrganizationUser[]> {
+        console.log(role);
+        return await this.organizationUsersRepository.find();
+    }
 }
