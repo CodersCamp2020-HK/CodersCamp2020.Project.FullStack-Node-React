@@ -138,7 +138,7 @@ const RegisterForm: React.FC = () => {
                     label="Powtórz hasło"
                     type="password"
                     required
-                    inputRef={register({ required: 'Powtórzone hasło jest wymagane!', validate: { repeatPassowrd: repeatPassword } })}
+                    inputRef={register({ required: 'Powtórzone hasło jest wymagane!', validate: { repeatPassword } })}
                     error={errors.hasOwnProperty('repPassword')}
                     helperText={errors.repPassword && errors.repPassword.message}
                     data-testid="repPasswordInput"

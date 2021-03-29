@@ -120,4 +120,14 @@ describe('Given: RegisterForm()', () => {
             expect(screen.getByLabelText(/Hasło/).value).toBe('a'.repeat(4) + 'A'.repeat(4) + '!')
         })
     })
+    describe('When: repeat password has different value than password', () => {
+        it('Then: invalid repeat password message should be displayed', async () => {
+            fireEvent.input(screen.getByLabelText(/Hasło/), { target: { value: 'a'.repeat(4) + 'A'.repeat(4) + '!' }});
+            fireEvent.input(screen.getByLabelText(/Powtórz hasło/), { target: { value: 'a'.repeat(4) + 'A'.repeat(4) }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(await screen.findAllByText(/Hasła muszą być takie same!/i)).toHaveLength(1);
+            expect(screen.getByLabelText(/Hasło/).value).toBe('a'.repeat(4) + 'A'.repeat(4) + '!')
+            expect(screen.getByLabelText(/Powtórz hasło/).value).toBe('a'.repeat(4) + 'A'.repeat(4))
+        })
+    })
 })
