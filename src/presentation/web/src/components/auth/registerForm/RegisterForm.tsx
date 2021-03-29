@@ -33,6 +33,7 @@ const RegisterForm: React.FC = () => {
     const classes = useStyle();
 
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
     const [fireRedirect, setFireRedirect] = useState<boolean>(false);
 
@@ -125,7 +126,7 @@ const RegisterForm: React.FC = () => {
                     type="password"
                     required
                     onChange={validateRepeatPassword}
-                    inputRef={register({ required: 'Hasło jest wymagane!', pattern: { value: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/, message: 'Hasło musi zawierać co najmniej 8 znaków, jedną małą literę, jedną wielką literę, jedną liczbę oraz jeden znak specjalny (@$!%*?&)!' } })}
+                    inputRef={register({ required: 'Hasło jest wymagane!', pattern: { value: passwordPattern, message: 'Hasło musi zawierać co najmniej 8 znaków, jedną małą literę, jedną wielką literę, jedną liczbę oraz jeden znak specjalny (@$!%*?&)!' } })}
                     error={errors.hasOwnProperty('password')}
                     helperText={errors.password && errors.password.message}
                     data-testid="passwordInput"
@@ -137,7 +138,7 @@ const RegisterForm: React.FC = () => {
                     label="Powtórz hasło"
                     type="password"
                     required
-                    inputRef={register({ required: 'Powtórzenie hasła jest wymagane!', validate: { repeatPassowrd: repeatPassword } })}
+                    inputRef={register({ required: 'Powtórzone hasło jest wymagane!', validate: { repeatPassowrd: repeatPassword } })}
                     error={errors.hasOwnProperty('repPassword')}
                     helperText={errors.repPassword && errors.repPassword.message}
                     data-testid="repPasswordInput"
