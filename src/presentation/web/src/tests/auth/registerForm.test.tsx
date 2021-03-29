@@ -234,4 +234,23 @@ describe('Given: RegisterForm()', () => {
             expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('15/01/1899');
         })
     })
+    describe('When: properly filled form is submitted', () => {
+        it('Then: handleSubmit is invoked', async () => {
+            fireEvent.input(screen.getByRole('textbox', { name: 'Imię' }), { target: { value: 'Jan' }});
+            fireEvent.input(screen.getByRole('textbox', { name: 'Nazwisko' }), { target: { value: 'Kowalski' }});
+            fireEvent.input(screen.getByRole('textbox', { name: 'Email' }), { target: { value: 'jan.kowalski@gmail.com' }});
+            fireEvent.input(screen.getByLabelText(/Hasło/), { target: { value: 'ZAQ!2wsx' }});
+            fireEvent.input(screen.getByLabelText(/Powtórz hasło/), { target: { value: 'ZAQ!2wsx' }});
+            fireEvent.input(screen.getByRole('textbox', { name: 'Telefon' }), { target: { value: 123456789 }});
+            fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '19/03/1970' }});
+            fireEvent.submit(screen.getByTestId('formSubmit'));
+            expect(screen.getByRole('textbox', { name: 'Imię'}).value).toBe('Jan');
+            expect(screen.getByRole('textbox', { name: 'Nazwisko'}).value).toBe('Kowalski');
+            expect(screen.getByRole('textbox', { name: 'Email'}).value).toBe('jan.kowalski@gmail.com');
+            expect(screen.getByLabelText(/Hasło/).value).toBe('ZAQ!2wsx');
+            expect(screen.getByLabelText(/Powtórz hasło/).value).toBe('ZAQ!2wsx');
+            expect(screen.getByRole('textbox', { name: 'Telefon'}).value).toBe(123456789);
+            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('19/03/1970');
+        })
+    })
 })
