@@ -39,9 +39,20 @@
         "test": "react-scripts test --watchAll=false",
         "test:cov": "react-scripts test --watchAll=false --coverage --colors",
         "eject": "react-scripts eject",
-        "tools:generate-client-react": "restful-react import --file \"../rest/generated/swagger.json\" --output \"src/client/index.tsx\""
+        "tools:generate-client-react": "restful-react import --file \"../rest/generated/swagger.json\" --output \"src/client/index.tsx\"",
+        "web:lint": "eslint --ignore-path .gitignore --fix ."
     },
     "eslintConfig": {
+        "root": true,
+        "env": {
+            "es6": true,
+            "node": true,
+            "jest": true
+        },
+        "parserOptions": {
+            "ecmaVersion": 2020,
+            "sourceType": "module"
+        },
         "extends": [
             "react-app",
             "react-app/jest"
@@ -58,5 +69,19 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^4.0.0",
+        "@typescript-eslint/parser": "^4.0.0",
+        "babel-eslint": "^10.0.0",
+        "eslint": "^7.5.0",
+        "eslint-config-react-app": "^6.0.0",
+        "eslint-plugin-flowtype": "^5.2.0",
+        "eslint-plugin-import": "^2.22.0",
+        "eslint-plugin-jest": "^24.0.0",
+        "eslint-plugin-jsx-a11y": "^6.3.1",
+        "eslint-plugin-react": "^7.20.3",
+        "eslint-plugin-react-hooks": "^4.0.8",
+        "eslint-plugin-testing-library": "^3.10.2"
     }
 }
