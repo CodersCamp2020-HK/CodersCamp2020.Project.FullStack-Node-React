@@ -6,6 +6,12 @@ export class OrganizationUsersService {
 
     public async getAllUsers(role?: string): Promise<OrganizationUser[]> {
         console.log(role);
-        return await this.organizationUsersRepository.find();
+        const organizationUsersQuery = this.organizationUsersRepository.createQueryBuilder();
+
+        if (role) {
+            organizationUsersQuery.andWhere('role = :role', { role });
+        }
+
+        return await organizationUsersQuery.getMany();
     }
 }
