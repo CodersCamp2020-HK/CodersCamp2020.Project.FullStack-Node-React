@@ -73,7 +73,13 @@ const Dialog = ({ isOpen, title, content, actionText }: DialogProps) => {
                     placeholder="Wpisz wiadomość"
                 />
                 <Container classes={{ root: classes.buttons }}>
-                    <Button fullWidth variant="outlined" color="primary" onClick={() => setOpen(false)}>
+                    <Button
+                        style={{ marginRight: theme.spacing(2) }}
+                        fullWidth
+                        variant="outlined"
+                        color="primary"
+                        onClick={() => setOpen(false)}
+                    >
                         Powrót
                     </Button>
                     <Button fullWidth variant="contained" color="primary">
