@@ -53,7 +53,6 @@
         "@types/node": "^14.14.28",
         "@types/nodemailer": "^6.4.0",
         "@types/pg": "^7.14.10",
-        "@types/react-swipeable-views": "^0.13.0",
         "@types/supertest": "^2.0.10",
         "@types/swagger-ui-express": "^4.1.2",
         "@types/uuid": "^8.3.0",
@@ -74,7 +73,6 @@
         "typescript": "^4.1.5"
     },
     "dependencies": {
-        "@hookform/error-message": "^0.0.5",
         "@types/multer": "^1.4.5",
         "bcrypt": "^5.0.1",
         "class-validator": "^0.13.1",
@@ -90,8 +88,6 @@
         "multer": "^1.4.2",
         "nodemailer": "^6.5.0",
         "pg": "^8.5.1",
-        "react-icons": "^4.2.0",
-        "react-swipeable-views": "^0.13.9",
         "reflect-metadata": "^0.1.13",
         "swagger-ui-express": "^4.1.6",
         "tsconfig-paths": "^3.9.0",

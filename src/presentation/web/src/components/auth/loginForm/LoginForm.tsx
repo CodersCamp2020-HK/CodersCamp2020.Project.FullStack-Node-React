@@ -11,39 +11,40 @@ interface IFormValues {
     Password: string;
 }
 
+const theme = useTheme<Theme>();
+const useStyle = makeStyles({
+    greenBackground: {
+        backgroundColor: theme.palette.secondary.dark,
+    },
+    paper: {
+        backgroundColor: theme.palette.background.paper,
+        margin: '3rem 0',
+        padding: '20px 50px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+    },
+    textField: {
+        marginBottom: 35,
+    },
+    forgetPassword: {
+        alignSelf: 'flex-end',
+        color: theme.palette.info.dark,
+    },
+    submit: {
+        filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
+        marginBottom: 15
+    },
+});
+
 const LoginForm = () => {
-    const theme = useTheme<Theme>();
-    const useStyle = makeStyles({
-        greenBackground: {
-            backgroundColor: theme.palette.secondary.dark,
-        },
-        paper: {
-            backgroundColor: theme.palette.background.paper,
-            margin: '3rem 0',
-            padding: '20px 50px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-        },
-        form: {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100%',
-        },
-        textField: {
-            marginBottom: 35,
-        },
-        forgetPassword: {
-            alignSelf: 'flex-end',
-            color: theme.palette.info.dark,
-        },
-        submit: {
-            filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
-            marginBottom: 15
-        },
-    });
     const classes = useStyle();
 
     const [loginError, setLoginError] = useState<string>(null!);
