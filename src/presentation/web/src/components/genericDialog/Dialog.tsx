@@ -57,9 +57,9 @@ const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: 
 
     const classes = useStyles();
 
-    const onSubmit = (data: any) => {
+    const onSubmit = (data: {message: string}) => {
         console.log(data);
-        handleAction();
+        handleAction(data.message);
     };
     return (
         <MuiDialog classes={{ paper: classes.paper }} open={open} maxWidth="sm">
