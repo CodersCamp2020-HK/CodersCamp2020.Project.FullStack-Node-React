@@ -8,7 +8,7 @@ import {
     Divider,
     TextField,
     Theme,
-    useTheme,
+    useTheme
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
@@ -25,7 +25,7 @@ interface DialogProps {
 
 const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: DialogProps) => {
     const [open, setOpen] = useState<boolean>(isOpen);
-    const { register, handleSubmit } = useForm();
+    const { register, handleSubmit, errors } = useForm();
     const theme = useTheme<Theme>();
     const useStyles = makeStyles({
         paper: {
@@ -78,13 +78,13 @@ const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: 
                             size="medium"
                             rows={5}
                             rowsMax={5}
-                            required
-                            error={true}
+                            error={errors.message !== undefined ? true : false}
                             name="message"
                             placeholder="Wpisz wiadomość"
-                            inputRef={register}
+                            inputRef={register({required: true})}
                         />
                     )}
+                    {errors && 'Pole nie może być puste'}
                     <Container classes={{ root: classes.buttons }}>
                         <Button
                             style={{ marginRight: theme.spacing(2) }}
