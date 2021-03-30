@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as RouterLink } from 'react-router-dom';
 import { useMutate } from 'restful-react';
+import { useLoginUser } from '../../client/index';
 
 interface IFormValues {
     'E-mail': string;
@@ -41,19 +42,13 @@ const Login = () => {
     const classes = useStyle();
 
     const [loginError, setLoginError] = useState<string>(null!);
-    const { error, mutate: auth } = useMutate({
-        verb: 'POST',
-        path: '/users/auth',
-    });
+    const { error: errorLogin, mutate: login } = useLoginUser({});
 
     const { register, handleSubmit, errors } = useForm<IFormValues>();
     const onSubmit = async (data: IFormValues) => {
         try {
-            const response = await auth({
-                mail: data['E-mail'],
-                password: data.Password,
-            });
-            localStorage.setItem('apiKey', response.apiKey);
+            const loginResponse = await login({mail: data['E-mail'], password: data.Password,})
+            localStorage.setItem('apiKey', loginResponse.apiKey);
         } catch (error) {
             if (error.status == 400 || error.status == 422) {
                 setLoginError('Błędny e-mail lub hasło!');
