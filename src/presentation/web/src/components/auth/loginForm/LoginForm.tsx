@@ -1,4 +1,4 @@
-import { Button, Grid, Link, Paper, TextField, Theme, Typography, useTheme } from '@material-ui/core';
+import { Button, Grid, Link, Paper, TextField, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -11,8 +11,7 @@ interface IFormValues {
     Password: string;
 }
 
-const theme = useTheme<Theme>();
-const useStyle = makeStyles({
+const useStyle = makeStyles<Theme>((theme) => ({
     paper: {
         backgroundColor: theme.palette.background.paper,
         margin: '3rem 0',
@@ -39,7 +38,7 @@ const useStyle = makeStyles({
         filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
         marginBottom: 15
     },
-});
+}));
 
 const LoginForm = () => {
     const classes = useStyle();

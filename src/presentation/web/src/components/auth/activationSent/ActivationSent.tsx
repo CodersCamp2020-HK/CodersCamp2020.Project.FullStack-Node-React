@@ -1,10 +1,9 @@
-import { Avatar, Grid, Link, Paper, Theme, Typography } from '@material-ui/core';
-import { makeStyles, useTheme } from '@material-ui/styles';
+import { Avatar, Grid, Link, Paper, Theme, Typography, useTheme } from '@material-ui/core';
+import { makeStyles } from '@material-ui/styles';
 import { FaEnvelopeOpenText } from 'react-icons/fa';
 import { Link as RouterLink } from 'react-router-dom';
 
-const theme = useTheme<Theme>();
-const useStyle = makeStyles({
+const useStyle = makeStyles((theme: Theme) => ({
     greenBackground: {
         backgroundColor: theme.palette.secondary.dark,
         width: '200px',
@@ -29,9 +28,10 @@ const useStyle = makeStyles({
     icon: {
         fontSize: 72,
     },
-});
+}));
 
 const ActivationSent = () => {
+    const theme = useTheme();
     const classes = useStyle();
     return (
         <Grid spacing={0} container direction="column" item xs={4}>

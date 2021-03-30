@@ -1,5 +1,4 @@
-import { Avatar, Button, Grid, Link, Paper, TextField, Theme, Typography, useTheme } from '@material-ui/core';
-import { LockOutlined } from '@material-ui/icons';
+import { Button, Grid, Link, TextField, Theme, Typography, useTheme } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -11,8 +10,7 @@ interface Email {
     'E-mail': string;
 }
 
-const theme = useTheme<Theme>();
-const useStyle = makeStyles({
+const useStyle = makeStyles<Theme>((theme) => ({
     form: {
         display: 'flex',
         flexDirection: 'column',
@@ -32,7 +30,7 @@ const useStyle = makeStyles({
     submit: {
         marginBottom: 15
     },
-});
+}));
 
 const ForgetPassword = () => {
     const classes = useStyle();

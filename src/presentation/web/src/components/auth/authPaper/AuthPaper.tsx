@@ -1,15 +1,14 @@
 import React from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { Theme, useTheme, makeStyles } from '@material-ui/core';
+import { Theme, makeStyles } from '@material-ui/core';
 import LockIcon from '../lockIcon/LockIcon';
 
 interface Props {
     typographyLabel: string;
 }
 
-const theme = useTheme<Theme>();
-const useStyle = makeStyles({
+const useStyle = makeStyles<Theme>((theme) => ({
     paper: {
         backgroundColor: theme.palette.background.paper,
         margin: '3rem 0',
@@ -23,7 +22,7 @@ const useStyle = makeStyles({
         color: theme.palette.text.primary,
         marginBottom: 35
     }
-})
+}))
 
 const AuthPaper: React.FC<Props> = ({ typographyLabel, children}) => {
     const classes = useStyle();
