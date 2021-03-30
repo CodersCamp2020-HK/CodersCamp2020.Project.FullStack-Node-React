@@ -20,16 +20,17 @@ interface Inputs {
     phone: number;
 }
 
+const useStyle = makeStyles({
+    submit: {
+        filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
+        marginBottom: 15
+    },
+    textField: {
+        marginBottom: 35,
+    }
+})
+
 const RegisterForm: React.FC = () => {
-    const useStyle = makeStyles({
-        submit: {
-            filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
-            marginBottom: 15
-        },
-        textField: {
-            marginBottom: 35,
-        }
-    })
     const classes = useStyle();
 
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -84,8 +85,6 @@ const RegisterForm: React.FC = () => {
                     error={errors.hasOwnProperty('name')}
                     helperText={errors.name && errors.name.message}
                     data-testid="nameInput"
-                    // margin="dense"
-                    // style={{ height: 42 }}
                 />
                 <TextField
                     className={classes.textField}
@@ -106,7 +105,7 @@ const RegisterForm: React.FC = () => {
                     type="email"
                     required
                     inputRef={register({ required: 'Email jest wymagany!', pattern: { value: emailPattern, message: 'Nieprawidłowy email!'} })}
-                    error={errors.hasOwnProperty('mail')}
+                    error={!!errors}
                     helperText={errors.mail && errors.mail.message}
                     data-testid="mailInput"
                 />

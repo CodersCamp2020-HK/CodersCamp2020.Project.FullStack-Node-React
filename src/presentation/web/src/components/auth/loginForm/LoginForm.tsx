@@ -13,9 +13,6 @@ interface IFormValues {
 
 const theme = useTheme<Theme>();
 const useStyle = makeStyles({
-    greenBackground: {
-        backgroundColor: theme.palette.secondary.dark,
-    },
     paper: {
         backgroundColor: theme.palette.background.paper,
         margin: '3rem 0',
