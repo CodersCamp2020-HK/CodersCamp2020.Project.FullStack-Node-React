@@ -68,28 +68,28 @@ const AnimationPaws = () => {
   return (
     <div className={classes.pawWrapper}>
       <div className={`${classes.pairPaw} ${classes.pairPaw1}`}>
-        <PawIcon color={theme.palette.primary.dark} width={15} height={15} />
-        <PawIcon color={theme.palette.primary.main} width={15} height={15} />
+        <PawIcon color={theme.palette.primary.dark} width={25} height={25} />
+        <PawIcon color={theme.palette.primary.main} width={20} height={20} />
       </div>
       <div className={`${classes.pairPaw} ${classes.pairPaw2}`}>
-        <PawIcon color={theme.palette.primary.light} width={15} height={15} />
+        <PawIcon color={theme.palette.primary.light} width={40} height={40} />
         <PawIcon color={theme.palette.primary.dark} width={20} height={20} />
       </div>
       <div className={`${classes.pairPaw} ${classes.pairPaw3}`}>
         <PawIcon color={theme.palette.primary.main} width={20} height={20} />
-        <PawIcon color={theme.palette.primary.dark} width={15} height={15} />
+        <PawIcon color={theme.palette.primary.dark} width={25} height={25} />
       </div>
       <div className={`${classes.pairPaw} ${classes.pairPaw4}`}>
         <PawIcon color={theme.palette.primary.dark} width={25} height={25} />
-        <PawIcon color={theme.palette.primary.light} width={15} height={15} />
+        <PawIcon color={theme.palette.primary.light} width={30} height={30} />
       </div>
       <div className={`${classes.pairPaw} ${classes.pairPaw5}`}>
-        <PawIcon color={theme.palette.primary.main} width={15} height={15} />
+        <PawIcon color={theme.palette.primary.main} width={30} height={30} />
         <PawIcon color={theme.palette.primary.dark} width={20} height={20} />
       </div>
       <div className={`${classes.pairPaw} ${classes.pairPaw6}`}>
-        <PawIcon color={theme.palette.primary.main} width={15} height={15} />
-        <PawIcon color={theme.palette.primary.dark} width={20} height={20} />
+        <PawIcon color={theme.palette.primary.main} width={35} height={35} />
+        <PawIcon color={theme.palette.primary.dark} width={25} height={25} />
       </div>
     </div>
   );
