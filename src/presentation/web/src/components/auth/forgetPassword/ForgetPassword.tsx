@@ -11,29 +11,30 @@ interface Email {
     'E-mail': string;
 }
 
+const theme = useTheme<Theme>();
+const useStyle = makeStyles({
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        width: '100%',
+    },
+    message: {
+        marginBottom: 20
+    },
+    textField: {
+        marginBottom: 35,
+    },
+    backToLogin: {
+        alignSelf: 'flex-end',
+        color: theme.palette.info.dark,
+    },
+    submit: {
+        marginBottom: 15
+    },
+});
+
 const ForgetPassword = () => {
-    const theme = useTheme<Theme>();
-    const useStyle = makeStyles({
-        form: {
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            width: '100%',
-        },
-        message: {
-            marginBottom: 20
-        },
-        textField: {
-            marginBottom: 35,
-        },
-        backToLogin: {
-            alignSelf: 'flex-end',
-            color: theme.palette.info.dark,
-        },
-        submit: {
-            marginBottom: 15
-        },
-    });
     const classes = useStyle();
 
     const { error, mutate: sendResetLink } = useMutate({

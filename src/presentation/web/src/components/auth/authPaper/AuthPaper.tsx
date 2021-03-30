@@ -8,23 +8,24 @@ interface Props {
     typographyLabel: string;
 }
 
+const theme = useTheme<Theme>();
+const useStyle = makeStyles({
+    paper: {
+        backgroundColor: theme.palette.background.paper,
+        margin: '3rem 0',
+        padding: '20px 50px',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+    },
+    text: {
+        color: theme.palette.text.primary,
+        marginBottom: 35
+    }
+})
+
 const AuthPaper: React.FC<Props> = ({ typographyLabel, children}) => {
-    const theme = useTheme<Theme>();
-    const useStyle = makeStyles({
-        paper: {
-            backgroundColor: theme.palette.background.paper,
-            margin: '3rem 0',
-            padding: '20px 50px',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-        },
-        text: {
-            color: theme.palette.text.primary,
-            marginBottom: 35
-        }
-    })
     const classes = useStyle();
 
     return (
