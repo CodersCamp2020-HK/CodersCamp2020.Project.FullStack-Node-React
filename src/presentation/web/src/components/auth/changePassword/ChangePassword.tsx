@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { Link as RouterLink } from 'react-router-dom';
+import AuthPaper from '../authPaper/AuthPaper';
 
 
 interface Inputs {
@@ -20,28 +21,9 @@ interface Inputs {
 
 const theme = useTheme<Theme>();
 const useStyle = makeStyles({
-    lockBackground: {
-        backgroundColor: theme.palette.secondary.dark,
-        borderRadius: 90,
-        padding: 8,
-        marginBottom: 10
-    },
-    lockIcon: {
-        color: '#FFF',
-        opacity: .87,
-    },
     submit: {
         filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
         marginBottom: 35
-    },
-    paper: {
-        color: theme.palette.background.paper,
-        margin: '3rem 0',
-        padding: '60px 50px',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        alignItems: 'center'
     },
     text: {
         color: theme.palette.text.primary,
@@ -77,11 +59,7 @@ const ChangePassword: React.FC = () => {
 
     return (
         <Grid item xs={12} sm={10} md={6}>
-            <Paper className={classes.paper} variant="outlined" square={false}>
-                <SvgIcon className={classes.lockBackground}>
-                    <LockOutlinedIcon className={classes.lockIcon} />
-                </SvgIcon>
-                <Typography className={classes.text} variant="h5" component="span">Ustaw nowe hasło</Typography>
+            <AuthPaper typographyLabel="Ustaw nowe hasło">
                 <form onSubmit={handleSubmit(onSubmit)}>
                 <TextField
                     className={classes.textField}
@@ -115,7 +93,7 @@ const ChangePassword: React.FC = () => {
                 </Button>
                 </form>
                 <Link className={classes.link} component={RouterLink} to="/auth">Wróć do logowania</Link>
-            </Paper>
+            </AuthPaper>
         </Grid>
     )
 }

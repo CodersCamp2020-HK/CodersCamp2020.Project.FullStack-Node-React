@@ -37,7 +37,6 @@ const RegisterForm: React.FC = () => {
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
     const [fireRedirect, setFireRedirect] = useState<boolean>(false);
-
     const [date, setDate] = useState(new Date());
 
     const { register, handleSubmit, setError, errors, getValues, setValue, formState, trigger } = useForm<Inputs>({
