@@ -8,10 +8,11 @@ import {
     Divider,
     TextField,
     Theme,
-    useTheme
+    useTheme,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 interface DialogProps {
     isOpen: boolean;
@@ -24,6 +25,7 @@ interface DialogProps {
 
 const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: DialogProps) => {
     const [open, setOpen] = useState<boolean>(isOpen);
+    const { register, handleSubmit } = useForm();
     const theme = useTheme<Theme>();
     const useStyles = makeStyles({
         paper: {
@@ -54,6 +56,11 @@ const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: 
     });
 
     const classes = useStyles();
+
+    const onSubmit = (data: any) => {
+        console.log(data);
+        handleAction();
+    };
     return (
         <MuiDialog classes={{ paper: classes.paper }} open={open} maxWidth="sm">
             <DialogTitle className={classes.title}>
@@ -61,34 +68,39 @@ const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: 
                 <Divider className={classes.divider} />
             </DialogTitle>
             <DialogContent className={classes.content}>{content}</DialogContent>
-            <DialogActions className={classes.column}>
-                {textarea && <TextField
-                    multiline
-                    variant="outlined"
-                    fullWidth
-                    size="medium"
-                    rows={5}
-                    rowsMax={5}
-                    required
-                    error={true}
-                    name="message"
-                    placeholder="Wpisz wiadomość"
-                />}
-                <Container classes={{ root: classes.buttons }}>
-                    <Button
-                        style={{ marginRight: theme.spacing(2) }}
-                        fullWidth
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => setOpen(false)}
-                    >
-                        Powrót
-                    </Button>
-                    <Button onClick={() => handleAction()} fullWidth variant="contained" color="primary">
-                        {actionText}
-                    </Button>
-                </Container>
-            </DialogActions>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <DialogActions className={classes.column}>
+                    {textarea && (
+                        <TextField
+                            multiline
+                            variant="outlined"
+                            fullWidth
+                            size="medium"
+                            rows={5}
+                            rowsMax={5}
+                            required
+                            error={true}
+                            name="message"
+                            placeholder="Wpisz wiadomość"
+                            inputRef={register}
+                        />
+                    )}
+                    <Container classes={{ root: classes.buttons }}>
+                        <Button
+                            style={{ marginRight: theme.spacing(2) }}
+                            fullWidth
+                            variant="outlined"
+                            color="primary"
+                            onClick={() => setOpen(false)}
+                        >
+                            Powrót
+                        </Button>
+                        <Button type="submit" fullWidth variant="contained" color="primary">
+                            {actionText}
+                        </Button>
+                    </Container>
+                </DialogActions>
+            </form>
         </MuiDialog>
     );
 };
