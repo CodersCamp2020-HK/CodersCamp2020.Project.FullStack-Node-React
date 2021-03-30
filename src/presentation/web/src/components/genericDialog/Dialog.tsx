@@ -8,7 +8,7 @@ import {
     Divider,
     TextField,
     Theme,
-    useTheme,
+    useTheme
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
@@ -17,10 +17,12 @@ interface DialogProps {
     isOpen: boolean;
     title: string;
     content: string;
+    textarea?: boolean;
     actionText: string;
+    handleAction: (text?: string) => any;
 }
 
-const Dialog = ({ isOpen, title, content, actionText }: DialogProps) => {
+const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: DialogProps) => {
     const [open, setOpen] = useState<boolean>(isOpen);
     const theme = useTheme<Theme>();
     const useStyles = makeStyles({
@@ -60,7 +62,7 @@ const Dialog = ({ isOpen, title, content, actionText }: DialogProps) => {
             </DialogTitle>
             <DialogContent className={classes.content}>{content}</DialogContent>
             <DialogActions className={classes.column}>
-                <TextField
+                {textarea && <TextField
                     multiline
                     variant="outlined"
                     fullWidth
@@ -71,7 +73,7 @@ const Dialog = ({ isOpen, title, content, actionText }: DialogProps) => {
                     error={true}
                     name="message"
                     placeholder="Wpisz wiadomość"
-                />
+                />}
                 <Container classes={{ root: classes.buttons }}>
                     <Button
                         style={{ marginRight: theme.spacing(2) }}
@@ -82,7 +84,7 @@ const Dialog = ({ isOpen, title, content, actionText }: DialogProps) => {
                     >
                         Powrót
                     </Button>
-                    <Button fullWidth variant="contained" color="primary">
+                    <Button onClick={() => handleAction()} fullWidth variant="contained" color="primary">
                         {actionText}
                     </Button>
                 </Container>
