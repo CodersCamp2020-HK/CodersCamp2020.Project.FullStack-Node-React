@@ -31,23 +31,30 @@ const Dialog = ({ isOpen, title, content, actionText }: DialogProps) => {
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
+            padding: 0,
+            margin: 0,
         },
         divider: {
             marginTop: theme.spacing(2),
         },
         content: {
             paddingTop: 0,
+            paddingLeft: theme.spacing(2),
         },
         column: {
             display: 'flex',
             flexDirection: 'column',
+            padding: theme.spacing(2),
+        },
+        title: {
+            padding: theme.spacing(2),
         },
     });
 
     const classes = useStyles();
     return (
         <MuiDialog classes={{ paper: classes.paper }} open={open} maxWidth="sm">
-            <DialogTitle>
+            <DialogTitle className={classes.title}>
                 {title}
                 <Divider className={classes.divider} />
             </DialogTitle>
@@ -65,7 +72,7 @@ const Dialog = ({ isOpen, title, content, actionText }: DialogProps) => {
                     name="message"
                     placeholder="Wpisz wiadomość"
                 />
-                <Container className={classes.buttons}>
+                <Container classes={{ root: classes.buttons }}>
                     <Button fullWidth variant="outlined" color="primary" onClick={() => setOpen(false)}>
                         Powrót
                     </Button>
