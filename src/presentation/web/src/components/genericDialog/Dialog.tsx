@@ -1,12 +1,14 @@
 import {
     Button,
+    Container,
     Dialog as MuiDialog,
     DialogActions,
     DialogContent,
     DialogTitle,
+    Divider,
+    TextField,
     Theme,
     useTheme,
-    Divider
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
@@ -28,7 +30,7 @@ const Dialog = ({ isOpen, title, content, actionText }: DialogProps) => {
         buttons: {
             display: 'flex',
             flexDirection: 'row',
-            justifyContent: 'center',
+            justifyContent: 'space-between',
         },
         divider: {
             marginTop: theme.spacing(2),
@@ -36,20 +38,41 @@ const Dialog = ({ isOpen, title, content, actionText }: DialogProps) => {
         content: {
             paddingTop: 0,
         },
+        column: {
+            display: 'flex',
+            flexDirection: 'column',
+        },
     });
 
     const classes = useStyles();
     return (
-        <MuiDialog classes={{paper: classes.paper}} open={open} maxWidth="sm">
-            <DialogTitle>{title}<Divider className={classes.divider} /></DialogTitle>
+        <MuiDialog classes={{ paper: classes.paper }} open={open} maxWidth="sm">
+            <DialogTitle>
+                {title}
+                <Divider className={classes.divider} />
+            </DialogTitle>
             <DialogContent className={classes.content}>{content}</DialogContent>
-            <DialogActions className={classes.buttons}>
-                <Button fullWidth variant="outlined" color="primary" onClick={() => setOpen(false)}>
-                    Powrót
-                </Button>
-                <Button fullWidth variant="contained" color="primary">
-                    {actionText}
-                </Button>
+            <DialogActions className={classes.column}>
+                <TextField
+                    multiline
+                    variant="outlined"
+                    fullWidth
+                    size="medium"
+                    rows={5}
+                    rowsMax={5}
+                    required
+                    error={true}
+                    name="message"
+                    placeholder="Wpisz wiadomość"
+                />
+                <Container className={classes.buttons}>
+                    <Button fullWidth variant="outlined" color="primary" onClick={() => setOpen(false)}>
+                        Powrót
+                    </Button>
+                    <Button fullWidth variant="contained" color="primary">
+                        {actionText}
+                    </Button>
+                </Container>
             </DialogActions>
         </MuiDialog>
     );
