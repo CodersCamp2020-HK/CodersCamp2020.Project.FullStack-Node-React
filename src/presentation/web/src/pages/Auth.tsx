@@ -8,6 +8,7 @@ import ActivationSent from '../components/auth/activationSent/ActivationSent';
 
 const Auth: React.FC = () => {
     const { path } = useRouteMatch();
+
     return (
         <Switch>
             <Route exact path={`${path}/sent`} component={ActivationSent} />
