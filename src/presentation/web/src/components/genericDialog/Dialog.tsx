@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     title: {
         padding: theme.spacing(2),
     },
-)});
+}));
 
 const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: DialogProps) => {
     const [open, setOpen] = useState<boolean>(isOpen);
