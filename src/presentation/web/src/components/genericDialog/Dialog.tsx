@@ -23,38 +23,38 @@ interface DialogProps {
     handleAction: (text?: string) => any;
 }
 
+const useStyles = makeStyles((theme: Theme) => ({
+    paper: {
+        padding: theme.spacing(2),
+    },
+    buttons: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        padding: 0,
+        margin: 0,
+    },
+    divider: {
+        marginTop: theme.spacing(2),
+    },
+    content: {
+        paddingTop: 0,
+        paddingLeft: theme.spacing(2),
+    },
+    column: {
+        display: 'flex',
+        flexDirection: 'column',
+        padding: theme.spacing(2),
+    },
+    title: {
+        padding: theme.spacing(2),
+    },
+)});
+
 const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: DialogProps) => {
     const [open, setOpen] = useState<boolean>(isOpen);
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors } = useForm<{message: string;}>();
     const theme = useTheme<Theme>();
-    const useStyles = makeStyles({
-        paper: {
-            padding: theme.spacing(2),
-        },
-        buttons: {
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            padding: 0,
-            margin: 0,
-        },
-        divider: {
-            marginTop: theme.spacing(2),
-        },
-        content: {
-            paddingTop: 0,
-            paddingLeft: theme.spacing(2),
-        },
-        column: {
-            display: 'flex',
-            flexDirection: 'column',
-            padding: theme.spacing(2),
-        },
-        title: {
-            padding: theme.spacing(2),
-        },
-    });
-
     const classes = useStyles();
 
     const onSubmit = (data: {message: string}) => {
@@ -78,13 +78,13 @@ const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: 
                             size="medium"
                             rows={5}
                             rowsMax={5}
-                            error={errors.message !== undefined ? true : false}
+                            error={errors.hasOwnProperty('message')}
                             name="message"
                             placeholder="Wpisz wiadomość"
-                            inputRef={register({required: true})}
+                            inputRef={register({required: 'Pole jest wymagane'})}
                         />
                     )}
-                    {errors && 'Pole nie może być puste'}
+                    {errors.message && errors.message.message}
                     <Container classes={{ root: classes.buttons }}>
                         <Button
                             style={{ marginRight: theme.spacing(2) }}
