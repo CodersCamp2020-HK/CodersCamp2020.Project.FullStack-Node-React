@@ -9,6 +9,8 @@ import {
 } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import PhotoLanding from "./img/Landing-hero.jpg";
+import AnimationPaws from "../animationPaws/AnimationPaws";
+import Hidden from "@material-ui/core/Hidden";
 
 const useStyles = makeStyles((theme) => ({
   photoLanding: {
@@ -19,14 +21,18 @@ const useStyles = makeStyles((theme) => ({
     height: "95vh",
     display: "flex",
     justifyContent: "center",
+
   },
   wrapper: {
     display: "flex",
     flexDirection: "column",
     width: "100%",
     height: "100%",
+    alignItems: 'center',
+    justify: "space-between",
   },
   button: {
+    marginTop: theme.spacing(4),
     background: theme.palette.secondary.dark,
   },
   header: {
@@ -38,14 +44,19 @@ const LandingHero = () => {
   const classes = useStyles();
   return (
     <div className={classes.photoLanding}>
-      <Grid  container xs={12} justify="space-between">
+      <Grid container xs={12} className={classes.wrapper}>
+        <Grid item xs={1}>
+        <Hidden xsDown>
+          <AnimationPaws />
+        </Hidden>
+        </Grid>
         <Grid
           container
           item
           xs={12}
           sm={10}
           md={8}
-          lg={6}
+          lg={7}
           justify="center"
           alignContent="center"
           className={classes.wrapper}
@@ -76,6 +87,11 @@ const LandingHero = () => {
               O procesie adopcyjnym
             </Button>
           </Link>
+        </Grid>
+        <Grid item xs={1}>
+        <Hidden xsDown>
+          <AnimationPaws />
+        </Hidden>
         </Grid>
       </Grid>
     </div>
