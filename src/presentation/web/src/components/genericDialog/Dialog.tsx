@@ -7,10 +7,10 @@ import {
     DialogTitle,
     Divider,
     TextField,
-    Theme,
     useTheme
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core/styles';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -63,15 +63,16 @@ const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: 
     };
     return (
         <MuiDialog classes={{ paper: classes.paper }} open={open} maxWidth="sm">
-            <DialogTitle className={classes.title}>
+            <DialogTitle data-testid="title" className={classes.title}>
                 {title}
                 <Divider className={classes.divider} />
             </DialogTitle>
-            <DialogContent className={classes.content}>{content}</DialogContent>
+            <DialogContent data-testid="content" className={classes.content}>{content}</DialogContent>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <DialogActions className={classes.column}>
                     {textarea && (
                         <TextField
+                            data-testid="textarea"
                             multiline
                             variant="outlined"
                             fullWidth
@@ -87,6 +88,7 @@ const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: 
                     {errors.message && errors.message.message}
                     <Container classes={{ root: classes.buttons }}>
                         <Button
+                            data-testid="return"
                             style={{ marginRight: theme.spacing(2) }}
                             fullWidth
                             variant="outlined"
@@ -95,7 +97,7 @@ const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: 
                         >
                             Powrót
                         </Button>
-                        <Button type="submit" fullWidth variant="contained" color="primary">
+                        <Button data-testid="action" type="submit" fullWidth variant="contained" color="primary">
                             {actionText}
                         </Button>
                     </Container>
