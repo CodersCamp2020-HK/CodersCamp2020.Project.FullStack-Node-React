@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import { KeyboardDatePicker } from '@material-ui/pickers';
-import { Redirect } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import plLocale from 'date-fns/locale/pl';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { useCreateUser } from '../../../client/index';
 
-interface Inputs {
+export interface Inputs {
     name: string;
     surname: string;
     mail: string;
@@ -18,6 +16,10 @@ interface Inputs {
     repPassword: string;
     birthDate: Date;
     phone: number;
+}
+
+interface Props {
+    handleSubmit: (data: any) => Promise<any>;
 }
 
 const useStyle = makeStyles({
@@ -30,13 +32,12 @@ const useStyle = makeStyles({
     }
 })
 
-const RegisterForm: React.FC = () => {
+const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb }) => {
     const classes = useStyle();
 
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    const [fireRedirect, setFireRedirect] = useState<boolean>(false);
     const [date, setDate] = useState(new Date());
 
     const { register, handleSubmit, setError, errors, getValues, setValue, formState, trigger } = useForm<Inputs>({
@@ -46,16 +47,6 @@ const RegisterForm: React.FC = () => {
         date && setDate(date);
         setValue("birthDate", date);
       };
-    const { mutate: registerUser } = useCreateUser({})
-
-    const onSubmit = async ({name, surname, mail, password, repPassword, birthDate, phone}: Inputs) => {
-        try {
-            await registerUser({ name, surname, mail, password, repPassword, birthDate: birthDate.toISOString(), phone })
-            setFireRedirect(true);
-        } catch (error) {
-            if (error.data.status === 400) setError('mail', { message: error.data.message })
-        }
-    }
 
     const validateRepeatPassword = () => {
         if (formState.isSubmitted) trigger('repPassword')
@@ -67,13 +58,11 @@ const RegisterForm: React.FC = () => {
     const validatebirthDateAfterToday = (value: Date) => value < new Date() || 'Podaj wcześniejszą datę!'
     const validateBirthDateBefore = (value: Date) => value > new Date(1900, 1) || "Podaj późniejszą datę!"
     const validateDate = (value: Date) => value instanceof Date && !isNaN(value.getTime()) || 'Podaj datę w formacie DD/MM/RRRR!';
-    useEffect(() => {
-        register({ name: 'birthDate', type: 'custom'}, { required: 'Data urodzenia jest wymagana!', validate: { validateDate, validateBirthDateBefore, validatebirthDateAfterToday } })
-    }, [])
+    register({ name: 'birthDate', type: 'custom'}, { required: 'Data urodzenia jest wymagana!', validate: { validateDate, validateBirthDateBefore, validatebirthDateAfterToday } })
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            <form onSubmit={handleSubmit(submitCb)} noValidate>
                 <TextField
                     className={classes.textField}
                     id="name"
@@ -175,7 +164,6 @@ const RegisterForm: React.FC = () => {
                     data-testid="formSubmit">
                         Zarejestruj się
                 </Button>
-                {fireRedirect && <Redirect to={'/register/sent'} />}
             </form>
         </MuiPickersUtilsProvider>
     )

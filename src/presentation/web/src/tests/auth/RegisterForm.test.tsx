@@ -1,15 +1,14 @@
 import React from "react";
-import { render, screen, fireEvent, cleanup } from "@testing-library/react";
+import { render, screen, fireEvent, cleanup, act } from "@testing-library/react";
 import RegisterForm from '../../components/auth/registerForm/RegisterForm';
 
-const mockRegister = jest.fn((name, surname, mail, password, repPassword, birthDate, phone) => {
-    return Promise.resolve({ name, surname, mail, password, repPassword, birthDate, phone });
+const mockRegister = jest.fn((data) => {
+    return Promise.resolve(data);
 });
 
 describe('Given: RegisterForm()', () => {
-    const handleSubmit = jest.fn();
     beforeEach(() => {
-        render(<RegisterForm />)
+        render(<RegisterForm handleSubmit={mockRegister} />)
     })
     afterEach(cleanup)
 
@@ -21,8 +20,11 @@ describe('Given: RegisterForm()', () => {
     })
     describe('When: name has 1 letter', () => {
         it('Then: min length error message should be displayed', async () => {    
-            fireEvent.input(screen.getByRole('textbox', { name: 'Imię' }), { target: { value: 'a' }});
-            fireEvent.submit(screen.getByTestId('formSubmit'));
+            act(() => {
+                fireEvent.input(screen.getByRole('textbox', { name: 'Imię' }), { target: { value: 'a' }});
+                fireEvent.submit(screen.getByTestId('formSubmit'));
+            });
+            expect(mockRegister).not.toBeCalled();
             expect(await screen.findAllByText(/Imię za krótkie/i)).toHaveLength(1);
             expect(screen.getByRole('textbox', { name: 'Imię'}).value).toBe('a');
         })

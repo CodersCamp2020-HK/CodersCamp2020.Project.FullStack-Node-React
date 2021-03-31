@@ -1,11 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import { Theme, makeStyles } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, Redirect } from 'react-router-dom';
 import AuthPaper from '../authPaper/AuthPaper';
-import RegisterForm from '../registerForm/RegisterForm';
+import RegisterForm, { Inputs } from '../registerForm/RegisterForm';
 import Typography from '@material-ui/core/Typography';
+import { useCreateUser } from '../../../client/index';
+import { useForm } from 'react-hook-form';
 
 
 const useStyle = makeStyles<Theme>((theme) => ({
@@ -24,15 +26,28 @@ const useStyle = makeStyles<Theme>((theme) => ({
 
 const RegisterPage: React.FC = () => {
     const classes = useStyle();
+    const { mutate: registerUser } = useCreateUser({})
+    const [fireRedirect, setFireRedirect] = useState<boolean>(false);
+    const { setError } = useForm();
+
+    const onSubmit = async (inputs: Inputs) => {
+        try {
+            await registerUser({ ...inputs, birthDate: inputs.birthDate.toISOString()})
+            setFireRedirect(true);
+        } catch (error) {
+            if (error.data.status === 400) setError('mail', { message: error.data.message })
+        }
+    }
     
     return (
         <Grid item xs={12} sm={10} md={6}>
             <AuthPaper typographyLabel="Zarejestruj się">
-                <RegisterForm />
+                <RegisterForm handleSubmit={onSubmit} />
                 <Link className={classes.link} component={RouterLink} to="/auth">
                     <Typography variant="body2">Masz już konto? Zaloguj się</Typography>
                 </Link>
             </AuthPaper>
+            {fireRedirect && <Redirect to={'/register/sent'} />}
         </Grid>
     )
 }
