@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Paper, Typography, Table, TableBody, TableRow, TableCell } from '@material-ui/core';
+import { Paper, Table, TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
+import React from 'react';
 interface AnimalInfoCardProps {
     animalId: number
 }
@@ -39,25 +39,19 @@ const AnimalInfoCard = ({animalId: number}: AnimalInfoCardProps) => {
 ]
     return (
         <Paper>
-            <Typography variant='h2'>Zenek</Typography>
+            <Typography style={{textAlign: 'center'}} variant='h2'>Zenek</Typography>
             <Table>
                 <TableBody>
-                    <TableRow>
-                        <TableCell component="th">
-                            <Typography variant='body2'>Nr ewidencyjny:</Typography>
-                        </TableCell>
-                        <TableCell>
-                        <Typography variant='subtitle2'>2</Typography>
-                        </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell component="th">
-                            <Typography variant='body2'>W schronisku od:</Typography> 
-                        </TableCell>
-                        <TableCell>
-                            <Typography variant='subtitle2'>29/04/2021</Typography>
-                        </TableCell>
-                    </TableRow>
+                    {animalInfoRows.map((singleRow, index) =>
+                        <TableRow key={index}>
+                            <TableCell component="th">
+                                <Typography variant='body2'>{singleRow.title}</Typography> 
+                            </TableCell>
+                            <TableCell>
+                                <Typography variant='subtitle2'>{singleRow.content}</Typography>
+                            </TableCell>
+                        </TableRow>
+                    )}
                 </TableBody>
             </Table>
         </Paper>
