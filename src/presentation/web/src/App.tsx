@@ -15,6 +15,7 @@ import About from './pages/About';
 import Adoption from './pages/Adoption';
 import Contact from './pages/Contact';
 import Donation from './pages/Donation';
+import FormRoute from './pages/FormRoute';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import Register from './pages/Register';
@@ -55,6 +56,9 @@ const App: React.FC = () => {
                                 </Route>
                                 <Route exact path="/register/sent">
                                     <ActivationSent />
+                                </Route>
+                                <Route path="/form">
+                                    <FormRoute />
                                 </Route>
                                 <Route path="*">
                                     <NotFound />
