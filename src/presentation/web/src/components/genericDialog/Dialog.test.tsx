@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/extend-expect';
-import { fireEvent, render, RenderResult } from '@testing-library/react';
+import { act, fireEvent, render, RenderResult } from '@testing-library/react';
 import React from 'react';
 import muiWrapper from '../../testUtils/muiWrapper';
 import Dialog from './Dialog';
@@ -44,4 +44,13 @@ it('hide dialog after click return button', async () => {
     const dialogTitle = await documentBody.findByTestId('title');
     fireEvent.click(button);
     expect(dialogTitle).not.toBeVisible();
+});
+
+it('call action callback', async () => {
+    await act(async () => {
+        const button = await documentBody.findByTestId('action');
+        fireEvent.click(button);
+    });
+
+    expect(mockHandleAction).toBeCalledTimes(1);
 });
