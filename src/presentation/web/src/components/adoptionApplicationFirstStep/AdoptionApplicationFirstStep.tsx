@@ -1,18 +1,60 @@
 import React from 'react';
 import { Button, Paper, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
+import theme from '../../themes/theme';
 
-const AdoptionApplicationFirstStep: React.FC = () => {
+const useStyles = makeStyles({
+    mainPaper: {
+        variant: "outlined",
+        backgroundColor: theme.palette.background.paper,
+    },
+    mainHeader: {
+        textAlign: 'center',
+    },
+    normalText: {
+
+    },
+    buttonIcon: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundColor: theme.palette.primary.main,
+    },
+});
+
+const AdoptionApplicationFirstStep: React.FC = (children, title, description) => {
+    const classes = useStyles();
     return (
-        <Paper variant="outlined">
-            <Typography>
-                Przypominamy, że szukamy dla zwierząt dobrych (czyli sprawdzonych) domów na całe ich życie. Adopcja to zobowiązanie wobec żywej, czującej istoty, na co najmniej 10-15 lat. Jest to również zobowiązanie wobec nas i obecnego właściciela zwierzęcia. Przygarniając bezdomne, skrzywdzone zwierzę, składamy mu jednocześnie obietnicę, że zadbamy o jego przyszłość i że nic złego już je nie spotka. Chcemy dotrzymać słowa i liczymy na to, że Państwo nam w tym pomożecie.
+        <Paper
+            className={classes.mainPaper}
+            variant="outlined">
+            <Typography
+                className={classes.mainHeader}
+                variant="h4">
+                {title}
             </Typography>
-            <Typography>
+            {children}
+            <Typography
+                className={classes.normalText}
+                variant="body1">
+                {description}
+            </Typography>
+            <Typography
+                className={classes.normalText}
+                variant="subtitle1">
                 Wpisz numer ewidencyjny zwierzęcia
-            </Typography>
-            <TextField variant="outlined" size="medium" color="secondary" value="Nr ewidencyjny"></TextField>
-            <Button>SPRAWDŹ</Button>
+                </Typography>
+            <TextField
+                variant="outlined"
+                size="medium"
+                color="secondary"
+                label="Nr ewidencyjny">
+            </TextField>
+            <Button
+                className={classes.buttonIcon}
+                variant="contained"
+                size="large"
+                color="primary" >SPRAWDŹ</Button>
         </Paper>
     )
 }
