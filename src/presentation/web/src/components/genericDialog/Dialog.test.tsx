@@ -7,23 +7,21 @@ import Dialog from './Dialog';
 const mockHandleAction = jest.fn();
 let documentBody: RenderResult;
 
-describe('Hidden dialog', () => {
-    const dialogProps = {
-        title: 'My dialog',
-        content: 'Lorem ipsum dor si amet',
-        actionText: 'Wyślij',
-        isOpen: false,
-    };
+const dialogProps = {
+    title: 'My dialog',
+    content: 'Lorem ipsum dor si amet',
+    actionText: 'Wyślij',
+    handleAction: mockHandleAction
+};
 
+describe('Hidden dialog', () => {
+    
     beforeEach(() => {
         documentBody = render(
             muiWrapper(
                 <Dialog
-                    title={dialogProps.title}
-                    content={dialogProps.content}
-                    isOpen={dialogProps.isOpen}
-                    actionText={dialogProps.actionText}
-                    handleAction={mockHandleAction}
+                    {...dialogProps}
+                    isOpen={false}
                 />,
             ),
         );
@@ -37,22 +35,12 @@ describe('Hidden dialog', () => {
 });
 
 describe('Dialog without textarea', () => {
-    const dialogProps = {
-        title: 'My dialog',
-        content: 'Lorem ipsum dor si amet',
-        actionText: 'Wyślij',
-        isOpen: true,
-    };
-
     beforeEach(() => {
         documentBody = render(
             muiWrapper(
                 <Dialog
-                    title={dialogProps.title}
-                    content={dialogProps.content}
-                    isOpen={dialogProps.isOpen}
-                    actionText={dialogProps.actionText}
-                    handleAction={mockHandleAction}
+                    {...dialogProps}
+                    isOpen={true}
                 />,
             ),
         );
@@ -87,24 +75,13 @@ describe('Dialog without textarea', () => {
 });
 
 describe('Dialog with textarea', () => {
-    const dialogProps = {
-        title: 'My dialog',
-        content: 'Lorem ipsum dor si amet',
-        actionText: 'Wyślij',
-        isOpen: true,
-        textarea: true,
-    };
-
     beforeEach(() => {
         documentBody = render(
             muiWrapper(
                 <Dialog
-                    title={dialogProps.title}
-                    content={dialogProps.content}
-                    isOpen={dialogProps.isOpen}
-                    actionText={dialogProps.actionText}
-                    handleAction={mockHandleAction}
-                    textarea={dialogProps.textarea}
+                    {...dialogProps}
+                    isOpen={true}
+                    textarea={true}
                 />,
             ),
         );
