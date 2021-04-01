@@ -7,10 +7,10 @@ import {
     DialogTitle,
     Divider,
     TextField,
-    useTheme
+    useTheme,
 } from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
 import { Theme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -53,21 +53,23 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: DialogProps) => {
     const [open, setOpen] = useState<boolean>(isOpen);
-    const { register, handleSubmit, errors } = useForm<{message: string;}>();
+    const { register, handleSubmit, errors } = useForm<{ message: string }>();
     const theme = useTheme<Theme>();
     const classes = useStyles();
 
-    const onSubmit = (data: {message: string}) => {
+    const onSubmit = (data: { message: string }) => {
         console.log(data);
         handleAction(data.message);
     };
     return (
-        <MuiDialog classes={{ paper: classes.paper }} open={open} maxWidth="sm">
+        <MuiDialog data-testid="dialog" classes={{ paper: classes.paper }} open={open} maxWidth="sm">
             <DialogTitle data-testid="title" className={classes.title}>
                 {title}
                 <Divider className={classes.divider} />
             </DialogTitle>
-            <DialogContent data-testid="content" className={classes.content}>{content}</DialogContent>
+            <DialogContent data-testid="content" className={classes.content}>
+                {content}
+            </DialogContent>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <DialogActions className={classes.column}>
                     {textarea && (
@@ -82,7 +84,7 @@ const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: 
                             error={errors.hasOwnProperty('message')}
                             name="message"
                             placeholder="Wpisz wiadomość"
-                            inputRef={register({required: 'Pole jest wymagane'})}
+                            inputRef={register({ required: 'Pole jest wymagane' })}
                         />
                     )}
                     {errors.message && errors.message.message}

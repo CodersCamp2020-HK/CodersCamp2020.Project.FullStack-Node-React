@@ -1,4 +1,5 @@
-import { render, RenderResult } from '@testing-library/react';
+import '@testing-library/jest-dom/extend-expect';
+import { fireEvent, render, RenderResult } from '@testing-library/react';
 import React from 'react';
 import muiWrapper from '../../testUtils/muiWrapper';
 import Dialog from './Dialog';
@@ -19,6 +20,7 @@ beforeEach(() => {
                 content={dialogProps.content}
                 isOpen={dialogProps.isOpen}
                 actionText={dialogProps.actionText}
+                handleAction={mockHandleAction}
             />,
         ),
     );
@@ -26,7 +28,20 @@ beforeEach(() => {
 
 const mockHandleAction = jest.fn();
 
-it('show dialog title and content', () => {
-    expect(documentBody.getByText(dialogProps.title)).toBeTruthy();
-    expect(documentBody.getByText(dialogProps.content)).toBeTruthy();
+it('show all text getted as props', () => {
+    expect(documentBody.getByText(dialogProps.title)).toBeInTheDocument();
+    expect(documentBody.getByText(dialogProps.content)).toBeInTheDocument();
+    expect(documentBody.getByText(dialogProps.actionText)).toBeInTheDocument();
+});
+
+it('show return button', async () => {
+    const button = await documentBody.findByTestId('return');
+    expect(button).toBeInTheDocument();
+});
+
+it('hide dialog after click return button', async () => {
+    const button = await documentBody.findByTestId('return');
+    const dialogTitle = await documentBody.findByTestId('title');
+    fireEvent.click(button);
+    expect(dialogTitle).not.toBeVisible();
 });
