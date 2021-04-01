@@ -11,20 +11,12 @@ const dialogProps = {
     title: 'My dialog',
     content: 'Lorem ipsum dor si amet',
     actionText: 'Wyślij',
-    handleAction: mockHandleAction
+    handleAction: mockHandleAction,
 };
 
 describe('Hidden dialog', () => {
-    
     beforeEach(() => {
-        documentBody = render(
-            muiWrapper(
-                <Dialog
-                    {...dialogProps}
-                    isOpen={false}
-                />,
-            ),
-        );
+        documentBody = render(muiWrapper(<Dialog {...dialogProps} isOpen={false} />));
     });
 
     it('hide all text getted as props', () => {
@@ -36,14 +28,7 @@ describe('Hidden dialog', () => {
 
 describe('Dialog without textarea', () => {
     beforeEach(() => {
-        documentBody = render(
-            muiWrapper(
-                <Dialog
-                    {...dialogProps}
-                    isOpen={true}
-                />,
-            ),
-        );
+        documentBody = render(muiWrapper(<Dialog {...dialogProps} isOpen={true} />));
     });
 
     it('show all text getted as props', () => {
@@ -76,15 +61,7 @@ describe('Dialog without textarea', () => {
 
 describe('Dialog with textarea', () => {
     beforeEach(() => {
-        documentBody = render(
-            muiWrapper(
-                <Dialog
-                    {...dialogProps}
-                    isOpen={true}
-                    textarea={true}
-                />,
-            ),
-        );
+        documentBody = render(muiWrapper(<Dialog {...dialogProps} isOpen={true} textarea={true} />));
     });
 
     it('show all text getted as props', () => {
