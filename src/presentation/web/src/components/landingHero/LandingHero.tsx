@@ -18,18 +18,22 @@ const useStyles = makeStyles((theme) => ({
     backgroundPosition: "top",
     backgroundSize: "cover",
     width: "100vw",
+    maxWidth: '100%',
     height: "95vh",
     display: "flex",
     justifyContent: "center",
-
+    boxSizing: "border-box",
   },
   wrapper: {
     display: "flex",
+    justifyContent: "space-between",
+    maxWidth: "1280px",
+  },
+  headerContainer: {
+    display: "flex",
     flexDirection: "column",
-    width: "100%",
     height: "100%",
-    alignItems: 'center',
-    justify: "space-between",
+    alignItems: "center",
   },
   button: {
     marginTop: theme.spacing(4),
@@ -46,9 +50,9 @@ const LandingHero = () => {
     <div className={classes.photoLanding}>
       <Grid container xs={12} className={classes.wrapper}>
         <Grid item xs={1}>
-        <Hidden xsDown>
-          <AnimationPaws />
-        </Hidden>
+          <Hidden xsDown>
+            <AnimationPaws />
+          </Hidden>
         </Grid>
         <Grid
           container
@@ -58,8 +62,7 @@ const LandingHero = () => {
           md={8}
           lg={7}
           justify="center"
-          alignContent="center"
-          className={classes.wrapper}
+          className={classes.headerContainer}
         >
           <Typography
             variant={"h3"}
@@ -89,9 +92,9 @@ const LandingHero = () => {
           </Link>
         </Grid>
         <Grid item xs={1}>
-        <Hidden xsDown>
-          <AnimationPaws />
-        </Hidden>
+          <Hidden xsDown>
+            <AnimationPaws />
+          </Hidden>
         </Grid>
       </Grid>
     </div>
