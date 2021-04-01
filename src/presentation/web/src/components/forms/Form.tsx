@@ -40,6 +40,11 @@ const generateInput = (questions: FormQuestion[]) => {
                             <RadioGroup key={question.id} name={question.id.toString()} values={answers} getCheckedOption={handleData} />
                         </div>
                     )
+                case 'checkbox':
+                    console.log('Checkbox');
+                    break;
+                default:
+                    throw new Error('Wrong type of question!')
             }
         }
         return (
