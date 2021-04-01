@@ -297,7 +297,7 @@ describe('Given: RegisterForm()', () => {
     })
     describe('When: properly filled form is submitted', () => {
         it('Then: handleSubmit is invoked', async () => {
-            act(() => {
+            await act(async () => {
                 fireEvent.input(screen.getByRole('textbox', { name: 'Imię' }), { target: { value: 'Jan' }});
                 fireEvent.input(screen.getByRole('textbox', { name: 'Nazwisko' }), { target: { value: 'Kowalski' }});
                 fireEvent.input(screen.getByRole('textbox', { name: 'Email' }), { target: { value: 'jan.kowalski@gmail.com' }});
@@ -314,6 +314,7 @@ describe('Given: RegisterForm()', () => {
             expect(screen.getByLabelText(/Powtórz hasło/).value).toBe('ZAQ!2wsx');
             expect(screen.getByRole('textbox', { name: 'Telefon'}).value).toBe('123456789');
             expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('19/03/1970');
+            expect(mockRegister).toBeCalledTimes(1);
         })
     })
 })
