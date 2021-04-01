@@ -73,7 +73,7 @@ const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: 
                 <DialogActions className={classes.column}>
                     {textarea && (
                         <TextField
-                            data-testid="textarea"
+                            inputProps={{'data-testid': 'textarea'}}
                             multiline
                             variant="outlined"
                             fullWidth
