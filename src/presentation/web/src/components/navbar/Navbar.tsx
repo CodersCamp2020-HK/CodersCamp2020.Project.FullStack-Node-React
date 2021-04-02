@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Theme, useTheme } from "@material-ui/core";
 import { AppBar, Toolbar } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import { Link } from '@material-ui/core';
@@ -8,6 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import NavbarLoginBtn from '../navbarLoginButton/NavbarLoginBtn';
 import NavbarList from '../navbarList/NavbarList';
 import { makeStyles } from '@material-ui/core/styles';
+import Logo from '../logo/Logo'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Navbar = () => {
+    const theme = useTheme();
     const classes = useStyles();
     const [mobileView, setMobileView] = useState(false);
     const [showDrawer, setShowDrawer] = useState(false);
@@ -41,7 +44,7 @@ const Navbar = () => {
             <AppBar className={classes.root} position="fixed">
                 <Toolbar>
                     <Link component={RouterLink} to="/">
-                        LOGO
+                        <Logo width={140} height={70} color1={theme.palette.primary.light} color2={theme.palette.primary.dark}/>
                     </Link>
                     {mobileView ? (
                         <IconButton onClick={show} color="primary" style={{ marginLeft: 'auto' }}>
