@@ -54,7 +54,6 @@ const generateInput = (questions: FormQuestion[]) => {
                             <CheckboxGroup key={question.id} name={question.id.toString()} values={checkboxAnswers} getCheckedData={handleCheckboxData} />
                         </div>
                     )
-                    break;
                 default:
                     throw new Error('Wrong type of question!')
             }
