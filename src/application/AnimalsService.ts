@@ -74,7 +74,7 @@ export class AnimalsService {
     ) {}
 
     public async get(id: number): Promise<Animal> {
-        const animal = await this.animalRepository.findOne(id);
+        const animal = await this.animalRepository.findOne(id, { relations: ['additionalInfo'] });
         if (!animal) throw new ApiError('Not Found', 404, 'Animal not found in database');
 
         return animal;
@@ -131,6 +131,7 @@ export class AnimalsService {
                 .createQueryBuilder('animal')
                 .leftJoinAndSelect('animal.additionalInfo', 'info')
                 .leftJoinAndSelect('animal.specie', 'specie')
+                .addOrderBy('info.admissionToShelter', 'DESC')
                 .where('animal.id >= :zero', { zero: 0 })
                 .skip(isFirstPage ? 0 : SKIP)
                 .take(LIMIT),
@@ -153,7 +154,7 @@ export class AnimalsService {
             };
         }
 
-        return animalQuery.selectQueryBuilder.addOrderBy('info.admissionToShelter', 'DESC').getMany();
+        return animalQuery.selectQueryBuilder.getMany();
     }
 
     public async update(id: number, { additionalInfo, specie, ...animalParams }: AnimalUpdateParams): Promise<Animal> {
