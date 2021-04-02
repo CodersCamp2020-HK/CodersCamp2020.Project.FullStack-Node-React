@@ -17,13 +17,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: `url(${PhotoLanding})`,
     backgroundPosition: "top",
     backgroundSize: "cover",
-    width: "calc(100vw - 5px)",
-    maxWidth: '100%',
+    width: `100vw`,
     height: "95vh",
     display: "flex",
     boxSizing: "border-box",
-    position: 'relative',
-    left: '-5px',
     justifyContent: "center",
   },
   wrapper: {
@@ -40,6 +37,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginTop: theme.spacing(4),
     background: theme.palette.secondary.dark,
+  },
+  link: {
+    width: "70%",
   },
   header: {
     color: theme.palette.secondary.dark,
@@ -62,7 +62,7 @@ const LandingHero = () => {
           xs={12}
           sm={10}
           md={8}
-          lg={7}
+          lg={6}
           justify="center"
           className={classes.headerContainer}
         >
@@ -82,12 +82,13 @@ const LandingHero = () => {
           >
             zwierzaka?
           </Typography>
-          <Link component={RouterLink} to="/adoption">
+          <Link component={RouterLink} to="/adoption" className={classes.link}>
             <Button
               color="secondary"
               variant="contained"
               type="submit"
               className={classes.button}
+              fullWidth={true}
             >
               O procesie adopcyjnym
             </Button>
