@@ -47,7 +47,7 @@ const RegisterPage: React.FC = () => {
                     <Typography variant="body2">Masz już konto? Zaloguj się</Typography>
                 </Link>
             </AuthPaper>
-            {fireRedirect && <Redirect to={'/register/sent'} />}
+            {fireRedirect && <Redirect to={'/auth/sent'} />}
         </Grid>
     )
 }
