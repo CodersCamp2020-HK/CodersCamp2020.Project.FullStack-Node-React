@@ -20,6 +20,7 @@ export interface Inputs {
 
 interface Props {
     handleSubmit: (data: any) => Promise<any>;
+    defaultValues?: Partial<Inputs>;
 }
 
 const useStyle = makeStyles({
@@ -32,19 +33,19 @@ const useStyle = makeStyles({
     }
 })
 
-const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb }) => {
+const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues }) => {
     const classes = useStyle();
 
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
-    const [date, setDate] = useState(new Date());
-
-    const { register, handleSubmit, setError, errors, getValues, setValue, formState, trigger } = useForm<Inputs>({
-        defaultValues: { birthDate: date }
+    const { register, handleSubmit, errors, getValues, setValue, formState, trigger, watch } = useForm<Inputs>({
+        defaultValues: {
+            birthDate: new Date(),
+            ...defaultValues
+        }
     })
     const handleDateChange = (date: Date | null): void => {
-        date && setDate(date);
         setValue("birthDate", date);
       };
 
@@ -128,7 +129,7 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb }) => {
                     className={classes.textField}
                     id="birthDate"
                     name="birthDate"
-                    value={date}
+                    value={watch('birthDate')}
                     openTo="year"
                     format="dd/MM/yyyy"
                     placeholder="DD/MM/YYYY"
