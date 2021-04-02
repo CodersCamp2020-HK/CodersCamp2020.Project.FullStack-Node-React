@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import isArray from '../../utils/IsArray';
-import { FormQuestion } from '../../client/index';
+import { AnswerType, FormQuestion, usePostAnimalSubmission } from '../../client/index';
 import RadioGroup from '../common/radioGroup/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
@@ -19,8 +19,14 @@ interface RadioOption {
     content: string;
 }
 
+interface Answer {
+    type: AnswerType;
+    answer: string | string[];
+}
+
 interface FormData {
-    [key: string]: Array<CheckboxOption | RadioOption>;
+    questionId: number;
+    answer: Answer;
 }
 
 const handleRadioData = (name: string, data: string) => {
@@ -32,6 +38,7 @@ const handleCheckboxData = (name: string, data: CheckboxOption[]): void => {
 }
 
 const generateInput = (questions: FormQuestion[]) => {
+
     return questions.map((question) => {
         if (isArray(question.placeholder.answer)) {
             const radioAnswers: RadioOption[] = []
