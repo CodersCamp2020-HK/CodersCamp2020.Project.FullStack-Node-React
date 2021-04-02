@@ -11,7 +11,7 @@ const Auth: React.FC = () => {
 
     return (
         <Switch>
-            <Route exact path={`${path}/sent`} component={ActivationSent} />
+            <Route exact path={`${path}/link`} component={ActivationSent} />
             <Route exact path={`${path}/register`} component={RegisterPage} />
             <Route exact path={`${path}/forget`} component={ForgetPassword} />
             <Route exact path={`${path}/change`} component={ChangePassword} />
