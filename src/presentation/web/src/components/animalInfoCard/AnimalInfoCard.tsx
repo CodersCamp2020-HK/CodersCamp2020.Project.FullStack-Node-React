@@ -1,4 +1,4 @@
-import { Paper, Table, TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
+import { Paper, Table, TableBody, TableCell, TableRow, Typography, Button } from '@material-ui/core';
 import React from 'react';
 import { useGetAllWillignessesToAdoptCount, useGetAnimal } from '../../client/index';
 interface AnimalInfoCardProps {
@@ -51,7 +51,7 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
     return (
         <Paper>
             <Typography style={{ textAlign: 'center' }} variant="h2">
-                {animal?.name}
+                {animal && animal.name}
             </Typography>
             <Table>
                 <TableBody>
@@ -68,6 +68,8 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
                         ))}
                 </TableBody>
             </Table>
+            <Button variant='outlined' color='primary' size='medium'>Proces adopcyjny</Button>
+            <Button variant='contained' color='primary' size='medium'>Adoptuj</Button>
         </Paper>
     );
 };
