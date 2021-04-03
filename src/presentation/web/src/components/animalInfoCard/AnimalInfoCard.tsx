@@ -40,6 +40,11 @@ const ADOPT_PAGE = 'adopt';
 const useStyles = makeStyles((theme: Theme) => ({
     paper: {
         padding: theme.spacing(3),
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    button: {
+        marginTop: theme.spacing(2),
     },
 }));
 
@@ -114,6 +119,7 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
                 variant="outlined"
                 color="primary"
                 size="medium"
+                className={styles.button}
             >
                 Proces adopcyjny
             </Button>
@@ -122,6 +128,7 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
                 variant="contained"
                 color="primary"
                 size="medium"
+                className={styles.button}
             >
                 Adoptuj
             </Button>
