@@ -318,3 +318,22 @@ describe('Given: RegisterForm()', () => {
         })
     })
 })
+
+describe('Given: RegisterForm with default values', () => {
+    const name = 'Eustachy';
+    const surname = 'Eustachowy';
+    beforeEach(() => {
+        act(() => {
+            render(<RegisterForm handleSubmit={mockRegister} defaultValues={{ name, surname }} />)
+        })
+    })
+    afterEach(cleanup)
+    describe(`When: name = ${name}, surname = ${surname}`, () => {
+        it(`Then: name === ${name}, surname === ${surname}`, () => {
+            fireEvent.input(screen.getByRole('textbox', { name: 'Imię' }), { target: { value: name }});
+            fireEvent.input(screen.getByRole('textbox', { name: 'Nazwisko' }), { target: { value: surname }});
+            expect(screen.getByRole('textbox', { name: 'Imię'}).value).toBe(name);
+            expect(screen.getByRole('textbox', { name: 'Nazwisko'}).value).toBe(surname);
+        })
+    })
+})

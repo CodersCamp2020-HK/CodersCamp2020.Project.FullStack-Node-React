@@ -42,7 +42,7 @@ const RegisterPage: React.FC = () => {
     return (
         <Grid item xs={12} sm={10} md={6}>
             <AuthPaper typographyLabel="Zarejestruj się">
-                <RegisterForm handleSubmit={onSubmit} />
+                <RegisterForm handleSubmit={onSubmit} defaultValues={{ name: 'Eustachy', surname: 'Eustachowy', birthDate: new Date('1990-12-25') }} />
                 <Link className={classes.link} component={RouterLink} to="/auth">
                     <Typography variant="body2">Masz już konto? Zaloguj się</Typography>
                 </Link>
