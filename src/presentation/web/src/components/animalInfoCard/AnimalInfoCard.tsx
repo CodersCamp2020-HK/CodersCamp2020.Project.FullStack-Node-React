@@ -1,4 +1,4 @@
-import { Button, Paper, Table, TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
+import { Button, makeStyles, Paper, Table, TableBody, TableCell, TableRow, Theme, Typography } from '@material-ui/core';
 import React from 'react';
 import { useHistory } from 'react-router';
 import { AnimalActiveLevel, AnimalSize, useGetAllWillignessesToAdoptCount, useGetAnimal } from '../../client/index';
@@ -37,6 +37,12 @@ const formatActiveLevel = (activeLevel: AnimalActiveLevel): string => {
 const ADOPTION_PROCESS_PAGE = 'adoption-process';
 const ADOPT_PAGE = 'adopt';
 
+const useStyles = makeStyles((theme: Theme) => ({
+    paper: {
+        padding: theme.spacing(3),
+    },
+}));
+
 const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
     const history = useHistory();
     const { data: animal } = useGetAnimal({ animalId });
@@ -45,6 +51,7 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
             petName: animal?.name as string,
         },
     });
+    const styles = useStyles();
     let animalInfoRows;
     if (animal && aplicantNumber) {
         animalInfoRows = [
@@ -83,7 +90,7 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
         ];
     }
     return (
-        <Paper>
+        <Paper className={styles.paper}>
             <Typography style={{ textAlign: 'center' }} variant="h2">
                 {animal && animal.name}
             </Typography>
