@@ -1,5 +1,6 @@
 import { Button, Paper, Table, TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
 import React from 'react';
+import { useHistory } from 'react-router';
 import { AnimalActiveLevel, AnimalSize, useGetAllWillignessesToAdoptCount, useGetAnimal } from '../../client/index';
 interface AnimalInfoCardProps {
     animalId: number;
@@ -33,7 +34,11 @@ const formatActiveLevel = (activeLevel: AnimalActiveLevel): string => {
     return 'nieznana';
 };
 
+const ADOPTION_PROCESS_PAGE = 'adoption-process';
+const ADOPT_PAGE = 'adopt';
+
 const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
+    const history = useHistory();
     const { data: animal } = useGetAnimal({ animalId });
     const { data: aplicantNumber } = useGetAllWillignessesToAdoptCount({
         queryParams: {
@@ -97,10 +102,20 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
                         ))}
                 </TableBody>
             </Table>
-            <Button variant="outlined" color="primary" size="medium">
+            <Button
+                onClick={() => history.push(ADOPTION_PROCESS_PAGE)}
+                variant="outlined"
+                color="primary"
+                size="medium"
+            >
                 Proces adopcyjny
             </Button>
-            <Button variant="contained" color="primary" size="medium">
+            <Button
+                onClick={() => history.push(`${ADOPT_PAGE}?id=${animalId}`)}
+                variant="contained"
+                color="primary"
+                size="medium"
+            >
                 Adoptuj
             </Button>
         </Paper>
