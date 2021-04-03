@@ -1,6 +1,6 @@
-import { Paper, Table, TableBody, TableCell, TableRow, Typography, Button } from '@material-ui/core';
+import { Button, Paper, Table, TableBody, TableCell, TableRow, Typography } from '@material-ui/core';
 import React from 'react';
-import { useGetAllWillignessesToAdoptCount, useGetAnimal } from '../../client/index';
+import { AnimalActiveLevel, AnimalSize, useGetAllWillignessesToAdoptCount, useGetAnimal } from '../../client/index';
 interface AnimalInfoCardProps {
     animalId: number;
 }
@@ -8,7 +8,7 @@ interface AnimalInfoCardProps {
 const formatDate = (date: string): string => {
     const givenDate = new Date(date);
 
-    if(!givenDate.getFullYear()) {
+    if (!givenDate.getFullYear()) {
         return 'Brak informacji';
     }
 
@@ -16,8 +16,22 @@ const formatDate = (date: string): string => {
     const month = givenDate.getMonth() + 1;
     const year = givenDate.getFullYear();
 
-    return `${day < 10 ? '0' + day : day }/${month < 10 ? '0' + month : month}/${year}`;
-}
+    return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`;
+};
+
+const formatSize = (size: AnimalSize): string => {
+    if (size === 'small') return 'mały';
+    if (size === 'medium') return 'średni';
+    if (size === 'large') return 'duży';
+    return 'nieznany';
+};
+
+const formatActiveLevel = (activeLevel: AnimalActiveLevel): string => {
+    if (activeLevel === 'low') return 'niska';
+    if (activeLevel === 'medium') return 'umiarkowana';
+    if (activeLevel === 'high') return 'wysoka';
+    return 'nieznana';
+};
 
 const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
     const { data: animal } = useGetAnimal({ animalId });
@@ -39,7 +53,7 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
             },
             {
                 title: 'Wielkość:',
-                content: animal.additionalInfo.size,
+                content: formatSize(animal.additionalInfo.size),
             },
             {
                 title: 'Akceptuje dzieci:',
@@ -55,7 +69,7 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
             },
             {
                 title: 'Aktywność:',
-                content: animal.additionalInfo.activeLevel,
+                content: formatActiveLevel(animal.additionalInfo.activeLevel),
             },
             {
                 title: 'Ilość aplikujących:',
@@ -83,8 +97,12 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
                         ))}
                 </TableBody>
             </Table>
-            <Button variant='outlined' color='primary' size='medium'>Proces adopcyjny</Button>
-            <Button variant='contained' color='primary' size='medium'>Adoptuj</Button>
+            <Button variant="outlined" color="primary" size="medium">
+                Proces adopcyjny
+            </Button>
+            <Button variant="contained" color="primary" size="medium">
+                Adoptuj
+            </Button>
         </Paper>
     );
 };
