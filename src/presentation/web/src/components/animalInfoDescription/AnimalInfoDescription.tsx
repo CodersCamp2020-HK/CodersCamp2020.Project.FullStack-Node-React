@@ -16,7 +16,7 @@ const AnimalInfoDescription = ({ animalId }: AnimalInfoDescriptionProps) => {
     const styles = useStyles();
     return (
         <Paper className={styles.paper}>
-            <Typography variant="body2">{animal && animal.description}</Typography>
+            <Typography data-testid='desc' variant="body2">{animal && animal.description}</Typography>
         </Paper>
     );
 };
