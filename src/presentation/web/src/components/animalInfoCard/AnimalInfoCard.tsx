@@ -4,6 +4,21 @@ import { useGetAllWillignessesToAdoptCount, useGetAnimal } from '../../client/in
 interface AnimalInfoCardProps {
     animalId: number;
 }
+
+const formatDate = (date: string): string => {
+    const givenDate = new Date(date);
+
+    if(!givenDate.getFullYear()) {
+        return 'Brak informacji';
+    }
+
+    const day = givenDate.getDate();
+    const month = givenDate.getMonth() + 1;
+    const year = givenDate.getFullYear();
+
+    return `${day < 10 ? '0' + day : day }/${month < 10 ? '0' + month : month}/${year}`;
+}
+
 const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
     const { data: animal } = useGetAnimal({ animalId });
     const { data: aplicantNumber } = useGetAllWillignessesToAdoptCount({
@@ -20,7 +35,7 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
             },
             {
                 title: 'W schronisku od:',
-                content: animal.additionalInfo.admissionToShelter,
+                content: formatDate(animal.additionalInfo.admissionToShelter),
             },
             {
                 title: 'Wielkość:',
@@ -36,14 +51,14 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
             },
             {
                 title: 'Wiek:',
-                content: animal.age,
+                content: animal.age + ' msc.',
             },
             {
-                title: 'Aktywność',
+                title: 'Aktywność:',
                 content: animal.additionalInfo.activeLevel,
             },
             {
-                title: 'Ilość aplikujących',
+                title: 'Ilość aplikujących:',
                 content: aplicantNumber.count,
             },
         ];
