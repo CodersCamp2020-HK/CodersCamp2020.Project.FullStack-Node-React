@@ -34,7 +34,7 @@ const exampleCount = {
     count: 36,
 };
 
-describe('Render description', () => {
+describe('Render animal card', () => {
     beforeEach(() => {
         mockUseGetAnimal = useGetAnimal as jest.MockedFunction<typeof useGetAnimal>;
         mockUseGetAllWillignessesToAdoptCount = useGetAllWillignessesToAdoptCount as jest.MockedFunction<
@@ -53,6 +53,13 @@ describe('Render description', () => {
         expect(name).toBeInTheDocument();
     });
 
+    it('show 8 table rows', () => {
+        const firstColumn = documentBody.container.querySelectorAll('th');
+        const secondColumn = documentBody.container.querySelectorAll('td');
+        expect(firstColumn.length).toEqual(8);
+        expect(secondColumn.length).toEqual(8);
+    });
+
     it('show id, age and applicant count', async () => {
         expect(await documentBody.findByText(exampleAnimal.id.toString(), { selector: 'h6' })).toBeInTheDocument();
         expect(
@@ -60,6 +67,7 @@ describe('Render description', () => {
         ).toBeInTheDocument();
         expect(await documentBody.findByText(exampleCount.count.toString(), { selector: 'h6' })).toBeInTheDocument();
     });
+
     it('show adoption step button', async () => {
         const adoptionStepButton = documentBody.getByText('Proces adopcyjny');
         expect(adoptionStepButton).toBeInTheDocument();
@@ -67,5 +75,30 @@ describe('Render description', () => {
     it('show adopt button', async () => {
         const adoptionButton = documentBody.getByText('Adoptuj');
         expect(adoptionButton).toBeInTheDocument();
+    });
+
+    it('show formatted date', async () => {
+        const date = documentBody.getByText('17/04/2011');
+        expect(date).toBeInTheDocument();
+    });
+
+    it('show proper size', async () => {
+        const size = documentBody.getByText('mały');
+        expect(size).toBeInTheDocument();
+    });
+
+    it('show proper active level', async () => {
+        const activeLevel = documentBody.getByText('niska');
+        expect(activeLevel).toBeInTheDocument();
+    });
+
+    it('show proper accepts kids', async () => {
+        const acceptsKids = documentBody.getByText('nie');
+        expect(acceptsKids).toBeInTheDocument();
+    });
+
+    it('show proper accepts other animals', async () => {
+        const acceptsOtherAnimals = documentBody.getByText('tak');
+        expect(acceptsOtherAnimals).toBeInTheDocument();
     });
 });
