@@ -4,24 +4,16 @@ import React from 'react';
 import { useGetAnimal } from '../../client/index';
 import muiWrapper from '../../testUtils/muiWrapper';
 import AnimalInfoDescription from './AnimalInfoDescription';
-// jest.mock('../../client/index', () => {
-//     return {
-//         ...jest.requireActual('../../client/index'),
-//         useGetAnimal: jest.fn().mockReturnValue({
-//             data: {
-//                 description: 'enim ipsum',
-//             },
-//         }),
-//     };
-// });
 
 jest.mock('../../client/index');
 
 let documentBody: RenderResult;
-
+let mockUseGetAnimal;
 describe('Render description', () => {
     beforeEach(() => {
-        useGetAnimal.mockReturnValue({ data: { description: 'enim ipsum' } });
+        //useGetAnimal.mockReturnValue({ data: { description: 'enim ipsum' } });
+        mockUseGetAnimal = useGetAnimal as jest.MockedFunction<typeof useGetAnimal>
+        mockUseGetAnimal.mockReturnValue({ ...jest.requireActual('../../client/index'), data: { description: 'enim ipsum' } });
         documentBody = render(muiWrapper(<AnimalInfoDescription animalId={1} />));
     });
 
