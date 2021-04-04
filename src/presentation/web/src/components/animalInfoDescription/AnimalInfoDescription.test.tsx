@@ -11,7 +11,6 @@ let documentBody: RenderResult;
 let mockUseGetAnimal;
 describe('Render description', () => {
     beforeEach(() => {
-        //useGetAnimal.mockReturnValue({ data: { description: 'enim ipsum' } });
         mockUseGetAnimal = useGetAnimal as jest.MockedFunction<typeof useGetAnimal>
         mockUseGetAnimal.mockReturnValue({ ...jest.requireActual('../../client/index'), data: { description: 'enim ipsum' } });
         documentBody = render(muiWrapper(<AnimalInfoDescription animalId={1} />));
