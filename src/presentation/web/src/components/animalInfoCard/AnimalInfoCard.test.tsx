@@ -1,10 +1,9 @@
 import '@testing-library/jest-dom/extend-expect';
-import { render, RenderResult } from '@testing-library/react';
+import { act, fireEvent, render, RenderResult } from '@testing-library/react';
 import React from 'react';
+import { BrowserRouter } from 'react-router-dom';
 import { AnimalActiveLevel, AnimalSize, useGetAllWillignessesToAdoptCount, useGetAnimal } from '../../client/index';
-import muiWrapper from '../../testUtils/muiWrapper';
-import AnimalInfoCard from './AnimalInfoCard';
-
+import AnimalInfoCard, { ADOPTION_PROCESS_PAGE, ADOPT_PAGE } from './AnimalInfoCard';
 jest.mock('../../client/index');
 
 let documentBody: RenderResult;
@@ -45,7 +44,12 @@ describe('Render animal card', () => {
             ...jest.requireActual('../../client/index'),
             data: { ...exampleCount },
         });
-        documentBody = render(muiWrapper(<AnimalInfoCard animalId={1} />));
+        documentBody = render(
+            <BrowserRouter>
+                muiWrapper(
+                <AnimalInfoCard animalId={1} />)
+            </BrowserRouter>,
+        );
     });
 
     it('show animal name', () => {
@@ -100,5 +104,21 @@ describe('Render animal card', () => {
     it('show proper accepts other animals', async () => {
         const acceptsOtherAnimals = documentBody.getByText('tak');
         expect(acceptsOtherAnimals).toBeInTheDocument();
+    });
+
+    it('redirects to adoption process after click first button', async () => {
+        const adoptionStepButton = documentBody.getByText('Proces adopcyjny');
+        await act(() => {
+            fireEvent.click(adoptionStepButton);
+        });
+        expect(window.location.pathname).toBe('/' + ADOPTION_PROCESS_PAGE);
+    });
+
+    it('redirects to animal adoption after click second button', async () => {
+        const adoptionButton = documentBody.getByText('Adoptuj');
+        await act(() => {
+            fireEvent.click(adoptionButton);
+        });
+        expect(window.location.pathname).toBe('/' + ADOPT_PAGE);
     });
 });

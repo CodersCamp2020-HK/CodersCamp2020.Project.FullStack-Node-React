@@ -34,8 +34,8 @@ const formatActiveLevel = (activeLevel: AnimalActiveLevel): string => {
     return 'nieznana';
 };
 
-const ADOPTION_PROCESS_PAGE = 'adoption-process';
-const ADOPT_PAGE = 'adopt';
+export const ADOPTION_PROCESS_PAGE = 'adoption-process';
+export const ADOPT_PAGE = 'adopt';
 
 const useStyles = makeStyles((theme: Theme) => ({
     paper: {
