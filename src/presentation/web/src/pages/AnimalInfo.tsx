@@ -9,7 +9,7 @@ const AnimalInfo = () => {
     let { animalId } = useParams<{ animalId?: string | undefined }>();
     return (
         <Grid container spacing={3} alignItems="stretch">
-            <Grid item xs={8}>
+            <Grid item xs={12} sm={8}>
                 <Slider
                     photos={[
                         'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
@@ -17,7 +17,7 @@ const AnimalInfo = () => {
                 />
                 <AnimalInfoDescription animalId={(animalId as unknown) as number} />
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={4}>
                 <AnimalInfoCard animalId={(animalId as unknown) as number} />
             </Grid>
         </Grid>
