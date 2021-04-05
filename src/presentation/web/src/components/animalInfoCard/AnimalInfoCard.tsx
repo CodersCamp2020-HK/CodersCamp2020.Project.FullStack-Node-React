@@ -58,7 +58,7 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
     });
     const styles = useStyles();
     let animalInfoRows;
-    if (animal && aplicantNumber) {
+    if (animal && animal.additionalInfo && aplicantNumber) {
         animalInfoRows = [
             {
                 title: 'Nr ewidencyjny:',
