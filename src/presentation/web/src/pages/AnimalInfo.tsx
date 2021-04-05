@@ -6,21 +6,22 @@ import AnimalInfoDescription from '../components/animalInfoDescription/AnimalInf
 import Slider from '../components/slider/Slider';
 
 const AnimalInfo = () => {
-    let { animalId } = useParams<{ animalId?: string | undefined; }>();
+    let { animalId } = useParams<{ animalId?: string | undefined }>();
     return (
-        <Grid container spacing={3}>
+        <Grid container spacing={3} alignItems="stretch">
             <Grid item xs={8}>
-                <Slider photos={[]} />
+                <Slider
+                    photos={[
+                        'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
+                    ]}
+                />
+                <AnimalInfoDescription animalId={(animalId as unknown) as number} />
             </Grid>
             <Grid item xs={4}>
-                <AnimalInfoCard animalId={animalId as unknown as number} />
+                <AnimalInfoCard animalId={(animalId as unknown) as number} />
             </Grid>
-            <Grid item xs={8}>
-                <AnimalInfoDescription animalId={animalId as unknown as number} />
-            </Grid>
-            
         </Grid>
-    )
-}
+    );
+};
 
 export default AnimalInfo;
