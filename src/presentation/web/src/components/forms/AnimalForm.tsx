@@ -8,11 +8,17 @@ const AnimalForm = () => {
     const handleSubmit = (data: any) => {
         console.log(data);
     }
+    const defaultValues = {
+        question1: 'Tak',
+        question2: 'Nie',
+        question5: 'Eluwinka',
+        question8: ['Groźny']
+    }
 
     if (!loading && data && data.form) {
         return (
             <Grid item sm={12} lg={8}>
-                <Form key='form' questions={data.form.questions} handleSubmit={handleSubmit} />
+                <Form key='form' questions={data.form.questions} handleSubmit={handleSubmit} defaultValues={defaultValues} />
             </Grid>
         )
     }

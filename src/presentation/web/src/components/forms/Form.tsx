@@ -8,10 +8,12 @@ import isArray from '../../utils/IsArray';
 import RadioGroup from '../common/radioGroup/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import isString from '../../utils/IsString';
 
 interface Props {
     questions: FormQuestion[];
     handleSubmit: (data: any) => void;
+    defaultValues: Record<string, string | string[]>;
 }
 
 interface CheckboxOption {
@@ -43,7 +45,7 @@ const useStyles =  makeStyles((theme) => ({
     },
 }))
 
-const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<FieldValues>) => {
+const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<FieldValues>, defaultValues: Record<string, string | string[]>) => {
     const classes = useStyles();
     const { register, setValue, errors, trigger, formState } = methods;
     const handleRadioData = (name: string, data: string) => {
@@ -65,6 +67,8 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
             const checkboxAnswers: CheckboxOption[] = [];
             switch (question.placeholder.type) {
                 case 'radio':
+                    const defaultValue = defaultValues[`question${question.id}`];
+                    if (!isString(defaultValue)) throw new Error('Nie jest stringiem');
                     for (const answer of question.placeholder.answer) radioAnswers.push({ content: answer })
                     return (
                         <div className={classes.question} key={`question${question.id}`}>
@@ -75,6 +79,7 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                                 getCheckedOption={handleRadioData}
                                 question={question.question}
                                 errors={errors}
+                                defaultValue={defaultValue}
                             />
                         </div>
                     )
@@ -109,7 +114,7 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                     rowsMax={4}
                     style={{ marginBottom: 0 }}
                     classes={{ root: classes.root }}
-                    inputRef={register({ required: 'Napisz odpowiedź'})}
+                    inputRef={register({ required: 'Napisz odpowiedź' })}
                     error={errors.hasOwnProperty(`question${question.id}`)}
                     helperText={errors[`question${question.id}`] && errors[`question${question.id}`].message}
                 />
@@ -118,13 +123,15 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
     })
 }
 
-const Form: React.FC<Props> = ({ questions, handleSubmit: submitCb }) => {
-    const methods = useForm({ shouldFocusError: false });
-    const classes = useStyles();
+const Form: React.FC<Props> = ({ questions, handleSubmit: submitCb, defaultValues }) => {
+    const methods = useForm<Record<string, string | string[]>>({
+        shouldFocusError: false,
+        defaultValues
+    });
 
     return (
         <form noValidate onSubmit={methods.handleSubmit(submitCb)}>
-            {GenerateInputs(questions, methods)}
+            {GenerateInputs(questions, methods, defaultValues)}
             <Button
                 size="medium"
                 variant="contained"
