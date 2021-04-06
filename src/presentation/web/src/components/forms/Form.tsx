@@ -8,12 +8,12 @@ import isArray from '../../utils/IsArray';
 import RadioGroup from '../common/radioGroup/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import isString from '../../utils/IsString';
+import isStringOrUndefined from '../../utils/IsStringOrUndefined';
 
 interface Props {
     questions: FormQuestion[];
     handleSubmit: (data: any) => void;
-    defaultValues: Record<string, string | string[]>;
+    defaultValues?: Record<string, string | string[]>;
 }
 
 interface CheckboxOption {
@@ -45,7 +45,7 @@ const useStyles =  makeStyles((theme) => ({
     },
 }))
 
-const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<FieldValues>, defaultValues: Record<string, string | string[]>) => {
+const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<FieldValues>, defaultValues?: Record<string, string | string[]>) => {
     const classes = useStyles();
     const { register, setValue, errors, trigger, formState } = methods;
     const handleRadioData = (name: string, data: string) => {
@@ -67,8 +67,8 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
             const checkboxAnswers: CheckboxOption[] = [];
             switch (question.placeholder.type) {
                 case 'radio':
-                    const defaultValue = defaultValues[`question${question.id}`];
-                    if (!isString(defaultValue)) throw new Error('Nie jest stringiem');
+                    const defaultValue = defaultValues && defaultValues[`question${question.id}`]
+                    if (!isStringOrUndefined(defaultValue)) throw new Error('Nie jest stringiem');
                     for (const answer of question.placeholder.answer) radioAnswers.push({ content: answer })
                     return (
                         <div className={classes.question} key={`question${question.id}`}>

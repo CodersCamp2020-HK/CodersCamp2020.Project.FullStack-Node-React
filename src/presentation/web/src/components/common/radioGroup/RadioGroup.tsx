@@ -17,7 +17,7 @@ interface RadioGroupProps {
     getCheckedOption: (name: string, option: string) => void;
     question: string;
     errors: DeepMap<FieldValues, FieldError>;
-    defaultValue: string;
+    defaultValue: string | undefined;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const RadioGroup = ({ values, name, getCheckedOption, question, errors, defaultValue }: RadioGroupProps) => {
     const classes = useStyles();
-    const [checkedOption, setCheckedOption] = useState<string>(defaultValue);
+    const [checkedOption, setCheckedOption] = useState<string>(defaultValue ?? '');
 
     useEffect(() => {
         getCheckedOption(
