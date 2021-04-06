@@ -89,18 +89,19 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                     for (const answer of question.placeholder.answer) checkboxAnswers.push({ content: answer, checked: false, disabled: false })
                     return (
                         <div className={classes.question} key={`question${question.id}`}>
-                            <Typography>{question.question}</Typography>
                             <CheckboxGroup
                                 key={question.id}
                                 name={`question${question.id}`}
                                 values={checkboxAnswers}
                                 getCheckedData={handleCheckboxData}
+                                question={question.question}
+                                errors={errors}
                             />
-                            <ErrorMessage
+                            {/* <ErrorMessage
                                 errors={errors}
                                 name={`question${question.id}`}
                                 render={({ message }) => <p className={classes.questionError}>{message}</p>}
-                            />
+                            /> */}
                         </div>
                     )
                 default:

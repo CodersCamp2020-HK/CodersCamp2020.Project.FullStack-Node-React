@@ -15,6 +15,7 @@ const LabeledCheckBox = ({label, checked = false, disabled=false, onChange, name
             label={label}
             control={<Checkbox disabled={disabled} checked={checked} onChange={onChange} />}
             name={name}
+            style={{ flexBasis: 'auto' }}
         />
     )
 };

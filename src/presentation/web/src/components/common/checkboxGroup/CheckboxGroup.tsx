@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import LabeledCheckBox from '../labeledCheckbox/LabeledCheckbox';
+import FormControl from '@material-ui/core/FormControl';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormLabel from '@material-ui/core/FormLabel';
+import FormGroup from '@material-ui/core/FormGroup';
+import { DeepMap, FieldError, FieldValues } from 'react-hook-form';
 
 export interface SingleOption {
     content: string;
@@ -11,8 +17,21 @@ interface CheckboxGroupProps {
     values: SingleOption[];
     name: string;
     getCheckedData: (name: string, data: SingleOption[]) => void;
+    question: string;
+    errors: DeepMap<FieldValues, FieldError>;
 }
-const CheckboxGroup = ({ values, name, getCheckedData }: CheckboxGroupProps) => {
+
+const useStyles = makeStyles((theme) => ({
+    root: {
+        color: theme.palette.text.primary
+    },
+    focused: {
+        color: theme.palette.text.primary
+    }
+}))
+
+const CheckboxGroup = ({ values, name, getCheckedData, question, errors }: CheckboxGroupProps) => {
+    const classes = useStyles();
     const [items, setItems] = useState(values);
 
     useEffect(() => {
@@ -38,18 +57,25 @@ const CheckboxGroup = ({ values, name, getCheckedData }: CheckboxGroupProps) => 
             setItems(modifiedItems);
         }
     };
+
     return (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {items.map((el, index) => (
-                <LabeledCheckBox
-                    key={index}
-                    checked={el.checked}
-                    disabled={el.disabled}
-                    name={name}
-                    label={el.content}
-                    onChange={() => handleChange(el.content)}
-                />
-            ))}
+        <div style={{ display: 'flex' }}>
+            <FormControl error={errors.hasOwnProperty(name)} component="fieldset" >
+                <FormGroup>
+                    <FormLabel focused={false} classes={{ root: classes.root }}>{question}</FormLabel>
+                    {items.map((el, index) => (
+                        <LabeledCheckBox
+                            key={index}
+                            checked={el.checked}
+                            disabled={el.disabled}
+                            name={name}
+                            label={el.content}
+                            onChange={() => handleChange(el.content)}
+                        />
+                    ))}
+                </FormGroup>
+                <FormHelperText>{errors[name] && errors[name].message}</FormHelperText>
+            </FormControl>
         </div>
     );
 };
