@@ -80,7 +80,6 @@ const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                                 getCheckedData={handleCheckboxData}
                             />
                             <ErrorMessage errors={errors} name={`question${question.id}`}  />
-                            {/* {errors[`question${question.id}`]?.message} */}
                         </div>
                     )
                 default:
@@ -99,7 +98,6 @@ const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                     inputRef={register({ required: 'Pole jest wymagane'})}
                 />
                 <ErrorMessage errors={errors} name={`question${question.id}`} />
-                {/* {errors[`question${question.id}`]?.message} */}
             </div>
         );
     })
