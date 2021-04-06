@@ -20,8 +20,10 @@ import NotFound from './pages/NotFound';
 import Register from './pages/Register';
 import theme from './themes/theme';
 import { RestfulProvider } from 'restful-react';
+import { useGet } from 'restful-react';
 
 const App: React.FC = () => {
+    console.log('app');
     return (
         <ThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>

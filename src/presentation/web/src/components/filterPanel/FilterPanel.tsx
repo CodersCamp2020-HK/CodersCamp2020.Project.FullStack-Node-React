@@ -42,7 +42,7 @@ const useStyles = makeStyles({
 });
 
 const FilterPanel = () => {
-    console.log('render filterPanel');
+    // console.log('render filterPanel');
 
     const { formState, setFormState, handleSubmit } = useContext(FormContex);
 
@@ -78,10 +78,10 @@ const FilterPanel = () => {
                                 <Typography align="center" color="primary">
                                     Kot
                                 </Typography>
-                                <IconWrapper active={formState.animal === 'cat'}>
+                                <IconWrapper active={formState.specie === 'cat'}>
                                     <Cat
                                         fill={
-                                            formState.animal === 'cat'
+                                            formState.specie === 'cat'
                                                 ? localTheme.palette.secondary.main
                                                 : localTheme.palette.primary.main
                                         }
@@ -90,10 +90,10 @@ const FilterPanel = () => {
                                 <input
                                     className={classes.input}
                                     type="radio"
-                                    name="animal"
+                                    name="specie"
                                     id="cat"
                                     value="cat"
-                                    checked={formState.animal === 'cat'}
+                                    checked={formState.specie === 'cat'}
                                     onChange={handleChange}
                                 />
                             </label>
@@ -101,10 +101,10 @@ const FilterPanel = () => {
                                 <Typography align="center" color="primary">
                                     Pies
                                 </Typography>
-                                <IconWrapper active={formState.animal === 'dog'}>
+                                <IconWrapper active={formState.specie === 'dog'}>
                                     <Dog
                                         fill={
-                                            formState.animal === 'dog'
+                                            formState.specie === 'dog'
                                                 ? localTheme.palette.secondary.main
                                                 : localTheme.palette.primary.main
                                         }
@@ -113,10 +113,10 @@ const FilterPanel = () => {
                                 <input
                                     className={classes.input}
                                     type="radio"
-                                    name="animal"
+                                    name="specie"
                                     id="dog"
                                     value="dog"
-                                    checked={formState.animal === 'dog'}
+                                    checked={formState.specie === 'dog'}
                                     onChange={handleChange}
                                 />
                             </label>
@@ -124,10 +124,10 @@ const FilterPanel = () => {
                                 <Typography align="center" color="primary">
                                     Obojętnie
                                 </Typography>
-                                <IconWrapper active={formState.animal === 'catDog'}>
+                                <IconWrapper active={formState.specie === 'catDog'}>
                                     <CatDog
                                         fill={
-                                            formState.animal === 'catDog'
+                                            formState.specie === 'catDog'
                                                 ? localTheme.palette.secondary.main
                                                 : localTheme.palette.primary.main
                                         }
@@ -136,10 +136,10 @@ const FilterPanel = () => {
                                 <input
                                     className={classes.input}
                                     type="radio"
-                                    name="animal"
+                                    name="specie"
                                     id="catDog"
                                     value="catDog"
-                                    checked={formState.animal === 'catDog'}
+                                    checked={formState.specie === 'catDog'}
                                     onChange={handleChange}
                                 />
                             </label>

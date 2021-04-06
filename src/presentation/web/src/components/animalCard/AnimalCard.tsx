@@ -19,7 +19,9 @@ const useStyles = makeStyles((theme) => ({
             boxShadow: '0px 0px 8px 0px rgba(0,0,0,0.1)',
         },
     },
-    content: {},
+    content: {
+        height: 200,
+    },
     media: {
         height: 300,
     },

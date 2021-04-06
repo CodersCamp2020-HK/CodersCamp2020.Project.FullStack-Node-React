@@ -1,41 +1,64 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
+import GalleryPage from '../galleryPage/GalleryPage';
+import { MemoryRouter, Route } from 'react-router';
+import { BrowserRouter as Router, Link, useLocation } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
-import { SubmitContext } from '../../pages/Home';
+import PaginationItem from '@material-ui/lab/PaginationItem';
 import { useGet } from 'restful-react';
-import AnimalCard from '../animalCard/AnimalCard';
-import { GetAnimals } from '../../client/index';
+import { useGetAnimals, GetAnimalsQueryParams, useGetForm } from '../../client/index';
 
-const Gallery = () => {
-    console.log('render gallery');
-    const { animal } = useContext(SubmitContext);
-    const animalReq =
-        animal === 'catDog'
-            ? { path: '/animals' }
-            : {
-                  path: '/animals',
-                  queryParams: {
-                      specie: animal,
-                  },
-              };
+interface Props {
+    query: GetAnimalsQueryParams;
+    currentPage: number;
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+}
 
-    const { data, loading } = useGet(animalReq);
+const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage }) => {
+    // console.log('render gallery');
+    const { data, loading } = useGetAnimals({ queryParams: { ...query, count: true } });
+    const [pages, setPages] = useState(1);
 
-    console.log(data);
+    interface MyData {
+        count: number;
+    }
+
+    useEffect(() => {
+        if (data !== null) {
+            setPages(Math.ceil(((data as unknown) as MyData).count / 6));
+        }
+    }, [data]);
+
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setCurrentPage(value);
+    };
 
     return (
         <div>
-            {!loading &&
-                data.map(({ id, name, description }: any) => (
-                    <AnimalCard
-                        key={id}
-                        name={name}
-                        description={description}
-                        photoURL="https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-                    />
-                ))}
-            <Pagination color="primary" count={5} />
+            <GalleryPage query={query} currentPage={currentPage} />
+            <Route>
+                {({ location }) => {
+                    const query = new URLSearchParams(location.search);
+                    const page = parseInt(query.get('page') || '1');
+                    return (
+                        <Pagination
+                            color="primary"
+                            page={currentPage}
+                            count={pages}
+                            defaultPage={1}
+                            renderItem={(item) => (
+                                <PaginationItem
+                                    component={Link}
+                                    to={`/${item.page === 1 ? '' : `?page=${item.page}`}`}
+                                    {...item}
+                                />
+                            )}
+                            onChange={handleChange}
+                        />
+                    );
+                }}
+            </Route>
         </div>
     );
 };
 
-export default React.memo(Gallery);
+export default Gallery;
