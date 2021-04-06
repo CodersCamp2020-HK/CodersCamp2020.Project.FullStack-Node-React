@@ -65,18 +65,12 @@ const SideNavList: React.FC<Props> = ({ name, user }) => {
         { key: 6, name: 'Wyloguj', icon: <InputIcon color="primary" /> },
     ];
 
-    const textAdmin = [
-        { key: 1, name: 'Zwierzęta', icon: <PetsIcon color="primary" /> },
-        { key: 2, name: 'Wnioski', icon: <ReceiptIcon color="primary" /> },
-        { key: 3, name: 'Użytkownicy', icon: <PeopleIcon color="primary" /> },
-        { key: 4, name: 'Kalendarz', icon: <CalendarTodayIcon color="primary" /> },
-        { key: 5, name: 'Mój Profil', icon: <PersonIcon color="primary" /> },
-        { key: 6, name: 'Wyloguj', icon: <InputIcon color="primary" /> },
-    ];
+    const textAdmin = Array.from(textWorker);
+    textAdmin[2] = { key: 3, name: 'Użytkownicy', icon: <PeopleIcon color="primary" /> };
 
     return (
         <div className={classes.root}>
-            <List subheader={<ListSubheader color="primary">Cześć {name}!</ListSubheader>} component="nav">
+            <List subheader={<ListSubheader color="primary" >Cześć {name}!</ListSubheader>} component="nav">
                 {(user === 'normalUser' ? textUser : user === 'workerUser' ? textWorker : textAdmin).map((t) => (
                     <ListItem
                         key={t.key}
