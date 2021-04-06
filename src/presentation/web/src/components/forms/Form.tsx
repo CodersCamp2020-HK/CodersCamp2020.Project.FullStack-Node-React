@@ -47,7 +47,6 @@ const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
         if (formState.isSubmitted) trigger(name);
     }
     const validateRequired = (value: string | string[]) => value && value.length > 0 || 'Pole jest wymagane';
-    console.log(errors)
     
     return questions.map((question) => {
         register({ name: `question${question.id}`, type: 'custom'}, { validate: validateRequired })
