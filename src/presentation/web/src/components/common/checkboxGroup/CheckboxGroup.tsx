@@ -46,14 +46,7 @@ const useStyles = makeStyles((theme) => ({
 
 const CheckboxGroup = ({ values, name, getCheckedData, question, errors }: CheckboxGroupProps) => {
     const classes = useStyles();
-    const [items, setItems] = useState(values);
-
-    useEffect(() => {
-        getCheckedData(
-            name,
-            values.filter((el) => el.checked),
-        );
-    }, []);
+    const [items, setItems] = useState<SingleOption[]>(values);
 
     useEffect(() => {
         getCheckedData(

@@ -65,9 +65,9 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
         if (isArray(question.placeholder.answer)) {
             const radioAnswers: RadioOption[] = [];
             const checkboxAnswers: CheckboxOption[] = [];
+            const defaultValue = defaultValues && defaultValues[`question${question.id}`]
             switch (question.placeholder.type) {
                 case 'radio':
-                    const defaultValue = defaultValues && defaultValues[`question${question.id}`]
                     if (!isStringOrUndefined(defaultValue)) throw new Error('Nie jest stringiem');
                     for (const answer of question.placeholder.answer) radioAnswers.push({ content: answer })
                     return (
@@ -84,7 +84,11 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                         </div>
                     )
                 case 'checkbox':
-                    for (const answer of question.placeholder.answer) checkboxAnswers.push({ content: answer, checked: false, disabled: false })
+                    for (const answer of question.placeholder.answer) {
+                        isArray(defaultValue) && defaultValue.includes(answer) 
+                            ? checkboxAnswers.push({ content: answer, checked: true, disabled: false })
+                            : checkboxAnswers.push({ content: answer, checked: false, disabled: false })
+                    }
                     return (
                         <div className={classes.question} key={`question${question.id}`}>
                             <CheckboxGroup

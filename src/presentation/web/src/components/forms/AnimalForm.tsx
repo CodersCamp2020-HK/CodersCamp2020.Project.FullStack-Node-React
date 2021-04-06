@@ -12,7 +12,7 @@ const AnimalForm = () => {
         question1: 'Tak',
         question2: 'Nie',
         question5: 'Eluwinka',
-        question8: ['Groźny']
+        question8: ['Groźny', 'Straszny', 'Szczekający']
     }
 
     if (!loading && data && data.form) {
