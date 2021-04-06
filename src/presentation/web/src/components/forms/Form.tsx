@@ -38,6 +38,7 @@ const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
     const { register, setValue, errors, trigger, formState } = methods;
     const handleRadioData = (name: string, data: string) => {
         setValue(name, data);
+        if (formState.isSubmitted) trigger(name);
     }
     const handleCheckboxData = (name: string, data: CheckboxOption[]): void => {
         const options = [];
