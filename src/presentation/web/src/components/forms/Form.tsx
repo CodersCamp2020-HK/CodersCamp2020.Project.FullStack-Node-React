@@ -14,6 +14,14 @@ interface Props {
     questions: FormQuestion[];
     handleSubmit: (data: any) => void;
     defaultValues?: Record<string, string | string[]>;
+    disabled?: boolean;
+}
+
+interface GenerateInputsProps {
+    questions: FormQuestion[];
+    methods: UseFormMethods<Record<string, string | string[]>>
+    defaultValues?: Record<string, string | string[]>;
+    disabled?: boolean;
 }
 
 interface CheckboxOption {
@@ -45,7 +53,7 @@ const useStyles =  makeStyles((theme) => ({
     },
 }))
 
-const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<FieldValues>, defaultValues?: Record<string, string | string[]>) => {
+const GenerateInputs = ({ questions, methods, defaultValues, disabled }: GenerateInputsProps) => {
     const classes = useStyles();
     const { register, setValue, errors, trigger, formState } = methods;
     const handleRadioData = (name: string, data: string) => {
@@ -120,14 +128,14 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                     classes={{ root: classes.root }}
                     inputRef={register({ required: 'Napisz odpowiedź' })}
                     error={errors.hasOwnProperty(`question${question.id}`)}
-                    helperText={errors[`question${question.id}`] && errors[`question${question.id}`].message}
+                    helperText={errors[`question${question.id}`] && errors[`question${question.id}`]?.message}
                 />
             </div>
         );
     })
 }
 
-const Form: React.FC<Props> = ({ questions, handleSubmit: submitCb, defaultValues }) => {
+const Form: React.FC<Props> = ({ questions, handleSubmit: submitCb, defaultValues, disabled }) => {
     const methods = useForm<Record<string, string | string[]>>({
         shouldFocusError: false,
         defaultValues
@@ -135,7 +143,7 @@ const Form: React.FC<Props> = ({ questions, handleSubmit: submitCb, defaultValue
 
     return (
         <form noValidate onSubmit={methods.handleSubmit(submitCb)}>
-            {GenerateInputs(questions, methods, defaultValues)}
+            {GenerateInputs({ questions, methods, defaultValues, disabled })}
             <Button
                 size="medium"
                 variant="contained"
