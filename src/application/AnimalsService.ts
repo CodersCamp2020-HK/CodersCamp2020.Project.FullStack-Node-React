@@ -131,6 +131,7 @@ export class AnimalsService {
                 .createQueryBuilder('animal')
                 .leftJoinAndSelect('animal.additionalInfo', 'info')
                 .leftJoinAndSelect('animal.specie', 'specie')
+                .leftJoinAndSelect('animal.thumbnail', 'thumbnail')
                 .where('animal.id >= :zero', { zero: 0 })
                 .skip(isFirstPage ? 0 : SKIP)
                 .take(LIMIT),

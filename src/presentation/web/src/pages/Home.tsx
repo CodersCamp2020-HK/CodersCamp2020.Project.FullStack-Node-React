@@ -1,8 +1,6 @@
 import React, { FormEvent, useState, useEffect } from 'react';
 import FilterPanel from '../components/filterPanel/FilterPanel';
 import Gallery from '../components/gallery/Gallery';
-import { useGet } from 'restful-react';
-import { BrowserRouter as Router, Route, Link, useLocation, useParams } from 'react-router-dom';
 import { GetAnimalsQueryParams } from '../client/index';
 
 const initialState = {
@@ -36,8 +34,6 @@ const initialContext = {
 export const FormContex = React.createContext<IFormContex>(initialContext);
 
 const Home = () => {
-    // console.log('render home');
-
     const [formState, setFormState] = useState<IFormState>(initialState);
     const [submitData, setSubmitData] = useState<IFormState>(initialState);
     const [query, setQuery] = useState<GetAnimalsQueryParams>(initialQuery);

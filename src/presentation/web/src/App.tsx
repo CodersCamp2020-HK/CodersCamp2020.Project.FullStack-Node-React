@@ -23,16 +23,13 @@ import { RestfulProvider } from 'restful-react';
 import { useGet } from 'restful-react';
 
 const App: React.FC = () => {
-    console.log('app');
     return (
         <ThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
-                {/* <RestfulProvider base="http://localhost:8000/api/"> */}
                 <RestfulProvider base="http://localhost:8000/api/">
                     <Container style={{ marginTop: 64 }}>
                         <Router>
                             <Navbar />
-                            {/* <Grid container> */}
                             <Switch>
                                 <Route exact path="/">
                                     <Home />
@@ -65,7 +62,6 @@ const App: React.FC = () => {
                                     <NotFound />
                                 </Route>
                             </Switch>
-                            {/* </Grid> */}
                         </Router>
                     </Container>
                 </RestfulProvider>

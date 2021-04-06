@@ -1,8 +1,7 @@
-import React, { useContext } from 'react';
-import { useGet } from 'restful-react';
+import React from 'react';
 import { useGetAnimals, GetAnimalsQueryParams } from '../../client/index';
-import { BrowserRouter as Router, Link, useLocation, useParams, useRouteMatch } from 'react-router-dom';
 import AnimalCard from '../animalCard/AnimalCard';
+import { Grid } from '@material-ui/core';
 
 interface Props {
     query: GetAnimalsQueryParams;
@@ -10,19 +9,20 @@ interface Props {
 }
 
 const GalleryPage: React.FC<Props> = ({ query, currentPage }) => {
-    console.log('render galery page');
-    console.log(`currentPage: ${currentPage}`);
-    console.log(query);
-    const { data, loading } = useGetAnimals({ queryParams: { ...query, page: currentPage, perPage: 6 } });
-    console.log(data);
-    const url = 'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260';
+    const { data } = useGetAnimals({ queryParams: { ...query, page: currentPage, perPage: 6 } });
     return (
-        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <Grid container spacing={3}>
             {data instanceof Array &&
                 data.map((item) => (
-                    <AnimalCard key={item.id} name={item.name} description={item.description} photoURL={url} />
+                    <Grid item xs={12} sm={6} md={4} key={item.id}>
+                        <AnimalCard
+                            name={item.name}
+                            description={item.description}
+                            photoURL={Buffer.from(item.thumbnail.buffer.data, 'binary').toString('base64')}
+                        />
+                    </Grid>
                 ))}
-        </div>
+        </Grid>
     );
 };
 

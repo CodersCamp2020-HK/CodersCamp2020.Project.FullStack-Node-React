@@ -8,7 +8,6 @@ import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        maxWidth: 380,
         borderRadius: 15,
         border: `1px solid ${theme.palette.grey[200]}`,
         transition: 'all 0.15s ease-in-out',
@@ -38,7 +37,7 @@ const AnimalCard: React.FC<Props> = ({ name, description, photoURL }) => {
     return (
         <Card className={classes.root}>
             <CardActionArea>
-                <CardMedia className={classes.media} image={photoURL} title="Adoptuj mnie" />
+                <CardMedia className={classes.media} image={`data:image/png;base64,${photoURL}`} title="Adoptuj mnie" />
                 <CardContent className={classes.content}>
                     <Typography color="textPrimary" gutterBottom variant="h5" component="h2">
                         {name}
