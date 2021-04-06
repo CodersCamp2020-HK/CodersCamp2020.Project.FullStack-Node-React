@@ -48,8 +48,8 @@ const theme = createMuiTheme({
         },
         MuiGrid: {
             alignItems: 'center',
-            justify: 'center'
-            margin: 'normal'
+            justify: 'center',
+            margin: 'normal',
         },
         MuiButtonBase: {
             disableRipple: true,
