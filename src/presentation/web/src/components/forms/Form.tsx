@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import CheckboxGroup from '../common/checkboxGroup/CheckboxGroup';
 import Button from '@material-ui/core/Button';
 import { ErrorMessage } from '@hookform/error-message';
+import { makeStyles } from '@material-ui/core/styles';
 
 interface Props {
     questions: FormQuestion[];
@@ -23,18 +24,20 @@ interface RadioOption {
     content: string;
 }
 
-interface Answer {
-    type: AnswerType;
-    answer: string | string[];
-}
+const useStyles =  makeStyles((theme) => ({
+    question: {
+        marginBottom: 20,
+    },
+    root: {
+        '& .MuiFormHelperText-root': {
+            position: 'absolute',
+            top: 77
+        }
+    }
+}))
 
-interface FormData {
-    questionId: number;
-    answer: Answer;
-}
-
-
-const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<FieldValues>) => {
+const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<FieldValues>) => {
+    const classes = useStyles();
     const { register, setValue, errors, trigger, formState } = methods;
     const handleRadioData = (name: string, data: string) => {
         setValue(name, data);
@@ -57,7 +60,7 @@ const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                 case 'radio':
                     for (const answer of question.placeholder.answer) radioAnswers.push({ content: answer })
                     return (
-                        <div key={`question${question.id}`}>
+                        <div className={classes.question} key={`question${question.id}`}>
                             <Typography>{question.question}</Typography>
                             <RadioGroup
                                 key={question.id}
@@ -71,7 +74,7 @@ const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                 case 'checkbox':
                     for (const answer of question.placeholder.answer) checkboxAnswers.push({ content: answer, checked: false, disabled: false })
                     return (
-                        <div key={`question${question.id}`}>
+                        <div className={classes.question} key={`question${question.id}`}>
                             <Typography>{question.question}</Typography>
                             <CheckboxGroup
                                 key={question.id}
@@ -87,7 +90,7 @@ const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
             }
         }
         return (
-            <div key={`question${question.id}`}>
+            <div className={classes.question} key={`question${question.id}`}>
                 <Typography>{question.question}</Typography>
                 <TextField
                     key={question.id}
@@ -95,9 +98,14 @@ const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                     multiline
                     rows={2}
                     rowsMax={4}
+                    style={{ marginBottom: 0 }}
+                    classes={{
+                        root: classes.root
+                    }}
                     inputRef={register({ required: 'Pole jest wymagane'})}
+                    error={errors.hasOwnProperty(`question${question.id}`)}
+                    helperText={errors[`question${question.id}`] && errors[`question${question.id}`].message}
                 />
-                <ErrorMessage errors={errors} name={`question${question.id}`} />
             </div>
         );
     })
@@ -108,9 +116,8 @@ const Form: React.FC<Props> = ({ questions, handleSubmit: submitCb }) => {
 
     return (
         <form noValidate onSubmit={methods.handleSubmit(submitCb)}>
-            {generateInputs(questions, methods)}
+            {GenerateInputs(questions, methods)}
             <Button
-                fullWidth
                 size="medium"
                 variant="contained"
                 color="primary"
