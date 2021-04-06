@@ -25,8 +25,14 @@ const useStyles = makeStyles((theme) => ({
     root: {
         color: theme.palette.text.primary
     },
-    focused: {
-        color: theme.palette.text.primary
+    formControl: {
+        display: 'flex'
+    },
+    helperText: {
+        margin: 0,
+        marginRight: 14,
+        marginLeft: 14,
+        marginTop: 3
     }
 }))
 
@@ -59,24 +65,22 @@ const CheckboxGroup = ({ values, name, getCheckedData, question, errors }: Check
     };
 
     return (
-        <div style={{ display: 'flex' }}>
-            <FormControl error={errors.hasOwnProperty(name)} component="fieldset" >
-                <FormGroup>
-                    <FormLabel focused={false} classes={{ root: classes.root }}>{question}</FormLabel>
-                    {items.map((el, index) => (
-                        <LabeledCheckBox
-                            key={index}
-                            checked={el.checked}
-                            disabled={el.disabled}
-                            name={name}
-                            label={el.content}
-                            onChange={() => handleChange(el.content)}
-                        />
-                    ))}
-                </FormGroup>
-                <FormHelperText>{errors[name] && errors[name].message}</FormHelperText>
-            </FormControl>
-        </div>
+        <FormControl className={classes.formControl} error={errors.hasOwnProperty(name)} component="fieldset" >
+            <FormGroup>
+                <FormLabel focused={false} classes={{ root: classes.root }}>{question}</FormLabel>
+                {items.map((el, index) => (
+                    <LabeledCheckBox
+                        key={index}
+                        checked={el.checked}
+                        disabled={el.disabled}
+                        name={name}
+                        label={el.content}
+                        onChange={() => handleChange(el.content)}
+                    />
+                ))}
+                <FormHelperText className={classes.helperText}>{errors[name] && errors[name].message}</FormHelperText>
+            </FormGroup>
+        </FormControl>
     );
 };
 

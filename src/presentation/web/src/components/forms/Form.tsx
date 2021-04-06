@@ -71,17 +71,13 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                     for (const answer of question.placeholder.answer) radioAnswers.push({ content: answer })
                     return (
                         <div className={classes.question} key={`question${question.id}`}>
-                            <Typography>{question.question}</Typography>
                             <RadioGroup
                                 key={question.id}
                                 name={`question${question.id}`}
                                 values={radioAnswers}
                                 getCheckedOption={handleRadioData}
-                            />
-                            <ErrorMessage
+                                question={question.question}
                                 errors={errors}
-                                name={`question${question.id}`}
-                                render={({ message }) => <p className={classes.questionError}>{message}</p>}
                             />
                         </div>
                     )
@@ -97,11 +93,6 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                                 question={question.question}
                                 errors={errors}
                             />
-                            {/* <ErrorMessage
-                                errors={errors}
-                                name={`question${question.id}`}
-                                render={({ message }) => <p className={classes.questionError}>{message}</p>}
-                            /> */}
                         </div>
                     )
                 default:
@@ -131,7 +122,7 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
 }
 
 const Form: React.FC<Props> = ({ questions, handleSubmit: submitCb }) => {
-    const methods = useForm();
+    const methods = useForm({ shouldFocusError: false });
     const classes = useStyles();
 
     return (
