@@ -57,7 +57,13 @@ const RegisterForm: React.FC = () => {
             alignSelf: 'flex-end',
         },
         textField: {
-            marginBottom: 35,
+            '& .MuiFormHelperText-root': {
+                position: 'absolute',
+                paddingBottom: 25,
+                bottom: 0
+            },
+            paddingBottom: 50,
+            position: 'relative'
         }
     })
     const classes = useStyle();
@@ -112,7 +118,7 @@ const RegisterForm: React.FC = () => {
                     <LockOutlinedIcon className={classes.lockIcon} />
                 </SvgIcon>
                 <Typography className={classes.text} variant="h5" component="span">Zarejestruj się</Typography>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <TextField
                         className={classes.textField}
                         name="name"

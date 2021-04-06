@@ -23,17 +23,25 @@ interface CheckboxGroupProps {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        color: theme.palette.text.primary
+        color: theme.palette.text.primary,
     },
     formControl: {
-        display: 'flex'
+        display: 'flex',
+        flexDirection: 'column',
+    },
+    formGroup: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+        position: 'relative',
+        paddingBottom: 12
     },
     helperText: {
-        margin: 0,
-        marginRight: 14,
-        marginLeft: 14,
-        marginTop: 3
-    }
+        position: 'absolute',
+        bottom: 0,
+        left: 14
+    },
 }))
 
 const CheckboxGroup = ({ values, name, getCheckedData, question, errors }: CheckboxGroupProps) => {
@@ -66,8 +74,8 @@ const CheckboxGroup = ({ values, name, getCheckedData, question, errors }: Check
 
     return (
         <FormControl className={classes.formControl} error={errors.hasOwnProperty(name)} component="fieldset" >
-            <FormGroup>
-                <FormLabel focused={false} classes={{ root: classes.root }}>{question}</FormLabel>
+            <FormGroup className={classes.formGroup}>
+                <FormLabel focused={false} error={false} classes={{ root: classes.root }}>{question}</FormLabel>
                 {items.map((el, index) => (
                     <LabeledCheckBox
                         key={index}

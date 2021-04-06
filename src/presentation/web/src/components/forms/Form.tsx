@@ -1,5 +1,4 @@
 import React from 'react'
-import { ErrorMessage } from '@hookform/error-message';
 import { makeStyles } from '@material-ui/core/styles';
 import { FormQuestion } from '../../client/index';
 import { FieldValues, useForm, UseFormMethods } from 'react-hook-form';
@@ -31,8 +30,9 @@ const useStyles =  makeStyles((theme) => ({
     root: {
         '& .MuiFormHelperText-root': {
             position: 'absolute',
-            top: 77
-        }
+            bottom: 0
+        },
+        paddingBottom: 24
     },
     questionError: {
         color: theme.palette.error.main,
@@ -41,9 +41,6 @@ const useStyles =  makeStyles((theme) => ({
         marginLeft: 14,
         marginRight: 14,
     },
-    submit: {
-        marginTop: 25
-    }
 }))
 
 const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<FieldValues>) => {
@@ -59,13 +56,13 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
         setValue(name, options);
         if (formState.isSubmitted) trigger(name);
     }
-    const validateRequired = (value: string | string[]) => value && value.length > 0 || 'Pole jest wymagane';
+    const validateRequired = (value: string | string[]) => value && value.length > 0 || 'Zaznacz odpowiedź';
     
     return questions.map((question) => {
         register({ name: `question${question.id}`, type: 'custom'}, { validate: validateRequired })
         if (isArray(question.placeholder.answer)) {
-            const radioAnswers: RadioOption[] = []
-            const checkboxAnswers: CheckboxOption[] = []
+            const radioAnswers: RadioOption[] = [];
+            const checkboxAnswers: CheckboxOption[] = [];
             switch (question.placeholder.type) {
                 case 'radio':
                     for (const answer of question.placeholder.answer) radioAnswers.push({ content: answer })
@@ -99,6 +96,7 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                     throw new Error('Wrong type of question!')
             }
         }
+
         return (
             <div className={classes.question} key={`question${question.id}`}>
                 <Typography>{question.question}</Typography>
@@ -106,13 +104,12 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                     key={question.id}
                     name={`question${question.id}`}
                     multiline
+                    required
                     rows={2}
                     rowsMax={4}
                     style={{ marginBottom: 0 }}
-                    classes={{
-                        root: classes.root
-                    }}
-                    inputRef={register({ required: 'Pole jest wymagane'})}
+                    classes={{ root: classes.root }}
+                    inputRef={register({ required: 'Napisz odpowiedź'})}
                     error={errors.hasOwnProperty(`question${question.id}`)}
                     helperText={errors[`question${question.id}`] && errors[`question${question.id}`].message}
                 />
@@ -129,7 +126,6 @@ const Form: React.FC<Props> = ({ questions, handleSubmit: submitCb }) => {
         <form noValidate onSubmit={methods.handleSubmit(submitCb)}>
             {GenerateInputs(questions, methods)}
             <Button
-                className={classes.submit}
                 size="medium"
                 variant="contained"
                 color="primary"

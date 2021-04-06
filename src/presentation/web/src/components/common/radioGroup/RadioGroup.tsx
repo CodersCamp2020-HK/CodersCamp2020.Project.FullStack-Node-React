@@ -24,14 +24,18 @@ const useStyles = makeStyles((theme: Theme) => ({
         color: theme.palette.text.primary
     },
     formControl: {
-        display: 'flex'
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'center',
+        position: 'relative',
+        paddingBottom: 12
     },
     helperText: {
-        margin: 0,
-        marginRight: 14,
-        marginLeft: 14,
-        marginTop: 3
-    }
+        position: 'absolute',
+        left: 14,
+        bottom: 0,
+    },
 }))
 
 const RadioGroup = ({ values, name, getCheckedOption, question, errors }: RadioGroupProps) => {
@@ -51,7 +55,7 @@ const RadioGroup = ({ values, name, getCheckedOption, question, errors }: RadioG
 
     return (
         <FormControl component="fieldset" error={errors.hasOwnProperty(name)} className={classes.formControl}>
-            <FormLabel focused={false} className={classes.root}>{question}</FormLabel>
+            <FormLabel focused={false} error={false} className={classes.root}>{question}</FormLabel>
             <RadioGroupMui name={name} value={checkedOption} onChange={handleChange}>
                 {values.map((option, index) => <LabeledRadio key={index} label={option.content} /> )}
             </RadioGroupMui>
