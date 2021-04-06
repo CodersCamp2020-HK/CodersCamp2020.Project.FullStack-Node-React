@@ -7,6 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import CheckboxGroup from '../common/checkboxGroup/CheckboxGroup';
 import Button from '@material-ui/core/Button';
+import { ErrorMessage } from '@hookform/error-message';
 
 interface Props {
     questions: FormQuestion[];
@@ -34,7 +35,7 @@ interface FormData {
 
 
 const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<FieldValues>) => {
-    const { register, setValue, errors, setError } = methods;
+    const { register, setValue, errors, trigger, formState } = methods;
     const handleRadioData = (name: string, data: string) => {
         setValue(name, data);
     }
@@ -42,10 +43,13 @@ const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
         const options = [];
         for (const option of data) options.push(option.content);
         setValue(name, options);
+        if (formState.isSubmitted) trigger(name);
     }
+    const validateRequired = (value: string | string[]) => value && value.length > 0 || 'Pole jest wymagane';
+    console.log(errors)
     
     return questions.map((question) => {
-        register({ name: `question${question.id}`, type: 'custom'})
+        register({ name: `question${question.id}`, type: 'custom'}, { validate: validateRequired })
         if (isArray(question.placeholder.answer)) {
             const radioAnswers: RadioOption[] = []
             const checkboxAnswers: CheckboxOption[] = []
@@ -61,6 +65,7 @@ const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                                 values={radioAnswers}
                                 getCheckedOption={handleRadioData}
                             />
+                            <ErrorMessage errors={errors} name={`question${question.id}`} />
                         </div>
                     )
                 case 'checkbox':
@@ -74,6 +79,8 @@ const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                                 values={checkboxAnswers}
                                 getCheckedData={handleCheckboxData}
                             />
+                            <ErrorMessage errors={errors} name={`question${question.id}`}  />
+                            {/* {errors[`question${question.id}`]?.message} */}
                         </div>
                     )
                 default:
@@ -89,7 +96,10 @@ const generateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                     multiline
                     rows={2}
                     rowsMax={4}
+                    inputRef={register({ required: 'Pole jest wymagane'})}
                 />
+                <ErrorMessage errors={errors} name={`question${question.id}`} />
+                {/* {errors[`question${question.id}`]?.message} */}
             </div>
         );
     })
