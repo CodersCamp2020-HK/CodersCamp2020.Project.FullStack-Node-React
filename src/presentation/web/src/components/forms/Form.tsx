@@ -1,14 +1,14 @@
 import React from 'react'
-import isArray from '../../utils/IsArray';
-import { AnswerType, FormQuestion } from '../../client/index';
+import { ErrorMessage } from '@hookform/error-message';
+import { makeStyles } from '@material-ui/core/styles';
+import { FormQuestion } from '../../client/index';
 import { FieldValues, useForm, UseFormMethods } from 'react-hook-form';
+import Button from '@material-ui/core/Button';
+import CheckboxGroup from '../common/checkboxGroup/CheckboxGroup';
+import isArray from '../../utils/IsArray';
 import RadioGroup from '../common/radioGroup/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import CheckboxGroup from '../common/checkboxGroup/CheckboxGroup';
-import Button from '@material-ui/core/Button';
-import { ErrorMessage } from '@hookform/error-message';
-import { makeStyles } from '@material-ui/core/styles';
 
 interface Props {
     questions: FormQuestion[];
@@ -33,6 +33,16 @@ const useStyles =  makeStyles((theme) => ({
             position: 'absolute',
             top: 77
         }
+    },
+    questionError: {
+        color: theme.palette.error.main,
+        ...theme.typography.caption,
+        margin: 0,
+        marginLeft: 14,
+        marginRight: 14,
+    },
+    submit: {
+        marginTop: 25
     }
 }))
 
@@ -68,7 +78,11 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                                 values={radioAnswers}
                                 getCheckedOption={handleRadioData}
                             />
-                            <ErrorMessage errors={errors} name={`question${question.id}`} />
+                            <ErrorMessage
+                                errors={errors}
+                                name={`question${question.id}`}
+                                render={({ message }) => <p className={classes.questionError}>{message}</p>}
+                            />
                         </div>
                     )
                 case 'checkbox':
@@ -82,7 +96,11 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
                                 values={checkboxAnswers}
                                 getCheckedData={handleCheckboxData}
                             />
-                            <ErrorMessage errors={errors} name={`question${question.id}`}  />
+                            <ErrorMessage
+                                errors={errors}
+                                name={`question${question.id}`}
+                                render={({ message }) => <p className={classes.questionError}>{message}</p>}
+                            />
                         </div>
                     )
                 default:
@@ -113,11 +131,13 @@ const GenerateInputs = (questions: FormQuestion[], methods: UseFormMethods<Field
 
 const Form: React.FC<Props> = ({ questions, handleSubmit: submitCb }) => {
     const methods = useForm();
+    const classes = useStyles();
 
     return (
         <form noValidate onSubmit={methods.handleSubmit(submitCb)}>
             {GenerateInputs(questions, methods)}
             <Button
+                className={classes.submit}
                 size="medium"
                 variant="contained"
                 color="primary"

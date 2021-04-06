@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Checkbox, FormGroup, FormControlLabel } from '@material-ui/core'
+import React from 'react';
+import {Checkbox, FormControlLabel } from '@material-ui/core'
 
 interface CheckBoxProps {
     label: string;
@@ -11,7 +11,11 @@ interface CheckBoxProps {
 }
 const LabeledCheckBox = ({label, checked = false, disabled=false, onChange, name}: CheckBoxProps) => {
     return (
-        <FormControlLabel label={label} control={<Checkbox disabled={disabled} checked={checked} onChange={onChange}/>} name={name} />
+        <FormControlLabel
+            label={label}
+            control={<Checkbox disabled={disabled} checked={checked} onChange={onChange} />}
+            name={name}
+        />
     )
 };
 
