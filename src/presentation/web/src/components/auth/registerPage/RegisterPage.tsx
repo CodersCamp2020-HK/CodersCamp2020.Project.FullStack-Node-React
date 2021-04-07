@@ -11,16 +11,9 @@ import { useForm } from 'react-hook-form';
 
 
 const useStyle = makeStyles<Theme>((theme) => ({
-    submit: {
-        filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
-        marginBottom: 10
-    },
     link: {
         color: theme.palette.info.dark,
         alignSelf: 'flex-end',
-    },
-    textField: {
-        marginBottom: 35,
     }
 }))
 

@@ -64,18 +64,10 @@ const theme = createMuiTheme({
             root: {
                 '& fieldset': {
                     borderRadius: 15,
-                },
-                paddingBottom: 20,
-                marginBottom: 15
-            },
-        },
-        MuiFormHelperText: {
-            root: {
-                position: 'absolute',
-                top: 55
+                }
             }
         }
-    },
+    }
 });
 
 export default theme;

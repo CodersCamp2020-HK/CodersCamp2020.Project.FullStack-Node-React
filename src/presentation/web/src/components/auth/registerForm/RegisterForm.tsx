@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useForm } from 'react-hook-form'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
@@ -29,7 +29,13 @@ const useStyle = makeStyles({
         marginBottom: 15
     },
     textField: {
-        marginBottom: 35,
+        '& .MuiFormHelperText-root': {
+            position: 'absolute',
+            paddingBottom: 25,
+            bottom: 0
+        },
+        paddingBottom: 50,
+        position: 'relative'
     }
 })
 

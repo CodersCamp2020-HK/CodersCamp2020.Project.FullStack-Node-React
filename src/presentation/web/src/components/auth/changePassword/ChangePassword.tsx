@@ -28,7 +28,13 @@ const useStyle = makeStyles<Theme>((theme) => ({
         alignSelf: 'flex-end',
     },
     textField: {
-        marginBottom: 35,
+        '& .MuiFormHelperText-root': {
+            position: 'absolute',
+            paddingBottom: 25,
+            bottom: 0
+        },
+        paddingBottom: 50,
+        position: 'relative'
     }
 }))
 
