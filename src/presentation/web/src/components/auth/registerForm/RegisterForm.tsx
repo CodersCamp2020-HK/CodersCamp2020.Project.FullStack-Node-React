@@ -100,7 +100,7 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues }
                     type="email"
                     required
                     inputRef={register({ required: 'Email jest wymagany!', pattern: { value: emailPattern, message: 'Nieprawidłowy email!'} })}
-                    error={errors.hasOwnProperty('email')}
+                    error={errors.hasOwnProperty('mail')}
                     helperText={errors.mail && errors.mail.message}
                     data-testid="mailInput"
                 />
