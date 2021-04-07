@@ -19,7 +19,6 @@ const AnimalInfo = () => {
             <Grid item xs={12} sm={8}>
                 <Slider
                     photos={[
-                        'https://images.pexels.com/photos/20787/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260',
                         ...photos,
                     ]}
                 />
