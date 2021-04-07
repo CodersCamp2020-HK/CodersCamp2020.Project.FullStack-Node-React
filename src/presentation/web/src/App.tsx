@@ -15,14 +15,15 @@ import NotFound from './pages/NotFound';
 import GridContainer from './components/gridContainer/GridContainer';
 
 
+const useStyles = makeStyles({
+    mainPage: {
+        boxSizing: 'border-box',
+        minHeight: 'calc(100vh - 4rem - 64px)',
+        marginTop: 64,
+    }
+})
+
 const App: React.FC = () => {
-    const useStyles = makeStyles({
-        mainPage: {
-            boxSizing: 'border-box',
-            minHeight: 'calc(100vh - 4rem - 64px)',
-            marginTop: 64,
-        }
-    })
     const classes = useStyles();
 
     return (
