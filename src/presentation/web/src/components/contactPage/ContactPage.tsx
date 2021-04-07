@@ -57,11 +57,8 @@ const useStyles = makeStyles({
         height: 'inherit',
         width: 'ingerit',
         backgroundColor: '#344876',
-        // backgroundImage: `url(${shelterPhoto})`,
-        // backgroundPosition: 'center top',
-        // backgroundSize: 'cover',
-        // borderRadius: '15px',
         padding: 0,
+        justify: 'center',
     },
     shelterContainer: {
         display: 'flex',

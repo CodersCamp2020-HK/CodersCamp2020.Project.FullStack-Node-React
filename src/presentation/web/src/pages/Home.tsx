@@ -2,6 +2,8 @@ import React, { FormEvent, useState, useEffect } from 'react';
 import FilterPanel from '../components/filterPanel/FilterPanel';
 import Gallery from '../components/gallery/Gallery';
 import { GetAnimalsQueryParams } from '../client/index';
+import { Route, Switch } from 'react-router-dom';
+import LandingHero from '../components/landingHero/LandingHero';
 
 const initialState = {
     specie: 'cat',
@@ -59,12 +61,23 @@ const Home = () => {
     }, [submitData]);
 
     return (
-        <div>
-            <FormContex.Provider value={{ formState, setFormState, handleSubmit }}>
-                <FilterPanel />
-            </FormContex.Provider>
-            <Gallery query={query} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-        </div>
+        <Switch>
+            <Route
+                exact
+                path="/"
+                render={() => {
+                    return (
+                        <div>
+                            <LandingHero />
+                            <FormContex.Provider value={{ formState, setFormState, handleSubmit }}>
+                                <FilterPanel />
+                            </FormContex.Provider>
+                            <Gallery query={query} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                        </div>
+                    );
+                }}
+            />
+        </Switch>
     );
 };
 
