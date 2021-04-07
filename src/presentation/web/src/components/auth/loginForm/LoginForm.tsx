@@ -2,8 +2,8 @@ import { Button, Grid, Link, Paper, TextField, Theme, Typography } from '@materi
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link as RouterLink } from 'react-router-dom';
-import { useMutate } from 'restful-react';
+import { Link as RouterLink, Redirect } from 'react-router-dom';
+import { useLoginUser } from '../../../client';
 import AuthPaper from '../authPaper/AuthPaper';
 
 interface IFormValues {
@@ -26,6 +26,8 @@ const useStyle = makeStyles<Theme>((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
         width: '100%',
+        position: 'relative',
+        paddingBottom: 20
     },
     textField: {
         '& .MuiFormHelperText-root': {
@@ -44,16 +46,18 @@ const useStyle = makeStyles<Theme>((theme) => ({
         filter: 'drop-shadow(0px 3px 1px rgba(0, 0, 0, 0.2)), drop-shadow(0px 2px 2px rgba(0, 0, 0, 0.14)), drop-shadow(0px 1px 5px rgba(0, 0, 0, 0.12))',
         marginBottom: 15
     },
+    loginError: {
+        position: 'absolute',
+        bottom: 0,
+    }
 }));
 
 const LoginForm = () => {
     const classes = useStyle();
 
     const [loginError, setLoginError] = useState<string>(null!);
-    const { error, mutate: auth } = useMutate({
-        verb: 'POST',
-        path: '/users/auth',
-    });
+    const [fireRedirect, setFireRedirect] = useState<boolean>(false);
+    const { error, mutate: auth } = useLoginUser({});
 
     const { register, handleSubmit, errors } = useForm<IFormValues>();
     const onSubmit = async (data: IFormValues) => {
@@ -63,6 +67,7 @@ const LoginForm = () => {
                 password: data.Password,
             });
             localStorage.setItem('apiKey', response.apiKey);
+            setFireRedirect(true);
         } catch (error) {
             if (error.status == 400 || error.status == 422) {
                 setLoginError('Błędny e-mail lub hasło!');
@@ -81,6 +86,7 @@ const LoginForm = () => {
                         type="email"
                         name="E-mail"
                         className={classes.textField}
+                        onChange={() => setLoginError('')}
                         required
                         autoFocus
                         error={errors['E-mail'] ? true : false}
@@ -92,6 +98,7 @@ const LoginForm = () => {
                         type="password"
                         name="Password"
                         className={classes.textField}
+                        onChange={() => setLoginError('')}
                         required
                         error={errors.Password ? true : false}
                         helperText={errors.Password && 'Hasło jest wymagane'}
@@ -101,7 +108,7 @@ const LoginForm = () => {
                         Zaloguj się
                     </Button>
                     {loginError && (
-                        <Typography variant="body2" color="primary">
+                        <Typography className={classes.loginError} variant="body2" color="primary">
                             {loginError}
                         </Typography>
                     )}
@@ -123,6 +130,7 @@ const LoginForm = () => {
                     </Button>
                 </Link>
             </Paper>
+            {fireRedirect && <Redirect to={'/'} />}
         </Grid>
     );
 };
