@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch, Redirect } from 'react-router-dom';
-import AnimalForm from '../components/forms/AnimalForm';
+import AnimalForm from '../components/forms/AnimalForm/AnimalForm';
 
 
 const FormRoute = () => {

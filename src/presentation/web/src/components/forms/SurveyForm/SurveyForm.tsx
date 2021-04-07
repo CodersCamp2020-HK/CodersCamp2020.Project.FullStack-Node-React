@@ -1,14 +1,14 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { FormQuestion } from '../../client/index';
+import { FormQuestion } from '../../../client/index';
 import { FieldValues, useForm, UseFormMethods } from 'react-hook-form';
 import Button from '@material-ui/core/Button';
-import CheckboxGroup from '../common/checkboxGroup/CheckboxGroup';
-import isArray from '../../utils/IsArray';
-import RadioGroup from '../common/radioGroup/RadioGroup';
+import CheckboxGroup from '../../common/checkboxGroup/CheckboxGroup';
+import isArray from '../../../utils/IsArray';
+import RadioGroup from '../../common/radioGroup/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import isStringOrUndefined from '../../utils/IsStringOrUndefined';
+import isStringOrUndefined from '../../../utils/IsStringOrUndefined';
 
 interface Props {
     questions: FormQuestion[];
@@ -135,7 +135,7 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled }: Generat
     })
 }
 
-const Form: React.FC<Props> = ({ questions, handleSubmit: submitCb, defaultValues, disabled }) => {
+const SurveyForm: React.FC<Props> = ({ questions, handleSubmit: submitCb, defaultValues, disabled }) => {
     const methods = useForm<Record<string, string | string[]>>({
         shouldFocusError: false,
         defaultValues
@@ -155,4 +155,4 @@ const Form: React.FC<Props> = ({ questions, handleSubmit: submitCb, defaultValue
     )
 }
 
-export default Form
+export default SurveyForm
