@@ -77,7 +77,7 @@ const LoginForm = () => {
             <AuthPaper typographyLabel="Zaloguj się">
                 <form onSubmit={handleSubmit(onSubmit)} className={classes.form} noValidate>
                     <TextField
-                        label="E-mail"
+                        label="Email"
                         type="email"
                         name="E-mail"
                         className={classes.textField}
@@ -88,7 +88,7 @@ const LoginForm = () => {
                         helperText={errors['E-mail'] && 'E-mail jest wymagany'}
                     />
                     <TextField
-                        label="Password"
+                        label="Hasło"
                         type="password"
                         name="Password"
                         className={classes.textField}
