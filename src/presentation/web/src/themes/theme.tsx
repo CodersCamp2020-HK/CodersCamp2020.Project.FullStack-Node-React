@@ -23,6 +23,9 @@ const theme = createMuiTheme({
         background: {
             default: '#FFFDF6',
         },
+        action: {
+            selected: '#bf360c',
+        }
     },
     props: {
         MuiLink: {
@@ -45,7 +48,11 @@ const theme = createMuiTheme({
         },
         MuiGrid: {
             alignItems: 'center',
-            justify: 'center'
+            justify: 'center',
+            // margin: 'normal'
+        },
+        MuiButtonBase: {
+            disableRipple: true,
         }
     },
     overrides: {
@@ -65,9 +72,9 @@ const theme = createMuiTheme({
                 '& fieldset': {
                     borderRadius: 15,
                 }
-            },
-        },
-    },
+            }
+        }
+    }
 });
 
 export default theme;
