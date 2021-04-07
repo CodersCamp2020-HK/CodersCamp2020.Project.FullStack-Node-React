@@ -56,7 +56,7 @@ const Navbar = () => {
                     <Drawer anchor="left" open={showDrawer} onClose={hide}>
                         <NavbarList view="mobile" />
                     </Drawer>
-                    <Link component={RouterLink} to="/login">
+                    <Link component={RouterLink} to="/auth">
                         <NavbarLoginBtn />
                     </Link>
                 </Toolbar>
