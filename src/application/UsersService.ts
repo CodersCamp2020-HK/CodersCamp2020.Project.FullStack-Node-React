@@ -76,10 +76,10 @@ export class UsersService {
         let SKIP;
         let LIMIT;
         if (paginationParams) {
-            isFirstPage = paginationParams.page == 1 ? true : false;
+            isFirstPage = paginationParams.page === 1 ? true : false;
             SKIP =
                 paginationParams.perPage && paginationParams.page
-                    ? paginationParams.perPage * paginationParams.page
+                    ? paginationParams.perPage * paginationParams.page - 1
                     : 0;
             LIMIT = paginationParams.perPage ? paginationParams.perPage : undefined;
         }
