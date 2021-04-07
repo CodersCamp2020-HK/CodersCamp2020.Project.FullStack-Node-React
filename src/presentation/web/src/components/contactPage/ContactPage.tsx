@@ -61,7 +61,7 @@ const useStyles = makeStyles({
         backgroundSize: 'cover',
         borderRadius: '15px',
         padding: 0,
-        ustify: 'center',
+        justify: 'center',
     },
     shelterContainer: {
         display: 'flex',

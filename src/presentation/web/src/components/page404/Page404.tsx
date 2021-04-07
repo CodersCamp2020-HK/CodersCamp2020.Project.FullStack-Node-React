@@ -2,7 +2,7 @@ import React from "react";
 import { Grid, Theme, Typography, useTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import PawIcon404 from "./img/PawIcon404";
-import AnimationPaws from "./animationPaws/AnimationPaws";
+import AnimationPaws from "../animationPaws/AnimationPaws";
 import CatPhoto from "./img/cat1.png";
 import DogPhoto from "./img/dog1.png";
 import Hidden from "@material-ui/core/Hidden";
