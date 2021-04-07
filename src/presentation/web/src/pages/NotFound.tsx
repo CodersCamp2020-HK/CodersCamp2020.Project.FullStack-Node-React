@@ -6,7 +6,7 @@ const NotFound = () => {
     let location = useLocation();
 
     return (
-    <Page404 />
+        <Page404 />
     )
 };
 
