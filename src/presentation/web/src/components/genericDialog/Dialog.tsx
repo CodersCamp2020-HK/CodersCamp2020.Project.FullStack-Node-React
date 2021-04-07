@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     paper: {
         padding: theme.spacing(2),
     },
-    buttons: {
+    buttonsContainer: {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -87,7 +87,7 @@ const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: 
                         />
                     )}
                     {errors.message && errors.message.message}
-                    <Container classes={{ root: classes.buttons }}>
+                    <Container classes={{ root: classes.buttonsContainer }}>
                         <Button
                             data-testid="return"
                             style={{ marginRight: theme.spacing(2) }}
