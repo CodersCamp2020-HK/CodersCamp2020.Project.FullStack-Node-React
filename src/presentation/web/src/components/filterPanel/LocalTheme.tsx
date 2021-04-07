@@ -14,7 +14,7 @@ export const localTheme = createMuiTheme({
         values: {
             xs: 0,
             sm: 540,
-            md: 990,
+            md: 1010,
             lg: 1280,
             xl: 1920,
         },

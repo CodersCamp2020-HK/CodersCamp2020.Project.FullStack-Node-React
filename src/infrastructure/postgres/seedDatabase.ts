@@ -59,12 +59,12 @@ import { seedFormVolunteerAnswer } from './dummyData/formVolunteerAnswers';
 
 export default async function seedDatabase(): Promise<void> {
     await getConnection().synchronize(true);
-    await getConnection().getRepository(AnimalAdditionalInfo).save(seedAnimalAdditionalInfo(5));
-    await getConnection().getRepository(AnimalThumbnailPhoto).save(seedAnimalThumbnailPhoto(5));
+    await getConnection().getRepository(AnimalAdditionalInfo).save(seedAnimalAdditionalInfo(20));
+    await getConnection().getRepository(AnimalThumbnailPhoto).save(seedAnimalThumbnailPhoto(20));
 
     await getConnection().getRepository(Specie).save(species);
-    await getConnection().getRepository(Animal).save(seedAnimals(5));
-    await getConnection().getRepository(AnimalPhoto).save(seedAnimalPhoto(5));
+    await getConnection().getRepository(Animal).save(seedAnimals(20));
+    await getConnection().getRepository(AnimalPhoto).save(seedAnimalPhoto(20));
     await getConnection().getRepository(Localization).save(seedLocalizations(5));
     await getConnection()
         .getRepository(User)
