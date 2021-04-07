@@ -13,8 +13,6 @@ const AnimalInfo = () => {
     if (animal && animal.thumbnail) {
         const base64 = Buffer.from(animal.thumbnail.buffer).toString('base64');
         photos.push(base64);
-        console.log(base64);
-        console.log(animal.thumbnail.buffer);
     }
     return (
         <Grid container spacing={3} alignItems="stretch">
