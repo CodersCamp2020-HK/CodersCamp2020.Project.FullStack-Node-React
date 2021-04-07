@@ -1,38 +1,14 @@
 import { Button, makeStyles, Paper, Table, TableBody, TableCell, TableRow, Theme, Typography } from '@material-ui/core';
 import React from 'react';
 import { useHistory } from 'react-router';
-import { AnimalActiveLevel, AnimalSize, useGetAllWillignessesToAdoptCount, useGetAnimal } from '../../client/index';
+import { useGetAllWillignessesToAdoptCount, useGetAnimal } from '../../client/index';
+import formatActiveLevel from '../../../../../utils/formatText/formatActiveLevel';
+import formatDate from '../../../../../utils/formatText/formatDate';
+import formatSize from '../../../../../utils/formatText/formatSize';
+
 interface AnimalInfoCardProps {
     animalId: number;
 }
-
-const formatDate = (date: string): string => {
-    const givenDate = new Date(date);
-
-    if (!givenDate.getFullYear()) {
-        return 'Brak informacji';
-    }
-
-    const day = givenDate.getDate();
-    const month = givenDate.getMonth() + 1;
-    const year = givenDate.getFullYear();
-
-    return `${day < 10 ? '0' + day : day}/${month < 10 ? '0' + month : month}/${year}`;
-};
-
-const formatSize = (size: AnimalSize): string => {
-    if (size === 'small') return 'mały';
-    if (size === 'medium') return 'średni';
-    if (size === 'large') return 'duży';
-    return 'nieznany';
-};
-
-const formatActiveLevel = (activeLevel: AnimalActiveLevel): string => {
-    if (activeLevel === 'low') return 'niska';
-    if (activeLevel === 'medium') return 'umiarkowana';
-    if (activeLevel === 'high') return 'wysoka';
-    return 'nieznana';
-};
 
 export const ADOPTION_PROCESS_PAGE = 'adoption-process';
 export const ADOPT_PAGE = 'adopt';
