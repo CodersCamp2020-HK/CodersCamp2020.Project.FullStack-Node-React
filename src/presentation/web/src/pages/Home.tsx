@@ -4,6 +4,7 @@ import Gallery from '../components/gallery/Gallery';
 import { GetAnimalsQueryParams } from '../client/index';
 import { Route, Switch } from 'react-router-dom';
 import LandingHero from '../components/landingHero/LandingHero';
+import { Container } from '@material-ui/core';
 
 const initialState = {
     specie: 'cat',
@@ -62,21 +63,17 @@ const Home = () => {
 
     return (
         <Switch>
-            <Route
-                exact
-                path="/"
-                render={() => {
-                    return (
-                        <div>
-                            <LandingHero />
-                            <FormContex.Provider value={{ formState, setFormState, handleSubmit }}>
-                                <FilterPanel />
-                            </FormContex.Provider>
-                            <Gallery query={query} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-                        </div>
-                    );
-                }}
-            />
+            <Route exact path="/">
+                <div>
+                    <LandingHero />
+                    <FormContex.Provider value={{ formState, setFormState, handleSubmit }}>
+                        <FilterPanel />
+                    </FormContex.Provider>
+                    <Container>
+                        <Gallery query={query} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                    </Container>
+                </div>
+            </Route>
         </Switch>
     );
 };
