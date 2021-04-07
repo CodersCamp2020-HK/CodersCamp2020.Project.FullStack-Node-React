@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         padding: theme.spacing(2),
     },
     closeButton: {
-        marginRight: theme.spacing(2);
+        marginRight: theme.spacing(2),
     }
 }));
 
