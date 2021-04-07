@@ -24,7 +24,7 @@ const App: React.FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
-                <Container style={{ marginTop: 64 }}>
+                <Container style={{ marginTop: 56 }}>
                     <Router>
                         <Navbar />
                         <Grid container>
