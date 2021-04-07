@@ -2,9 +2,9 @@ import { Button, makeStyles, Paper, Table, TableBody, TableCell, TableRow, Theme
 import React from 'react';
 import { useHistory } from 'react-router';
 import { useGetAllWillignessesToAdoptCount, useGetAnimal } from '../../client/index';
-import formatActiveLevel from '../../../../../utils/formatText/formatActiveLevel';
-import formatDate from '../../../../../utils/formatText/formatDate';
-import formatSize from '../../../../../utils/formatText/formatSize';
+import formatActiveLevel from '../../utils/formatText/formatActiveLevel';
+import formatDate from '../../utils/formatText/formatDate';
+import formatSize from '../../utils/formatText/formatSize';
 
 interface AnimalInfoCardProps {
     animalId: number;

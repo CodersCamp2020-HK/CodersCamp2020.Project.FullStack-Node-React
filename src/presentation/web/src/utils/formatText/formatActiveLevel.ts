@@ -1,4 +1,4 @@
-import { AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
+import { AnimalActiveLevel } from "../../client";
 
 const formatActiveLevel = (activeLevel: AnimalActiveLevel): string => {
     if (activeLevel === 'low') return 'niska';

@@ -1,4 +1,4 @@
-import { AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
+import { AnimalSize } from "../../client";
 
 const formatSize = (size: AnimalSize): string => {
     if (size === 'small') return 'mały';
