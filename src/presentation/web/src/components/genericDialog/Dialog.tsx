@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     buttonsContainer: {
         display: 'flex',
-        flexDirection: 'row',
         justifyContent: 'space-between',
         padding: 0,
         margin: 0,
@@ -49,6 +48,9 @@ const useStyles = makeStyles((theme: Theme) => ({
     title: {
         padding: theme.spacing(2),
     },
+    closeButton: {
+        marginRight: theme.spacing(2);
+    }
 }));
 
 const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: DialogProps) => {
@@ -90,7 +92,7 @@ const Dialog = ({ isOpen, title, content, actionText, textarea, handleAction }: 
                     <Container classes={{ root: classes.buttonsContainer }}>
                         <Button
                             data-testid="return"
-                            style={{ marginRight: theme.spacing(2) }}
+                            className={classes.closeButton}
                             fullWidth
                             variant="outlined"
                             color="primary"
