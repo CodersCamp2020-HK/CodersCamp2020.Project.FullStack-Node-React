@@ -5,6 +5,7 @@ import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
 import { addDays, isSameDay, isToday, isWithinInterval, startOfDay, startOfToday } from 'date-fns';
 import plLocale from 'date-fns/locale/pl';
 import React, { useState } from 'react';
+import { Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) => ({
     todayDate: {
@@ -13,6 +14,10 @@ const useStyles = makeStyles((theme: Theme) => ({
             borderRadius: '50%',
             borderColor: theme.palette.primary.main
         }
+    },
+    paper: {
+        width: '25%',
+        padding: theme.spacing(2)
     }
 }))
 
@@ -20,6 +25,7 @@ const Calendar = () => {
     const styles = useStyles();
     const [selectedDate, setSelectedDate] = useState<Date>(null!);
     return (
+        <Paper className={styles.paper}>
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
             <MuiCalendar
                 disablePast
@@ -48,6 +54,7 @@ const Calendar = () => {
                 }}
             />
         </MuiPickersUtilsProvider>
+        </Paper>
     );
 };
 
