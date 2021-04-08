@@ -1,10 +1,11 @@
 import { Calendar as MuiCalendar, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import plLocale from 'date-fns/locale/pl';
 import React from 'react';
 
 const Calendar = () => {
     return (
-        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
             <MuiCalendar date={new Date()} onChange={(date) => {
                 console.log(date);
             }} />
