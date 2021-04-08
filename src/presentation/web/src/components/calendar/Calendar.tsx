@@ -1,11 +1,23 @@
 import DateFnsUtils from '@date-io/date-fns';
+import { makeStyles, Theme } from '@material-ui/core';
 import { Calendar as MuiCalendar, Day, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { MaterialUiPickersDate } from '@material-ui/pickers/typings/date';
+import { addDays, isSameDay, isToday, isWithinInterval, startOfDay, startOfToday } from 'date-fns';
 import plLocale from 'date-fns/locale/pl';
 import React, { useState } from 'react';
-import { addDays, isSameDay, isToday, isWithinInterval, set, startOfDay, startOfToday } from 'date-fns';
+
+const useStyles = makeStyles((theme: Theme) => ({
+    todayDate: {
+        '& button': {
+            border: '1px solid',
+            borderRadius: '50%',
+            borderColor: theme.palette.primary.main
+        }
+    }
+}))
 
 const Calendar = () => {
+    const styles = useStyles();
     const [selectedDate, setSelectedDate] = useState<Date>(null!);
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
@@ -25,9 +37,12 @@ const Calendar = () => {
                         end: addDays(startOfToday(), 14),
                     });
                     const markedDay = (
-                        <Day disabled={isDisabledDate} selected={isSelected} current={isTodayDay}>
-                            {day?.getDate()}
-                        </Day>
+                        <div className={isTodayDay ? styles.todayDate : undefined}>
+                            <Day disabled={isDisabledDate} selected={isSelected} current={isTodayDay}>
+                                {day?.getDate()}
+                            </Day>
+                            </div>
+                        
                     );
                     return markedDay;
                 }}
