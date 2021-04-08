@@ -6,7 +6,7 @@ import React from 'react';
 const Calendar = () => {
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
-            <MuiCalendar date={new Date()} onChange={(date) => {
+            <MuiCalendar disablePast minDate={new Date()} date={new Date()} onChange={(date) => {
                 console.log(date);
             }} />
         </MuiPickersUtilsProvider>
