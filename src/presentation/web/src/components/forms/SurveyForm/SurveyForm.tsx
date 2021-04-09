@@ -147,14 +147,16 @@ const SurveyForm: React.FC<Props> = ({ questions, handleSubmit: submitCb, defaul
     return (
         <form noValidate onSubmit={methods.handleSubmit(submitCb)}>
             {GenerateInputs({ questions, methods, defaultValues, disabled })}
-            <Button
-                size="medium"
-                variant="contained"
-                hidden={disabled}
-                color="primary"
-                type="submit">
-                    Wyślij formularz
-            </Button>
+            {
+                !disabled &&
+                <Button
+                    size="medium"
+                    variant="contained"
+                    color="primary"
+                    type="submit">
+                        Wyślij formularz
+                </Button>
+            }
         </form>
     )
 }
