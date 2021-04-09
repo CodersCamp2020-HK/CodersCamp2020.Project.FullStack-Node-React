@@ -4,6 +4,12 @@ import React, { useState } from 'react';
 
 interface TimePickerProps {
     times: string[];
+    getSelectedTime: (time: string) => any;
+}
+
+interface SelectedTime {
+    id: number;
+    value: string;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -16,18 +22,13 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-interface SelectedTime {
-    id: number;
-    value: string;
-}
-
-const TimePicker = ({ times }: TimePickerProps) => {
+const TimePicker = ({ times, getSelectedTime }: TimePickerProps) => {
     const [selected, setSelected] = useState<SelectedTime>(null!);
     const styles = useStyles();
 
     const handleChange = ({ id, value }: SelectedTime) => {
         setSelected({ id, value });
-        console.log(value);
+        getSelectedTime(value);
     };
 
     return (

@@ -39,7 +39,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
 }));
 
-const Calendar = () => {
+interface CalendarProps {
+    getSelectedDate: (date: Date) => any;
+}
+
+const Calendar = ({ getSelectedDate }: CalendarProps) => {
     const styles = useStyles();
     const [selectedDate, setSelectedDate] = useState<Date>(null!);
     return (
@@ -53,6 +57,7 @@ const Calendar = () => {
                     date={startOfToday()}
                     onChange={(date: MaterialUiPickersDate) => {
                         setSelectedDate(date as Date);
+                        getSelectedDate(date as Date);
                     }}
                     renderDay={(day, selectedCalendarDate, dayInCurrentMonth) => {
                         const isTodayDay = isToday(day as Date);
