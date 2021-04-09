@@ -11,11 +11,10 @@ const useStyles = makeStyles((theme: Theme) => ({
         '& button': {
             border: '1px solid',
             borderRadius: '50%',
-            borderColor: theme.palette.primary.main,
+            borderColor: theme.palette.secondary.main,
         },
     },
     paper: {
-        width: 'fit-content',
         padding: theme.spacing(2),
 
         '& .MuiPickersCalendarHeader-daysHeader': {
@@ -23,8 +22,21 @@ const useStyles = makeStyles((theme: Theme) => ({
             borderTop: '1px solid rgba(0, 0, 0, 0.38);',
             paddingBottom: theme.spacing(1),
             paddingTop: theme.spacing(1),
+            justifyContent: 'space-between',
+        },
+
+        '& .MuiPickersDay-current': {
+            color: theme.palette.secondary.main,
+        },
+
+        '& .MuiPickersDay-daySelected': {
+            backgroundColor: theme.palette.secondary.main,
+            color: theme.palette.common.white
         },
     },
+    week: {
+        justifyContent: 'space-between',
+    }
 }));
 
 const Calendar = () => {
@@ -34,6 +46,7 @@ const Calendar = () => {
         <Paper className={styles.paper}>
             <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
                 <MuiCalendar
+                classes={{week: styles.week}}
                     disablePast
                     minDate={new Date()}
                     maxDate={addDays(new Date(), 14)}
