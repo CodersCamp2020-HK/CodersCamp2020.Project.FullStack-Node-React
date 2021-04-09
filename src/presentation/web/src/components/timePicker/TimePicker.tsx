@@ -21,7 +21,7 @@ const TimePicker = ({ times }: TimePickerProps) => {
     return (
         <div className={styles.wrapper}>
             {times.map((time) => (
-                <Chip className={styles.chip} label={time} variant="outlined" color="secondary" />
+                <Chip className={styles.chip} size='medium' label={time} variant="outlined" color="secondary" />
             ))}
         </div>
     );
