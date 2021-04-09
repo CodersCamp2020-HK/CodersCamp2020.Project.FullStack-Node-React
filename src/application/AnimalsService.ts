@@ -211,4 +211,20 @@ export class AnimalsService {
             throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
         }
     }
+
+    public async getPhotos(animalId: number): Promise<AnimalPhoto[]> {
+        const animalPhotos = await this.animalPhotos.find({
+            where: {
+                animal: {
+                    id: animalId,
+                },
+            },
+        });
+
+        if (animalPhotos.length <= 0) {
+            throw new ApiError('Not Found', 404, `Photos for animal with id: ${animalId} not found!`);
+        }
+
+        return animalPhotos;
+    }
 }
