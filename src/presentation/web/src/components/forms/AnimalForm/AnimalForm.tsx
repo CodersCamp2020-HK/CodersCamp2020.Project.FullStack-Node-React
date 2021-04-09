@@ -1,18 +1,16 @@
 import React from 'react';
-import { useGetForm } from '../../../client/index';
+import { AdoptionStep, ApiError, useGetForm, usePostAnimalSubmission } from '../../../client/index';
 import SurveyForm from '../SurveyForm/SurveyForm';
 import Grid from '@material-ui/core/Grid';
+import { UseGetReturn } from 'restful-react';
 
 interface Props {
-    animalId: number;
-    stepNumber: number;
+    formData: UseGetReturn<AdoptionStep, ApiError | Error, void, unknown>;
+    handleSubmit: (data: any) => void;
 }
 
-const AnimalForm: React.FC<Props> = ({ animalId, stepNumber }) => {
-    const { data, loading, error } = useGetForm({ animalId, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' }} });
-    const handleSubmit = (data: any) => {
-        console.log(data);
-    }
+const AnimalForm: React.FC<Props> = ({ formData, handleSubmit }) => {
+    const { data, loading, error } = formData;
 
     if (!loading && data && data.form) {
         return (
