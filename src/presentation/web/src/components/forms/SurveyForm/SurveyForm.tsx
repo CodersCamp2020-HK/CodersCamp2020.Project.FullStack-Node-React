@@ -29,8 +29,14 @@ interface CheckboxOption {
     checked: boolean;
     disabled: boolean;
 }
+
 interface RadioOption {
     content: string;
+}
+
+interface AnswerForm {
+    type: "checkbox" | "radio" | "text";
+    answer: string | string[]
 }
 
 const useStyles =  makeStyles((theme) => ({
@@ -59,26 +65,34 @@ const useStyles =  makeStyles((theme) => ({
 const GenerateInputs = ({ questions, methods, defaultValues, disabled = false }: GenerateInputsProps) => {
     const classes = useStyles();
     const { register, setValue, errors, trigger, formState } = methods;
+
     const handleRadioData = (name: string, data: string) => {
-        setValue(name, data);
+        setValue(name, {
+            answer: data,
+            type: 'radio'
+        });
         if (formState.isSubmitted) trigger(name);
     }
     const handleCheckboxData = (name: string, data: CheckboxOption[]): void => {
-        const options = [];
+        const options: string[] = [];
         for (const option of data) options.push(option.content);
-        setValue(name, options);
+        setValue(name, {
+            answer: options,
+            type: 'checkbox'
+        });
         if (formState.isSubmitted) trigger(name);
     }
-    const validateRequired = (value: string | string[]) => value && value.length > 0 || 'Zaznacz odpowiedź';
+    const validateRequired = (value: AnswerForm) => value && value.answer.length > 0 || 'Zaznacz odpowiedź';
+    const validateRequiredText = (value: AnswerForm) => value && value.answer.length > 0 || 'Napisz odpowiedź';
     
     return questions.map((question, index) => {
-        register({ name: `question${question.id}`, type: 'custom'}, { validate: validateRequired })
         if (isArray(question.placeholder.answer)) {
             const radioAnswers: RadioOption[] = [];
             const checkboxAnswers: CheckboxOption[] = [];
             const defaultValue = defaultValues && defaultValues[`question${question.id}`]
             switch (question.placeholder.type) {
                 case 'radio':
+                    register({ name: `question${question.id}`, type: 'custom'}, { validate: validateRequired })
                     if (!isStringOrUndefined(defaultValue)) throw new Error('Nie jest stringiem');
                     for (const answer of question.placeholder.answer) radioAnswers.push({ content: answer })
                     return (
@@ -97,6 +111,7 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled = false }:
                     )
                 case 'checkbox':
                     for (const answer of question.placeholder.answer) {
+                        register({ name: `question${question.id}`, type: 'custom'}, { validate: validateRequired })
                         isArray(defaultValue) && defaultValue.includes(answer) 
                             ? checkboxAnswers.push({ content: answer, checked: true, disabled: false })
                             : checkboxAnswers.push({ content: answer, checked: false, disabled: false })
@@ -119,6 +134,7 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled = false }:
             }
         }
 
+        register({ name: `question${question.id}`, type: 'custom'}, { validate: validateRequiredText })
         return (
             <div className={classes.question} key={`question${question.id}`}>
                 <Typography {...(disabled && { className: classes.text })}>{`${index + 1}. ${question.question}`}</Typography>
@@ -132,7 +148,13 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled = false }:
                     style={{ marginBottom: 0 }}
                     classes={{ root: classes.root }}
                     disabled={disabled}
-                    inputRef={register({ required: 'Napisz odpowiedź' })}
+                    onChange={(event) => {
+                        setValue(`question${question.id}`, {
+                            answer: event.target.value,
+                            type: 'text'
+                        });
+                        if (formState.isSubmitted) trigger(`question${question.id}`);
+                    }}
                     error={errors.hasOwnProperty(`question${question.id}`)}
                     helperText={errors[`question${question.id}`] && errors[`question${question.id}`]?.message}
                 />

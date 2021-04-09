@@ -1,14 +1,30 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch, Redirect } from 'react-router-dom';
-import { useGetForm } from '../client';
+import { AnimalAnswer, PostAnimalSubmissionParams, useGetForm, usePostAnimalSubmission } from '../client';
 import Form from '../components/forms/Form/Form';
 
-
 const FormRoute = () => {
+    const animalId = 1;
+    const stepNumber = 1;
     const { path } = useRouteMatch();
-    const animalFormData = useGetForm({ animalId: 1, requestOptions: { headers: { access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpZCI6MSwiaWF0IjoxNjE3MzQ2NzYzfQ.h3t7y8edtFxLAm46FNOjpUaaVyvYhLCVBrqx68rOMfc' }} });
+    const animalFormData = useGetForm({ animalId, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' }} });
+    const { mutate: postSubmission } = usePostAnimalSubmission({});
     const handleSubmit = (data: any) => {
         console.log(data);
+        const answers: PostAnimalSubmissionParams = {
+            animalId,
+            stepNumber,
+            answers: []
+        };
+        for (const question in data) {
+            // const answer: AnimalAnswer = {
+            //     questionId: parseInt(question.replace('question', '')),
+            //     answer: {
+            //         type: animalFormData.data?.form?.questions.
+            //     }
+            // }
+            console.log(question.replace('question', ''), data[question]);
+        }
         console.log('Skuces');
     }
     
