@@ -17,17 +17,31 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 interface SelectedTime {
-    id: number,
-    value: string,
+    id: number;
+    value: string;
 }
 
 const TimePicker = ({ times }: TimePickerProps) => {
-    const [selected, setSelected] = useState<SelectedTime>(null!)
+    const [selected, setSelected] = useState<SelectedTime>(null!);
     const styles = useStyles();
+
+    const handleChange = ({ id, value }: SelectedTime) => {
+        setSelected({ id, value });
+        console.log(value);
+    };
+
     return (
         <div className={styles.wrapper}>
             {times.map((time, index) => (
-                <Chip key={index} className={styles.chip} size='medium' label={time} variant="outlined" color="secondary" />
+                <Chip
+                    key={index}
+                    className={styles.chip}
+                    size="medium"
+                    label={time}
+                    variant={selected && index === selected.id ? 'default' : 'outlined'}
+                    color="secondary"
+                    onClick={() => handleChange({ id: index, value: time })}
+                />
             ))}
         </div>
     );
