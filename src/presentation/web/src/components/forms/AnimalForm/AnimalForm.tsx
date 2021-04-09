@@ -5,10 +5,11 @@ import Grid from '@material-ui/core/Grid';
 
 interface Props {
     animalId: number;
+    stepNumber: number;
 }
 
-const AnimalForm: React.FC<Props> = ({ animalId }) => {
-    const { data, loading, error } = useGetForm({ animalId, requestOptions: { headers: { access_token: '' }} });
+const AnimalForm: React.FC<Props> = ({ animalId, stepNumber }) => {
+    const { data, loading, error } = useGetForm({ animalId, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' }} });
     const handleSubmit = (data: any) => {
         console.log(data);
     }

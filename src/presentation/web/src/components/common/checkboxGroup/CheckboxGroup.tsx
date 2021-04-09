@@ -35,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
         position: 'relative',
         paddingBottom: 12
     },
+    formLabel: {
+        color: theme.palette.text.primary
+    },
     helperText: {
         position: 'absolute',
         bottom: 0,
@@ -66,7 +69,7 @@ const CheckboxGroup = ({ values, name, getCheckedData, question, errors, disable
     return (
         <FormControl className={classes.formControl} error={errors.hasOwnProperty(name)} component="fieldset" disabled={disabled} >
             <FormGroup className={classes.formGroup}>
-                <FormLabel focused={false} error={false}>{question}</FormLabel>
+                <FormLabel className={classes.formLabel} focused={false} error={false}>{question}</FormLabel>
                 {items.map((el, index) => (
                     <LabeledCheckBox
                         key={index}

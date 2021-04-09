@@ -9,7 +9,7 @@ const FormRoute = () => {
     return (
         <Switch>
             <Route exact path={`${path}/`} >
-                <AnimalForm animalId={1}/>
+                <AnimalForm animalId={1} stepNumber={1} />
             </Route>
             <Redirect to={`/404/${path}`} />
         </Switch>

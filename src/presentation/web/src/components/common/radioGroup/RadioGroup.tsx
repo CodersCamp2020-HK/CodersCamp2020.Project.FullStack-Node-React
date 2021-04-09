@@ -30,6 +30,9 @@ const useStyles = makeStyles((theme: Theme) => ({
         position: 'relative',
         paddingBottom: 12
     },
+    formLabel: {
+        color: theme.palette.text.primary
+    },
     helperText: {
         position: 'absolute',
         left: 14,
@@ -54,7 +57,7 @@ const RadioGroup = ({ values, name, getCheckedOption, question, errors, defaultV
 
     return (
         <FormControl component="fieldset" error={errors.hasOwnProperty(name)} className={classes.formControl} disabled={disabled}>
-            <FormLabel focused={false} error={false}>{question}</FormLabel>
+            <FormLabel className={classes.formLabel} focused={false} error={false}>{question}</FormLabel>
             <RadioGroupMui name={name} value={checkedOption} onChange={handleChange}>
                 {values.map((option, index) => <LabeledRadio key={index} label={option.content} /> )}
             </RadioGroupMui>
