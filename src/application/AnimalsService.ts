@@ -4,16 +4,11 @@ import Animal from '@infrastructure/postgres/Animal';
 import AnimalAdditionalInfo, { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { AnimalPhoto, AnimalThumbnailPhoto } from '@infrastructure/postgres/AnimalPhoto';
 import Specie from '@infrastructure/postgres/Specie';
-//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
-//export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
 import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
-//type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
-//type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
-//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
 export interface AnimalCreationParams {
     name: string;
     age: number;
