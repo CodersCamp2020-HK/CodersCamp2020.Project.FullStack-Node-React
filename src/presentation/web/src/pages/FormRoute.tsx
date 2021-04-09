@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch, Redirect } from 'react-router-dom';
 import { AnimalAnswer, PostAnimalSubmissionParams, useGetForm, usePostAnimalSubmission } from '../client';
-import Form from '../components/forms/Form/Form';
+import SurveyForm from '../components/forms/SurveyForm/SurveyForm';
 
 const FormRoute = () => {
     const animalId = 1;
@@ -35,7 +35,7 @@ const FormRoute = () => {
     return (
         <Switch>
             <Route exact path={`${path}/`} >
-                <Form formData={animalFormData} handleSubmit={handleSubmit} />
+                <SurveyForm formData={animalFormData} handleSubmit={handleSubmit} />
             </Route>
             <Redirect to={`/404/${path}`} />
         </Switch>

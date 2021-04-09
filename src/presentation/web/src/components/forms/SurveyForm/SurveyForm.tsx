@@ -1,18 +1,21 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { FormQuestion } from '../../../client/index';
+import { AdoptionStep, ApiError, FormQuestion } from '../../../client/index';
 import { useForm, UseFormMethods } from 'react-hook-form';
 import Button from '@material-ui/core/Button';
 import CheckboxGroup from '../../common/checkboxGroup/CheckboxGroup';
+import Grid from '@material-ui/core/Grid';
 import isArray from '../../../utils/IsArray';
 import RadioGroup from '../../common/radioGroup/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import isStringOrUndefined from '../../../utils/IsStringOrUndefined';
+import { UseGetReturn } from 'restful-react';
+import { ClassNameMap } from '@material-ui/styles';
 
-interface Props {
-    questions: FormQuestion[];
+interface SurveyFormProps {
     handleSubmit: (data: any) => void;
+    formData: UseGetReturn<AdoptionStep, ApiError | Error, void, unknown>;
     defaultValues?: Record<string, string | string[]>;
     disabled?: boolean;
 }
@@ -20,6 +23,7 @@ interface Props {
 interface GenerateInputsProps {
     questions: FormQuestion[];
     methods: UseFormMethods<Record<string, string | string[]>>
+    classes: ClassNameMap<"text" | "root" | "question" | "questionError">;
     defaultValues?: Record<string, string | string[]>;
     disabled?: boolean;
 }
@@ -62,8 +66,7 @@ const useStyles =  makeStyles((theme) => ({
     }
 }))
 
-const GenerateInputs = ({ questions, methods, defaultValues, disabled = false }: GenerateInputsProps) => {
-    const classes = useStyles();
+const GenerateInputs = ({ questions, methods, defaultValues, disabled = false, classes }: GenerateInputsProps) => {
     const { register, setValue, errors, trigger, formState } = methods;
 
     const handleRadioData = (name: string, data: string) => {
@@ -163,26 +166,46 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled = false }:
     })
 }
 
-const SurveyForm: React.FC<Props> = ({ questions, handleSubmit: submitCb, defaultValues, disabled }) => {
+const SurveyForm: React.FC<SurveyFormProps> = ({ handleSubmit: submitCb, formData, defaultValues, disabled }) => {
+    const { data, loading, error } = formData;
+    const classes = useStyles();
+
     const methods = useForm<Record<string, string | string[]>>({
         shouldFocusError: false,
         defaultValues
     });
 
+    if (!loading && data && data.form) {
+        const questions = data.form.questions
+        return (
+            <Grid item sm={12} lg={8}>
+                <form noValidate onSubmit={methods.handleSubmit(submitCb)}>
+                    {GenerateInputs({ questions, methods, defaultValues, disabled, classes })}
+                    {
+                        !disabled &&
+                        <Button
+                            size="medium"
+                            variant="contained"
+                            color="primary"
+                            type="submit">
+                                Wyślij formularz
+                        </Button>
+                    }
+                </form>
+            </Grid>
+        )
+    }
+    if (error) {
+        return (
+            <div>
+                <p>{error.message}</p>
+            </div>
+        )
+    }
     return (
-        <form noValidate onSubmit={methods.handleSubmit(submitCb)}>
-            {GenerateInputs({ questions, methods, defaultValues, disabled })}
-            {
-                !disabled &&
-                <Button
-                    size="medium"
-                    variant="contained"
-                    color="primary"
-                    type="submit">
-                        Wyślij formularz
-                </Button>
-            }
-        </form>
+        <div>
+            loading...
+        </div>
     )
 }
 
