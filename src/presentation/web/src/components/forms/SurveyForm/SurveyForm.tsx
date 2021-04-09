@@ -150,6 +150,7 @@ const SurveyForm: React.FC<Props> = ({ questions, handleSubmit: submitCb, defaul
             <Button
                 size="medium"
                 variant="contained"
+                hidden={disabled}
                 color="primary"
                 type="submit">
                     Wyślij formularz
