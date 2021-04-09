@@ -9,7 +9,7 @@ interface Props {
     handleSubmit: (data: any) => void;
 }
 
-const AnimalForm: React.FC<Props> = ({ formData, handleSubmit }) => {
+const Form: React.FC<Props> = ({ formData, handleSubmit }) => {
     const { data, loading, error } = formData;
 
     if (!loading && data && data.form) {
@@ -33,4 +33,4 @@ const AnimalForm: React.FC<Props> = ({ formData, handleSubmit }) => {
     )
 }
 
-export default AnimalForm
+export default Form

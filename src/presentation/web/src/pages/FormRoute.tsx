@@ -1,7 +1,7 @@
 import React from 'react'
 import { Route, Switch, useRouteMatch, Redirect } from 'react-router-dom';
 import { useGetForm } from '../client';
-import AnimalForm from '../components/forms/AnimalForm/AnimalForm';
+import Form from '../components/forms/Form/Form';
 
 
 const FormRoute = () => {
@@ -15,7 +15,7 @@ const FormRoute = () => {
     return (
         <Switch>
             <Route exact path={`${path}/`} >
-                <AnimalForm formData={animalFormData} handleSubmit={handleSubmit} />
+                <Form formData={animalFormData} handleSubmit={handleSubmit} />
             </Route>
             <Redirect to={`/404/${path}`} />
         </Switch>
