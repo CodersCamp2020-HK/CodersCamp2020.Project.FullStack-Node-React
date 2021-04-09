@@ -11,7 +11,6 @@ const FormRoute = () => {
     const { mutate: postSubmission } = usePostAnimalSubmission({ requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' }} });
     const handleSubmit = async (data: any) => {
         try {
-            console.log(data);
             const answers: PostAnimalSubmissionParams = {
                 animalId,
                 stepNumber,
