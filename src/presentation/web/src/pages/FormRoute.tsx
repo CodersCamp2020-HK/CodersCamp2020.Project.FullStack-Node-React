@@ -8,24 +8,29 @@ const FormRoute = () => {
     const stepNumber = 1;
     const { path } = useRouteMatch();
     const animalFormData = useGetForm({ animalId, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' }} });
-    const { mutate: postSubmission } = usePostAnimalSubmission({});
-    const handleSubmit = (data: any) => {
-        console.log(data);
-        const answers: PostAnimalSubmissionParams = {
-            animalId,
-            stepNumber,
-            answers: []
-        };
-        for (const question in data) {
-            // const answer: AnimalAnswer = {
-            //     questionId: parseInt(question.replace('question', '')),
-            //     answer: {
-            //         type: animalFormData.data?.form?.questions.
-            //     }
-            // }
-            console.log(question.replace('question', ''), data[question]);
+    const { mutate: postSubmission } = usePostAnimalSubmission({ requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' }} });
+    const handleSubmit = async (data: any) => {
+        try {
+            console.log(data);
+            const answers: PostAnimalSubmissionParams = {
+                animalId,
+                stepNumber,
+                answers: []
+            };
+            for (const question in data) {
+                const answer: AnimalAnswer = {
+                    questionId: parseInt(question.replace('question', '')),
+                    answer: {
+                        type: data[question].type,
+                        answer: data[question].answer
+                    }
+                }
+                answers.answers.push(answer)
+            }
+            await postSubmission(answers);
+        } catch(error) {
+            console.log(error)
         }
-        console.log('Skuces');
     }
     
     return (
