@@ -1,5 +1,5 @@
 import { makeStyles, ThemeProvider } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Footer from './components/footer/Footer';
@@ -21,50 +21,69 @@ const useStyles = makeStyles({
     },
 });
 
+interface AppContextInterface {
+    appState: AppState;
+    setAppState: React.Dispatch<React.SetStateAction<AppState>>;
+}
+
+const AppCtx = React.createContext<AppContextInterface | null>(null);
+
+interface AppState {
+    userId: number;
+    isLogged: boolean;
+}
+const initialAppState = {
+    userId: 1,
+    isLogged: false,
+};
+
 const App: React.FC = () => {
     const classes = useStyles();
+    const [appState, setAppState] = useState<AppState>(initialAppState);
 
     return (
-        <ThemeProvider theme={theme}>
-            <Router>
-                <Navbar />
-                <div className={classes.wrapper}>
-                    <Switch>
-                        <Route exact path="/">
-                            <Home />
-                        </Route>
-                        <Route exact path="/about">
-                            <About />
-                        </Route>
-                        <Route exact path="/adoption">
-                            <Adoption />
-                        </Route>
-                        <Route exact path="/donation">
-                            <Donation />
-                        </Route>
-                        <Route exact path="/contact">
-                            <GridContainer>
-                                <Contact />
-                            </GridContainer>
-                        </Route>
-                        <Route path="/auth">
-                            <GridContainer>
-                                <Auth />
-                            </GridContainer>
-                        </Route>
-                        <Route path="/animals/:animalId">
-                            <AnimalInfo />
-                        </Route>
-                        <Route path="*">
-                            <GridContainer>
-                                <NotFound />
-                            </GridContainer>
-                        </Route>
-                    </Switch>
-                </div>
-            </Router>
-            <Footer />
-        </ThemeProvider>
+        <AppCtx.Provider value={{ appState, setAppState }}>
+            <ThemeProvider theme={theme}>
+                <Router>
+                    <Navbar />
+                    <div className={classes.wrapper}>
+                        <Switch>
+                            <Route exact path="/">
+                                <Home />
+                            </Route>
+                            <Route exact path="/about">
+                                <About />
+                            </Route>
+                            <Route exact path="/adoption">
+                                <Adoption />
+                            </Route>
+                            <Route exact path="/donation">
+                                <Donation />
+                            </Route>
+                            <Route exact path="/contact">
+                                <GridContainer>
+                                    <Contact />
+                                </GridContainer>
+                            </Route>
+                            <Route path="/auth">
+                                <GridContainer>
+                                    <Auth />
+                                </GridContainer>
+                            </Route>
+                            <Route path="/animals/:animalId">
+                                <AnimalInfo />
+                            </Route>
+                            <Route path="*">
+                                <GridContainer>
+                                    <NotFound />
+                                </GridContainer>
+                            </Route>
+                        </Switch>
+                    </div>
+                </Router>
+                <Footer />
+            </ThemeProvider>
+        </AppCtx.Provider>
     );
 };
 
