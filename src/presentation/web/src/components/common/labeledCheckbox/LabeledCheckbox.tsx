@@ -3,15 +3,16 @@ import {Checkbox, FormControlLabel } from '@material-ui/core'
 
 interface CheckBoxProps {
     label: string;
-    checked: boolean;
-    disabled: boolean;
+    checked?: boolean;
+    disabled?: boolean;
     onChange: () => void;
-    name: string
+    name: string;
 
 }
 const LabeledCheckBox = ({label, checked = false, disabled=false, onChange, name}: CheckBoxProps) => {
     return (
         <FormControlLabel
+            disabled={disabled}
             label={label}
             control={<Checkbox disabled={disabled} checked={checked} onChange={onChange} />}
             name={name}

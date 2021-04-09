@@ -18,6 +18,7 @@ interface RadioGroupProps {
     question: string;
     errors: DeepMap<FieldValues, FieldError>;
     defaultValue: string | undefined;
+    disabled: boolean;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -39,7 +40,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }))
 
-const RadioGroup = ({ values, name, getCheckedOption, question, errors, defaultValue }: RadioGroupProps) => {
+const RadioGroup = ({ values, name, getCheckedOption, question, errors, defaultValue, disabled }: RadioGroupProps) => {
     const classes = useStyles();
     const [checkedOption, setCheckedOption] = useState<string>(defaultValue ?? '');
 
@@ -55,7 +56,7 @@ const RadioGroup = ({ values, name, getCheckedOption, question, errors, defaultV
     };
 
     return (
-        <FormControl component="fieldset" error={errors.hasOwnProperty(name)} className={classes.formControl}>
+        <FormControl component="fieldset" error={errors.hasOwnProperty(name)} className={classes.formControl} disabled={disabled}>
             <FormLabel focused={false} error={false} className={classes.root}>{question}</FormLabel>
             <RadioGroupMui name={name} value={checkedOption} onChange={handleChange}>
                 {values.map((option, index) => <LabeledRadio key={index} label={option.content} /> )}

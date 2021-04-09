@@ -53,7 +53,7 @@ const useStyles =  makeStyles((theme) => ({
     },
 }))
 
-const GenerateInputs = ({ questions, methods, defaultValues, disabled }: GenerateInputsProps) => {
+const GenerateInputs = ({ questions, methods, defaultValues, disabled = false }: GenerateInputsProps) => {
     const classes = useStyles();
     const { register, setValue, errors, trigger, formState } = methods;
     const handleRadioData = (name: string, data: string) => {
@@ -68,7 +68,7 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled }: Generat
     }
     const validateRequired = (value: string | string[]) => value && value.length > 0 || 'Zaznacz odpowiedź';
     
-    return questions.map((question) => {
+    return questions.map((question, index) => {
         register({ name: `question${question.id}`, type: 'custom'}, { validate: validateRequired })
         if (isArray(question.placeholder.answer)) {
             const radioAnswers: RadioOption[] = [];
@@ -85,9 +85,10 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled }: Generat
                                 name={`question${question.id}`}
                                 values={radioAnswers}
                                 getCheckedOption={handleRadioData}
-                                question={question.question}
+                                question={`${index + 1}. ${question.question}`}
                                 errors={errors}
                                 defaultValue={defaultValue}
+                                disabled={disabled}
                             />
                         </div>
                     )
@@ -104,8 +105,9 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled }: Generat
                                 name={`question${question.id}`}
                                 values={checkboxAnswers}
                                 getCheckedData={handleCheckboxData}
-                                question={question.question}
+                                question={`${index + 1}. ${question.question}`}
                                 errors={errors}
+                                disabled={disabled}
                             />
                         </div>
                     )
@@ -116,7 +118,7 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled }: Generat
 
         return (
             <div className={classes.question} key={`question${question.id}`}>
-                <Typography>{question.question}</Typography>
+                <Typography>{`${index + 1}. ${question.question}`}</Typography>
                 <TextField
                     key={question.id}
                     name={`question${question.id}`}
@@ -126,6 +128,7 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled }: Generat
                     rowsMax={4}
                     style={{ marginBottom: 0 }}
                     classes={{ root: classes.root }}
+                    disabled={disabled}
                     inputRef={register({ required: 'Napisz odpowiedź' })}
                     error={errors.hasOwnProperty(`question${question.id}`)}
                     helperText={errors[`question${question.id}`] && errors[`question${question.id}`]?.message}

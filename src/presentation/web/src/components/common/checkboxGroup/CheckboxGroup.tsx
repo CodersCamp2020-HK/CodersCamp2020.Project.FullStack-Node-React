@@ -19,6 +19,7 @@ interface CheckboxGroupProps {
     getCheckedData: (name: string, data: SingleOption[]) => void;
     question: string;
     errors: DeepMap<FieldValues, FieldError>;
+    disabled: boolean;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
-const CheckboxGroup = ({ values, name, getCheckedData, question, errors }: CheckboxGroupProps) => {
+const CheckboxGroup = ({ values, name, getCheckedData, question, errors, disabled }: CheckboxGroupProps) => {
     const classes = useStyles();
     const [items, setItems] = useState<SingleOption[]>(values);
 
@@ -66,14 +67,14 @@ const CheckboxGroup = ({ values, name, getCheckedData, question, errors }: Check
     };
 
     return (
-        <FormControl className={classes.formControl} error={errors.hasOwnProperty(name)} component="fieldset" >
+        <FormControl className={classes.formControl} error={errors.hasOwnProperty(name)} component="fieldset" disabled={disabled} >
             <FormGroup className={classes.formGroup}>
                 <FormLabel focused={false} error={false} classes={{ root: classes.root }}>{question}</FormLabel>
                 {items.map((el, index) => (
                     <LabeledCheckBox
                         key={index}
                         checked={el.checked}
-                        disabled={el.disabled}
+                        disabled={disabled}
                         name={name}
                         label={el.content}
                         onChange={() => handleChange(el.content)}

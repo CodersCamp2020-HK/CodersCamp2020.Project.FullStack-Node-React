@@ -1,23 +1,31 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useGetForm } from '../../../client/index';
-import { useRouteMatch, Redirect } from 'react-router-dom';
 import SurveyForm from '../SurveyForm/SurveyForm';
 import Grid from '@material-ui/core/Grid';
-import useQuery from '../../../utils/UseQuery';
 
-const AnimalForm = () => {
-    const query = useQuery();
-    const id = query.get('animalId');
-    console.log(id);
-    const { data, loading } = useGetForm({ animalId: 1, requestOptions: { headers: { access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpZCI6MSwiaWF0IjoxNjE3MzQ2NzYzfQ.h3t7y8edtFxLAm46FNOjpUaaVyvYhLCVBrqx68rOMfc' }} });
+interface Props {
+    animalId: number;
+}
+
+const AnimalForm: React.FC<Props> = ({ animalId }) => {
+    const { data, loading } = useGetForm({ animalId, requestOptions: { headers: { access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpZCI6MSwiaWF0IjoxNjE3MzQ2NzYzfQ.h3t7y8edtFxLAm46FNOjpUaaVyvYhLCVBrqx68rOMfc' }} });
     const handleSubmit = (data: any) => {
         console.log(data);
+    }
+    const defaultValues = {
+        question1: 'Tak',
+        question2: 'Tak',
+        question5: 'Elo',
+        question8: [
+            'Aktywny',
+            'Leniwy'
+        ]
     }
 
     if (!loading && data && data.form) {
         return (
             <Grid item sm={12} lg={8}>
-                <SurveyForm key='form' questions={data.form.questions} handleSubmit={handleSubmit} />
+                <SurveyForm key='form' questions={data.form.questions} handleSubmit={handleSubmit} defaultValues={defaultValues} disabled={true} />
             </Grid>
         )
     }
