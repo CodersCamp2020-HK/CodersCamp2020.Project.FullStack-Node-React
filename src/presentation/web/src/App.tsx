@@ -26,7 +26,7 @@ interface AppContextInterface {
     setAppState: React.Dispatch<React.SetStateAction<AppState>>;
 }
 
-const AppCtx = React.createContext<AppContextInterface | null>(null);
+export const AppCtx = React.createContext<AppContextInterface | null>(null);
 
 interface AppState {
     userId: number;
@@ -34,7 +34,7 @@ interface AppState {
 }
 const initialAppState = {
     userId: 1,
-    isLogged: false,
+    isLogged: true,
 };
 
 const App: React.FC = () => {
