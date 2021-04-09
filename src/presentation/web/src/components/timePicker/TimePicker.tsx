@@ -9,7 +9,7 @@ interface TimePickerProps {
 const TimePicker = ({times}: TimePickerProps) => {
     return (
         <div>
-            {times.map(time => <Chip label={time} variant='outlined' color='primary' />)}
+            {times.map(time => <Chip label={time} variant='outlined' color='secondary' />)}
         </div>
     )
 }
