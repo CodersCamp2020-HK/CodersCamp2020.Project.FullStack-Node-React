@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
 import { FormQuestion } from '../../../client/index';
-import { FieldValues, useForm, UseFormMethods } from 'react-hook-form';
+import { useForm, UseFormMethods } from 'react-hook-form';
 import Button from '@material-ui/core/Button';
 import CheckboxGroup from '../../common/checkboxGroup/CheckboxGroup';
 import isArray from '../../../utils/IsArray';
@@ -51,6 +51,9 @@ const useStyles =  makeStyles((theme) => ({
         marginLeft: 14,
         marginRight: 14,
     },
+    text: {
+        color: theme.palette.text.disabled
+    }
 }))
 
 const GenerateInputs = ({ questions, methods, defaultValues, disabled = false }: GenerateInputsProps) => {
@@ -118,7 +121,7 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled = false }:
 
         return (
             <div className={classes.question} key={`question${question.id}`}>
-                <Typography>{`${index + 1}. ${question.question}`}</Typography>
+                <Typography {...(disabled && { className: classes.text })}>{`${index + 1}. ${question.question}`}</Typography>
                 <TextField
                     key={question.id}
                     name={`question${question.id}`}

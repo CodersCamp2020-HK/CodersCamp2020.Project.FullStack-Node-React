@@ -22,13 +22,6 @@ interface RadioGroupProps {
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
-    root: {
-        '&$disabled': {
-            color: theme.palette.text.primary,
-        },
-        color: theme.palette.text.primary,
-    },
-    disabled: {},
     formControl: {
         display: 'flex',
         flexDirection: 'column',
@@ -61,7 +54,7 @@ const RadioGroup = ({ values, name, getCheckedOption, question, errors, defaultV
 
     return (
         <FormControl component="fieldset" error={errors.hasOwnProperty(name)} className={classes.formControl} disabled={disabled}>
-            <FormLabel focused={false} error={false} classes={{ root: classes.root, disabled: classes.disabled }}>{question}</FormLabel>
+            <FormLabel focused={false} error={false}>{question}</FormLabel>
             <RadioGroupMui name={name} value={checkedOption} onChange={handleChange}>
                 {values.map((option, index) => <LabeledRadio key={index} label={option.content} /> )}
             </RadioGroupMui>

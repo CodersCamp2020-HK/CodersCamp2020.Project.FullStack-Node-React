@@ -23,13 +23,6 @@ interface CheckboxGroupProps {
 }
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        '&$disabled': {
-            color: theme.palette.text.primary,
-        },
-        color: theme.palette.text.primary,
-    },
-    disabled: {},
     formControl: {
         display: 'flex',
         flexDirection: 'column',
@@ -73,7 +66,7 @@ const CheckboxGroup = ({ values, name, getCheckedData, question, errors, disable
     return (
         <FormControl className={classes.formControl} error={errors.hasOwnProperty(name)} component="fieldset" disabled={disabled} >
             <FormGroup className={classes.formGroup}>
-                <FormLabel focused={false} error={false} classes={{ root: classes.root, disabled: classes.disabled }}>{question}</FormLabel>
+                <FormLabel focused={false} error={false}>{question}</FormLabel>
                 {items.map((el, index) => (
                     <LabeledCheckBox
                         key={index}
