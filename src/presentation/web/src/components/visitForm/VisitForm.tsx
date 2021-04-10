@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useCreateVisit } from '../../client/index';
 import Calendar from '../calendar/Calendar';
 import TimePicker from '../timePicker/TimePicker';
-import { Typography } from '@material-ui/core';
+import { Typography, Button } from '@material-ui/core';
 
 const POSSIBLE_TIMES = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
 
@@ -85,7 +85,7 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
             <TimePicker name="time" times={POSSIBLE_TIMES} getSelectedTime={handleTime} />
             <Typography variant='subtitle1'>{selected.date && selected.time && showSelectedDate()}</Typography>
             <Typography variant='subtitle1' color='error'>{(!selected.date || !selected.time) && showError()}</Typography>
-            <input type="submit" value="Wyślij" />
+            <Button variant='contained' color='primary' size='large' type="submit">Wyślij</Button>
         </form>
     );
 };
