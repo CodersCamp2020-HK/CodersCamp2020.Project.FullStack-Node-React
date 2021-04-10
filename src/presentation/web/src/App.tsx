@@ -14,6 +14,7 @@ import Donation from './pages/Donation';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import theme from './themes/theme';
+import { UserType } from './client/index';
 
 const useStyles = makeStyles({
     wrapper: {
@@ -26,15 +27,17 @@ interface AppContextInterface {
     setAppState: React.Dispatch<React.SetStateAction<AppState>>;
 }
 
-const AppCtx = React.createContext<AppContextInterface | null>(null);
+export const AppCtx = React.createContext<AppContextInterface>(null!);
 
 interface AppState {
-    userId: number;
+    userId: number | null;
     isLogged: boolean;
+    role: UserType | null;
 }
 const initialAppState = {
-    userId: 1,
+    userId: null,
     isLogged: false,
+    role: null,
 };
 
 const App: React.FC = () => {
