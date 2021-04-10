@@ -52,7 +52,7 @@ function getStepContent(stepIndex: number) {
   }
 }
 
-const Stepper: React.FC<Props> = ({query}) => {
+const AdoptionStepper = () => {
   const classes = useStyles();
   const [activeStep, setActiveStep] = React.useState(0);
   const steps = getSteps();
@@ -106,4 +106,4 @@ const Stepper: React.FC<Props> = ({query}) => {
   );
 }
 
-export default Stepper;
+export default AdoptionStepper;
