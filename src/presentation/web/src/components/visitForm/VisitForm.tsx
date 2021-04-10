@@ -1,4 +1,4 @@
-import { set as updateDate } from 'date-fns';
+import { set as updateDate, format } from 'date-fns';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCreateVisit } from '../../client/index';
@@ -70,13 +70,18 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
         return '';
     };
 
+    const showSelectedDate = () => {
+        const formatedDate = format(selected.date as Date, 'dd/MM/yyyy');
+        return `Wybrana data: ${formatedDate}, ${selected.time}`;
+    }
+
     register({ name: 'date', type: 'custom' }, { required: 'Data jest wymagana!' });
     register({ name: 'time', type: 'custom' }, { required: 'Czas jest wymagany!' });
     return (
         <form onSubmit={handleSubmit(sendForm)}>
             <Calendar name="date" getSelectedDate={handleDate} />
             <TimePicker name="time" times={POSSIBLE_TIMES} getSelectedTime={handleTime} />
-            {selected.date && selected.time && 'Wybrano czas i date'}
+            {selected.date && selected.time && showSelectedDate()}
             {(!selected.date || !selected.time) && showError()}
             <input type="submit" value="Wyślij" />
         </form>
