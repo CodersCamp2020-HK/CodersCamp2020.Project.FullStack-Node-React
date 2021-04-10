@@ -176,11 +176,10 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ handleSubmit: submitCb, formDat
     });
 
     if (!loading && data && data.form) {
-        const questions = data.form.questions
         return (
             <Grid item sm={12} lg={8}>
                 <form noValidate onSubmit={methods.handleSubmit(submitCb)}>
-                    {GenerateInputs({ questions, methods, defaultValues, disabled, classes })}
+                    {GenerateInputs({ questions: data.form.questions, methods, defaultValues, disabled, classes })}
                     {
                         !disabled &&
                         <Button
@@ -196,9 +195,10 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ handleSubmit: submitCb, formDat
         )
     }
     if (error) {
+        const message = error.message;
         return (
             <div>
-                <p>{error.message}</p>
+                <p>{message}</p>
             </div>
         )
     }
