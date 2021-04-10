@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         display: 'flex',
         flexWrap: 'wrap',
         justifyContent: 'center',
+        marginTop: theme.spacing(1),
     },
     chip: {
         marginRight: theme.spacing(1),
