@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, cleanup, act } from "@testing-library/react";
-import RegisterForm from '../../components/auth/registerForm/RegisterForm';
+import RegisterForm from '../../components/forms/registerForm/RegisterForm';
 
 const mockRegister = jest.fn();
 

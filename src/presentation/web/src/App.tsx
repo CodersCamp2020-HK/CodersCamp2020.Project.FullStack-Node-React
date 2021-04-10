@@ -11,6 +11,7 @@ import AnimalInfo from './pages/AnimalInfo';
 import Auth from './pages/Auth';
 import Contact from './pages/Contact';
 import Donation from './pages/Donation';
+import FormRoute from './pages/FormRoute';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import theme from './themes/theme';
@@ -45,48 +46,51 @@ const App: React.FC = () => {
     const [appState, setAppState] = useState<AppState>(initialAppState);
 
     return (
-        <AppCtx.Provider value={{ appState, setAppState }}>
-            <ThemeProvider theme={theme}>
-                <Router>
-                    <Navbar />
-                    <div className={classes.wrapper}>
-                        <Switch>
-                            <Route exact path="/">
-                                <Home />
-                            </Route>
-                            <Route exact path="/about">
-                                <About />
-                            </Route>
-                            <Route exact path="/adoption">
-                                <Adoption />
-                            </Route>
-                            <Route exact path="/donation">
-                                <Donation />
-                            </Route>
-                            <Route exact path="/contact">
-                                <GridContainer>
-                                    <Contact />
-                                </GridContainer>
-                            </Route>
-                            <Route path="/auth">
-                                <GridContainer>
-                                    <Auth />
-                                </GridContainer>
-                            </Route>
-                            <Route path="/animals/:animalId">
-                                <AnimalInfo />
-                            </Route>
-                            <Route path="*">
-                                <GridContainer>
-                                    <NotFound />
-                                </GridContainer>
-                            </Route>
-                        </Switch>
-                    </div>
-                </Router>
-                <Footer />
-            </ThemeProvider>
-        </AppCtx.Provider>
+        <ThemeProvider theme={theme}>
+            <Router>
+                <Navbar />
+                <div className={classes.wrapper}>
+                    <Switch>
+                        <Route exact path="/">
+                            <Home />
+                        </Route>
+                        <Route exact path="/about">
+                            <About />
+                        </Route>
+                        <Route exact path="/adoption">
+                            <Adoption />
+                        </Route>
+                        <Route exact path="/donation">
+                            <Donation />
+                        </Route>
+                        <Route exact path="/contact">
+                            <GridContainer>
+                                <Contact />
+                            </GridContainer>
+                        </Route>
+                        <Route path="/auth">
+                            <GridContainer>
+                                <Auth />
+                            </GridContainer>
+                        </Route>
+                        <Route path="/form">
+                            <GridContainer>
+                                <FormRoute />
+                            </GridContainer>
+                        </Route>
+                        <Route path="/animals/:animalId">
+                            <AnimalInfo />
+                        </Route>
+                        <Route path="*">
+                            <GridContainer>
+                                <NotFound />
+                            </GridContainer>
+                        </Route>
+                    </Switch>
+                </div>
+            </Router>
+            <Footer />
+        </ThemeProvider>
     );
 };
 
