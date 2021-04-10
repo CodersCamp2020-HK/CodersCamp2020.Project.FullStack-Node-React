@@ -4,7 +4,7 @@ import Link from '@material-ui/core/Link';
 import { Theme, makeStyles } from '@material-ui/core';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
 import AuthPaper from '../authPaper/AuthPaper';
-import RegisterForm, { Inputs } from '../registerForm/RegisterForm';
+import RegisterForm, { Inputs } from '../../forms/registerForm/RegisterForm';
 import Typography from '@material-ui/core/Typography';
 import { useCreateUser } from '../../../client/index';
 import { useForm } from 'react-hook-form';
