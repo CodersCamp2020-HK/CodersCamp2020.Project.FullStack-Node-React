@@ -28,69 +28,86 @@ interface AppContextInterface {
     setAppState: React.Dispatch<React.SetStateAction<AppState>>;
 }
 
-export const AppCtx = React.createContext<AppContextInterface>(null!);
+const initialContext = {
+    appState: {
+        role: null,
+        userId: null,
+        userName: null,
+    },
+    setAppState: () => {},
+};
+
+console.log(localStorage.getItem('aa'));
+
+export const AppCtx = React.createContext<AppContextInterface>(initialContext);
 
 interface AppState {
     userId: number | null;
-    isLogged: boolean;
     role: UserType | null;
+    userName: string | null;
 }
-const initialAppState = {
-    userId: null,
-    isLogged: false,
-    role: null,
-};
+
+const initialAppState =
+    localStorage.getItem('userData') === null
+        ? {
+              role: null,
+              userId: null,
+              userName: null,
+          }
+        : JSON.parse(localStorage.getItem('userData')!);
 
 const App: React.FC = () => {
     const classes = useStyles();
     const [appState, setAppState] = useState<AppState>(initialAppState);
 
     return (
-        <ThemeProvider theme={theme}>
-            <Router>
-                <Navbar />
-                <div className={classes.wrapper}>
-                    <Switch>
-                        <Route exact path="/">
-                            <Home />
-                        </Route>
-                        <Route exact path="/about">
-                            <About />
-                        </Route>
-                        <Route exact path="/adoption">
-                            <Adoption />
-                        </Route>
-                        <Route exact path="/donation">
-                            <Donation />
-                        </Route>
-                        <Route exact path="/contact">
-                            <GridContainer>
-                                <Contact />
-                            </GridContainer>
-                        </Route>
-                        <Route path="/auth">
-                            <GridContainer>
-                                <Auth />
-                            </GridContainer>
-                        </Route>
-                        <Route path="/form">
-                            <GridContainer>
-                                <FormRoute />
-                            </GridContainer>
-                        </Route>
-                        <Route path="/animals/:animalId">
-                            <AnimalInfo />
-                        </Route>
-                        <Route path="*">
-                            <GridContainer>
-                                <NotFound />
-                            </GridContainer>
-                        </Route>
-                    </Switch>
-                </div>
-            </Router>
-            <Footer />
-        </ThemeProvider>
+        <AppCtx.Provider value={{ appState, setAppState }}>
+            <ThemeProvider theme={theme}>
+                <Router>
+                    <Navbar />
+                    <div className={classes.wrapper}>
+                        <Switch>
+                            <Route exact path="/">
+                                <Home />
+                            </Route>
+                            <Route exact path="/about">
+                                <About />
+                            </Route>
+                            <Route exact path="/adoption">
+                                <Adoption />
+                            </Route>
+                            <Route exact path="/donation">
+                                <Donation />
+                            </Route>
+                            <Route exact path="/contact">
+                                <GridContainer>
+                                    <Contact />
+                                </GridContainer>
+                            </Route>
+                            <Route path="/auth">
+                                <GridContainer>
+                                    <Auth />
+                                </GridContainer>
+                            </Route>
+                            <Route path="/form">
+                                <GridContainer>
+                                    <FormRoute />
+                                </GridContainer>
+                            </Route>
+                            <Route path="/animals/:animalId">
+                                <AnimalInfo />
+                            </Route>
+                            <Route path="*">
+                                <GridContainer>
+                                    <NotFound />
+                                </GridContainer>
+                            </Route>
+                        </Switch>
+                    </div>
+                </Router>
+                <Footer />
+            </ThemeProvider>
+        </AppCtx.Provider>
     );
 };
 

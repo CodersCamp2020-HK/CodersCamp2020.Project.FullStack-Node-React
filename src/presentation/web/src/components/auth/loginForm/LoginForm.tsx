@@ -6,6 +6,8 @@ import { Link as RouterLink, Redirect } from 'react-router-dom';
 import { useLoginUser } from '../../../client';
 import AuthPaper from '../authPaper/AuthPaper';
 import { AppCtx } from '../../../App';
+import jwt from 'jsonwebtoken';
+import { UserType } from '../../../client/index';
 
 interface IFormValues {
     'E-mail': string;
@@ -54,6 +56,21 @@ const useStyle = makeStyles<Theme>((theme) => ({
     },
 }));
 
+interface IUserInfo {
+    role: UserType;
+    id: number;
+    name: string;
+    iat: number;
+}
+
+const isUserInfo = (user: unknown): user is IUserInfo => {
+    return (
+        typeof (user as IUserInfo).id === 'number' &&
+        typeof (user as IUserInfo).role === 'string' &&
+        typeof (user as IUserInfo).iat === 'number'
+    );
+};
+
 const LoginForm = () => {
     const classes = useStyle();
     const { appState, setAppState } = useContext(AppCtx);
@@ -70,6 +87,22 @@ const LoginForm = () => {
                 password: data.Password,
             });
             localStorage.setItem('apiKey', response.apiKey);
+            const decodedToken = jwt.decode(response.apiKey);
+            if (isUserInfo(decodedToken)) {
+                setAppState({
+                    userId: decodedToken.id,
+                    role: decodedToken.role,
+                    userName: decodedToken.name,
+                });
+                localStorage.setItem(
+                    'userData',
+                    JSON.stringify({
+                        userId: decodedToken.id,
+                        role: decodedToken.role,
+                        userName: decodedToken.name,
+                    }),
+                );
+            }
             setFireRedirect(true);
         } catch (error) {
             if (error.status == 400 || error.status == 422) {
