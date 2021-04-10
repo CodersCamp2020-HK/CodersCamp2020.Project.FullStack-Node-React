@@ -169,6 +169,7 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled = false, c
 const SurveyForm: React.FC<SurveyFormProps> = ({ handleSubmit: submitCb, formData, defaultValues, disabled }) => {
     const { data, loading, error } = formData;
     const classes = useStyles();
+    console.log(formData)
 
     const methods = useForm<Record<string, string | string[]>>({
         shouldFocusError: false,
