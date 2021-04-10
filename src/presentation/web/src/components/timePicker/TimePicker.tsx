@@ -16,10 +16,12 @@ interface SelectedTime {
 const useStyles = makeStyles((theme: Theme) => ({
     wrapper: {
         display: 'flex',
+        flexWrap: 'wrap',
         justifyContent: 'center',
     },
     chip: {
         marginRight: theme.spacing(1),
+        marginBottom: theme.spacing(1),
     },
 }));
 
