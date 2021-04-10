@@ -59,7 +59,7 @@ const useStyles = makeStyles({
         justifyContent: 'flex-end',
         height: '50%',
         backgroundRepeat: 'no-repeat',
-        backgroundImage: `url(${shelterPhoto})`,
+        backgroundImage: `url('https://images.pexels.com/photos/2173872/pexels-photo-2173872.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940')`,
         [themes.breakpoints.down('xs')]: {
             marginTop: '5%',
             alignItems: 'center',
