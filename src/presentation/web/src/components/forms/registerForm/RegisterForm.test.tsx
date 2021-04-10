@@ -1,6 +1,6 @@
 import React from "react";
 import { render, screen, fireEvent, cleanup, act } from "@testing-library/react";
-import RegisterForm from '../../components/forms/registerForm/RegisterForm';
+import RegisterForm from './RegisterForm';
 
 const mockRegister = jest.fn();
 
@@ -15,7 +15,7 @@ describe('Given: RegisterForm()', () => {
     describe('When: all fields have default values', () => {
         it('Then: required error message should be displayed for all fields except date', async () => {
             fireEvent.submit(screen.getByTestId('formSubmit'));
-            expect(await screen.findAllByText(/wymagan/i)).toHaveLength(6);
+            expect(await screen.findAllByText(/wymagan/i)).toHaveLength(7);
         })
     })
     describe('When: name has 1 letter', () => {
@@ -314,6 +314,7 @@ describe('Given: RegisterForm()', () => {
             expect(screen.getByLabelText(/Powtórz hasło/).value).toBe('ZAQ!2wsx');
             expect(screen.getByRole('textbox', { name: 'Telefon'}).value).toBe('123456789');
             expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('19/03/1970');
+            expect(await screen.findAllByText(/wymagan/i)).toHaveLength(0);
             expect(mockRegister).toBeCalledTimes(1);
         })
     })
