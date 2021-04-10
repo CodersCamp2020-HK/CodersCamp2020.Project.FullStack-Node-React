@@ -6,7 +6,7 @@ import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined'
 import { makeStyles } from '@material-ui/styles';
 import theme from "../../themes/theme";
 import Grid from '@material-ui/core/Grid';
-import shelterPhoto from "./img/hand.jpg";
+import shelterPhoto from "./img/jpg1.jpg";
 import { createMuiTheme, Paper, Typography } from '@material-ui/core';
 
 const themes = createMuiTheme({
@@ -53,25 +53,27 @@ const useStyles = makeStyles({
         color: '#FFF',
         opacity: .87,
     },
-    imageWrapper: {
-        height: '100%',
-        width: '100%',
-        backgroundImage: `url(${shelterPhoto})`,
-        backgroundPosition: 'center top',
-        backgroundSize: 'cover',
-        borderRadius: '15px',
-        padding: 0,
-    },
     shelterContainer: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        minHeight: '414px',
+        height: '50%',
+        backgroundRepeat: 'no-repeat',
+        backgroundImage: `url(${shelterPhoto})`,
         [themes.breakpoints.down('xs')]: {
             marginTop: '5%',
             alignItems: 'center',
             justifyContent: 'center',
         },
+    },
+    imageWrapper: {
+        height: '100%',
+        width: '100%',
+        backgroundPosition: 'center top',
+        backgroundSize: 'cover',
+        borderRadius: '15px',
+        padding: 0,
+
     },
     mapPhoto: {
         display: 'flex',
