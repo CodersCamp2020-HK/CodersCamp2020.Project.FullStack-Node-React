@@ -1,5 +1,7 @@
+import { set as updateDate } from 'date-fns';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useCreateVisit } from '../../client/index';
 import Calendar from '../calendar/Calendar';
 import TimePicker from '../timePicker/TimePicker';
 
@@ -20,6 +22,7 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
         time: undefined,
     });
     const { errors, setValue, register, handleSubmit } = useForm<VisitData>({ mode: 'all' });
+    const { mutate: createVisit } = useCreateVisit({});
 
     const handleDate = (date: Date) => {
         setSelected((previous) => ({ ...previous, date }));
@@ -29,6 +32,27 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
     const handleTime = (time: string) => {
         setSelected((previous) => ({ ...previous, time }));
         setValue('time', time);
+    };
+
+    const sendForm = (data: VisitData) => {
+        if (data.date && data.time) {
+            const hours = Number(data.time.slice(0, 2));
+            const minutes = Number(data.time.slice(3));
+            const selectedDate = updateDate(data.date, {
+                hours,
+                minutes,
+            });
+            console.log(selectedDate);
+            try {
+                createVisit({
+                    animalId,
+                    userId: 1,
+                    date: selectedDate.toDateString(),
+                });
+            } catch {
+                console.log('Brak polaczenia');
+            }
+        }
     };
 
     const showError = () => {
@@ -50,11 +74,7 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
     register({ name: 'date', type: 'custom' }, { required: 'Data jest wymagana!' });
     register({ name: 'time', type: 'custom' }, { required: 'Czas jest wymagany!' });
     return (
-        <form
-            onSubmit={handleSubmit((data) => {
-                console.log(data);
-            })}
-        >
+        <form onSubmit={handleSubmit(sendForm)}>
             <Calendar name="date" getSelectedDate={handleDate} />
             <TimePicker name="time" times={POSSIBLE_TIMES} getSelectedTime={handleTime} />
             {selected.date && selected.time && 'Wybrano czas i date'}
