@@ -1,31 +1,33 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Container, Scope } from 'typescript-ioc';
+import { AdoptionStepService } from '@application/AdoptionStepService';
 import { AnimalsService } from '@application/AnimalsService';
-import { UsersService } from '@application/UsersService';
-import { getConnection } from 'typeorm';
-import { AnimalPhoto } from '@infrastructure/postgres/AnimalPhoto';
-import { PhotosService } from '@application/PhotosService';
-import Animal from '@infrastructure/postgres/Animal';
-import User from '@infrastructure/postgres/User';
-import AnimalAdditionalInfo from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { FormService } from '@application/FormService';
-import Form from '@infrastructure/postgres/Form';
-import OrganizationUser from '@infrastructure/postgres/OrganizationUser';
-import { EmailService } from '@infrastructure/EmailService';
-import TemporaryUserActivationInfoStore from '@infrastructure/TemporaryUserActivationInfoStore';
-import { CalendarService } from '@application/CalendarService';
-import Calendar from '@infrastructure/postgres/Calendar';
-import FormVolunteerSubmission from '@infrastructure/postgres/FormVolunteerSubmission';
-import { VolunteerSubmissionsService } from '@application/VolunteerSubmissionsService';
 import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
-import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
-import { WinstonLogger } from '@infrastructure/WinstonLogger';
-import Specie from '@infrastructure/postgres/Specie';
-import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
-import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
-import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
-import VolunteerHireStep from '@infrastructure/postgres/VolunteerHireStep';
+import { CalendarService } from '@application/CalendarService';
+import { FormService } from '@application/FormService';
+import { PhotosService } from '@application/PhotosService';
+import { UsersService } from '@application/UsersService';
 import { VolunteerHireStepService } from '@application/VolunteerHireStepService';
+import { VolunteerSubmissionsService } from '@application/VolunteerSubmissionsService';
+import { EmailService } from '@infrastructure/EmailService';
+import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
+import Animal from '@infrastructure/postgres/Animal';
+import AnimalAdditionalInfo from '@infrastructure/postgres/AnimalAdditionalInfo';
+import { AnimalPhoto } from '@infrastructure/postgres/AnimalPhoto';
+import Calendar from '@infrastructure/postgres/Calendar';
+import Form from '@infrastructure/postgres/Form';
+import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
+import FormAnimalSubmission from '@infrastructure/postgres/FormAnimalSubmission';
+import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
+import FormVolunteerSubmission from '@infrastructure/postgres/FormVolunteerSubmission';
+import OrganizationUser from '@infrastructure/postgres/OrganizationUser';
+import Specie from '@infrastructure/postgres/Specie';
+import User from '@infrastructure/postgres/User';
+import VolunteerHireStep from '@infrastructure/postgres/VolunteerHireStep';
+import TemporaryUserActivationInfoStore from '@infrastructure/TemporaryUserActivationInfoStore';
+import { WinstonLogger } from '@infrastructure/WinstonLogger';
+import { getConnection } from 'typeorm';
+import { Container, Scope } from 'typescript-ioc';
+import { OrganizationUsersService } from '@application/OrganizationUsersService';
 
 Container.bind(AnimalsService)
     .factory(
@@ -88,8 +90,14 @@ Container.bind(VolunteerSubmissionsService).factory(
             getConnection().getRepository(OrganizationUser),
         ),
 );
+Container.bind(AdoptionStepService).factory(
+    () => new AdoptionStepService(getConnection().getRepository(AdoptionStep), getConnection().getRepository(Specie)),
+);
 Container.bind(VolunteerHireStepService).factory(
     () => new VolunteerHireStepService(getConnection().getRepository(VolunteerHireStep)),
+);
+Container.bind(OrganizationUsersService).factory(
+    () => new OrganizationUsersService(getConnection().getRepository(OrganizationUser)),
 );
 Container.bind(WinstonLogger).to(WinstonLogger).scope(Scope.Singleton);
 

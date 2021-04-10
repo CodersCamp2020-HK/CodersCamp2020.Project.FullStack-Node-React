@@ -3,15 +3,15 @@ import { createMuiTheme } from '@material-ui/core';
 const theme = createMuiTheme({
     palette: {
         primary: {
-            light: '#f9683a',
-            main: '#bf360c',
-            dark: '#870000',
+            light: '#FF5F52',
+            main: '#C62828',
+            dark: '#8E0000',
             contrastText: '#ffffff',
         },
         secondary: {
-            light: '#B4A647',
-            main: '#827717',
-            dark: '#524C00',
+            light: '#48A999',
+            main: '#00796B',
+            dark: '#004C40',
         },
         common: {
             white: '#FFFDF6',
@@ -23,6 +23,9 @@ const theme = createMuiTheme({
         background: {
             default: '#FFFDF6',
         },
+        action: {
+            selected: '#bf360c',
+        }
     },
     props: {
         MuiLink: {
@@ -34,6 +37,9 @@ const theme = createMuiTheme({
             size: 'medium',
             fullWidth: true,
         },
+        MuiRadio: {
+            color: 'secondary'
+        },
         MuiCheckbox: {
             color: 'secondary'
         },
@@ -42,7 +48,11 @@ const theme = createMuiTheme({
         },
         MuiGrid: {
             alignItems: 'center',
-            justify: 'center'
+            justify: 'center',
+            // margin: 'normal'
+        },
+        MuiButtonBase: {
+            disableRipple: true,
         }
     },
     overrides: {
@@ -61,18 +71,10 @@ const theme = createMuiTheme({
             root: {
                 '& fieldset': {
                     borderRadius: 15,
-                },
-                paddingBottom: 20,
-                marginBottom: 15
-            },
-        },
-        MuiFormHelperText: {
-            root: {
-                position: 'absolute',
-                top: 60
+                }
             }
         }
-    },
+    }
 });
 
 export default theme;

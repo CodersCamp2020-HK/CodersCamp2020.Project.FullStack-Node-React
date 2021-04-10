@@ -4,9 +4,9 @@ import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
 import AlternateEmailOutlinedIcon from '@material-ui/icons/AlternateEmailOutlined';
 import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined';
 import { makeStyles } from '@material-ui/styles';
-import theme from "../../themes/theme";
+import theme from '../../themes/theme';
 import Grid from '@material-ui/core/Grid';
-import shelterPhoto from "./img/jpg1.jpg";
+import shelterPhoto from './img/jpg1.jpg';
 import { createMuiTheme, Paper, Typography } from '@material-ui/core';
 
 const themes = createMuiTheme({
@@ -51,7 +51,7 @@ const useStyles = makeStyles({
     },
     lockIcon: {
         color: '#FFF',
-        opacity: .87,
+        opacity: 0.87,
     },
     shelterContainer: {
         display: 'flex',
@@ -85,7 +85,7 @@ const useStyles = makeStyles({
         marginTop: '5%',
         width: '100%',
         height: '600px',
-        loading: "lazy",
+        loading: 'lazy',
     },
 });
 
@@ -123,9 +123,13 @@ const ContactPage: React.FC = () => {
                 <div className={classes.imageWrapper}></div>
             </Grid>
             <Grid item xs={12}>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d20004.80284408307!2d17.0311458676758!3d51.189588443602666!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x173c5b990e04fcc2!2zUHNhcnkgNTEtMTgwLCBHxYLDs3duYSA1MGM!5e0!3m2!1spl!2spl!4v1616853103897!5m2!1spl!2spl" className={classes.mapPhoto} aria-hidden="false"></iframe>
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d20004.80284408307!2d17.0311458676758!3d51.189588443602666!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x173c5b990e04fcc2!2zUHNhcnkgNTEtMTgwLCBHxYLDs3duYSA1MGM!5e0!3m2!1spl!2spl!4v1616853103897!5m2!1spl!2spl"
+                    className={classes.mapPhoto}
+                    aria-hidden="false"
+                ></iframe>
             </Grid>
-        </Grid >
+        </Grid>
     );
 };
 

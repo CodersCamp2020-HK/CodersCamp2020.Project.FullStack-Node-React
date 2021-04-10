@@ -1,12 +1,15 @@
-import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
-import { AnimalPhoto, AnimalThumbnailPhoto } from '@infrastructure/postgres/AnimalPhoto';
-import Animal from '@infrastructure/postgres/Animal';
-import AnimalAdditionalInfo, { AnimalSize, AnimalActiveLevel } from '@infrastructure/postgres/AnimalAdditionalInfo';
-import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
-import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
-import Specie from '@infrastructure/postgres/Specie';
 import PaginationParams from '@infrastructure/Pagination';
+import Animal from '@infrastructure/postgres/Animal';
+import AnimalAdditionalInfo, { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
+import { AnimalPhoto, AnimalThumbnailPhoto } from '@infrastructure/postgres/AnimalPhoto';
+import Specie from '@infrastructure/postgres/Specie';
+//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
+//export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
+import { validate } from 'class-validator';
+import { Repository } from 'typeorm';
+import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
+import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
 //type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
 //type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
@@ -28,10 +31,6 @@ export interface AnimalCreationParams {
         acceptsOtherAnimals: boolean;
     };
 }
-
-//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
-//export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
-import { validate } from 'class-validator';
 
 export interface AnimalUpdateParams {
     name?: string;
@@ -63,6 +62,7 @@ interface AnimalQueryParams {
     acceptsOtherAnimals?: boolean;
     size?: AnimalSize;
     activeLevel?: AnimalActiveLevel;
+    count?: boolean;
 }
 
 export class AnimalsService {
@@ -74,7 +74,7 @@ export class AnimalsService {
     ) {}
 
     public async get(id: number): Promise<Animal> {
-        const animal = await this.animalRepository.findOne(id);
+        const animal = await this.animalRepository.findOne(id, { relations: ['additionalInfo'] });
         if (!animal) throw new ApiError('Not Found', 404, 'Animal not found in database');
 
         return animal;
@@ -110,24 +110,29 @@ export class AnimalsService {
         return animal;
     }
 
-    public async getAll(queryParams: AnimalQueryParams, paginationParams?: PaginationParams): Promise<Animal[]> {
+    public async getAll(
+        queryParams: AnimalQueryParams,
+        paginationParams?: PaginationParams,
+    ): Promise<Animal[] | { count: number }> {
         let isFirstPage;
         let SKIP;
         let LIMIT;
         if (paginationParams) {
-            isFirstPage = paginationParams.page == 1 ? true : false;
+            isFirstPage = paginationParams.page === 1 ? true : false;
             SKIP =
                 paginationParams.perPage && paginationParams.page
-                    ? paginationParams.perPage * paginationParams.page
+                    ? paginationParams.perPage * (paginationParams.page - 1)
                     : 0;
             LIMIT = paginationParams.perPage ? paginationParams.perPage : undefined;
         }
 
-        return new OptionalWhereSelectQueryBuilder(
+        const animalQuery = new OptionalWhereSelectQueryBuilder(
             this.animalRepository
                 .createQueryBuilder('animal')
                 .leftJoinAndSelect('animal.additionalInfo', 'info')
                 .leftJoinAndSelect('animal.specie', 'specie')
+                .leftJoinAndSelect('animal.thumbnail', 'thumbnail')
+                .addOrderBy('info.admissionToShelter', 'DESC')
                 .where('animal.id >= :zero', { zero: 0 })
                 .skip(isFirstPage ? 0 : SKIP)
                 .take(LIMIT),
@@ -142,8 +147,15 @@ export class AnimalsService {
             .optAndWhere('info.activeLevel = ', queryParams.activeLevel)
             .optAndWhere('animal.age >= ', queryParams.minAge)
             .optAndWhere('animal.age <= ', queryParams.maxAge)
-            .optAndWhere('specie.specie = ', queryParams.specie)
-            .selectQueryBuilder.getMany();
+            .optAndWhere('specie.specie = ', queryParams.specie);
+
+        if (queryParams.count) {
+            return {
+                count: await animalQuery.selectQueryBuilder.getCount(),
+            };
+        }
+
+        return animalQuery.selectQueryBuilder.getMany();
     }
 
     public async update(id: number, { additionalInfo, specie, ...animalParams }: AnimalUpdateParams): Promise<Animal> {
