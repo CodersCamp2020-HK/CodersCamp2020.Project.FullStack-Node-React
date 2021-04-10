@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 interface TimePickerProps {
     times: string[];
     getSelectedTime: (time: string) => any;
+    name: string;
 }
 
 interface SelectedTime {

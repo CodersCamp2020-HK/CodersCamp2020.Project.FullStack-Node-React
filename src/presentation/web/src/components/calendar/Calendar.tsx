@@ -8,6 +8,7 @@ import React, { useState } from 'react';
 
 interface CalendarProps {
     getSelectedDate: (date: Date) => any;
+    name: string;
 }
 
 
