@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useCreateVisit } from '../../client/index';
 import Calendar from '../calendar/Calendar';
 import TimePicker from '../timePicker/TimePicker';
-import { Typography, Button } from '@material-ui/core';
+import { Typography, Button, makeStyles } from '@material-ui/core';
 
 const POSSIBLE_TIMES = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
 
@@ -17,7 +17,16 @@ interface VisitData {
     time: string | undefined;
 }
 
+const useStyles = makeStyles({
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+    }
+})
+
 const VisitForm = ({ animalId }: VisitFormProps) => {
+    const styles = useStyles();
     const [selected, setSelected] = useState<VisitData>({
         date: undefined,
         time: undefined,
@@ -80,12 +89,12 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
     register({ name: 'time', type: 'custom' }, { required: 'Czas jest wymagany!' });
 
     return (
-        <form onSubmit={handleSubmit(sendForm)}>
+        <form className={styles.form} onSubmit={handleSubmit(sendForm)}>
             <Calendar name="date" getSelectedDate={handleDate} />
             <TimePicker name="time" times={POSSIBLE_TIMES} getSelectedTime={handleTime} />
             <Typography variant='subtitle1'>{selected.date && selected.time && showSelectedDate()}</Typography>
             <Typography variant='subtitle1' color='error'>{(!selected.date || !selected.time) && showError()}</Typography>
-            <Button variant='contained' color='primary' size='large' type="submit">Wyślij</Button>
+            <Button variant='contained' color='primary' size='large' type="submit">Potwierdź datę spotkania</Button>
         </form>
     );
 };
