@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import plLocale from 'date-fns/locale/pl';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import differenceInYears from 'date-fns/differenceInYears'
 
 export interface Inputs {
     name: string;
@@ -61,11 +62,12 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues }
     const validateRepeatBirthDate = () => {
         if (formState.isSubmitted) trigger('birthDate')
     }
-    const repeatPassword = (value: string) => value === getValues().password || 'Hasła muszą być takie same!'
-    const validatebirthDateAfterToday = (value: Date) => value < new Date() || 'Podaj wcześniejszą datę!'
-    const validateBirthDateBefore = (value: Date) => value > new Date(1900, 1) || "Podaj późniejszą datę!"
+    const repeatPassword = (value: string) => value === getValues().password || 'Hasła muszą być takie same!';
+    const validatebirthDateAfterToday = (value: Date) => value < new Date() || 'Podaj wcześniejszą datę!';
+    const validateBirthDateBefore = (value: Date) => value > new Date(1900, 1) || "Podaj późniejszą datę!";
+    const validateBirthDateAdult = (value: Date) => differenceInYears(new Date(), value) >= 18 || 'Wymagane jest 18 lat, aby założyć konto!';
     const validateDate = (value: Date) => value instanceof Date && !isNaN(value.getTime()) || 'Podaj datę w formacie DD/MM/RRRR!';
-    register({ name: 'birthDate', type: 'custom'}, { required: 'Data urodzenia jest wymagana!', validate: { validateDate, validateBirthDateBefore, validatebirthDateAfterToday } })
+    register({ name: 'birthDate', type: 'custom'}, { required: 'Data urodzenia jest wymagana!', validate: { validateDate, validateBirthDateBefore, validatebirthDateAfterToday, validateBirthDateAdult } })
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
