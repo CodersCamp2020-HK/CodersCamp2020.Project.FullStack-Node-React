@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useCreateVisit } from '../../client/index';
 import Calendar from '../calendar/Calendar';
 import TimePicker from '../timePicker/TimePicker';
+import { Typography } from '@material-ui/core';
 
 const POSSIBLE_TIMES = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
 
@@ -77,12 +78,13 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
 
     register({ name: 'date', type: 'custom' }, { required: 'Data jest wymagana!' });
     register({ name: 'time', type: 'custom' }, { required: 'Czas jest wymagany!' });
+
     return (
         <form onSubmit={handleSubmit(sendForm)}>
             <Calendar name="date" getSelectedDate={handleDate} />
             <TimePicker name="time" times={POSSIBLE_TIMES} getSelectedTime={handleTime} />
-            {selected.date && selected.time && showSelectedDate()}
-            {(!selected.date || !selected.time) && showError()}
+            <Typography variant='subtitle1'>{selected.date && selected.time && showSelectedDate()}</Typography>
+            <Typography variant='subtitle1' color='error'>{(!selected.date || !selected.time) && showError()}</Typography>
             <input type="submit" value="Wyślij" />
         </form>
     );
