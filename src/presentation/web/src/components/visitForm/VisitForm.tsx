@@ -42,7 +42,6 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
                 hours,
                 minutes,
             });
-            console.log(selectedDate);
             try {
                 createVisit({
                     animalId,
