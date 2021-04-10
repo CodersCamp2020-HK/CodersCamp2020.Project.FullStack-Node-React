@@ -24,7 +24,7 @@ const useStyle = makeStyles<Theme>((theme) => ({
     }
 }))
 
-const AuthPaper: React.FC<Props> = ({ typographyLabel, children}) => {
+const AuthPaper: React.FC<Props> = ({ typographyLabel, children }) => {
     const classes = useStyle();
 
     return (

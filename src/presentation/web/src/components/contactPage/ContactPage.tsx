@@ -22,12 +22,6 @@ const themes = createMuiTheme({
 });
 
 const useStyles = makeStyles({
-    root: {
-        flexGrow: 0,
-        flexShrink: 0,
-        marginBottom: '5%',
-        marginTop: '15%',
-    },
     iconContainer: {
         display: 'flex',
         flexDirection: 'column',
@@ -57,9 +51,9 @@ const useStyles = makeStyles({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        height: '50%',
+        minHeight: '100%',
+        minWidth: '100%',
         backgroundRepeat: 'no-repeat',
-        backgroundImage: `url('https://images.pexels.com/photos/2173872/pexels-photo-2173872.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940')`,
         [themes.breakpoints.down('xs')]: {
             marginTop: '5%',
             alignItems: 'center',
@@ -67,13 +61,12 @@ const useStyles = makeStyles({
         },
     },
     imageWrapper: {
+        backgroundImage: `url('https://images.pexels.com/photos/2173872/pexels-photo-2173872.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940')`,
         height: '100%',
-        width: '100%',
         backgroundPosition: 'center top',
         backgroundSize: 'cover',
         borderRadius: '15px',
         padding: 0,
-
     },
     mapPhoto: {
         display: 'flex',
@@ -88,11 +81,11 @@ const useStyles = makeStyles({
         loading: 'lazy',
     },
 });
-
+console.log(shelterPhoto)
 const ContactPage: React.FC = () => {
     const classes = useStyles();
     return (
-        <Grid container className={classes.root}>
+        <Grid container item xs={12}>
             <Grid item xs={12} sm={6}>
                 <Paper variant="outlined" className={classes.iconContainer}>
                     <div className={classes.lockBackground}>
@@ -120,7 +113,9 @@ const ContactPage: React.FC = () => {
                 </Paper>
             </Grid>
             <Grid item xs={12} sm={6} className={classes.shelterContainer} >
-                <div className={classes.imageWrapper}></div>
+                <div className={classes.imageWrapper}>
+                    <img src='https://images.pexels.com/photos/2173872/pexels-photo-2173872.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940' />
+                </div>
             </Grid>
             <Grid item xs={12}>
                 <iframe
