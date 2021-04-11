@@ -18,7 +18,7 @@ const GalleryPage: React.FC<Props> = ({ query, currentPage }) => {
                         <AnimalCard
                             name={item.name}
                             description={item.description}
-                            photoURL={Buffer.from(item.thumbnail.buffer.data, 'binary').toString('base64')}
+                            photoURL={Buffer.from(item.thumbnail.buffer, 'binary').toString('base64')}
                         />
                     </Grid>
                 ))}
