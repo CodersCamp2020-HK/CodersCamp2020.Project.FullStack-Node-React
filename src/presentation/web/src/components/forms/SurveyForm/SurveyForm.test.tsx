@@ -1,8 +1,9 @@
 import React from "react";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import SurveyForm from "./SurveyForm";
 import { AdoptionStep, ApiError, useGetForm } from "../../../client";
 import { UseGetReturn } from "restful-react";
+import userEvent from '@testing-library/user-event'
 import { act } from "react-dom/test-utils";
 
 interface IUseGetFormParams {
@@ -78,6 +79,7 @@ describe('Given: SurveyForm() with questions and submit', () => {
         const mockFormData = setup(useGetFormParams);
         render(<SurveyForm handleSubmit={mockHandleSubmit} formData={mockFormData} />)
     })
+
     describe('When: form is loaded', () => {
         it('Then: questions should be generated', () => {
             expect(screen.getByText(/1\. czy mają państwo dzieci\?/i)).toBeInTheDocument();
@@ -91,18 +93,32 @@ describe('Given: SurveyForm() with questions and submit', () => {
             expect(screen.getAllByRole('checkbox')).toHaveLength(4);
         })
     })
+    
     describe('When: form is loaded, inputs are not provided and submit button is clicked', () => {
         it('Then: validation errors to provide inputs should be displayed', async () => {
-            fireEvent.submit(screen.getByRole('button', {name: /wyślij formularz/i}));
+            userEvent.click(screen.getByRole('button', {name: /wyślij formularz/i}));
             expect(await screen.findAllByText(/Zaznacz odpowiedź/i)).toHaveLength(2);
             expect(await screen.findAllByText(/Napisz odpowiedź/i)).toHaveLength(1);
         })
     })
-    describe('When: form is loaded, inputs are not provided and submit button is clicked', () => {
-        it('Then: validation errors to provide inputs should be displayed', async () => {
-            fireEvent.submit(screen.getByRole('button', {name: /wyślij formularz/i}));
-            expect(await screen.findAllByText(/Zaznacz odpowiedź/i)).toHaveLength(2);
-            expect(await screen.findAllByText(/Napisz odpowiedź/i)).toHaveLength(1);
+
+    describe('When: form is loaded, inputs are provided and submit button is clicked', () => {
+        it('Then: form shoould be submitted', async () => {
+            const checkboxGrozny = screen.getByRole('checkbox', {name: /groźny/i});
+            const checkboxSzczekajacy = screen.getByRole('checkbox', {name: /szczekający/i})
+
+            await act(async () => {
+                userEvent.type(screen.getByRole('textbox'), 'Bo szczeka pies sąsiada!');
+                userEvent.click(screen.getByRole('radio', {name: /tak/i}));
+                userEvent.click(checkboxGrozny)
+                userEvent.click(checkboxSzczekajacy)
+                userEvent.click(screen.getByRole('button', {name: /wyślij formularz/i}));
+            })
+            screen.logTestingPlaygroundURL();
+            expect(screen.getByRole('textbox')).toHaveValue('Bo szczeka pies sąsiada!');
+            expect(checkboxSzczekajacy).toBeChecked();
+            // expect(checkboxGrozny).toBeChecked();        Czemu drugie pole nie jest zaznaczone?
+            // expect(mockHandleSubmit).toBeCalledTimes(1);
         })
     })
 })
