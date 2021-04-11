@@ -34,7 +34,7 @@ const initialContext = {
         userId: null,
         userName: null,
     },
-    setAppState: () => {},
+    setAppState: () => { },
 };
 
 console.log(localStorage.getItem('aa'));
@@ -50,10 +50,10 @@ interface AppState {
 const initialAppState =
     localStorage.getItem('userData') === null
         ? {
-              role: null,
-              userId: null,
-              userName: null,
-          }
+            role: null,
+            userId: null,
+            userName: null,
+        }
         : JSON.parse(localStorage.getItem('userData')!);
 
 const App: React.FC = () => {
@@ -97,7 +97,9 @@ const App: React.FC = () => {
                                 </GridContainer>
                             </Route>
                             <Route path="/animals/:animalId">
-                                <AnimalInfo />
+                                <GridContainer>
+                                    <AnimalInfo />
+                                </GridContainer>
                             </Route>
                             <Route path="*">
                                 <GridContainer>
