@@ -1,7 +1,8 @@
+import React from 'react';
 import { Link, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 import { CalendarToday } from '@material-ui/icons';
 import { Link as RouterLink } from 'react-router-dom';
-import React from 'react';
+import { format } from 'date-fns';
 
 const useStyle = makeStyles<Theme>((theme) => ({
     paper: {
@@ -29,6 +30,8 @@ const useStyle = makeStyles<Theme>((theme) => ({
 const ConfirmedVisitDate = ({ date }: { date: Date }) => {
     const styles = useStyle();
 
+    const formattedDate = format(date, 'dd/MM/yyyy, HH:mm');
+
     return (
         <div>
             <Paper className={styles.paper} variant="outlined" square={false}>
@@ -36,7 +39,7 @@ const ConfirmedVisitDate = ({ date }: { date: Date }) => {
                 <Typography className={styles.text} variant="h5">
                     Data spotkania
                 </Typography>
-                <Typography variant="h6">{`Ustaliłeś(aś) datę spotkania w schronisku na: ${date.toISOString()}`}</Typography>
+                <Typography variant="h6">{`Ustaliłeś(aś) datę spotkania w schronisku na: ${formattedDate}`}</Typography>
             </Paper>
             <Typography variant="subtitle1">
                 Przychodząc do nas zarezerwuj sobie kilka godzin na oglądanie i poznanie naszych zwierzęcia. Nie śpiesz
