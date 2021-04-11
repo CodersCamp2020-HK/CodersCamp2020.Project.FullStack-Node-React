@@ -69,10 +69,10 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
                 if(e.status == 400 || e.status == 401) {
                     setServerErrorMessage('Brak uprawnień!');
                 }
-                if(e.status == 404) {
+                else if(e.status == 404) {
                     setServerErrorMessage('Nie znaleziono zwierzęcia!');
                 }
-                if(e.status == 500) {
+                else {
                     setServerErrorMessage('Błąd serwera! Spróbuj ponownie poźniej');
                 }
             }
