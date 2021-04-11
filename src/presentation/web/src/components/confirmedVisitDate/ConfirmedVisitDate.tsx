@@ -5,6 +5,9 @@ import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
 const useStyle = makeStyles<Theme>((theme) => ({
+    wrapper: {
+        textAlign: 'center',
+    },
     paper: {
         backgroundColor: theme.palette.background.paper,
         margin: '3rem 0',
@@ -20,7 +23,7 @@ const useStyle = makeStyles<Theme>((theme) => ({
     },
     linkWrapper: {
         display: 'flex',
-        alignItems: 'center',
+        justifyContent: 'center',
     },
     locationInfo: {
         marginRight: theme.spacing(1),
@@ -36,13 +39,14 @@ const ConfirmedVisitDate = ({ date }: { date: Date }) => {
     const formattedDate = format(date, 'dd/MM/yyyy, HH:mm');
 
     return (
-        <div>
+        <div className={styles.wrapper}>
             <Paper className={styles.paper} variant="outlined" square={false}>
                 <CalendarToday />
                 <Typography className={styles.text} variant="h5">
                     Data spotkania
                 </Typography>
-                <Typography variant="h6">{`Ustaliłeś(aś) datę spotkania w schronisku na: ${formattedDate}`}</Typography>
+                <Typography variant="h6">Ustaliłeś(aś) datę spotkania w schronisku na:</Typography>
+                <Typography variant="h6">{formattedDate}</Typography>
             </Paper>
             <Typography variant="subtitle1">
                 Przychodząc do nas zarezerwuj sobie kilka godzin na oglądanie i poznanie naszych zwierzęcia. Nie śpiesz
