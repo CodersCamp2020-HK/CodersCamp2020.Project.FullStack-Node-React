@@ -8,10 +8,21 @@ import { Container } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     photoLanding: {
-        backgroundImage: `url(${PhotoLanding})`,
-        backgroundPosition: 'top',
-        backgroundSize: 'cover',
         height: 'calc(100vh - 70px)',
+        position: 'relative',
+        '&:before': {
+            position: 'absolute',
+            content: '""',
+            top: 0,
+            left: 0,
+            height: '100%',
+            width: '100%',
+            backgroundImage: `url(${PhotoLanding})`,
+            backgroundPosition: 'top',
+            backgroundSize: 'cover',
+            zIndex: -1,
+            opacity: 0.8,
+        },
     },
     container: {
         height: '100%',
@@ -19,14 +30,15 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     button: {
-        marginTop: theme.spacing(4),
         background: theme.palette.secondary.dark,
     },
     link: {
-        width: '70%',
+        marginTop: 30,
     },
     header: {
         color: theme.palette.secondary.dark,
+        maxWidth: 370,
+        fontWeight: 'bold',
     },
 }));
 
@@ -41,21 +53,13 @@ const LandingHero = () => {
                             <AnimationPaws />
                         </Hidden>
                     </Grid>
-                    <Grid container item xs={12} sm={8} justify="center" alignItems="center">
+                    <Grid container item xs={12} sm={8} justify="center" alignItems="center" direction="column">
                         <Typography variant={'h3'} color="secondary" align="center" className={classes.header}>
-                            Jak adoptować
+                            Jak adoptować zwierzaka?
                         </Typography>
-                        <Typography variant={'h3'} color="secondary" align="center" className={classes.header}>
-                            zwierzaka?
-                        </Typography>
+
                         <Link component={RouterLink} to="/adoption" className={classes.link}>
-                            <Button
-                                color="secondary"
-                                variant="contained"
-                                type="submit"
-                                className={classes.button}
-                                fullWidth={true}
-                            >
+                            <Button color="secondary" variant="contained" type="submit" className={classes.button}>
                                 O procesie adopcyjnym
                             </Button>
                         </Link>

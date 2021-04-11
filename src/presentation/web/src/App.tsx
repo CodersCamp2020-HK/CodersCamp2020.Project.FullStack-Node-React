@@ -11,9 +11,11 @@ import AnimalInfo from './pages/AnimalInfo';
 import Auth from './pages/Auth';
 import Contact from './pages/Contact';
 import Donation from './pages/Donation';
+import FormRoute from './pages/FormRoute';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import theme from './themes/theme';
+import { UserType } from './client/index';
 
 const useStyles = makeStyles({
     wrapper: {
@@ -26,16 +28,33 @@ interface AppContextInterface {
     setAppState: React.Dispatch<React.SetStateAction<AppState>>;
 }
 
-export const AppCtx = React.createContext<AppContextInterface | null>(null);
+const initialContext = {
+    appState: {
+        role: null,
+        userId: null,
+        userName: null,
+    },
+    setAppState: () => {},
+};
+
+console.log(localStorage.getItem('aa'));
+
+export const AppCtx = React.createContext<AppContextInterface>(initialContext);
 
 interface AppState {
-    userId: number;
-    isLogged: boolean;
+    userId: number | null;
+    role: UserType | null;
+    userName: string | null;
 }
-const initialAppState = {
-    userId: 1,
-    isLogged: true,
-};
+
+const initialAppState =
+    localStorage.getItem('userData') === null
+        ? {
+              role: null,
+              userId: null,
+              userName: null,
+          }
+        : JSON.parse(localStorage.getItem('userData')!);
 
 const App: React.FC = () => {
     const classes = useStyles();
@@ -68,6 +87,11 @@ const App: React.FC = () => {
                             <Route path="/auth">
                                 <GridContainer>
                                     <Auth />
+                                </GridContainer>
+                            </Route>
+                            <Route path="/form">
+                                <GridContainer>
+                                    <FormRoute />
                                 </GridContainer>
                             </Route>
                             <Route path="/animals/:animalId">

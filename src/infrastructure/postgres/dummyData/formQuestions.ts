@@ -66,6 +66,15 @@ export const seedFormQuestion = (): DeepPartial<FormQuestion>[] => {
             },
             form: { id: 3 },
         },
+        {
+            id: 8,
+            question: 'Jakie cechy według państwa powinnien mieć pies?',
+            placeholder: {
+                type: AnswerType.CHECKBOX,
+                answer: ['Aktywny', 'Leniwy', 'Groźny', 'Szczekający'],
+            },
+            form: { id: 1 },
+        },
     ];
 
     return formQuestion;

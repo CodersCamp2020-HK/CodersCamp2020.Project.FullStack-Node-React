@@ -65,13 +65,15 @@ const Navbar = () => {
                     <Drawer anchor="left" open={showDrawer} onClose={hide}>
                         <NavbarList view="mobile" />
                     </Drawer>
-                    <Link component={RouterLink} to="/auth">
-                        {appContext !== null && appContext.appState.isLogged === false ? (
+                    {appContext.appState.userId === null ? (
+                        <Link component={RouterLink} to="/auth">
                             <NavbarLoginBtn />
-                        ) : (
+                        </Link>
+                    ) : (
+                        <Link component={RouterLink} to="/">
                             <MyAccBtn />
-                        )}
-                    </Link>
+                        </Link>
+                    )}
                 </Toolbar>
             </AppBar>
         </nav>
