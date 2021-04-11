@@ -40,10 +40,10 @@ const useStyles = makeStyles({
     },
     catWrapper: {
         [themes.breakpoints.down('sm')]: {
-            padding: '16px 0',
+            padding: '24px 0',
         },
         [themes.breakpoints.up('sm')]: {
-            padding: '0 0 0 16px',
+            padding: '0 0 0 24px',
         },
     },
     catPhoto: {
@@ -75,6 +75,9 @@ const useStyles = makeStyles({
         width: '100%',
         height: '600px',
         loading: 'lazy',
+        [themes.breakpoints.down('xl')]: {
+            marginBottom: '5%',
+        },
     },
     wrapper: {
         marginTop: 20
