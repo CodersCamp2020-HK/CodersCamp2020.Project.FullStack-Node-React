@@ -1,10 +1,10 @@
-import { set as updateDate, format } from 'date-fns';
+import { Button, makeStyles, Theme, Typography } from '@material-ui/core';
+import { format, set as updateDate } from 'date-fns';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useCreateVisit } from '../../client/index';
 import Calendar from '../calendar/Calendar';
 import TimePicker from '../timePicker/TimePicker';
-import { Typography, Button, makeStyles, Theme } from '@material-ui/core';
 
 const POSSIBLE_TIMES = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
 
@@ -21,12 +21,12 @@ const useStyles = makeStyles((theme: Theme) => ({
     form: {
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     submit: {
         marginTop: theme.spacing(2),
-    }
-}))
+    },
+}));
 
 const VisitForm = ({ animalId }: VisitFormProps) => {
     const styles = useStyles();
@@ -47,7 +47,7 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
         setValue('time', time);
     };
 
-    const sendForm = (data: VisitData) => {
+    const sendForm = async (data: VisitData) => {
         if (data.date && data.time) {
             const hours = Number(data.time.slice(0, 2));
             const minutes = Number(data.time.slice(3));
@@ -55,14 +55,17 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
                 hours,
                 minutes,
             });
+            const requestBody = {
+                date: selectedDate.toISOString(),
+                animalId: animalId,
+                userId: 1,
+            }
             try {
-                createVisit({
-                    animalId,
-                    userId: 1,
-                    date: selectedDate.toDateString(),
-                });
-            } catch {
-                console.log('Brak polaczenia');
+                await createVisit(requestBody, {
+                    headers: [['content-type', 'application/json'],['access_token', localStorage.getItem('apiKey') as string]]
+                })
+            } catch(e) {
+                console.log(e);
             }
         }
     };
@@ -86,7 +89,7 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
     const showSelectedDate = () => {
         const formatedDate = format(selected.date as Date, 'dd/MM/yyyy');
         return `Wybrana data: ${formatedDate}, ${selected.time}`;
-    }
+    };
 
     register({ name: 'date', type: 'custom' }, { required: 'Data jest wymagana!' });
     register({ name: 'time', type: 'custom' }, { required: 'Czas jest wymagany!' });
@@ -95,9 +98,13 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
         <form className={styles.form} onSubmit={handleSubmit(sendForm)}>
             <Calendar name="date" getSelectedDate={handleDate} />
             <TimePicker name="time" times={POSSIBLE_TIMES} getSelectedTime={handleTime} />
-            <Typography variant='subtitle1'>{selected.date && selected.time && showSelectedDate()}</Typography>
-            <Typography variant='subtitle1' color='error'>{(!selected.date || !selected.time) && showError()}</Typography>
-            <Button className={styles.submit} variant='contained' color='primary' size='large' type="submit">Potwierdź datę spotkania</Button>
+            <Typography variant="subtitle1">{selected.date && selected.time && showSelectedDate()}</Typography>
+            <Typography variant="subtitle1" color="error">
+                {(!selected.date || !selected.time) && showError()}
+            </Typography>
+            <Button className={styles.submit} variant="contained" color="primary" size="large" type="submit">
+                Potwierdź datę spotkania
+            </Button>
         </form>
     );
 };
