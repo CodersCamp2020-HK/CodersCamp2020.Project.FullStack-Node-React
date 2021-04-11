@@ -4,16 +4,11 @@ import Animal from '@infrastructure/postgres/Animal';
 import AnimalAdditionalInfo, { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { AnimalPhoto, AnimalThumbnailPhoto } from '@infrastructure/postgres/AnimalPhoto';
 import Specie from '@infrastructure/postgres/Specie';
-//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
-//export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
 import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
-//type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
-//type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
-//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
 export interface AnimalCreationParams {
     name: string;
     age: number;
@@ -74,7 +69,7 @@ export class AnimalsService {
     ) {}
 
     public async get(id: number): Promise<Animal> {
-        const animal = await this.animalRepository.findOne(id);
+        const animal = await this.animalRepository.findOne(id, { relations: ['additionalInfo'] });
         if (!animal) throw new ApiError('Not Found', 404, 'Animal not found in database');
 
         return animal;
@@ -118,10 +113,10 @@ export class AnimalsService {
         let SKIP;
         let LIMIT;
         if (paginationParams) {
-            isFirstPage = paginationParams.page == 1 ? true : false;
+            isFirstPage = paginationParams.page === 1 ? true : false;
             SKIP =
                 paginationParams.perPage && paginationParams.page
-                    ? paginationParams.perPage * paginationParams.page
+                    ? paginationParams.perPage * (paginationParams.page - 1)
                     : 0;
             LIMIT = paginationParams.perPage ? paginationParams.perPage : undefined;
         }
@@ -131,6 +126,8 @@ export class AnimalsService {
                 .createQueryBuilder('animal')
                 .leftJoinAndSelect('animal.additionalInfo', 'info')
                 .leftJoinAndSelect('animal.specie', 'specie')
+                .leftJoinAndSelect('animal.thumbnail', 'thumbnail')
+                .addOrderBy('info.admissionToShelter', 'DESC')
                 .where('animal.id >= :zero', { zero: 0 })
                 .skip(isFirstPage ? 0 : SKIP)
                 .take(LIMIT),
@@ -153,7 +150,7 @@ export class AnimalsService {
             };
         }
 
-        return animalQuery.selectQueryBuilder.addOrderBy('info.admissionToShelter', 'DESC').getMany();
+        return animalQuery.selectQueryBuilder.getMany();
     }
 
     public async update(id: number, { additionalInfo, specie, ...animalParams }: AnimalUpdateParams): Promise<Animal> {
@@ -213,5 +210,21 @@ export class AnimalsService {
         } else {
             throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
         }
+    }
+
+    public async getPhotos(animalId: number): Promise<AnimalPhoto[]> {
+        const animalPhotos = await this.animalPhotos.find({
+            where: {
+                animal: {
+                    id: animalId,
+                },
+            },
+        });
+
+        if (animalPhotos.length <= 0) {
+            throw new ApiError('Not Found', 404, `Photos for animal with id: ${animalId} not found!`);
+        }
+
+        return animalPhotos;
     }
 }

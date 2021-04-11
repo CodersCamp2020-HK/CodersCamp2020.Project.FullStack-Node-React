@@ -87,6 +87,7 @@ export class AnimalSubmissionsService {
         if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
             const submissions = await this.animalSubmissionRepository
                 .createQueryBuilder('submission')
+                .leftJoinAndSelect('submission.animal', 'animal')
                 .leftJoinAndSelect('submission.applicant', 'applicant')
                 .leftJoinAndSelect('submission.answers', 'answers')
                 .leftJoinAndSelect('answers.question', 'question')
@@ -111,10 +112,10 @@ export class AnimalSubmissionsService {
         let SKIP;
         let LIMIT;
         if (paginationParams) {
-            isFirstPage = paginationParams.page == 1 ? true : false;
+            isFirstPage = paginationParams.page === 1 ? true : false;
             SKIP =
                 paginationParams.perPage && paginationParams.page
-                    ? paginationParams.perPage * paginationParams.page
+                    ? paginationParams.perPage * paginationParams.page - 1
                     : 0;
             LIMIT = paginationParams.perPage ? paginationParams.perPage : undefined;
         }
@@ -189,10 +190,24 @@ export class AnimalSubmissionsService {
                 throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submission');
             }
         }
-
-        const submission = await this.animalSubmissionRepository.findOne(id, {
-            relations: ['animal', 'applicant', 'answers', 'reviewer'],
-        });
+        const submission = await this.animalSubmissionRepository
+            .createQueryBuilder('submission')
+            .leftJoinAndSelect('submission.animal', 'animal')
+            .leftJoinAndSelect('submission.applicant', 'applicant')
+            .leftJoinAndSelect('submission.answers', 'answers')
+            .leftJoinAndSelect('answers.question', 'question')
+            .where('submission.id = :id', { id })
+            .select([
+                'animal.name',
+                'submission.status',
+                'submission.reason',
+                'submission.reviewer',
+                'submission.submissionDate',
+                'submission.reviewDate',
+                'question',
+                'answers',
+            ])
+            .getOne();
 
         if (!submission) throw new ApiError('Not Found', 404, `Submission with ${id} not found`);
 

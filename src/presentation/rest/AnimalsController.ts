@@ -4,6 +4,7 @@ import { ValidateErrorJSON } from '@application/UsersErrors';
 import ApiError from '@infrastructure/ApiError';
 import Animal from '@infrastructure/postgres/Animal';
 import { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
+import { AnimalPhoto } from '@infrastructure/postgres/AnimalPhoto';
 import { Request as ExRequest } from 'express';
 import {
     Body,
@@ -294,5 +295,13 @@ export class AnimalsController extends Controller {
         await this.photosService.thumbnailUpload(request);
         await this.animalsService.saveThumbnail(animalId, request.file);
         this.setStatus(201);
+    }
+
+    @Get('{animalId}/photos')
+    @SuccessResponse(200, 'Ok')
+    @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
+    public async getAnimalPhotos(@Path() animalId: number): Promise<AnimalPhoto[]> {
+        return await this.animalsService.getPhotos(animalId);
     }
 }

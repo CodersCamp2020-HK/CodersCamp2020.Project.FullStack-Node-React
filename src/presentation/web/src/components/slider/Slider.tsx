@@ -75,7 +75,7 @@ const Slider = ({ photos }: SliderProps) => {
                 >
                     {photos.map((photo, index) => (
                         <Card>
-                            <CardMedia className={classes.image} component="img" image={photo} />
+                            <CardMedia className={classes.image} component="img" image={`data:image/png;base64, ${photo}`} />
                         </Card>
                     ))}
                 </SwipeableViews>

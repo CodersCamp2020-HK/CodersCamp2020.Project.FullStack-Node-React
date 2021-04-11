@@ -19,10 +19,14 @@ const theme = createMuiTheme({
         text: {
             primary: 'rgba(0, 0, 0, 0.87)',
             secondary: 'rgba(0, 0, 0, 0.54)',
+            disabled: 'rgba(0, 0, 0, 0.54)'
         },
         background: {
             default: '#FFFDF6',
         },
+        action: {
+            selected: '#bf360c',
+        }
     },
     props: {
         MuiLink: {
@@ -45,7 +49,10 @@ const theme = createMuiTheme({
         },
         MuiGrid: {
             alignItems: 'center',
-            justify: 'center'
+            justify: 'center',
+        },
+        MuiButtonBase: {
+            disableRipple: true,
         }
     },
     overrides: {
@@ -64,18 +71,10 @@ const theme = createMuiTheme({
             root: {
                 '& fieldset': {
                     borderRadius: 15,
-                },
-                paddingBottom: 20,
-                marginBottom: 15
-            },
-        },
-        MuiFormHelperText: {
-            root: {
-                position: 'absolute',
-                top: 60
+                }
             }
         }
-    },
+    }
 });
 
 export default theme;
