@@ -36,6 +36,7 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
     });
     const { errors, setValue, register, handleSubmit } = useForm<VisitData>({ mode: 'all' });
     const { mutate: createVisit } = useCreateVisit({});
+    const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
 
     const handleDate = (date: Date) => {
         setSelected((previous) => ({ ...previous, date }));
@@ -57,7 +58,7 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
             });
             const requestBody = {
                 date: selectedDate.toISOString(),
-                animalId: animalId,
+                animalId,
                 userId: 1,
             }
             try {
@@ -65,7 +66,15 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
                     headers: [['content-type', 'application/json'],['access_token', localStorage.getItem('apiKey') as string]]
                 })
             } catch(e) {
-                console.log(e);
+                if(e.status == 400 || e.status == 401) {
+                    setServerErrorMessage('Brak uprawnień!');
+                }
+                if(e.status == 404) {
+                    setServerErrorMessage('Nie znaleziono zwierzęcia!');
+                }
+                if(e.status == 500) {
+                    setServerErrorMessage('Błąd serwera! Spróbuj ponownie poźniej');
+                }
             }
         }
     };
@@ -101,6 +110,9 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
             <Typography variant="subtitle1">{selected.date && selected.time && showSelectedDate()}</Typography>
             <Typography variant="subtitle1" color="error">
                 {(!selected.date || !selected.time) && showError()}
+            </Typography>
+            <Typography variant="subtitle1" color="error">
+                {serverErrorMessage !== '' && serverErrorMessage}
             </Typography>
             <Button className={styles.submit} variant="contained" color="primary" size="large" type="submit">
                 Potwierdź datę spotkania
