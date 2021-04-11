@@ -1,8 +1,8 @@
-import React from 'react';
 import { Link, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 import { CalendarToday } from '@material-ui/icons';
-import { Link as RouterLink } from 'react-router-dom';
 import { format } from 'date-fns';
+import React from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 
 const useStyle = makeStyles<Theme>((theme) => ({
     paper: {
@@ -20,11 +20,14 @@ const useStyle = makeStyles<Theme>((theme) => ({
     },
     linkWrapper: {
         display: 'flex',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     locationInfo: {
         marginRight: theme.spacing(1),
-    }
+    },
+    link: {
+        color: theme.palette.info.main,
+    },
 }));
 
 const ConfirmedVisitDate = ({ date }: { date: Date }) => {
@@ -49,9 +52,13 @@ const ConfirmedVisitDate = ({ date }: { date: Date }) => {
                 W razie chęci przełożenia daty spotkania prosimy o kontakt telefoniczny bezpośrednio ze schroniskiem.
             </Typography>
             <div className={styles.linkWrapper}>
-                <Typography className={styles.locationInfo} variant="body1">Jak do nas dotrzeć?</Typography>
+                <Typography className={styles.locationInfo} variant="body1">
+                    Jak do nas dotrzeć?
+                </Typography>
                 <Link href="/contact" component={RouterLink} to="/contact">
-                    <Typography variant="body1">Zobacz na mapie</Typography>
+                    <Typography className={styles.link} variant="body1">
+                        Zobacz na mapie
+                    </Typography>
                 </Link>
             </div>
         </div>
