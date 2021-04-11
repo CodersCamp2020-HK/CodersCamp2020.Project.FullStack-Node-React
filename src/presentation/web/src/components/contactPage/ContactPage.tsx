@@ -16,22 +16,13 @@ const themes = createMuiTheme({
             sm: 600,
             md: 800,
             lg: 1000,
-            xl: 1280,
+            xl: 1275,
         },
     },
 });
 
 const useStyles = makeStyles({
-    iconContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        borderRadius: 'rounded-full',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: theme.palette.background.paper,
-        paddingTop: '6%',
-        paddingBottom: '6%',
-    },
+
     lockBackground: {
         backgroundColor: theme.palette.secondary.dark,
         marginTop: '2%',
@@ -47,26 +38,31 @@ const useStyles = makeStyles({
         color: '#FFF',
         opacity: 0.87,
     },
-    shelterContainer: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        minHeight: '100%',
-        minWidth: '100%',
-        backgroundRepeat: 'no-repeat',
-        [themes.breakpoints.down('xs')]: {
-            marginTop: '5%',
-            alignItems: 'center',
-            justifyContent: 'center',
+    catWrapper: {
+        [themes.breakpoints.down('sm')]: {
+            padding: '16px 0',
+        },
+        [themes.breakpoints.up('sm')]: {
+            padding: '0 0 0 16px',
         },
     },
-    imageWrapper: {
-        backgroundImage: `url('https://images.pexels.com/photos/2173872/pexels-photo-2173872.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940')`,
-        height: '100%',
-        backgroundPosition: 'center top',
+    catPhoto: {
+        width: '100%',
+        height: 500,
+        backgroundImage: `url(${shelterPhoto})`,
+        backgroundPosition: 'center',
         backgroundSize: 'cover',
-        borderRadius: '15px',
-        padding: 0,
+        borderRadius: 15,
+    },
+    info: {
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        backgroundColor: theme.palette.background.paper,
+        height: 500,
+        borderRadius: 15,
+        border: '1px solid #eee'
     },
     mapPhoto: {
         display: 'flex',
@@ -80,42 +76,41 @@ const useStyles = makeStyles({
         height: '600px',
         loading: 'lazy',
     },
+    wrapper: {
+        marginTop: 20
+    }
 });
 console.log(shelterPhoto)
 const ContactPage: React.FC = () => {
     const classes = useStyles();
     return (
-        <Grid container item xs={12}>
-            <Grid item xs={12} sm={6}>
-                <Paper variant="outlined" className={classes.iconContainer}>
-                    <div className={classes.lockBackground}>
-                        <CallOutlinedIcon className={classes.lockIcon} />
-                    </div>
-                    <Typography variant={'subtitle2'}>Telefon:</Typography>
-                    <Typography variant={'subtitle2'}>111-222-333</Typography>
-                    <div className={classes.lockBackground}>
-                        <LocationOnOutlinedIcon className={classes.lockIcon} />
-                    </div>
-                    <Typography variant={'subtitle2'}>Adres:</Typography>
-                    <Typography variant={'subtitle2'}>ul.Główna 50c</Typography>
-                    <Typography variant={'subtitle2'}>51-180 Psary</Typography>
-                    <div className={classes.lockBackground}>
-                        <AlternateEmailOutlinedIcon className={classes.lockIcon} />
-                    </div>
-                    <Typography variant={'subtitle2'}>E-mail:</Typography>
-                    <Typography variant={'subtitle2'}>schronisko@schronisko-zlapki.com</Typography>
-                    <div className={classes.lockBackground}>
-                        <PersonOutlineOutlinedIcon className={classes.lockIcon} />
-                    </div>
-                    <Typography variant={'subtitle2'}>Dyrektor: Mateusz Kaczmarek</Typography>
-                    <Typography variant={'subtitle2'}>Główny weterynarz: Andrzej Śliwowski</Typography>
-                    <Typography variant={'subtitle2'}>Administracja: Grażyna Kowal</Typography>
-                </Paper>
-            </Grid>
-            <Grid item xs={12} sm={6} className={classes.shelterContainer} >
-                <div className={classes.imageWrapper}>
-                    <img src='https://images.pexels.com/photos/2173872/pexels-photo-2173872.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940' />
+        <Grid container item xs={12} className={classes.wrapper}>
+            <Grid item xs={12} sm={6} className={classes.info}>
+                <div className={classes.lockBackground}>
+                    <CallOutlinedIcon className={classes.lockIcon} />
                 </div>
+                <Typography variant={'subtitle2'}>Telefon:</Typography>
+                <Typography variant={'subtitle2'}>111-222-333</Typography>
+                <div className={classes.lockBackground}>
+                    <LocationOnOutlinedIcon className={classes.lockIcon} />
+                </div>
+                <Typography variant={'subtitle2'}>Adres:</Typography>
+                <Typography variant={'subtitle2'}>ul.Główna 50c</Typography>
+                <Typography variant={'subtitle2'}>51-180 Psary</Typography>
+                <div className={classes.lockBackground}>
+                    <AlternateEmailOutlinedIcon className={classes.lockIcon} />
+                </div>
+                <Typography variant={'subtitle2'}>E-mail:</Typography>
+                <Typography variant={'subtitle2'}>schronisko@schronisko-zlapki.com</Typography>
+                <div className={classes.lockBackground}>
+                    <PersonOutlineOutlinedIcon className={classes.lockIcon} />
+                </div>
+                <Typography variant={'subtitle2'}>Dyrektor: Mateusz Kaczmarek</Typography>
+                <Typography variant={'subtitle2'}>Główny weterynarz: Andrzej Śliwowski</Typography>
+                <Typography variant={'subtitle2'}>Administracja: Grażyna Kowal</Typography>
+            </Grid>
+            <Grid item xs={12} sm={6} className={classes.catWrapper}>
+                <div className={classes.catPhoto}></div>
             </Grid>
             <Grid item xs={12}>
                 <iframe
