@@ -74,7 +74,9 @@ const App: React.FC = () => {
                                 <About />
                             </Route>
                             <Route exact path="/adoption">
-                                <Adoption />
+                                <GridContainer>
+                                    <Adoption />
+                                </GridContainer>
                             </Route>
                             <Route exact path="/donation">
                                 <Donation />
