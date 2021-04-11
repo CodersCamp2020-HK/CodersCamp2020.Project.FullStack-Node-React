@@ -17,6 +17,13 @@ const useStyle = makeStyles<Theme>((theme) => ({
         color: theme.palette.text.primary,
         marginBottom: 35,
     },
+    linkWrapper: {
+        display: 'flex',
+        alignItems: 'center'
+    },
+    locationInfo: {
+        marginRight: theme.spacing(1),
+    }
 }));
 
 const ConfirmedVisitDate = ({ date }: { date: Date }) => {
@@ -38,10 +45,12 @@ const ConfirmedVisitDate = ({ date }: { date: Date }) => {
             <Typography variant="body2">
                 W razie chęci przełożenia daty spotkania prosimy o kontakt telefoniczny bezpośrednio ze schroniskiem.
             </Typography>
-            <Typography variant="body1">Jak do nas dotrzeć?</Typography>
-            <Link href="/contact" component={RouterLink} to="/contact">
-                <Typography variant="body1">Zobacz na mapie</Typography>
-            </Link>
+            <div className={styles.linkWrapper}>
+                <Typography className={styles.locationInfo} variant="body1">Jak do nas dotrzeć?</Typography>
+                <Link href="/contact" component={RouterLink} to="/contact">
+                    <Typography variant="body1">Zobacz na mapie</Typography>
+                </Link>
+            </div>
         </div>
     );
 };
