@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, fireEvent, cleanup, act } from "@testing-library/react";
+import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
 import RegisterForm from './RegisterForm';
 
 const mockRegister = jest.fn();
@@ -10,7 +10,6 @@ describe('Given: RegisterForm()', () => {
             render(<RegisterForm handleSubmit={mockRegister} />)
         })
     })
-    afterEach(cleanup)
 
     describe('When: all fields have default values', () => {
         it('Then: required error message should be displayed for all fields except date', async () => {
@@ -297,15 +296,14 @@ describe('Given: RegisterForm()', () => {
     })
     describe('When: properly filled form is submitted', () => {
         it('Then: handleSubmit is invoked', async () => {
-            await act(async () => {
+            act(() => {
                 fireEvent.input(screen.getByRole('textbox', { name: 'Imię' }), { target: { value: 'Jan' }});
                 fireEvent.input(screen.getByRole('textbox', { name: 'Nazwisko' }), { target: { value: 'Kowalski' }});
                 fireEvent.input(screen.getByRole('textbox', { name: 'Email' }), { target: { value: 'jan.kowalski@gmail.com' }});
                 fireEvent.input(screen.getByLabelText(/Hasło/), { target: { value: 'ZAQ!2wsx' }});
                 fireEvent.input(screen.getByLabelText(/Powtórz hasło/), { target: { value: 'ZAQ!2wsx' }});
                 fireEvent.input(screen.getByRole('textbox', { name: 'Telefon' }), { target: { value: 123456789 }});
-                fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '19/03/1970' }});
-                fireEvent.submit(screen.getByTestId('formSubmit'));
+                fireEvent.input(screen.getByRole('textbox', { name: 'Data urodzenia' }), { target: { value: '20.01.1971' }});
             })
             expect(screen.getByRole('textbox', { name: 'Imię'}).value).toBe('Jan');
             expect(screen.getByRole('textbox', { name: 'Nazwisko'}).value).toBe('Kowalski');
@@ -313,8 +311,10 @@ describe('Given: RegisterForm()', () => {
             expect(screen.getByLabelText(/Hasło/).value).toBe('ZAQ!2wsx');
             expect(screen.getByLabelText(/Powtórz hasło/).value).toBe('ZAQ!2wsx');
             expect(screen.getByRole('textbox', { name: 'Telefon'}).value).toBe('123456789');
-            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('19/03/1970');
-            expect(await screen.findAllByText(/wymagan/i)).toHaveLength(0);
+            expect(screen.getByRole('textbox', { name: 'Data urodzenia'}).value).toBe('20/01/1971');
+            await act(async () => {
+                fireEvent.submit(screen.getByTestId('formSubmit'))
+            })
             expect(mockRegister).toBeCalledTimes(1);
         })
     })
@@ -328,7 +328,6 @@ describe('Given: RegisterForm with default values', () => {
             render(<RegisterForm handleSubmit={mockRegister} defaultValues={{ name, surname }} />)
         })
     })
-    afterEach(cleanup)
     describe(`When: name = ${name}, surname = ${surname}`, () => {
         it(`Then: name === ${name}, surname === ${surname}`, () => {
             fireEvent.input(screen.getByRole('textbox', { name: 'Imię' }), { target: { value: name }});
