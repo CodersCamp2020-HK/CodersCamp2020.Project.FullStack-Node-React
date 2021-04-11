@@ -73,22 +73,8 @@ export class VolunteerSubmissionsService {
 
     public async getAllSubmissions(
         queryParams: SubmissionQueryParams,
-        currentUser: IUserInfo,
         paginationParams?: PaginationParams,
     ): Promise<FormVolunteerSubmission[]> {
-        console.log(currentUser);
-        // if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
-        //     const submission = await this.volunteerSubmissionRepository
-        //         .createQueryBuilder('submission')
-        //         .leftJoinAndSelect('submission.user', 'user')
-        //         .where('user.id = :id', { id: currentUser.id })
-        //         .getOne();
-
-        //     // if (submission?.user.id != currentUser.id) {
-        //     //     throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submissions');
-        //     // }
-        // }
-
         let isFirstPage;
         let SKIP;
         let LIMIT;

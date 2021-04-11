@@ -83,7 +83,6 @@ const useStyles = makeStyles({
         marginTop: 20
     }
 });
-console.log(shelterPhoto)
 const ContactPage: React.FC = () => {
     const classes = useStyles();
     return (

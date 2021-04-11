@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect';
 import { act, fireEvent, render, RenderResult } from '@testing-library/react';
 import React from 'react';
-import muiWrapper from '../../testUtils/muiWrapper';
+import muiWrapper from '../../../testUtils/muiWrapper';
 import Dialog from './Dialog';
 
 const mockHandleAction = jest.fn();
