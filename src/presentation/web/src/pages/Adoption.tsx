@@ -1,7 +1,8 @@
 import React from 'react';
+import PageAdopt from '../components/pageAdopt/PageAdopt'
 
 const Adoption = () => {
-    return <div>Adoption page</div>;
+    return <PageAdopt/>;
 };
 
 export default Adoption;

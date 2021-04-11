@@ -9,6 +9,7 @@ import { UserType } from '@infrastructure/postgres/OrganizationUser';
 export interface IUserInfo {
     role: UserType;
     id: number;
+    name: string;
     iat: number;
 }
 
