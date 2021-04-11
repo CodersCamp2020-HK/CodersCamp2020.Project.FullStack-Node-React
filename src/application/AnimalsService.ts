@@ -4,16 +4,11 @@ import Animal from '@infrastructure/postgres/Animal';
 import AnimalAdditionalInfo, { AnimalActiveLevel, AnimalSize } from '@infrastructure/postgres/AnimalAdditionalInfo';
 import { AnimalPhoto, AnimalThumbnailPhoto } from '@infrastructure/postgres/AnimalPhoto';
 import Specie from '@infrastructure/postgres/Specie';
-//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
-//export type AnimalUpdateParams = Partial<AnimalParams & { additionalInfo: Partial<AnimalAdditionalInfoParams> }>;
 import { validate } from 'class-validator';
 import { Repository } from 'typeorm';
 import { areAllPropertiesUndefined } from 'utils/AreAllPropertiesUndefined';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 
-//type AnimalParams = Pick<Animal, 'name' | 'age' | 'specie' | 'description' | 'readyForAdoption'>;
-//type AnimalAdditionalInfoParams = Omit<AnimalAdditionalInfo, 'id'>;
-//export type AnimalCreationParams = AnimalParams & { additionalInfo: AnimalAdditionalInfoParams };
 export interface AnimalCreationParams {
     name: string;
     age: number;
@@ -215,5 +210,21 @@ export class AnimalsService {
         } else {
             throw new ApiError('Not Found', 404, `Animal with id: ${id} not found!`);
         }
+    }
+
+    public async getPhotos(animalId: number): Promise<AnimalPhoto[]> {
+        const animalPhotos = await this.animalPhotos.find({
+            where: {
+                animal: {
+                    id: animalId,
+                },
+            },
+        });
+
+        if (animalPhotos.length <= 0) {
+            throw new ApiError('Not Found', 404, `Photos for animal with id: ${animalId} not found!`);
+        }
+
+        return animalPhotos;
     }
 }
