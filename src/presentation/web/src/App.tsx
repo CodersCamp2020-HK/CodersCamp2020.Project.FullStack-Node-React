@@ -16,6 +16,8 @@ import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import theme from './themes/theme';
 import { UserType } from './client/index';
+import MyAcc from './pages/MyAcc';
+import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 
 const useStyles = makeStyles({
     wrapper: {
@@ -34,7 +36,7 @@ const initialContext = {
         userId: null,
         userName: null,
     },
-    setAppState: () => { },
+    setAppState: () => {},
 };
 
 console.log(localStorage.getItem('aa'));
@@ -50,10 +52,10 @@ interface AppState {
 const initialAppState =
     localStorage.getItem('userData') === null
         ? {
-            role: null,
-            userId: null,
-            userName: null,
-        }
+              role: null,
+              userId: null,
+              userName: null,
+          }
         : JSON.parse(localStorage.getItem('userData')!);
 
 const App: React.FC = () => {
@@ -73,7 +75,7 @@ const App: React.FC = () => {
                             <Route exact path="/about">
                                 <About />
                             </Route>
-                            <Route exact path="/adoption">
+                            <Route path="/adoption">
                                 <GridContainer>
                                     <Adoption />
                                 </GridContainer>
@@ -87,13 +89,11 @@ const App: React.FC = () => {
                                 </GridContainer>
                             </Route>
                             <Route path="/auth">
-                                <GridContainer>
-                                    <Auth />
-                                </GridContainer>
+                                <Auth />
                             </Route>
                             <Route path="/form">
                                 <GridContainer>
-                                    <FormRoute />
+                                    <ProtectedRoute path="/form" component={FormRoute} />
                                 </GridContainer>
                             </Route>
                             <Route path="/animals/:animalId">
@@ -101,6 +101,7 @@ const App: React.FC = () => {
                                     <AnimalInfo />
                                 </GridContainer>
                             </Route>
+                            <ProtectedRoute exact path="/account" component={MyAcc} />
                             <Route path="*">
                                 <GridContainer>
                                     <NotFound />

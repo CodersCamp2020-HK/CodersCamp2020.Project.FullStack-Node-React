@@ -5,20 +5,23 @@ import ForgetPassword from '../components/auth/forgetPassword/ForgetPassword';
 import LoginForm from '../components/auth/loginForm/LoginForm';
 import RegisterPage from '../components/auth/registerPage/RegisterPage';
 import ActivationSent from '../components/auth/activationSent/ActivationSent';
+import GridContainer from '../components/gridContainer/GridContainer';
 
 const Auth: React.FC = () => {
     const { path } = useRouteMatch();
 
     return (
-        <Switch>
-            <Route exact path={`${path}/link`} component={ActivationSent} />
-            <Route exact path={`${path}/register`} component={RegisterPage} />
-            <Route exact path={`${path}/forget`} component={ForgetPassword} />
-            <Route exact path={`${path}/change`} component={ChangePassword} />
-            <Route exact path={path} component={LoginForm} />
-            <Redirect to={`/404/${path}`} />
-        </Switch>
-    )
-}
+        <GridContainer>
+            <Switch>
+                <Route exact path={`${path}/link`} component={ActivationSent} />
+                <Route exact path={`${path}/register`} component={RegisterPage} />
+                <Route exact path={`${path}/forget`} component={ForgetPassword} />
+                <Route exact path={`${path}/change`} component={ChangePassword} />
+                <Route exact path={path} component={LoginForm} />
+                <Redirect to={`/404/${path}`} />
+            </Switch>
+        </GridContainer>
+    );
+};
 
-export default Auth
+export default Auth;
