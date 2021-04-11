@@ -109,15 +109,21 @@ describe('Given: SurveyForm() with questions and submit', () => {
 
             await act(async () => {
                 userEvent.type(screen.getByRole('textbox'), 'Bo szczeka pies sąsiada!');
-                userEvent.click(screen.getByRole('radio', {name: /tak/i}));    // Nie zaznacza pola?
                 userEvent.click(checkboxGrozny)
-                userEvent.click(checkboxSzczekajacy)
+            })
+            await act(async () => {
+                userEvent.click(checkboxSzczekajacy);
+            })
+            await act(async () => {
+                userEvent.click(screen.getByRole('radio', {name: /tak/i}));
+            })
+            await act(async () => {
                 userEvent.click(screen.getByRole('button', {name: /wyślij formularz/i}));
             })
             expect(screen.getByRole('textbox')).toHaveValue('Bo szczeka pies sąsiada!');
             expect(checkboxSzczekajacy).toBeChecked();
-            // expect(checkboxGrozny).toBeChecked();            Czemu drugie pole nie jest zaznaczone?
-            // expect(mockHandleSubmit).toBeCalledTimes(1);
+            expect(checkboxGrozny).toBeChecked();
+            expect(mockHandleSubmit).toBeCalledTimes(1);
         })
     })
 })
@@ -143,7 +149,7 @@ describe('Given: SurveyForm() with questions, submit and default values', () => 
 
             expect(screen.getByText(/2\. czemu akurate teraz zdecydowali się państwo na adopcję psa\?/i)).toBeInTheDocument();
             expect(screen.getByRole('textbox')).toBeInTheDocument();
-            // expect(screen.getByRole('textbox')).toHaveValue('Bo lubię psy');     Nie ustawia się domyślna wartość? Wyej działa
+            expect(screen.getByRole('textbox')).toHaveValue('Bo lubię psy');
             
             expect(screen.getByText(/3\. jakie cechy według państwa powinien mieć pies\?/i)).toBeInTheDocument();
             expect(screen.getAllByRole('checkbox')).toHaveLength(4);

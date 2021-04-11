@@ -24,7 +24,7 @@ const entryPath = path.join(staticPath, 'index.html');
 (async () => {
     await connectToDb();
 
-    if (process.env.SEED_POSTGRES_DB === 'true') {
+    if (process.env.SEED_POSTGRES_DB === 'true' && !isProductionEnv) {
         await seedDatabase();
     }
 
