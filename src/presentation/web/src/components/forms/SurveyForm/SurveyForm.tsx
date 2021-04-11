@@ -89,10 +89,10 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled = false, c
     const validateRequiredText = (value: AnswerForm) => value && value.answer.length > 0 || 'Napisz odpowiedź';
     
     return questions.map((question, index) => {
+        const defaultValue = defaultValues && defaultValues[`question${question.id}`]
         if (isArray(question.placeholder.answer)) {
             const radioAnswers: RadioOption[] = [];
             const checkboxAnswers: CheckboxOption[] = [];
-            const defaultValue = defaultValues && defaultValues[`question${question.id}`]
             switch (question.placeholder.type) {
                 case 'radio':
                     register({ name: `question${question.id}`, type: 'custom'}, { validate: validateRequired })
@@ -148,6 +148,7 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled = false, c
                     required
                     rows={2}
                     rowsMax={4}
+                    defaultValue={defaultValue}
                     style={{ marginBottom: 0 }}
                     classes={{ root: classes.root }}
                     disabled={disabled}
