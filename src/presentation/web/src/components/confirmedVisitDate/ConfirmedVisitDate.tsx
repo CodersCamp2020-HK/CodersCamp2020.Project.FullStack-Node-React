@@ -31,6 +31,9 @@ const useStyle = makeStyles<Theme>((theme) => ({
     link: {
         color: theme.palette.info.main,
     },
+    description: {
+        marginBottom: theme.spacing(1),
+    }
 }));
 
 const ConfirmedVisitDate = ({ date }: { date: Date }) => {
@@ -48,11 +51,11 @@ const ConfirmedVisitDate = ({ date }: { date: Date }) => {
                 <Typography variant="h6">Ustaliłeś(aś) datę spotkania w schronisku na:</Typography>
                 <Typography variant="h6">{formattedDate}</Typography>
             </Paper>
-            <Typography variant="subtitle1">
+            <Typography className={styles.description} variant="subtitle1">
                 Przychodząc do nas zarezerwuj sobie kilka godzin na oglądanie i poznanie naszych zwierzęcia. Nie śpiesz
                 się – adopcja to często decyzja na najbliższych kilkanaście lat.
             </Typography>
-            <Typography variant="body2">
+            <Typography className={styles.description} variant="body2">
                 W razie chęci przełożenia daty spotkania prosimy o kontakt telefoniczny bezpośrednio ze schroniskiem.
             </Typography>
             <div className={styles.linkWrapper}>
