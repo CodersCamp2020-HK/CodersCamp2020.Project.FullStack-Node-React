@@ -30,7 +30,7 @@
         "server:format": "prettier --ignore-path .gitignore --ignore-path .eslintignore --write \"{src,test}/**/*.{js,ts,json}\"",
         "tools:copy-web": "shx echo \"Copy web app from ./src/presentation/web/build to ./build/src/presentation/web/\" && shx mkdir -p ./build/src/presentation/web/build && shx cp -R ./src/presentation/web/build ./build/src/presentation/web/",
         "tools:generate-client-react": "npm run tools:generate-client-react --prefix src/presentation/web",
-        "tools:fix-swagger": "shx sed -i \"s/\"anyOf\"/\"oneOf\"/\" src/presentation/rest/generated/swagger.json",
+        "tools:fix-swagger": "node -e \"process.stdout=()=>{};require('shelljs').sed('-i','\"anyOf\"','\"oneOf\"','src/presentation/rest/generated/swagger.json');\"",
         "tools:generate-swagger": "tsoa spec-and-routes && npm run tools:fix-swagger",
         "tools:generate-swagger:production": "tsoa spec-and-routes -c tsoa-build.json && npm run tools:fix-swagger",
         "web:dev": "npm run start --prefix src/presentation/web",
