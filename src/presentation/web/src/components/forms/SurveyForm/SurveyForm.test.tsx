@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import SurveyForm from "./SurveyForm";
 import { AdoptionStep, ApiError, useGetForm } from "../../../client";
 import { UseGetReturn } from "restful-react";
@@ -109,16 +109,47 @@ describe('Given: SurveyForm() with questions and submit', () => {
 
             await act(async () => {
                 userEvent.type(screen.getByRole('textbox'), 'Bo szczeka pies sąsiada!');
-                userEvent.click(screen.getByRole('radio', {name: /tak/i}));
+                userEvent.click(screen.getByRole('radio', {name: /tak/i}));    // Nie zaznacza pola?
                 userEvent.click(checkboxGrozny)
                 userEvent.click(checkboxSzczekajacy)
                 userEvent.click(screen.getByRole('button', {name: /wyślij formularz/i}));
             })
-            screen.logTestingPlaygroundURL();
             expect(screen.getByRole('textbox')).toHaveValue('Bo szczeka pies sąsiada!');
             expect(checkboxSzczekajacy).toBeChecked();
-            // expect(checkboxGrozny).toBeChecked();        Czemu drugie pole nie jest zaznaczone?
+            // expect(checkboxGrozny).toBeChecked();            Czemu drugie pole nie jest zaznaczone?
             // expect(mockHandleSubmit).toBeCalledTimes(1);
+        })
+    })
+})
+
+const defaultValues = {
+    question1: 'Tak',
+    question5: 'Bo lubię psy',
+    question8: ['Aktywny', 'Groźny', 'Szczekający']
+}
+
+describe('Given: SurveyForm() with questions, submit and default values', () => {
+    beforeEach(() => {
+        const mockFormData = setup(useGetFormParams);
+        render(<SurveyForm handleSubmit={mockHandleSubmit} formData={mockFormData} defaultValues={defaultValues} />)
+    })
+
+    describe('When: form is loaded', () => {
+        it('Then: question with answers should be generated', async () => {
+            expect(screen.getByText(/1\. czy mają państwo dzieci\?/i)).toBeInTheDocument();
+            expect(screen.getByRole('radiogroup')).toBeInTheDocument();
+            expect(screen.getAllByRole('radio')).toHaveLength(2);
+            expect(screen.getByRole('radio', { name: /tak/i })).toBeChecked();
+
+            expect(screen.getByText(/2\. czemu akurate teraz zdecydowali się państwo na adopcję psa\?/i)).toBeInTheDocument();
+            expect(screen.getByRole('textbox')).toBeInTheDocument();
+            // expect(screen.getByRole('textbox')).toHaveValue('Bo lubię psy');     Nie ustawia się domyślna wartość? Wyej działa
+            
+            expect(screen.getByText(/3\. jakie cechy według państwa powinien mieć pies\?/i)).toBeInTheDocument();
+            expect(screen.getAllByRole('checkbox')).toHaveLength(4);
+            expect(screen.getByRole('checkbox', {name: /aktywny/i})).toBeChecked();
+            expect(screen.getByRole('checkbox', {name: /groźny/i})).toBeChecked();
+            expect(screen.getByRole('checkbox', {name: /szczekający/i})).toBeChecked();
         })
     })
 })
