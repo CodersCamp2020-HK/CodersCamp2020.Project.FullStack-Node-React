@@ -37,7 +37,7 @@ const App: React.FC = () => {
                         <Route exact path="/about">
                             <About />
                         </Route>
-                        <Route exact path="/adoption">
+                        <Route path="/adoption">
                             <GridContainer>
                                 <Adoption />
                             </GridContainer>
