@@ -66,7 +66,6 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues }
     const validatebirthDateAfterToday = (value: Date) => value < new Date() || 'Podaj wcześniejszą datę!';
     const validateBirthDateBefore = (value: Date) => value > new Date(1900, 1) || "Podaj późniejszą datę!";
     const validateBirthDateAdult = (value: Date) => {
-        console.log(value);
         return differenceInYears(new Date(), value) >= 18 || 'Wymagane jest 18 lat, aby założyć konto!'
     };
     const validateDate = (value: Date) => value instanceof Date && !isNaN(value.getTime()) || 'Podaj datę w formacie DD/MM/RRRR!';

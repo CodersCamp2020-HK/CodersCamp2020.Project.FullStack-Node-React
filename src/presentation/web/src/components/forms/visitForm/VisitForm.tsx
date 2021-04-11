@@ -2,9 +2,9 @@ import { Button, makeStyles, Theme, Typography } from '@material-ui/core';
 import { format, set as updateDate } from 'date-fns';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useCreateVisit } from '../../client/index';
-import Calendar from '../calendar/Calendar';
-import TimePicker from '../timePicker/TimePicker';
+import { useCreateVisit } from '../../../client/index';
+import Calendar from '../../calendar/Calendar';
+import TimePicker from '../../timePicker/TimePicker';
 
 const POSSIBLE_TIMES = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
 

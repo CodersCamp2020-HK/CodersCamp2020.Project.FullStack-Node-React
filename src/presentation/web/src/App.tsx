@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Footer from './components/footer/Footer';
 import GridContainer from './components/gridContainer/GridContainer';
-import Navbar from './components/navbar/Navbar';
+import Navbar from './components/navbar/navbar/Navbar';
 import About from './pages/About';
 import Adoption from './pages/Adoption';
 import AnimalInfo from './pages/AnimalInfo';
@@ -36,8 +36,6 @@ const initialContext = {
     },
     setAppState: () => { },
 };
-
-console.log(localStorage.getItem('aa'));
 
 export const AppCtx = React.createContext<AppContextInterface>(initialContext);
 
@@ -73,7 +71,7 @@ const App: React.FC = () => {
                             <Route exact path="/about">
                                 <About />
                             </Route>
-                            <Route exact path="/adoption">
+                            <Route path="/adoption">
                                 <GridContainer>
                                     <Adoption />
                                 </GridContainer>
