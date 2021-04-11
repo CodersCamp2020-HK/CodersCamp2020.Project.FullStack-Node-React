@@ -1,8 +1,9 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import SurveyForm from "./SurveyForm";
 import { AdoptionStep, ApiError, useGetForm } from "../../../client";
 import { UseGetReturn } from "restful-react";
+import { act } from "react-dom/test-utils";
 
 interface IUseGetFormParams {
     animalId: number;
@@ -88,7 +89,20 @@ describe('Given: SurveyForm() with questions and submit', () => {
             
             expect(screen.getByText(/3\. jakie cechy według państwa powinien mieć pies\?/i)).toBeInTheDocument();
             expect(screen.getAllByRole('checkbox')).toHaveLength(4);
-            screen.logTestingPlaygroundURL();
+        })
+    })
+    describe('When: form is loaded, inputs are not provided and submit button is clicked', () => {
+        it('Then: validation errors to provide inputs should be displayed', async () => {
+            fireEvent.submit(screen.getByRole('button', {name: /wyślij formularz/i}));
+            expect(await screen.findAllByText(/Zaznacz odpowiedź/i)).toHaveLength(2);
+            expect(await screen.findAllByText(/Napisz odpowiedź/i)).toHaveLength(1);
+        })
+    })
+    describe('When: form is loaded, inputs are not provided and submit button is clicked', () => {
+        it('Then: validation errors to provide inputs should be displayed', async () => {
+            fireEvent.submit(screen.getByRole('button', {name: /wyślij formularz/i}));
+            expect(await screen.findAllByText(/Zaznacz odpowiedź/i)).toHaveLength(2);
+            expect(await screen.findAllByText(/Napisz odpowiedź/i)).toHaveLength(1);
         })
     })
 })
