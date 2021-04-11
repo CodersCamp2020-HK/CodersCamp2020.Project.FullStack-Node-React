@@ -97,7 +97,9 @@ const App: React.FC = () => {
                                 </GridContainer>
                             </Route>
                             <Route path="/animals/:animalId">
-                                <AnimalInfo />
+                                <GridContainer>
+                                    <AnimalInfo />
+                                </GridContainer>
                             </Route>
                             <Route path="*">
                                 <GridContainer>
