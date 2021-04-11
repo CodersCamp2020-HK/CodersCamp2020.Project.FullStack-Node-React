@@ -84,12 +84,10 @@ interface Inputs {
 const AdoptionApplicationFirstStep: React.FC<Props> = ({ children, title, description }) => {
     const classes = useStyles();
     const { register, handleSubmit, errors } = useForm<Inputs>();
-    const [numerEwidencyjny, setNumerEwidencyjny] = useState(1);
-    const { data } = useGetForm({ animalId: numerEwidencyjny, requestOptions: { headers: { access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpZCI6MSwiaWF0IjoxNjE3MzQ2NzYzfQ.h3t7y8edtFxLAm46FNOjpUaaVyvYhLCVBrqx68rOMfc' } } });
-    console.log(data);
+    const { data, refetch } = useGetForm({ animalId: 1, lazy: true, requestOptions: { headers: { access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpZCI6MSwiaWF0IjoxNjE3MzQ2NzYzfQ.h3t7y8edtFxLAm46FNOjpUaaVyvYhLCVBrqx68rOMfc' } } });
     const onSubmit = async ({ numerEwidencyjny: id }: Inputs) => {
         try {
-            setNumerEwidencyjny(id)
+            refetch({ pathParams: { animalId: id } })
         } catch (error) {
             console.log(error)
         }
