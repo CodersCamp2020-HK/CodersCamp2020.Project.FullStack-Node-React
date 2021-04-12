@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import SurveyForm from "./SurveyForm";
 import { AdoptionStep, ApiError, useGetForm } from "../../../client";
 import { UseGetReturn } from "restful-react";
 import userEvent from '@testing-library/user-event'
 import { act } from "react-dom/test-utils";
+import SurveyForm from "./SurveyForm";
 
 interface IUseGetFormParams {
     animalId: number;
