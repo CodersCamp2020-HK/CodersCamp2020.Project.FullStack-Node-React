@@ -34,7 +34,7 @@ export class AdoptionStepController extends Controller {
         },
     ])
     @Get('{animalId}')
-    public async getAllAdoptionSteps(@Path() animalId: number): Promise<AdoptionStep> {
+    public async getAllAdoptionSteps(@Path() animalId: number): Promise<AdoptionStep[]> {
         return await this.adoptionStepService.getAllSteps(animalId);
     }
 }

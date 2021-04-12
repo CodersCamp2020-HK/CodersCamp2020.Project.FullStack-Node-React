@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { AnimalAnswer, PostAnimalSubmissionParams, useGetForm, usePostAnimalSubmission } from '../../client';
+import { AnimalAnswer, PostAnimalSubmissionParams, useGetAllAdoptionSteps, useGetForm, usePostAnimalSubmission } from '../../client';
 import useQuery from '../../utils/UseQuery';
 import { useHistory } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
@@ -55,13 +55,16 @@ const FirstStep = () => {
     const animalId = id ? parseInt(id) : 1;
 
     const { data, refetch } = useGetForm({ animalId, lazy: !id, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } });
+    const { data: adoptionStepsData, refetch: adoptionStepsRefetch } = useGetAllAdoptionSteps({ animalId, lazy: !id, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } })
     const { mutate: postSubmission } = usePostAnimalSubmission({
         requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } },
     });
+    console.log(adoptionStepsData);
 
     const handleIdSubmit = async ({ numerEwidencyjny: id }: Inputs) => {
         try {
-            refetch({ pathParams: { animalId: id } })
+            refetch({ pathParams: { animalId: id } });
+            adoptionStepsRefetch({ pathParams: { animalId: id } });
             history.push(`?id=${id}`);
         } catch (error) {
             console.error(error)
@@ -86,9 +89,9 @@ const FirstStep = () => {
             <Grid item sm>
                 <Paper className={classes.mainPaper} variant="outlined">
                     <AdoptionApplicationFirstStep description={data?.description} title={data?.name} handleSubmit={handleIdSubmit}>
-                        {data && data.form &&
+                        {data && data.form && adoptionStepsData &&
                             <>
-                                <AdoptionStepper adoptionSteps={['elo1', 'elo2', 'elo3', 'elo4']} currentStep={1} />
+                                <AdoptionStepper adoptionSteps={adoptionStepsData.map((step) => step.name)} currentStep={1} />
                                 <Typography variant="h6">WAŻNE!</Typography>
                                 <Typography className={classes.typography}>
                                     Wypełnienie ankiety nie jest jednoznaczne z tym, że zwierzę zostanie Państwu wyadoptowane.
