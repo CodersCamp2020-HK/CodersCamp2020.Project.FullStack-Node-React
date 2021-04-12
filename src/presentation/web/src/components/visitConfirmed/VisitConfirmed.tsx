@@ -41,7 +41,7 @@ const VisitConfirmed = ({ date, adopter, worker }: VisitConfirmedProps) => {
             </Typography>
             <Typography variant="h6">Pracownik akceptujący wniosek adopcyjny:</Typography>
             <Typography variant="h6">{worker}</Typography>
-            <Calendar getSelectedDate={() => null} name="calendar" />
+            <Calendar readOnly defaultSelected={date} name="calendar" />
         </div>
     );
 };
