@@ -17,7 +17,7 @@ export const seedAnimalAdditionalInfo = (amount: number): DeepPartial<AnimalAddi
             temporaryHome: faker.random.boolean(),
             needDonations: faker.random.boolean(),
             virtualAdoption: faker.random.boolean(),
-            adoptionDate: faker.date.past(),
+            adoptionDate: '',
             admissionToShelter: faker.date.past(),
             acceptsKids: faker.random.boolean(),
             acceptsOtherAnimals: faker.random.boolean(),
