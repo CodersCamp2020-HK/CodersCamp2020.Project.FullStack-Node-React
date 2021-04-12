@@ -1,14 +1,20 @@
 import { Card, CardMedia, Fab, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 import { Add, Delete } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
+import { AnimalPhoto } from '../../client';
 
 interface Photos {
-    fromDb: File[];
+    fromDb: AnimalPhoto[];
     fromUser: File[];
 }
 
 interface PhotosBase {
-    items: string[];
+    fromDb: string[];
+    fromUser: string[];
+}
+
+interface PhotoInputProps {
+    photosFromDb?: AnimalPhoto[]
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -46,11 +52,18 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-const AddPhotoInput = () => {
-    const [photos, setPhotos] = useState<Photos>({ fromDb: [], fromUser: [] });
-    const [base64Photos, setBase64Photos] = useState<PhotosBase>({ items: [] });
+const AddPhotoInput = ({photosFromDb}: PhotoInputProps) => {
+    const [photos, setPhotos] = useState<Photos>({ fromDb: photosFromDb || [], fromUser: [] });
+    const [base64Photos, setBase64Photos] = useState<PhotosBase>({ fromDb: [], fromUser: [] });
     const inputRef = React.useRef<HTMLInputElement>(null!);
     const styles = useStyles();
+
+    useEffect(() => {
+        setBase64Photos((prev) => ({
+            ...prev,
+            fromDb: [],
+        }));
+    }, [])
 
     useEffect(() => {
         const convertPhotosToBase64 = async () => {
@@ -68,7 +81,8 @@ const AddPhotoInput = () => {
         const saveAsState = async () => {
             const base64Images = await convertPhotosToBase64();
             setBase64Photos((prev) => ({
-                items: [...base64Images],
+                ...prev,
+                fromUser: [...base64Images],
             }));
         };
 
@@ -94,12 +108,13 @@ const AddPhotoInput = () => {
             fromUser: prev.fromUser.filter((photo, index) => (index !== id))
         }))
         setBase64Photos((prev) => ({
-            items: prev.items.filter((photo, index) => (index !== id))
+            ...prev,
+            fromUser: prev.fromUser.filter((photo, index) => (index !== id))
         }))
     }
 
     const showAddedPhotos = () => {
-        return base64Photos.items.map((img, index) => (
+        return base64Photos.fromUser.map((img, index) => (
             <Card className={styles.cardPhoto}>
                 <CardMedia key={index} className={styles.photo} component="img" src={`data:image/png;base64, ${img}`} />
                 <Fab className={styles.trash} color="secondary" onClick={() => deletePhoto(index)}>
@@ -128,7 +143,7 @@ const AddPhotoInput = () => {
                     <Typography>Dodaj zdjęcie</Typography>
                 </Paper>
             </label>
-            {base64Photos.items.length > 0 && showAddedPhotos()}
+            {base64Photos.fromUser.length > 0 && showAddedPhotos()}
         </div>
     );
 };
