@@ -37,13 +37,13 @@ const useStyles = makeStyles((theme: Theme) => ({
         height: 150,
     },
     label: {
-        cursor: 'pointer'
+        cursor: 'pointer',
     },
     trash: {
         position: 'absolute',
         bottom: theme.spacing(1),
         right: theme.spacing(1),
-    }
+    },
 }));
 
 const AddPhotoInput = () => {
@@ -88,11 +88,21 @@ const AddPhotoInput = () => {
         inputRef.current.value = '';
     };
 
+    const deletePhoto = (id: number) => {
+        setPhotos((prev) => ({
+            ...prev,
+            fromUser: prev.fromUser.filter((photo, index) => (index !== id))
+        }))
+        setBase64Photos((prev) => ({
+            items: prev.items.filter((photo, index) => (index !== id))
+        }))
+    }
+
     const showAddedPhotos = () => {
         return base64Photos.items.map((img, index) => (
             <Card className={styles.cardPhoto}>
                 <CardMedia key={index} className={styles.photo} component="img" src={`data:image/png;base64, ${img}`} />
-                <Fab className={styles.trash} color="secondary">
+                <Fab className={styles.trash} color="secondary" onClick={() => deletePhoto(index)}>
                     <Delete />
                 </Fab>
             </Card>
@@ -101,14 +111,22 @@ const AddPhotoInput = () => {
 
     return (
         <div className={styles.wrapper}>
-            <label className={styles.label} htmlFor='inputFile'>
-            <Paper className={styles.addCard}>
-                <Fab color="secondary" component="label">
-                    <Add />
-                    <input id='inputFile' multiple hidden type="file" accept="image/*" onChange={handleCapture} ref={inputRef} />
-                </Fab>
-                <Typography>Dodaj zdjęcie</Typography>
-            </Paper>
+            <label className={styles.label} htmlFor="inputFile">
+                <Paper className={styles.addCard}>
+                    <Fab color="secondary" component="label">
+                        <Add />
+                        <input
+                            id="inputFile"
+                            multiple
+                            hidden
+                            type="file"
+                            accept="image/*"
+                            onChange={handleCapture}
+                            ref={inputRef}
+                        />
+                    </Fab>
+                    <Typography>Dodaj zdjęcie</Typography>
+                </Paper>
             </label>
             {base64Photos.items.length > 0 && showAddedPhotos()}
         </div>
