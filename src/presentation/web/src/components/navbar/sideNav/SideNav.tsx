@@ -3,6 +3,7 @@ import MuiListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -12,9 +13,10 @@ import PersonIcon from '@material-ui/icons/Person';
 import PetsIcon from '@material-ui/icons/Pets';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import React from 'react';
-import Paper from '@material-ui/core/Paper';
 import theme from '../../../themes/theme';
 import { UserType } from '../../../client/index';
+import { Link as RouterLink } from 'react-router-dom';
+import { Link } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,23 +52,23 @@ const SideNavList: React.FC<Props> = ({ name, role }) => {
     };
 
     const textUser = [
-        { key: 1, name: 'Adopcja', icon: <PetsIcon color="primary" /> },
-        { key: 2, name: 'Wolontariusz', icon: <FavoriteIcon color="primary" /> },
-        { key: 3, name: 'Mój profil', icon: <PersonIcon color="primary" /> },
-        { key: 4, name: 'Wyloguj', icon: <InputIcon color="primary" /> },
+        { key: 1, path: '/account/adoption', name: 'Adopcja', icon: <PetsIcon color="primary" /> },
+        { key: 2, path: '/account/volunteer', name: 'Wolontariusz', icon: <FavoriteIcon color="primary" /> },
+        { key: 3, path: '/account/profile', name: 'Mój profil', icon: <PersonIcon color="primary" /> },
+        { key: 4, path: '/auth/logout', name: 'Wyloguj', icon: <InputIcon color="primary" /> },
     ];
 
     const textWorker = [
-        { key: 1, name: 'Zwierzęta', icon: <PetsIcon color="primary" /> },
-        { key: 2, name: 'Wnioski', icon: <ReceiptIcon color="primary" /> },
-        { key: 3, name: 'Wolontariusze', icon: <PeopleIcon color="primary" /> },
-        { key: 4, name: 'Kalendarz', icon: <CalendarTodayIcon color="primary" /> },
-        { key: 5, name: 'Mój Profil', icon: <PersonIcon color="primary" /> },
-        { key: 6, name: 'Wyloguj', icon: <InputIcon color="primary" /> },
+        { key: 1, path: '/account/animals', name: 'Zwierzęta', icon: <PetsIcon color="primary" /> },
+        { key: 2, path: '/account/applications', name: 'Wnioski', icon: <ReceiptIcon color="primary" /> },
+        { key: 3, path: '/account/volunteers', name: 'Wolontariusze', icon: <PeopleIcon color="primary" /> },
+        { key: 4, path: '/account/calendar', name: 'Kalendarz', icon: <CalendarTodayIcon color="primary" /> },
+        { key: 5, path: '/account/profile', name: 'Mój Profil', icon: <PersonIcon color="primary" /> },
+        { key: 6, path: '/auth/logout', name: 'Wyloguj', icon: <InputIcon color="primary" /> },
     ];
 
     const textAdmin = Array.from(textWorker);
-    textAdmin[2] = { key: 3, name: 'Użytkownicy', icon: <PeopleIcon color="primary" /> };
+    textAdmin[2] = { key: 3, path: '/account/users', name: 'Użytkownicy', icon: <PeopleIcon color="primary" /> };
 
     const userRole =
         role === 'normal' ? textUser : role === 'employee' ? textWorker : role === 'volunteer' ? textUser : textAdmin;
@@ -82,15 +84,16 @@ const SideNavList: React.FC<Props> = ({ name, role }) => {
                 component="nav"
             >
                 {userRole.map((t) => (
-                    <ListItem
-                        key={t.key}
-                        button
-                        selected={selectedIndex === t.key}
-                        onClick={(event) => handleListItemClick(event, t.key)}
-                    >
-                        <ListItemIcon>{t.icon}</ListItemIcon>
-                        <ListItemText primary={t.name} />
-                    </ListItem>
+                    <Link component={RouterLink} to={t.path} key={t.key}>
+                        <ListItem
+                            button
+                            selected={selectedIndex === t.key}
+                            onClick={(event) => handleListItemClick(event, t.key)}
+                        >
+                            <ListItemIcon>{t.icon}</ListItemIcon>
+                            <ListItemText primary={t.name} />
+                        </ListItem>
+                    </Link>
                 ))}
             </List>
         </Paper>
