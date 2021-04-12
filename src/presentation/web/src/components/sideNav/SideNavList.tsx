@@ -13,11 +13,12 @@ import PetsIcon from '@material-ui/icons/Pets';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import React from 'react';
 import theme from '../../themes/theme';
+import { UserType } from '../../client/index';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
-        maxWidth: 257,
+        // maxWidth: 257,
         color: theme.palette.primary.main,
         backgroundColor: theme.palette.background.default,
     },
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 interface Props {
     name: string;
-    user: string;
+    role: UserType;
 }
 
 const ListItem = withStyles({
@@ -40,7 +41,7 @@ const ListItem = withStyles({
     },
 })(MuiListItem);
 
-const SideNavList: React.FC<Props> = ({ name, user }) => {
+const SideNavList: React.FC<Props> = ({ name, role }) => {
     const classes = useStyles();
     const [selectedIndex, setSelectedIndex] = React.useState(1);
 
@@ -67,10 +68,20 @@ const SideNavList: React.FC<Props> = ({ name, user }) => {
     const textAdmin = Array.from(textWorker);
     textAdmin[2] = { key: 3, name: 'Użytkownicy', icon: <PeopleIcon color="primary" /> };
 
+    const userRole =
+        role === 'normal' ? textUser : role === 'employee' ? textWorker : role === 'volunteer' ? textUser : textAdmin;
+
     return (
         <div className={classes.root}>
-            <List subheader={<ListSubheader color="primary"><h3>Cześć {name}!</h3></ListSubheader>} component="nav">
-                {(user === 'normalUser' ? textUser : user === 'workerUser' ? textWorker : textAdmin).map((t) => (
+            <List
+                subheader={
+                    <ListSubheader color="primary">
+                        <h3>Cześć {name}!</h3>
+                    </ListSubheader>
+                }
+                component="nav"
+            >
+                {userRole.map((t) => (
                     <ListItem
                         key={t.key}
                         button
