@@ -62,6 +62,18 @@ const useStyles =  makeStyles((theme) => ({
     },
     text: {
         color: theme.palette.text.disabled
+    },
+    form: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+    },
+    submit: {
+        alignSelf: 'center',
+        minWidth: 200,
+        maxWidth: 400,
     }
 }))
 
@@ -175,21 +187,20 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ handleSubmit: submitCb, formDat
     });
 
     return (
-        <Grid item sm={12} lg={8}>
-            <form noValidate onSubmit={methods.handleSubmit(submitCb)}>
-                {GenerateInputs({ questions: formData.questions, methods, defaultValues, disabled, classes })}
-                {
-                    !disabled &&
+        <form noValidate className={classes.form} onSubmit={methods.handleSubmit(submitCb)}>
+            {GenerateInputs({ questions: formData.questions, methods, defaultValues, disabled, classes })}
+            {
+                !disabled &&
                     <Button
+                        className={classes.submit}
                         size="medium"
                         variant="contained"
                         color="primary"
                         type="submit">
                             Wyślij formularz
                     </Button>
-                }
-            </form>
-        </Grid>
+            }
+        </form>
     )
 }
 

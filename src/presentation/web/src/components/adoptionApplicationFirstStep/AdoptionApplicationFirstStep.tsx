@@ -22,7 +22,10 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
     mainHeader: {
         textAlign: 'center',
-        marginBottom: '3rem'
+        marginBottom: '3rem',
+        [themes.breakpoints.down('sm')]: {
+            marginBottom: '1.5rem'
+        }
     },
     normalText: {
         textAlign: 'left',
@@ -36,7 +39,6 @@ const useStyles = makeStyles((theme: Theme) => ({
         marginBottom: '2rem',
         [theme.breakpoints.down('sm')]: {
             marginBottom: '1rem',
-            textAlign: 'center',
         }
     },
     textField: {
@@ -66,8 +68,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         marginRight: 30,
         [theme.breakpoints.down('sm')]: {
             marginRight: 0,
-            marginBottom: '15%',
-            position: 'relative',
+            marginBottom: '2rem',
         },
     },
     searchButton: {
@@ -75,8 +76,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         maxWidth: 300,
         minWidth: 250,
         [theme.breakpoints.down('sm')]: {
-            marginBottom: '10%',
-            position: 'relative',
+            marginBottom: '2rem',
         },
     },
 }));

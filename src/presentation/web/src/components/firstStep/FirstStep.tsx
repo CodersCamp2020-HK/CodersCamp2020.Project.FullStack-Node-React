@@ -63,7 +63,7 @@ const FirstStep = () => {
             refetch({ pathParams: { animalId: id } })
             history.push(`?id=${id}`);
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     }
     const handleFormSubmit = async (formData: any) => {
@@ -73,7 +73,7 @@ const FirstStep = () => {
                 await postSubmission(answers);
             }
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     };
 
@@ -82,13 +82,11 @@ const FirstStep = () => {
             <Grid item xs={12} sm={4} md={3}>
                 <SideNav role={role!} name={userName!}/>
             </Grid>
-            <Grid item sm md>
+            <Grid item sm>
                 <Paper className={classes.mainPaper} variant="outlined">
                     <AdoptionApplicationFirstStep description={data?.description} title={data?.name} handleSubmit={handleIdSubmit}>
+                        <Typography variant="h6">WAŻNE!</Typography>
                         <Typography className={classes.typography}>
-                            <Typography variant="h6">
-                                WAŻNE!
-                            </Typography>
                             Wypełnienie ankiety nie jest jednoznaczne z tym, że zwierzę zostanie Państwu wyadoptowane.
                             Na decyzję o wydaniu zwierzaka do adopcji składa się wiele czynników m.in. ankieta. Szukamy dla 
                             zwierząt dobrych domów biorąc pod uwagę ich usposobienie, charakter,wielkość. W przypadku wyrażenia 
