@@ -4,6 +4,7 @@ import useQuery from '../../utils/UseQuery';
 import { useHistory } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
+import Typography from '@material-ui/core/Typography';
 import AdoptionApplicationFirstStep, { Inputs } from '../adoptionApplicationFirstStep/AdoptionApplicationFirstStep';
 import { AppCtx } from '../../App';
 import SideNav from '../navbar/sideNav/SideNav';
@@ -33,8 +34,14 @@ const useStyles = makeStyles((theme: Theme) => ({
     mainPaper: {
         variant: "outlined",
         backgroundColor: theme.palette.background.paper,
-        padding: '20px 50px'
+        padding: '20px 50px',
+        [theme.breakpoints.down('sm')]: {
+            padding: 20
+        }
     },
+    typography: {
+        marginBottom: '2rem'
+    }
 }));
 
 const FirstStep = () => {
@@ -72,12 +79,22 @@ const FirstStep = () => {
 
     return (
         <>
-            <Grid item lg={3}>
+            <Grid item xs={12} sm={4} md={3}>
                 <SideNav role={role!} name={userName!}/>
             </Grid>
-            <Grid item lg>
+            <Grid item sm md>
                 <Paper className={classes.mainPaper} variant="outlined">
                     <AdoptionApplicationFirstStep description={data?.description} title={data?.name} handleSubmit={handleIdSubmit}>
+                        <Typography className={classes.typography}>
+                            <Typography variant="h6">
+                                WAŻNE!
+                            </Typography>
+                            Wypełnienie ankiety nie jest jednoznaczne z tym, że zwierzę zostanie Państwu wyadoptowane.
+                            Na decyzję o wydaniu zwierzaka do adopcji składa się wiele czynników m.in. ankieta. Szukamy dla 
+                            zwierząt dobrych domów biorąc pod uwagę ich usposobienie, charakter,wielkość. W przypadku wyrażenia 
+                            zgody na adopcję niniejsza ankieta będzie integralną częścią zobowiązania adopcyjnego/umowy.
+                            <br />Prosimy tym samym o przemyślane i zgodne z prawdą odpowiedzi na pytania.
+                        </Typography>
                         {data && data.form && <SurveyForm formData={data.form} handleSubmit={handleFormSubmit} />}
                     </AdoptionApplicationFirstStep>
                 </Paper>

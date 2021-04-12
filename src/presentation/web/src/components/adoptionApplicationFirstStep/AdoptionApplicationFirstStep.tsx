@@ -1,7 +1,6 @@
 import React from 'react';
-import { Button, createMuiTheme, Paper, TextField, Typography } from '@material-ui/core';
+import { Button, createMuiTheme, Paper, TextField, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import theme from '../../themes/theme';
 import { useForm } from "react-hook-form";
 
 const themes = createMuiTheme({
@@ -16,54 +15,71 @@ const themes = createMuiTheme({
     },
 });
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
     mainPaper: {
         variant: "outlined",
         backgroundColor: theme.palette.background.paper,
     },
     mainHeader: {
         textAlign: 'center',
+        marginBottom: '3rem'
     },
     normalText: {
         textAlign: 'left',
+        marginBottom: '1rem',
+        [themes.breakpoints.down('sm')]: {
+            textAlign: 'center'
+        }
+    },
+    description: {
+        textAlign: 'left',
+        marginBottom: '2rem',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '1rem',
+            textAlign: 'center',
+        }
     },
     textField: {
         '& .MuiFormHelperText-root': {
             position: 'absolute',
-            paddingBottom: 25,
+            paddingBottom: 10,
             bottom: 0
         },
-        paddingBottom: 50,
+        paddingBottom: 30,
         position: 'relative'
     },
     buttonsWrapper: {
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 20%',
-        [themes.breakpoints.down('sm')]: {
+        justifyContent: 'space-evenly',
+        marginBottom: '1rem',
+        [theme.breakpoints.down('sm')]: {
             flexDirection: 'column',
         },
     },
     checkButton: {
         display: 'flex',
         backgroundColor: theme.palette.primary.main,
-        width: '300px',
-        [themes.breakpoints.down('sm')]: {
+        maxWidth: 300,
+        minWidth: 250,
+        marginRight: 30,
+        [theme.breakpoints.down('sm')]: {
+            marginRight: 0,
             marginBottom: '15%',
             position: 'relative',
         },
     },
     searchButton: {
         display: 'flex',
-        width: '300px',
-        [themes.breakpoints.down('sm')]: {
+        maxWidth: 300,
+        minWidth: 250,
+        [theme.breakpoints.down('sm')]: {
             marginBottom: '10%',
             position: 'relative',
         },
     },
-});
+}));
 
 interface Props {
     title?: string;
@@ -87,6 +103,9 @@ const AdoptionApplicationFirstStep: React.FC<Props> = ({ children, title, descri
     }
     return (
         <>
+            <Typography className={classes.normalText} variant="subtitle1">
+                Wpisz numer ewidencyjny zwierzęcia
+            </Typography>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
                 <TextField
                     className={classes.textField}
@@ -118,11 +137,8 @@ const AdoptionApplicationFirstStep: React.FC<Props> = ({ children, title, descri
             <Typography className={classes.mainHeader} variant="h4">
                 {title}
             </Typography>
-            <Typography className={classes.normalText} variant="body1">
+            <Typography className={classes.description} variant="body1">
                 {description}
-            </Typography>
-            <Typography className={classes.normalText} variant="subtitle1">
-                Wpisz numer ewidencyjny zwierzęcia
             </Typography>
             {children}
         </>

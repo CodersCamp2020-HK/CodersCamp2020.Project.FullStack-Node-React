@@ -12,13 +12,13 @@ import PersonIcon from '@material-ui/icons/Person';
 import PetsIcon from '@material-ui/icons/Pets';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import React from 'react';
+import Paper from '@material-ui/core/Paper';
 import theme from '../../../themes/theme';
 import { UserType } from '../../../client/index';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
-        // maxWidth: 257,
         color: theme.palette.primary.main,
         backgroundColor: theme.palette.background.default,
     },
@@ -72,7 +72,7 @@ const SideNavList: React.FC<Props> = ({ name, role }) => {
         role === 'normal' ? textUser : role === 'employee' ? textWorker : role === 'volunteer' ? textUser : textAdmin;
 
     return (
-        <div className={classes.root}>
+        <Paper className={classes.root} variant="outlined" square={false}>
             <List
                 subheader={
                     <ListSubheader color="primary">
@@ -93,7 +93,7 @@ const SideNavList: React.FC<Props> = ({ name, role }) => {
                     </ListItem>
                 ))}
             </List>
-        </div>
+        </Paper>
     );
 };
 
