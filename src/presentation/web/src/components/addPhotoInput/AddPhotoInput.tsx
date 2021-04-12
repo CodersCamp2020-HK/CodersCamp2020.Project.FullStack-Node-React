@@ -8,16 +8,16 @@ interface Photos {
 }
 
 interface PhotosBase {
-    basephotos: string[];
+    items: string[];
 }
 
 const AddPhotoInput = () => {
     const [photos, setPhotos] = useState<Photos>({ fromDb: [], fromUser: [] });
-    const [photosbase, setPhotosbase] = useState<PhotosBase>({ basephotos: [] });
+    const [base64Photos, setBase64Photos] = useState<PhotosBase>({ items: [] });
     const inputRef = React.useRef<HTMLInputElement>(null!);
 
     useEffect(() => {
-        const getData = async () => {
+        const convertPhotosToBase64 = async () => {
             let photosBase64 = [];
             photosBase64 = await Promise.all(
                 photos.fromUser.map(async (file) => {
@@ -30,9 +30,9 @@ const AddPhotoInput = () => {
         };
 
         const saveAsState = async () => {
-            const base64img = await getData();
-            setPhotosbase((prev) => ({
-                basephotos: [...base64img],
+            const base64Images= await convertPhotosToBase64();
+            setBase64Photos((prev) => ({
+                items: [...base64Images],
             }));
         };
 
@@ -58,8 +58,8 @@ const AddPhotoInput = () => {
                 <Add />
                 <input multiple hidden type="file" accept="image/*" onChange={handleCapture} ref={inputRef} />
             </Fab>
-            {photosbase.basephotos.length > 0 &&
-                photosbase.basephotos.map((img, index) => <img key={index} alt="img" src={`data:image/png;base64, ${img}`} />)}
+            {base64Photos.items.length > 0 &&
+                base64Photos.items.map((img, index) => <img key={index} alt="img" src={`data:image/png;base64, ${img}`} />)}
         </div>
     );
 };
