@@ -38,10 +38,17 @@ const useStyle = makeStyles({
         },
         paddingBottom: 50,
         position: 'relative'
+    },
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%'
     }
 })
 
-const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues, hiddenPassword = false }) => {
+const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues, hiddenPassword = false, children}) => {
     const classes = useStyle();
 
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -74,7 +81,7 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues, 
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
-            <form onSubmit={handleSubmit(submitCb)} noValidate>
+            <form className={classes.form} onSubmit={handleSubmit(submitCb)} noValidate>
                 <TextField
                     className={classes.textField}
                     id="name"
@@ -170,7 +177,7 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues, 
                     helperText={errors.phone && errors.phone.message}
                     data-testid="phoneInput"
                 />
-                <Button
+                {children ?? <Button
                     className={classes.submit}
                     fullWidth
                     size="large"
@@ -179,7 +186,7 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues, 
                     type="submit"
                     data-testid="formSubmit">
                         Zarejestruj się
-                </Button>
+                </Button>}
             </form>
         </MuiPickersUtilsProvider>
     )

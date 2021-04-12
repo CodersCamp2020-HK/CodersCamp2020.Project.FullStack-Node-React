@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import RegisterForm from '../../forms/registerForm/RegisterForm';
 import { AppCtx } from '../../../App';
 import { useGetUser } from '../../../client';
+import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles } from '@material-ui/core';
@@ -11,7 +12,7 @@ import PersonOutlineRoundedIcon from '@material-ui/icons/PersonOutlineRounded';
 const useStyles = makeStyles<Theme>((theme: Theme) => ({
     paper: {
         backgroundColor: theme.palette.background.paper,
-        padding: '20px 50px',
+        padding: '2rem 4rem',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -31,6 +32,10 @@ const useStyles = makeStyles<Theme>((theme: Theme) => ({
         color: '#FFF',
         opacity: .87,
     },
+    button: {
+        marginBottom: '2rem',
+        minWidth: 400,
+    }
 }))
 
 const ProfilePage = () => {
@@ -55,7 +60,17 @@ const ProfilePage = () => {
                     mail: userData.mail,
                     phone: userData.phone,
                     birthDate: new Date(year, month, date)
-                }} hiddenPassword={true} />
+                }} hiddenPassword={true}>
+                    <Button className={classes.button} size="large" variant="outlined" color="primary">
+                        Zmień hasło
+                    </Button>
+                    <Button className={classes.button} size="large" variant="outlined" color="primary">
+                        Usuń konto
+                    </Button>
+                    <Button className={classes.button} size="large" variant="contained" color="primary" type="submit">
+                        Zapisz zmiany
+                    </Button>
+                </RegisterForm>
             </Paper>
         )
     }
