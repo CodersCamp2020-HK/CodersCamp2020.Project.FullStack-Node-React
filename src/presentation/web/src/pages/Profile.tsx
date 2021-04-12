@@ -4,7 +4,7 @@ import { AppCtx } from '../App';
 import Grid from '@material-ui/core/Grid';
 import SideNavList from '../components/sideNav/SideNavList';
 
-const MyAcc = () => {
+const Profile = () => {
     const { appState } = useContext(AppCtx);
     const { role, userName, userId } = appState;
     return (
@@ -13,10 +13,10 @@ const MyAcc = () => {
                 <SideNavList role={role!} name={userName!} />
             </Grid>
             <Grid item xs={9}>
-                elo
+                profile
             </Grid>
         </GridContainer>
     );
 };
 
-export default MyAcc;
+export default Profile;

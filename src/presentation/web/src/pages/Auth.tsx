@@ -6,6 +6,9 @@ import LoginForm from '../components/auth/loginForm/LoginForm';
 import RegisterPage from '../components/auth/registerPage/RegisterPage';
 import ActivationSent from '../components/auth/activationSent/ActivationSent';
 import GridContainer from '../components/gridContainer/GridContainer';
+import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
+import Profile from './Profile';
+import Logout from './Logout';
 
 const Auth: React.FC = () => {
     const { path } = useRouteMatch();
@@ -17,6 +20,8 @@ const Auth: React.FC = () => {
                 <Route exact path={`${path}/register`} component={RegisterPage} />
                 <Route exact path={`${path}/forget`} component={ForgetPassword} />
                 <Route exact path={`${path}/change`} component={ChangePassword} />
+                <ProtectedRoute exact path={`${path}/profile`} component={Profile} />
+                <Route exact path={`${path}/logout`} component={Logout} />
                 <Route exact path={path} component={LoginForm} />
                 <Redirect to={`/404/${path}`} />
             </Switch>

@@ -16,8 +16,9 @@ import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import theme from './themes/theme';
 import { UserType } from './client/index';
-import MyAcc from './pages/MyAcc';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
+import jwt, { JsonWebTokenError } from 'jsonwebtoken';
+import { env } from 'node:process';
 
 const useStyles = makeStyles({
     wrapper: {
@@ -47,14 +48,37 @@ interface AppState {
     userName: string | null;
 }
 
+interface IUserInfo {
+    role: UserType;
+    id: number;
+    name: string;
+    iat: number;
+}
+
+const isUserInfo = (user: unknown): user is IUserInfo => {
+    return (
+        typeof (user as IUserInfo).id === 'number' &&
+        typeof (user as IUserInfo).role === 'string' &&
+        typeof (user as IUserInfo).iat === 'number'
+    );
+};
+
+const apiKey = localStorage.getItem('apiKey') !== null ? localStorage.getItem('apiKey') : null;
+
+const decodedToken = apiKey !== null ? jwt.verify(apiKey, 'SuperSecretExtraSafe') : null;
+
 const initialAppState =
-    localStorage.getItem('userData') === null
+    decodedToken && isUserInfo(decodedToken)
         ? {
+              role: decodedToken.role,
+              userId: decodedToken.id,
+              userName: decodedToken.name,
+          }
+        : {
               role: null,
               userId: null,
               userName: null,
-          }
-        : JSON.parse(localStorage.getItem('userData')!);
+          };
 
 const App: React.FC = () => {
     const classes = useStyles();
@@ -91,7 +115,7 @@ const App: React.FC = () => {
                             <Route path="/animals/:animalId">
                                 <AnimalInfo />
                             </Route>
-                            <ProtectedRoute exact path="/account" component={MyAcc} />
+
                             <Route path="*">
                                 <NotFound />
                             </Route>
