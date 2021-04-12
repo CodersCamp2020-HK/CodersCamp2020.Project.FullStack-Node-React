@@ -1,4 +1,4 @@
-import { Card, CardMedia, Fab, makeStyles, Theme } from '@material-ui/core';
+import { Card, CardMedia, Fab, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 
@@ -17,12 +17,26 @@ const useStyles = makeStyles((theme: Theme) => ({
         flexWrap: 'wrap',
     },
     cardPhoto: {
-        width: 100,
-        height: 100,
+        width: 150,
+        height: 150,
+        marginRight: theme.spacing(2),
+        marginBottom: theme.spacing(2),
     },
     photo: {
         height: '100%',
         minHeight: 'fill-available',
+    },
+    addCard: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: theme.spacing(2),
+        width: 150,
+        height: 150,
+    },
+    label: {
+        cursor: 'pointer'
     },
 }));
 
@@ -78,10 +92,15 @@ const AddPhotoInput = () => {
 
     return (
         <div className={styles.wrapper}>
-            <Fab color="secondary" component="label">
-                <Add />
-                <input multiple hidden type="file" accept="image/*" onChange={handleCapture} ref={inputRef} />
-            </Fab>
+            <label className={styles.label} htmlFor='inputFile'>
+            <Paper className={styles.addCard}>
+                <Fab color="secondary" component="label">
+                    <Add />
+                    <input id='inputFile' multiple hidden type="file" accept="image/*" onChange={handleCapture} ref={inputRef} />
+                </Fab>
+                <Typography>Dodaj zdjęcie</Typography>
+            </Paper>
+            </label>
             {base64Photos.items.length > 0 && showAddedPhotos()}
         </div>
     );
