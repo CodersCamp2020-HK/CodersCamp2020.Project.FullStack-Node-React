@@ -1,4 +1,5 @@
 import React from "react";
+import { useState } from "react";
 import {
   Grid,
   Divider,
@@ -12,8 +13,6 @@ import { makeStyles } from "@material-ui/styles";
 interface Props {
   description: string;
   formSentDate: string;
-   btnDisplayForm: () => any;
-   btnDeleteForm: () => Promise<void>;
 }
 
 const useStyle = makeStyles((theme: Theme) => ({
@@ -24,16 +23,20 @@ const useStyle = makeStyles((theme: Theme) => ({
   },
   buttonsWrapper: {
     width: "300px",
-    '& > *': {
-    marginTop: theme.spacing(2),
+    margin: "auto",
+    "& > *": {
+      marginTop: theme.spacing(2),
+    },
   },
-},
 }));
 
 const FormProcessing = (props: Props) => {
   const classes = useStyle();
   const theme = useTheme();
-
+  const [showApplication, setShowApplication] = useState(false);
+  const handleButton = () => {
+    setShowApplication(!showApplication);
+  };
   return (
     <Grid item>
       <Typography variant="h5" align="center">
@@ -48,24 +51,26 @@ const FormProcessing = (props: Props) => {
       </Typography>
       <Divider className={classes.divider} />
       <div className={classes.buttonsWrapper}>
-        <Button
+        {/* <Button
           variant="outlined"
           color="primary"
           size="medium"
           fullWidth={true}
-           onClick={props.btnDeleteForm}
+          // onClick={props.btnDeleteForm}
         >
           Usuń wniosek
-        </Button>
+        </Button> */}
         <Button
           variant="outlined"
           color="primary"
           size="medium"
           fullWidth={true}
-           onClick={props.btnDisplayForm}
+          onClick={handleButton}
         >
-          Zobacz wysłany wniosek
+          {showApplication ? "Zwiń wysłany wniosek" : "Rozwiń wysłany wnisoek"}
         </Button>
+        <Divider className={classes.divider} />
+        {showApplication && <div>Lololololol</div>}
       </div>
     </Grid>
   );
