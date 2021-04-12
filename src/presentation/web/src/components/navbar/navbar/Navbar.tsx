@@ -70,7 +70,7 @@ const Navbar = () => {
                             <NavbarLoginBtn />
                         </Link>
                     ) : (
-                        <Link component={RouterLink} to="/auth/profile">
+                        <Link component={RouterLink} to="/account/profile">
                             <MyAccBtn />
                         </Link>
                     )}

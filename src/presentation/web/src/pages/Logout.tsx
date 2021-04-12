@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { useHistory, Redirect, useLocation } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { AppCtx } from '../App';
 
 const Logout = () => {
@@ -15,7 +15,7 @@ const Logout = () => {
         history.push('/');
     }, []);
 
-    return <div>logout</div>;
+    return null;
 };
 
 export default Logout;
