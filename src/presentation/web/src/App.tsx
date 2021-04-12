@@ -39,8 +39,6 @@ const initialContext = {
     setAppState: () => {},
 };
 
-console.log(localStorage.getItem('aa'));
-
 export const AppCtx = React.createContext<AppContextInterface>(initialContext);
 
 interface AppState {
@@ -76,36 +74,26 @@ const App: React.FC = () => {
                                 <About />
                             </Route>
                             <Route path="/adoption">
-                                <GridContainer>
-                                    <Adoption />
-                                </GridContainer>
+                                <Adoption />
                             </Route>
                             <Route exact path="/donation">
                                 <Donation />
                             </Route>
                             <Route exact path="/contact">
-                                <GridContainer>
-                                    <Contact />
-                                </GridContainer>
+                                <Contact />
                             </Route>
                             <Route path="/auth">
                                 <Auth />
                             </Route>
                             <Route path="/form">
-                                <GridContainer>
-                                    <ProtectedRoute path="/form" component={FormRoute} />
-                                </GridContainer>
+                                <ProtectedRoute path="/form" component={FormRoute} />
                             </Route>
                             <Route path="/animals/:animalId">
-                                <GridContainer>
-                                    <AnimalInfo />
-                                </GridContainer>
+                                <AnimalInfo />
                             </Route>
                             <ProtectedRoute exact path="/account" component={MyAcc} />
                             <Route path="*">
-                                <GridContainer>
-                                    <NotFound />
-                                </GridContainer>
+                                <NotFound />
                             </Route>
                         </Switch>
                     </div>

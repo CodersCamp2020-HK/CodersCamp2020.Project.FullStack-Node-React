@@ -11,7 +11,7 @@ const Auth: React.FC = () => {
     const { path } = useRouteMatch();
 
     return (
-        <GridContainer>
+        <GridContainer spacing={2} align="center" justify="center">
             <Switch>
                 <Route exact path={`${path}/link`} component={ActivationSent} />
                 <Route exact path={`${path}/register`} component={RegisterPage} />

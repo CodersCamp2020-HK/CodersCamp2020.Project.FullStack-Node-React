@@ -70,7 +70,7 @@ const Navbar = () => {
                             <NavbarLoginBtn />
                         </Link>
                     ) : (
-                        <Link component={RouterLink} to="/">
+                        <Link component={RouterLink} to="/account">
                             <MyAccBtn />
                         </Link>
                     )}
