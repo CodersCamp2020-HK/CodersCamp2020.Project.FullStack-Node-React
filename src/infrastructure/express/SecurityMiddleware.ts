@@ -14,7 +14,7 @@ const useSecurity = ({ isProductionEnv }: SecurityOptions) => {
                     'script-src': ["'self'", 'maps.googleapis.com'],
                     'img-src': ["'self'", 'data:', 'maps.gstatic.com', '*.googleapis.com', '*.ggpht'],
                     'frame-src': ["'self'", 'https://www.google.com'],
-                    'connect-src': ["'self'", 'https://coders-camp-schronisko.herokuap'],
+                    'connect-src': ["'self'", 'https://coders-camp-schronisko.herokuapp.com'],
                 },
             },
         }),
