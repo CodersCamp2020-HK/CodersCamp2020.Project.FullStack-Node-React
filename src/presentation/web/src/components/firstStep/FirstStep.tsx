@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import AdoptionApplicationFirstStep, { Inputs } from '../adoptionApplicationFirstStep/AdoptionApplicationFirstStep';
 import { AppCtx } from '../../App';
 import SideNav from '../navbar/sideNav/SideNav';
+import SurveyForm from '../forms/surveyForm/SurveyForm';
 
 const pushAnswersToArray = (data: any, animalId: number, stepNumber: number) => {
     const answers: PostAnimalSubmissionParams = {
@@ -38,7 +39,6 @@ const FirstStep = () => {
     const { mutate: postSubmission } = usePostAnimalSubmission({
         requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } },
     });
-    console.log(data)
 
     const handleIdSubmit = async ({ numerEwidencyjny: id }: Inputs) => {
         try {
@@ -66,6 +66,7 @@ const FirstStep = () => {
             </Grid>
             <Grid item lg>
                 <AdoptionApplicationFirstStep description={data?.description} title={data?.name} handleSubmit={handleIdSubmit}>
+                    {data && data.form && <SurveyForm formData={data.form} handleSubmit={handleFormSubmit} />}
                 </AdoptionApplicationFirstStep>
             </Grid>
         </>

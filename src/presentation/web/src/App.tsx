@@ -11,7 +11,6 @@ import AnimalInfo from './pages/AnimalInfo';
 import Auth from './pages/Auth';
 import Contact from './pages/Contact';
 import Donation from './pages/Donation';
-import FormRoute from './pages/FormRoute';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import theme from './themes/theme';
@@ -84,9 +83,6 @@ const App: React.FC = () => {
                             </Route>
                             <Route path="/auth">
                                 <Auth />
-                            </Route>
-                            <Route path="/form">
-                                <ProtectedRoute path="/form" component={FormRoute} />
                             </Route>
                             <Route path="/animals/:animalId">
                                 <AnimalInfo />
