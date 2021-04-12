@@ -5,7 +5,6 @@ export class OrganizationUsersService {
     constructor(private organizationUsersRepository: Repository<OrganizationUser>) {}
 
     public async getAllUsers(role?: string): Promise<OrganizationUser[]> {
-        console.log(role);
         const organizationUsersQuery = this.organizationUsersRepository
             .createQueryBuilder('organization-user')
             .leftJoin('organization-user.user', 'user')
