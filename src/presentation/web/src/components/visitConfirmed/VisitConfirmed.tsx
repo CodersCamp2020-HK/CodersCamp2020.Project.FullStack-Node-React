@@ -15,22 +15,35 @@ const useStyles = makeStyles((theme: Theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-    }
-}))
+    },
+    icon: {
+        marginBottom: theme.spacing(3),
+    },
+    title: {
+        marginBottom: theme.spacing(3),
+    },
+    contentSection: {
+        marginBottom: theme.spacing(5),
+    },
+}));
 
-const VisitConfirmed = ({date, adopter, worker}: VisitConfirmedProps) => {
+const VisitConfirmed = ({ date, adopter, worker }: VisitConfirmedProps) => {
     const styles = useStyles();
     return (
         <div className={styles.wrapper}>
-            <Event />
-            <Typography variant='h5'>Wizyta w schronisku potwierdzona</Typography>
-            <Typography variant='h6'>Data spotkania w schronisku dla {adopter} potwierdzona na: </Typography>
-            <Typography variant='h6'>{format(date, 'dd/MM/yyyy, HH:mm')}</Typography>
-            <Typography variant='h6'>Pracownik akceptujący wniosek adopcyjny:</Typography>
-            <Typography variant='h6'>{worker}</Typography>
-            <Calendar getSelectedDate={() => null} name='calendar' />
+            <Event className={styles.icon} />
+            <Typography className={styles.title} variant="h5">
+                Wizyta w schronisku potwierdzona
+            </Typography>
+            <Typography variant="h6">Data spotkania w schronisku dla {adopter} potwierdzona na: </Typography>
+            <Typography className={styles.contentSection} variant="h6">
+                {format(date, 'dd/MM/yyyy, HH:mm')}
+            </Typography>
+            <Typography variant="h6">Pracownik akceptujący wniosek adopcyjny:</Typography>
+            <Typography variant="h6">{worker}</Typography>
+            <Calendar getSelectedDate={() => null} name="calendar" />
         </div>
-    )
-}
+    );
+};
 
 export default VisitConfirmed;
