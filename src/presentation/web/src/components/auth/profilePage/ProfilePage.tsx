@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import RegisterForm from '../../forms/registerForm/RegisterForm';
 import { AppCtx } from '../../../App';
-import { useGetUser } from '../../../client';
+import { useGetUser, useUpdateUser } from '../../../client';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -16,7 +16,10 @@ const useStyles = makeStyles<Theme>((theme: Theme) => ({
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        [theme.breakpoints.down('sm')]: {
+            padding: '1rem 2rem'
+        }
     },
     text: {
         color: theme.palette.text.primary,
@@ -34,7 +37,7 @@ const useStyles = makeStyles<Theme>((theme: Theme) => ({
     },
     button: {
         marginBottom: '2rem',
-        minWidth: 400,
+        minWidth: 300
     }
 }))
 
@@ -42,6 +45,7 @@ const ProfilePage = () => {
     const classes = useStyles();
     const { appState } = useContext(AppCtx);
     const { data: userData, loading } = useGetUser({ userId: appState.userId!, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } })
+    const { mutate } = useUpdateUser({ userId: appState.userId! })
 
     const handleSubmit = async (data: any) => {
         console.log(data);
