@@ -1,45 +1,23 @@
 import { Repository } from 'typeorm';
 import ApiError from '@infrastructure/ApiError';
+import Animal from '@infrastructure/postgres/Animal';
 import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
-import Specie from '@infrastructure/postgres/Specie';
 
 export class AdoptionStepService {
     constructor(
+        private animalRepository: Repository<Animal>,
         private adoptionStepRepository: Repository<AdoptionStep>,
-        private specieRepository: Repository<Specie>,
     ) {}
 
-    public async getAllSteps(specie?: string): Promise<AdoptionStep[]> {
-        if (specie) {
-            const foundedSpecie = await this.specieRepository.findOne({
-                where: {
-                    specie,
-                },
-            });
-            if (!foundedSpecie) throw new ApiError('Specie not found', 404, 'Specie not found');
-
-            const adoptionSteps = await this.adoptionStepRepository.find({
-                where: {
-                    organization: {
-                        id: 1,
-                    },
-                    specie: {
-                        id: foundedSpecie.id,
-                    },
-                },
-            });
-            if (!adoptionSteps) throw new ApiError('Not found', 404, 'Adoption steps not found');
-            return adoptionSteps;
-        }
-
-        const adoptionSteps = await this.adoptionStepRepository.find({
-            where: {
-                organization: {
-                    id: 1,
-                },
-            },
-        });
-        if (!adoptionSteps) throw new ApiError('Not found', 404, 'Adoption steps not found');
-        return adoptionSteps;
+    public async getAllSteps(id: number): Promise<AdoptionStep> {
+        const animal = await this.animalRepository.findOne(id, { relations: ['specie'] });
+        if (!animal) throw new ApiError('Not Found', 404, 'Animal not found in database!');
+        const steps = await this.adoptionStepRepository
+            .createQueryBuilder('step')
+            .leftJoin('step.specie', 'specie')
+            .where('specie.id = :id', { id: animal.specie.id })
+            .getOne();
+        if (!steps) throw new ApiError('Not Found', 404, 'Survey not found in database');
+        return steps;
     }
 }

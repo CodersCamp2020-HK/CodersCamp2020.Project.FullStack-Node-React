@@ -10,6 +10,7 @@ import { AppCtx } from '../../App';
 import SideNav from '../navbar/sideNav/SideNav';
 import SurveyForm from '../forms/surveyForm/SurveyForm';
 import { Theme, makeStyles } from '@material-ui/core/styles';
+import AdoptionStepper from '../common/stepper/AdoptionStepper';
 
 const pushAnswersToArray = (data: any, animalId: number, stepNumber: number) => {
     const answers: PostAnimalSubmissionParams = {
@@ -85,15 +86,20 @@ const FirstStep = () => {
             <Grid item sm>
                 <Paper className={classes.mainPaper} variant="outlined">
                     <AdoptionApplicationFirstStep description={data?.description} title={data?.name} handleSubmit={handleIdSubmit}>
-                        <Typography variant="h6">WAŻNE!</Typography>
-                        <Typography className={classes.typography}>
-                            Wypełnienie ankiety nie jest jednoznaczne z tym, że zwierzę zostanie Państwu wyadoptowane.
-                            Na decyzję o wydaniu zwierzaka do adopcji składa się wiele czynników m.in. ankieta. Szukamy dla 
-                            zwierząt dobrych domów biorąc pod uwagę ich usposobienie, charakter,wielkość. W przypadku wyrażenia 
-                            zgody na adopcję niniejsza ankieta będzie integralną częścią zobowiązania adopcyjnego/umowy.
-                            <br />Prosimy tym samym o przemyślane i zgodne z prawdą odpowiedzi na pytania.
-                        </Typography>
-                        {data && data.form && <SurveyForm formData={data.form} handleSubmit={handleFormSubmit} />}
+                        {data && data.form &&
+                            <>
+                                <AdoptionStepper adoptionSteps={['elo1', 'elo2', 'elo3', 'elo4']} currentStep={1} />
+                                <Typography variant="h6">WAŻNE!</Typography>
+                                <Typography className={classes.typography}>
+                                    Wypełnienie ankiety nie jest jednoznaczne z tym, że zwierzę zostanie Państwu wyadoptowane.
+                                    Na decyzję o wydaniu zwierzaka do adopcji składa się wiele czynników m.in. ankieta. Szukamy dla 
+                                    zwierząt dobrych domów biorąc pod uwagę ich usposobienie, charakter,wielkość. W przypadku wyrażenia 
+                                    zgody na adopcję niniejsza ankieta będzie integralną częścią zobowiązania adopcyjnego/umowy.
+                                    <br />Prosimy tym samym o przemyślane i zgodne z prawdą odpowiedzi na pytania.
+                                </Typography>
+                                <SurveyForm formData={data.form} handleSubmit={handleFormSubmit} />
+                            </>
+                        }
                     </AdoptionApplicationFirstStep>
                 </Paper>
             </Grid>
