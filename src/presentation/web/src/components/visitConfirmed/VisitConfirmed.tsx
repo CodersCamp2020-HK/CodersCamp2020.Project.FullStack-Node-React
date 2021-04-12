@@ -16,7 +16,7 @@ const VisitConfirmed = ({date, adopter, worker}: VisitConfirmedProps) => {
             <Event />
             <Typography variant='h5'>Wizyta w schronisku potwierdzona</Typography>
             <Typography variant='h6'>Data spotkania w schronisku dla {adopter} potwierdzona na: </Typography>
-            <Typography variant='h6'>{format(date, 'dd/MM/yyyy, hh:mm')}</Typography>
+            <Typography variant='h6'>{format(date, 'dd/MM/yyyy, HH:mm')}</Typography>
             <Typography variant='h6'>Pracownik akceptujący wniosek adopcyjny:</Typography>
             <Typography variant='h6'>{worker}</Typography>
             <Calendar getSelectedDate={() => null} name='calendar' />
