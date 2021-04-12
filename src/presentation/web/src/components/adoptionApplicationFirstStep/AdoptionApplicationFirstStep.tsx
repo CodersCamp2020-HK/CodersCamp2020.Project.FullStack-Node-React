@@ -87,7 +87,6 @@ export interface Inputs {
 const AdoptionApplicationFirstStep: React.FC<Props> = ({ children, title, description, handleSubmit: submitCb }) => {
     const classes = useStyles();
     const { register, handleSubmit, errors } = useForm<Inputs>();
-    const { data, refetch } = useGetForm({ animalId: 1, lazy: true, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } });
     const onSubmit = async (data: Inputs) => {
         try {
             submitCb(data)
