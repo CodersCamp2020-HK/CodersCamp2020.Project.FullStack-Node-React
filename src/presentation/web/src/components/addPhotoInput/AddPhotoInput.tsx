@@ -1,5 +1,5 @@
 import { Card, CardMedia, Fab, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
-import { Add } from '@material-ui/icons';
+import { Add, Delete } from '@material-ui/icons';
 import React, { useEffect, useState } from 'react';
 
 interface Photos {
@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         flexWrap: 'wrap',
     },
     cardPhoto: {
+        position: 'relative',
         width: 150,
         height: 150,
         marginRight: theme.spacing(2),
@@ -38,6 +39,11 @@ const useStyles = makeStyles((theme: Theme) => ({
     label: {
         cursor: 'pointer'
     },
+    trash: {
+        position: 'absolute',
+        bottom: theme.spacing(1),
+        right: theme.spacing(1),
+    }
 }));
 
 const AddPhotoInput = () => {
@@ -86,6 +92,9 @@ const AddPhotoInput = () => {
         return base64Photos.items.map((img, index) => (
             <Card className={styles.cardPhoto}>
                 <CardMedia key={index} className={styles.photo} component="img" src={`data:image/png;base64, ${img}`} />
+                <Fab className={styles.trash} color="secondary">
+                    <Delete />
+                </Fab>
             </Card>
         ));
     };
