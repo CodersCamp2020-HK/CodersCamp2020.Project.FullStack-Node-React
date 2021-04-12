@@ -1,20 +1,22 @@
 import { makeStyles, ThemeProvider } from '@material-ui/core';
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Footer from './components/footer/Footer';
-import GridContainer from './components/gridContainer/GridContainer';
-import Navbar from './components/navbar/Navbar';
+import Navbar from './components/navbar/navbar/Navbar';
 import About from './pages/About';
 import Adoption from './pages/Adoption';
 import AnimalInfo from './pages/AnimalInfo';
 import Auth from './pages/Auth';
 import Contact from './pages/Contact';
 import Donation from './pages/Donation';
-import FormRoute from './pages/FormRoute';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import theme from './themes/theme';
+import { UserType } from './client/index';
+import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
+import jwt from 'jsonwebtoken';
+import MyAcc from './pages/MyAcc';
 
 const useStyles = makeStyles({
     wrapper: {
@@ -22,55 +24,105 @@ const useStyles = makeStyles({
     },
 });
 
+interface AppContextInterface {
+    appState: AppState;
+    setAppState: React.Dispatch<React.SetStateAction<AppState>>;
+}
+
+const initialContext = {
+    appState: {
+        role: null,
+        userId: null,
+        userName: null,
+    },
+    setAppState: () => {},
+};
+
+export const AppCtx = React.createContext<AppContextInterface>(initialContext);
+
+interface AppState {
+    userId: number | null;
+    role: UserType | null;
+    userName: string | null;
+}
+
+interface IUserInfo {
+    role: UserType;
+    id: number;
+    name: string;
+    iat: number;
+}
+
+const isUserInfo = (user: unknown): user is IUserInfo => {
+    return (
+        typeof (user as IUserInfo).id === 'number' &&
+        typeof (user as IUserInfo).role === 'string' &&
+        typeof (user as IUserInfo).iat === 'number'
+    );
+};
+
+const apiKey = localStorage.getItem('apiKey') !== null ? localStorage.getItem('apiKey') : null;
+
+const decodedToken = apiKey !== null ? jwt.verify(apiKey, 'SuperSecretExtraSafe') : null;
+
+const initialAppState =
+    decodedToken && isUserInfo(decodedToken)
+        ? {
+              role: decodedToken.role,
+              userId: decodedToken.id,
+              userName: decodedToken.name,
+          }
+        : {
+              role: null,
+              userId: null,
+              userName: null,
+          };
+
 const App: React.FC = () => {
     const classes = useStyles();
+    const [appState, setAppState] = useState<AppState>(initialAppState);
 
     return (
-        <ThemeProvider theme={theme}>
-            <Router>
-                <Navbar />
-                <div className={classes.wrapper}>
-                    <Switch>
-                        <Route exact path="/">
-                            <Home />
-                        </Route>
-                        <Route exact path="/about">
-                            <About />
-                        </Route>
-                        <Route exact path="/adoption">
-                            <Adoption />
-                        </Route>
-                        <Route exact path="/donation">
-                            <Donation />
-                        </Route>
-                        <Route exact path="/contact">
-                            <GridContainer>
+        <AppCtx.Provider value={{ appState, setAppState }}>
+            <ThemeProvider theme={theme}>
+                <Router>
+                    <Navbar />
+                    <div className={classes.wrapper}>
+                        <Switch>
+                            <Route exact path="/">
+                                <Home />
+                            </Route>
+                            <Route exact path="/about">
+                                <About />
+                            </Route>
+                            <Route path="/adoption">
+                                <Adoption />
+                            </Route>
+                            <Route exact path="/donation">
+                                <Donation />
+                            </Route>
+                            <Route exact path="/contact">
                                 <Contact />
-                            </GridContainer>
-                        </Route>
-                        <Route path="/auth">
-                            <GridContainer>
+                            </Route>
+                            <Route path="/auth">
                                 <Auth />
-                            </GridContainer>
-                        </Route>
-                        <Route path="/form">
-                            <GridContainer>
-                                <FormRoute />
-                            </GridContainer>
-                        </Route>
-                        <Route path="/animals/:animalId">
-                            <AnimalInfo />
-                        </Route>
-                        <Route path="*">
-                            <GridContainer>
+                            </Route>
+                            <Route path="/account">
+                                <MyAcc />
+                            </Route>
+                            <Route path="/animals/:animalId">
+                                <AnimalInfo />
+                            </Route>
+
+                            <Route path="*">
                                 <NotFound />
-                            </GridContainer>
-                        </Route>
-                    </Switch>
-                </div>
-            </Router>
-            <Footer />
-        </ThemeProvider>
+                            </Route>
+                        </Switch>
+                    </div>
+                </Router>
+                <Footer />
+            </ThemeProvider>
+        </AppCtx.Provider>
     );
 };
 

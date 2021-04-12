@@ -91,7 +91,7 @@ Container.bind(VolunteerSubmissionsService).factory(
         ),
 );
 Container.bind(AdoptionStepService).factory(
-    () => new AdoptionStepService(getConnection().getRepository(AdoptionStep), getConnection().getRepository(Specie)),
+    () => new AdoptionStepService(getConnection().getRepository(Animal), getConnection().getRepository(AdoptionStep)),
 );
 Container.bind(VolunteerHireStepService).factory(
     () => new VolunteerHireStepService(getConnection().getRepository(VolunteerHireStep)),

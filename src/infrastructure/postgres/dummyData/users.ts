@@ -26,7 +26,27 @@ export const seedUsers = async (amount: number): Promise<DeepPartial<User>[]> =>
         ),
         localization: { id: 1 },
     });
-    for (let i = 1; i < amount; i++) {
+    users.push({
+        name: faker.name.firstName(),
+        surname: faker.name.lastName(),
+        phone: faker.random.number({
+            min: 100000000,
+            max: 999999999,
+            precision: 1,
+        }),
+        mail: 'user@user.com',
+        password: password,
+        activated: true,
+        birthDate: faker.date.past(
+            faker.random.number({
+                min: 18,
+                max: 90,
+                precision: 1,
+            }),
+        ),
+        localization: { id: 2 },
+    });
+    for (let i = 2; i < amount; i++) {
         users.push({
             name: faker.name.firstName(),
             surname: faker.name.lastName(),
