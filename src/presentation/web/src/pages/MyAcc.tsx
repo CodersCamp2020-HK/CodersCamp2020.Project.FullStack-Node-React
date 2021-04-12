@@ -2,11 +2,11 @@ import React, { useContext } from 'react';
 import GridContainer from '../components/gridContainer/GridContainer';
 import { AppCtx } from '../App';
 import Grid from '@material-ui/core/Grid';
-import SideNavList from '../components/sideNav/SideNavList';
+import SideNavList from '../components/navbar/sideNav/SideNav';
 
 const MyAcc = () => {
     const { appState } = useContext(AppCtx);
-    const { role, userName, userId } = appState;
+    const { role, userName } = appState;
     return (
         <GridContainer spacing={2} align="flex-start" justify="center">
             <Grid item xs={3}>

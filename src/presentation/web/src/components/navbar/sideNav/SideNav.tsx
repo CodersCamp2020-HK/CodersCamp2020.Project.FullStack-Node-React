@@ -12,8 +12,8 @@ import PersonIcon from '@material-ui/icons/Person';
 import PetsIcon from '@material-ui/icons/Pets';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import React from 'react';
-import theme from '../../themes/theme';
-import { UserType } from '../../client/index';
+import theme from '../../../themes/theme';
+import { UserType } from '../../../client/index';
 
 const useStyles = makeStyles((theme) => ({
     root: {

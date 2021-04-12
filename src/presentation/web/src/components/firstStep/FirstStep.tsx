@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useGetForm } from '../../client';
 import useQuery from '../../utils/UseQuery';
-import AdoptionApplicationFirstStep, { Inputs } from '../adoptionApplicationFirstStep/AdoptionApplicationFirstStep';
 import { useHistory } from "react-router-dom";
+import Grid from '@material-ui/core/Grid';
+import AdoptionApplicationFirstStep, { Inputs } from '../adoptionApplicationFirstStep/AdoptionApplicationFirstStep';
+import { AppCtx } from '../../App';
+import SideNav from '../navbar/sideNav/SideNav';
 
 const FirstStep = () => {
+    const { appState } = useContext(AppCtx);
+    const { role, userName } = appState;
     const history = useHistory();
     const id = useQuery().get('id');
     const animalId = id ? parseInt(id) : 1;
@@ -19,11 +24,15 @@ const FirstStep = () => {
     }
 
     return (
-        <div>
-            {/* <span>{JSON.stringify(data)}</span> */}
-            <AdoptionApplicationFirstStep description={data?.description} title={data?.name} handleSubmit={handleIdSubmit}>
-            </AdoptionApplicationFirstStep>
-        </div>
+        <>
+            <Grid item lg={3}>
+                <SideNav role={role!} name={userName!}/>
+            </Grid>
+            <Grid item lg>
+                <AdoptionApplicationFirstStep description={data?.description} title={data?.name} handleSubmit={handleIdSubmit}>
+                </AdoptionApplicationFirstStep>
+            </Grid>
+        </>
     )
 }
 

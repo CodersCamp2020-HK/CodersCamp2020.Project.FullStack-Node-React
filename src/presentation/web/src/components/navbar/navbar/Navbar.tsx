@@ -11,7 +11,7 @@ import NavbarList from '../navbarList/NavbarList';
 import { makeStyles } from '@material-ui/core/styles';
 import Logo from '../../logo/Logo';
 import { AppCtx } from '../../../App';
-import MyAccBtn from '../../myAccBtn/MyAccBtn';
+import MyAccBtn from '../myAccBtn/MyAccBtn';
 
 const useStyles = makeStyles((theme) => ({
     root: {

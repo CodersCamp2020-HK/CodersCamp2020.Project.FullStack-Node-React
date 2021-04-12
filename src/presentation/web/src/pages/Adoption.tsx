@@ -8,14 +8,16 @@ const Adoption = () => {
     const { path } = useRouteMatch();
 
     return (
-        <Switch>
-            <Route exact path={`${path}/step/1`}>
-                <FirstStep />
-            </Route>
-            <Route exact path={`${path}`}>
-                <PageAdopt />;
-            </Route>
-        </Switch>
+        <GridContainer justify="center" align="flex-start" spacing={2}>
+            <Switch>
+                <Route exact path={`${path}/step/1`}>
+                    <FirstStep />
+                </Route>
+                <Route exact path={`${path}`}>
+                    <PageAdopt />;
+                </Route>
+            </Switch>
+        </GridContainer>
     );
 };
 
