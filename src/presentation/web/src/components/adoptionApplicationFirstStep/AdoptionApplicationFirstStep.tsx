@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, createMuiTheme, Paper, TextField, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
 import theme from '../../themes/theme';
-import { useGetForm } from "../../client/index";
 import { useForm } from "react-hook-form";
 
 const themes = createMuiTheme({
@@ -24,28 +23,20 @@ const useStyles = makeStyles({
     },
     mainHeader: {
         textAlign: 'center',
-        margin: '2%',
     },
     normalText: {
         textAlign: 'left',
-        margin: '3%',
     },
-    textFieldWrapper: {
-        [themes.breakpoints.down('sm')]: {
-            '& .MuiFormHelperText-root': {
-                position: 'absolute',
-                paddingBottom: 0,
-                bottom: 0
-            },
+    textField: {
+        '& .MuiFormHelperText-root': {
+            position: 'absolute',
             paddingBottom: 25,
-            position: 'relative'
+            bottom: 0
         },
-    },
-    formWrapper: {
-        padding: '0% 3% 0% 3%',
+        paddingBottom: 50,
+        position: 'relative'
     },
     buttonsWrapper: {
-        margin: '3% 3% 3% 3%',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -95,48 +86,46 @@ const AdoptionApplicationFirstStep: React.FC<Props> = ({ children, title, descri
         }
     }
     return (
-        <Paper className={classes.mainPaper} variant="outlined">
+        <>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                <TextField
+                    className={classes.textField}
+                    name='numerEwidencyjny'
+                    inputRef={register({ required: 'To pole jest wymagane', pattern: { value: /\d+/, message: 'Numer ewidencyjny to liczba' } })}
+                    error={errors.hasOwnProperty('numerEwidencyjny')}
+                    helperText={errors.numerEwidencyjny && errors.numerEwidencyjny.message}
+                    required
+                    variant="outlined"
+                    size="medium"
+                    color="secondary"
+                    label="Nr ewidencyjny">
+                </TextField>
+                <div className={classes.buttonsWrapper}>
+                    <Button
+                        className={classes.checkButton}
+                        variant="contained"
+                        size="large"
+                        type="submit"
+                        color="primary">SPRAWDŹ</Button>
+                    <Button
+                        className={classes.searchButton}
+                        variant="outlined"
+                        size="large"
+                        type="submit"
+                        color="primary">WYSZUKAJ ZWIERZAKA</Button>
+                </div>
+            </form>
             <Typography className={classes.mainHeader} variant="h4">
                 {title}
             </Typography>
-            {children}
             <Typography className={classes.normalText} variant="body1">
                 {description}
             </Typography>
-            <div>
-                <Typography className={classes.normalText} variant="subtitle1">
-                    Wpisz numer ewidencyjny zwierzęcia
-                </Typography>
-                <form onSubmit={handleSubmit(onSubmit)} noValidate className={classes.formWrapper}>
-                    <TextField
-                        className={classes.textFieldWrapper}
-                        name='numerEwidencyjny'
-                        inputRef={register({ required: 'To pole jest wymagane', pattern: { value: /\d+/, message: 'Numer ewidencyjny to liczba' } })}
-                        error={errors.hasOwnProperty('numerEwidencyjny')}
-                        helperText={errors.numerEwidencyjny && errors.numerEwidencyjny.message}
-                        required
-                        variant="outlined"
-                        size="medium"
-                        color="secondary"
-                        label="Nr ewidencyjny">
-                    </TextField>
-                    <div className={classes.buttonsWrapper}>
-                        <Button
-                            className={classes.checkButton}
-                            variant="contained"
-                            size="large"
-                            type="submit"
-                            color="primary">SPRAWDŹ</Button>
-                        <Button
-                            className={classes.searchButton}
-                            variant="outlined"
-                            size="large"
-                            type="submit"
-                            color="primary">WYSZUKAJ ZWIERZAKA</Button>
-                    </div>
-                </form>
-            </div>
-        </Paper>
+            <Typography className={classes.normalText} variant="subtitle1">
+                Wpisz numer ewidencyjny zwierzęcia
+            </Typography>
+            {children}
+        </>
     )
 }
 

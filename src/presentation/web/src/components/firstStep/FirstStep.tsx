@@ -3,10 +3,12 @@ import { AnimalAnswer, PostAnimalSubmissionParams, useGetForm, usePostAnimalSubm
 import useQuery from '../../utils/UseQuery';
 import { useHistory } from "react-router-dom";
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
 import AdoptionApplicationFirstStep, { Inputs } from '../adoptionApplicationFirstStep/AdoptionApplicationFirstStep';
 import { AppCtx } from '../../App';
 import SideNav from '../navbar/sideNav/SideNav';
 import SurveyForm from '../forms/surveyForm/SurveyForm';
+import { Theme, makeStyles } from '@material-ui/core/styles';
 
 const pushAnswersToArray = (data: any, animalId: number, stepNumber: number) => {
     const answers: PostAnimalSubmissionParams = {
@@ -27,10 +29,19 @@ const pushAnswersToArray = (data: any, animalId: number, stepNumber: number) => 
     return answers;
 }
 
+const useStyles = makeStyles((theme: Theme) => ({
+    mainPaper: {
+        variant: "outlined",
+        backgroundColor: theme.palette.background.paper,
+        padding: '20px 50px'
+    },
+}));
+
 const FirstStep = () => {
     const { appState } = useContext(AppCtx);
     const history = useHistory();
     const id = useQuery().get('id');
+    const classes = useStyles();
 
     const { role, userName } = appState;
     const animalId = id ? parseInt(id) : 1;
@@ -65,9 +76,11 @@ const FirstStep = () => {
                 <SideNav role={role!} name={userName!}/>
             </Grid>
             <Grid item lg>
-                <AdoptionApplicationFirstStep description={data?.description} title={data?.name} handleSubmit={handleIdSubmit}>
-                    {data && data.form && <SurveyForm formData={data.form} handleSubmit={handleFormSubmit} />}
-                </AdoptionApplicationFirstStep>
+                <Paper className={classes.mainPaper} variant="outlined">
+                    <AdoptionApplicationFirstStep description={data?.description} title={data?.name} handleSubmit={handleIdSubmit}>
+                        {data && data.form && <SurveyForm formData={data.form} handleSubmit={handleFormSubmit} />}
+                    </AdoptionApplicationFirstStep>
+                </Paper>
             </Grid>
         </>
     )
