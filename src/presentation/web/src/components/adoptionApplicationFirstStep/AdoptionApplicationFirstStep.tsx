@@ -73,46 +73,41 @@ const useStyles = makeStyles({
         },
     },
 });
+
 interface Props {
-    title: string;
-    description: string;
+    title?: string;
+    description?: string;
+    handleSubmit: (inputs: Inputs) => Promise<void>;
 }
-interface Inputs {
+
+export interface Inputs {
     numerEwidencyjny: number;
 }
 
-const AdoptionApplicationFirstStep: React.FC<Props> = ({ children, title, description }) => {
+const AdoptionApplicationFirstStep: React.FC<Props> = ({ children, title, description, handleSubmit: submitCb }) => {
     const classes = useStyles();
     const { register, handleSubmit, errors } = useForm<Inputs>();
-    const { data, refetch } = useGetForm({ animalId: 1, lazy: true, requestOptions: { headers: { access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpZCI6MSwiaWF0IjoxNjE3MzQ2NzYzfQ.h3t7y8edtFxLAm46FNOjpUaaVyvYhLCVBrqx68rOMfc' } } });
-    const onSubmit = async ({ numerEwidencyjny: id }: Inputs) => {
+    const { data, refetch } = useGetForm({ animalId: 1, lazy: true, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } });
+    const onSubmit = async (data: Inputs) => {
         try {
-            refetch({ pathParams: { animalId: id } })
+            submitCb(data)
         } catch (error) {
             console.log(error)
         }
     }
     return (
-        <Paper
-            className={classes.mainPaper}
-            variant="outlined">
-            <Typography
-                className={classes.mainHeader}
-                variant="h4">
+        <Paper className={classes.mainPaper} variant="outlined">
+            <Typography className={classes.mainHeader} variant="h4">
                 {title}
             </Typography>
             {children}
-            <Typography
-                className={classes.normalText}
-                variant="body1">
+            <Typography className={classes.normalText} variant="body1">
                 {description}
             </Typography>
             <div>
-                <Typography
-                    className={classes.normalText}
-                    variant="subtitle1">
+                <Typography className={classes.normalText} variant="subtitle1">
                     Wpisz numer ewidencyjny zwierzęcia
-            </Typography>
+                </Typography>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate className={classes.formWrapper}>
                     <TextField
                         className={classes.textFieldWrapper}
