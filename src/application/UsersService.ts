@@ -168,7 +168,7 @@ export class UsersService {
         if (!match) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
 
         if (!process.env.JWT_KEY) throw new ApiError('Internal server error', 500, 'JWT private key not found!');
-        const token = jwt.sign({ role, id: user.id }, process.env.JWT_KEY);
+        const token = jwt.sign({ role, id: user.id, name: user.name }, process.env.JWT_KEY);
 
         return { apiKey: token };
     }

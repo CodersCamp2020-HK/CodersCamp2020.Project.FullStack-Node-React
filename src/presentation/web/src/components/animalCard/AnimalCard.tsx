@@ -5,6 +5,8 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
+import { Link as RouterLink } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,27 +29,34 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface Props {
+    id: number;
     name: string;
     description: string;
     photoURL: string;
 }
 
-const AnimalCard: React.FC<Props> = ({ name, description, photoURL }) => {
+const AnimalCard: React.FC<Props> = ({ id, name, description, photoURL }) => {
     const classes = useStyles();
     return (
-        <Card className={classes.root}>
-            <CardActionArea>
-                <CardMedia className={classes.media} image={`data:image/png;base64,${photoURL}`} title="Adoptuj mnie" />
-                <CardContent className={classes.content}>
-                    <Typography color="textPrimary" gutterBottom variant="h5" component="h2">
-                        {name}
-                    </Typography>
-                    <Typography variant="subtitle1" color="textPrimary" component="p">
-                        {description}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-        </Card>
+        <Link component={RouterLink} to={`animals/${id}`}>
+            <Card className={classes.root}>
+                <CardActionArea>
+                    <CardMedia
+                        className={classes.media}
+                        image={`data:image/png;base64,${photoURL}`}
+                        title="Adoptuj mnie"
+                    />
+                    <CardContent className={classes.content}>
+                        <Typography color="textPrimary" gutterBottom variant="h5" component="h2">
+                            {name}
+                        </Typography>
+                        <Typography variant="subtitle1" color="textPrimary" component="p">
+                            {description}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+            </Card>
+        </Link>
     );
 };
 

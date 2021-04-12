@@ -47,7 +47,6 @@ export class VolunteerSubmissionsController {
     @SuccessResponse(200, 'ok')
     @Get()
     public async getAllSubmissions(
-        @Request() request: IAuthUserInfoRequest,
         @Query() submissionDate?: Date,
         @Query() status?: VolunteerFormStatus,
         @Query() userName?: string,
@@ -57,7 +56,6 @@ export class VolunteerSubmissionsController {
     ): Promise<FormVolunteerSubmission[]> {
         return this.submissionService.getAllSubmissions(
             { submissionDate, status, userName, reviewerName },
-            request.user as IUserInfo,
             { page, perPage },
         );
     }
