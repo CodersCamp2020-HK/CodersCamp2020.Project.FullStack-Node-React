@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import GridContainer from '../components/gridContainer/GridContainer';
 import { AppCtx } from '../App';
 import Grid from '@material-ui/core/Grid';
-import SideNavList from '../components/sideNav/SideNavList';
+import SideNavList from '../components/navbar/sideNav/SideNav';
 import { Switch, useRouteMatch, Route } from 'react-router-dom';
 import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
 import Volunteer from './Volunteer';
@@ -17,7 +17,7 @@ import LoginForm from '../components/auth/loginForm/LoginForm';
 const MyAcc = () => {
     const { path } = useRouteMatch();
     const { appState } = useContext(AppCtx);
-    const { role, userName, userId } = appState;
+    const { role, userName } = appState;
     return (
         <GridContainer spacing={2} align="flex-start" justify="center">
             <Grid item xs={3}>

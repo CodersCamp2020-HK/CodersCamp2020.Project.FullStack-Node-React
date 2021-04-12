@@ -3,6 +3,7 @@ import MuiListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -12,15 +13,14 @@ import PersonIcon from '@material-ui/icons/Person';
 import PetsIcon from '@material-ui/icons/Pets';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import React from 'react';
-import theme from '../../themes/theme';
-import { UserType } from '../../client/index';
+import theme from '../../../themes/theme';
+import { UserType } from '../../../client/index';
 import { Link as RouterLink } from 'react-router-dom';
-import { Hidden, Link } from '@material-ui/core';
+import { Link } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
-        // maxWidth: 257,
         color: theme.palette.primary.main,
         backgroundColor: theme.palette.background.default,
     },
@@ -74,7 +74,7 @@ const SideNavList: React.FC<Props> = ({ name, role }) => {
         role === 'normal' ? textUser : role === 'employee' ? textWorker : role === 'volunteer' ? textUser : textAdmin;
 
     return (
-        <div className={classes.root}>
+        <Paper className={classes.root} variant="outlined" square={false}>
             <List
                 subheader={
                     <ListSubheader color="primary">
@@ -96,7 +96,7 @@ const SideNavList: React.FC<Props> = ({ name, role }) => {
                     </Link>
                 ))}
             </List>
-        </div>
+        </Paper>
     );
 };
 

@@ -1,8 +1,6 @@
-import React, { useState } from 'react';
-import { Button, createMuiTheme, Paper, TextField, Typography } from '@material-ui/core';
+import React from 'react';
+import { Button, createMuiTheme, Paper, TextField, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import theme from '../../themes/theme';
-import { useGetForm } from "../../client/index";
 import { useForm } from "react-hook-form";
 
 const themes = createMuiTheme({
@@ -17,132 +15,133 @@ const themes = createMuiTheme({
     },
 });
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
     mainPaper: {
         variant: "outlined",
         backgroundColor: theme.palette.background.paper,
     },
     mainHeader: {
         textAlign: 'center',
-        margin: '2%',
+        marginBottom: '3rem',
+        [themes.breakpoints.down('sm')]: {
+            marginBottom: '1.5rem'
+        }
     },
     normalText: {
         textAlign: 'left',
-        margin: '3%',
-    },
-    textFieldWrapper: {
+        marginBottom: '1rem',
         [themes.breakpoints.down('sm')]: {
-            '& .MuiFormHelperText-root': {
-                position: 'absolute',
-                paddingBottom: 0,
-                bottom: 0
-            },
-            paddingBottom: 25,
-            position: 'relative'
-        },
+            textAlign: 'center'
+        }
     },
-    formWrapper: {
-        padding: '0% 3% 0% 3%',
+    description: {
+        textAlign: 'left',
+        marginBottom: '2rem',
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '1rem',
+        }
+    },
+    textField: {
+        '& .MuiFormHelperText-root': {
+            position: 'absolute',
+            paddingBottom: 10,
+            bottom: 0
+        },
+        paddingBottom: 30,
+        position: 'relative'
     },
     buttonsWrapper: {
-        margin: '3% 3% 3% 3%',
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 20%',
-        [themes.breakpoints.down('sm')]: {
+        justifyContent: 'space-evenly',
+        marginBottom: '1rem',
+        [theme.breakpoints.down('sm')]: {
             flexDirection: 'column',
         },
     },
     checkButton: {
         display: 'flex',
         backgroundColor: theme.palette.primary.main,
-        width: '300px',
-        [themes.breakpoints.down('sm')]: {
-            marginBottom: '15%',
-            position: 'relative',
+        maxWidth: 300,
+        minWidth: 250,
+        marginRight: 30,
+        [theme.breakpoints.down('sm')]: {
+            marginRight: 0,
+            marginBottom: '2rem',
         },
     },
     searchButton: {
         display: 'flex',
-        width: '300px',
-        [themes.breakpoints.down('sm')]: {
-            marginBottom: '10%',
-            position: 'relative',
+        maxWidth: 300,
+        minWidth: 250,
+        [theme.breakpoints.down('sm')]: {
+            marginBottom: '2rem',
         },
     },
-});
+}));
+
 interface Props {
-    title: string;
-    description: string;
+    title?: string;
+    description?: string;
+    handleSubmit: (inputs: Inputs) => Promise<void>;
 }
-interface Inputs {
+
+export interface Inputs {
     numerEwidencyjny: number;
 }
 
-const AdoptionApplicationFirstStep: React.FC<Props> = ({ children, title, description }) => {
+const AdoptionApplicationFirstStep: React.FC<Props> = ({ children, title, description, handleSubmit: submitCb }) => {
     const classes = useStyles();
     const { register, handleSubmit, errors } = useForm<Inputs>();
-    const { data, refetch } = useGetForm({ animalId: 1, lazy: true, requestOptions: { headers: { access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYWRtaW4iLCJpZCI6MSwiaWF0IjoxNjE3MzQ2NzYzfQ.h3t7y8edtFxLAm46FNOjpUaaVyvYhLCVBrqx68rOMfc' } } });
-    const onSubmit = async ({ numerEwidencyjny: id }: Inputs) => {
+    const onSubmit = async (data: Inputs) => {
         try {
-            refetch({ pathParams: { animalId: id } })
+            submitCb(data)
         } catch (error) {
             console.log(error)
         }
     }
     return (
-        <Paper
-            className={classes.mainPaper}
-            variant="outlined">
-            <Typography
-                className={classes.mainHeader}
-                variant="h4">
+        <>
+            <Typography className={classes.normalText} variant="subtitle1">
+                Wpisz numer ewidencyjny zwierzęcia
+            </Typography>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                <TextField
+                    className={classes.textField}
+                    name='numerEwidencyjny'
+                    inputRef={register({ required: 'To pole jest wymagane', pattern: { value: /\d+/, message: 'Numer ewidencyjny to liczba' } })}
+                    error={errors.hasOwnProperty('numerEwidencyjny')}
+                    helperText={errors.numerEwidencyjny && errors.numerEwidencyjny.message}
+                    required
+                    variant="outlined"
+                    size="medium"
+                    color="secondary"
+                    label="Nr ewidencyjny">
+                </TextField>
+                <div className={classes.buttonsWrapper}>
+                    <Button
+                        className={classes.checkButton}
+                        variant="contained"
+                        size="large"
+                        type="submit"
+                        color="primary">SPRAWDŹ</Button>
+                    <Button
+                        className={classes.searchButton}
+                        variant="outlined"
+                        size="large"
+                        type="submit"
+                        color="primary">WYSZUKAJ ZWIERZAKA</Button>
+                </div>
+            </form>
+            <Typography className={classes.mainHeader} variant="h4">
                 {title}
             </Typography>
-            {children}
-            <Typography
-                className={classes.normalText}
-                variant="body1">
+            <Typography className={classes.description} variant="body1">
                 {description}
             </Typography>
-            <div>
-                <Typography
-                    className={classes.normalText}
-                    variant="subtitle1">
-                    Wpisz numer ewidencyjny zwierzęcia
-            </Typography>
-                <form onSubmit={handleSubmit(onSubmit)} noValidate className={classes.formWrapper}>
-                    <TextField
-                        className={classes.textFieldWrapper}
-                        name='numerEwidencyjny'
-                        inputRef={register({ required: 'To pole jest wymagane', pattern: { value: /\d+/, message: 'Numer ewidencyjny to liczba' } })}
-                        error={errors.hasOwnProperty('numerEwidencyjny')}
-                        helperText={errors.numerEwidencyjny && errors.numerEwidencyjny.message}
-                        required
-                        variant="outlined"
-                        size="medium"
-                        color="secondary"
-                        label="Nr ewidencyjny">
-                    </TextField>
-                    <div className={classes.buttonsWrapper}>
-                        <Button
-                            className={classes.checkButton}
-                            variant="contained"
-                            size="large"
-                            type="submit"
-                            color="primary">SPRAWDŹ</Button>
-                        <Button
-                            className={classes.searchButton}
-                            variant="outlined"
-                            size="large"
-                            type="submit"
-                            color="primary">WYSZUKAJ ZWIERZAKA</Button>
-                    </div>
-                </form>
-            </div>
-        </Paper>
+            {children}
+        </>
     )
 }
 

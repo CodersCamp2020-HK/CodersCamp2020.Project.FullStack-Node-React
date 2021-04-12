@@ -1,6 +1,6 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles';
-import { AdoptionStep, ApiError, FormQuestion } from '../../../client/index';
+import { Form, FormQuestion } from '../../../client/index';
 import { useForm, UseFormMethods } from 'react-hook-form';
 import Button from '@material-ui/core/Button';
 import CheckboxGroup from '../../common/checkboxGroup/CheckboxGroup';
@@ -10,12 +10,11 @@ import RadioGroup from '../../common/radioGroup/RadioGroup';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import isStringOrUndefined from '../../../utils/IsStringOrUndefined';
-import { UseGetReturn } from 'restful-react';
 import { ClassNameMap } from '@material-ui/styles';
 
 interface SurveyFormProps {
     handleSubmit: (data: any) => void;
-    formData: UseGetReturn<AdoptionStep, ApiError | Error, void, unknown>;
+    formData: Form;
     defaultValues?: Record<string, string | string[]>;
     disabled?: boolean;
 }
@@ -63,6 +62,18 @@ const useStyles =  makeStyles((theme) => ({
     },
     text: {
         color: theme.palette.text.disabled
+    },
+    form: {
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'flex-start',
+    },
+    submit: {
+        alignSelf: 'center',
+        minWidth: 200,
+        maxWidth: 400,
     }
 }))
 
@@ -168,7 +179,6 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled = false, c
 }
 
 const SurveyForm: React.FC<SurveyFormProps> = ({ handleSubmit: submitCb, formData, defaultValues, disabled }) => {
-    const { data, loading, error } = formData;
     const classes = useStyles();
 
     const methods = useForm<Record<string, string | string[]>>({
@@ -176,37 +186,21 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ handleSubmit: submitCb, formDat
         defaultValues
     });
 
-    if (!loading && data && data.form) {
-        return (
-            <Grid item sm={12} lg={8}>
-                <form noValidate onSubmit={methods.handleSubmit(submitCb)}>
-                    {GenerateInputs({ questions: data.form.questions, methods, defaultValues, disabled, classes })}
-                    {
-                        !disabled &&
-                        <Button
-                            size="medium"
-                            variant="contained"
-                            color="primary"
-                            type="submit">
-                                Wyślij formularz
-                        </Button>
-                    }
-                </form>
-            </Grid>
-        )
-    }
-    if (error) {
-        const message = error.message;
-        return (
-            <div>
-                <p>{message}</p>
-            </div>
-        )
-    }
     return (
-        <div>
-            loading...
-        </div>
+        <form noValidate className={classes.form} onSubmit={methods.handleSubmit(submitCb)}>
+            {GenerateInputs({ questions: formData.questions, methods, defaultValues, disabled, classes })}
+            {
+                !disabled &&
+                    <Button
+                        className={classes.submit}
+                        size="medium"
+                        variant="contained"
+                        color="primary"
+                        type="submit">
+                            Wyślij formularz
+                    </Button>
+            }
+        </form>
     )
 }
 
