@@ -46,6 +46,7 @@ import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService'
 import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import { omit } from '../../utils/omit';
 import { DeepPartial } from 'typeorm';
+import * as useragent from 'express-useragent';
 
 interface uuidResponse {
     uuid: string;
@@ -157,10 +158,13 @@ export class UsersController extends Controller {
     @Response(404, 'Link is not valid or expired')
     @Response<Error>(500, 'Internal Server Error')
     @Get('activate/{generatedUUID}')
-    public async activateUser(@Path() generatedUUID: string): Promise<void> {
-        const uuid = await this.usersService.activateUser(generatedUUID);
-        this.setStatus(200);
-        return uuid;
+    public async activateUser(@Path() generatedUUID: string, @Request() request: ExRequest): Promise<void> {
+        await this.usersService.activateUser(generatedUUID);
+        const source = request.headers['user-agent'];
+        if (!source) return this.setStatus(200);
+        const ua = useragent.parse(source);
+        if (ua.browser === 'uknown') return this.setStatus(200);
+        request.res?.redirect(request.protocol + '://' + request.get('host') + '/auth');
     }
 
     /**
@@ -173,7 +177,7 @@ export class UsersController extends Controller {
     @Post('{userId}/sendActivationLink')
     public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<string> {
         try {
-            const ACTIVATION_PATH = request.get('host') + '/api/users/activate/';
+            const ACTIVATION_PATH = request.protocol + '://' + request.get('host') + '/api/users/activate/';
             const createdUser = await this.usersService.get(userId);
             const personalUUID = await this.usersService.createUUID(userId, LinkType.activation);
             const message = new ActivationMessage(ACTIVATION_PATH + personalUUID).message;
@@ -277,7 +281,7 @@ export class UsersController extends Controller {
         @Body() email: EmailResetPassword,
         @Request() request: ExRequest,
     ): Promise<void> {
-        const ACTIVATION_PATH = request.get('host') + '/api/users/reset/';
+        const ACTIVATION_PATH = request.protocol + '://' + request.get('host') + '/auth/reset/';
         return await this.usersService.sendResetPasswordLink(email, ACTIVATION_PATH);
     }
 
