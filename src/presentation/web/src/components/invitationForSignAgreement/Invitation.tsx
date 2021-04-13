@@ -4,20 +4,6 @@ import { DoneOutline } from '@material-ui/icons';
 
 
 const useStyle = makeStyles((theme: Theme) => ({
-    mainWrapper: {
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '2rem 0'
-    },
-    descriptionLine: {
-        fontWeight: 'bold',
-        fontFamily: 'Roboto',
-        fontSize: '20px',
-        lineHeight: '32px',
-        letterSpacing: '0.15px',
-    },
     margin: {
         marginTop: '1rem',
     },
@@ -38,7 +24,6 @@ const Invitation = () => {
     
     return(
         <Grid item xs={12} md={6}>
-            <Paper className={classes.mainWrapper} variant='outlined'>
                 <SvgIcon className={classes.iconWrapper} >
                     <DoneOutline className={classes.icon} ></DoneOutline>
                 </SvgIcon>
@@ -57,7 +42,6 @@ const Invitation = () => {
                     -transporter (do adopcji kota)
                     `}
                     </Typography>
-            </Paper>
         </Grid>
     )
 };
