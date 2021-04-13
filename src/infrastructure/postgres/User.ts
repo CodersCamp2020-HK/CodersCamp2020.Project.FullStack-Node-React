@@ -69,10 +69,10 @@ export default class User {
     @Column({ default: false })
     activated!: boolean;
 
-    @Column({ default: null, nullable: true })
+    @Column({ default: 1 })
     adoptionStep?: number;
 
-    @Column({ default: null, nullable: true })
+    @Column({ default: 1 })
     volunteerStep?: number;
 
     @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, {

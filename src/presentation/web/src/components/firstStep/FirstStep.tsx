@@ -53,11 +53,12 @@ const FirstStep = () => {
 
     const { role, userName } = appState;
     const animalId = id ? parseInt(id) : 1;
+    const requestOptions = { headers: { access_token: localStorage.getItem('apiKey') ?? '' } };
 
-    const { data, refetch } = useGetForm({ animalId, lazy: !id, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } });
-    const { data: adoptionStepsData, refetch: adoptionStepsRefetch } = useGetAllAdoptionSteps({ animalId, lazy: !id, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } })
+    const { data, refetch } = useGetForm({ animalId, lazy: !id, requestOptions });
+    const { data: adoptionStepsData, refetch: adoptionStepsRefetch } = useGetAllAdoptionSteps({ animalId, lazy: !id, requestOptions })
     const { mutate: postSubmission } = usePostAnimalSubmission({
-        requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } },
+        requestOptions,
     });
     console.log(adoptionStepsData);
 
@@ -82,31 +83,24 @@ const FirstStep = () => {
     };
 
     return (
-        <>
-            <Grid item xs={12} sm={4} md={3}>
-                <SideNav role={role!} name={userName!}/>
-            </Grid>
-            <Grid item sm>
-                <Paper className={classes.mainPaper} variant="outlined">
-                    <AdoptionApplicationFirstStep description={data?.description} title={data?.name} handleSubmit={handleIdSubmit}>
-                        {data && data.form && adoptionStepsData &&
-                            <>
-                                <AdoptionStepper adoptionSteps={adoptionStepsData.map((step) => step.name)} currentStep={1} />
-                                <Typography variant="h6">WAŻNE!</Typography>
-                                <Typography className={classes.typography}>
-                                    Wypełnienie ankiety nie jest jednoznaczne z tym, że zwierzę zostanie Państwu wyadoptowane.
-                                    Na decyzję o wydaniu zwierzaka do adopcji składa się wiele czynników m.in. ankieta. Szukamy dla 
-                                    zwierząt dobrych domów biorąc pod uwagę ich usposobienie, charakter,wielkość. W przypadku wyrażenia 
-                                    zgody na adopcję niniejsza ankieta będzie integralną częścią zobowiązania adopcyjnego/umowy.
-                                    <br />Prosimy tym samym o przemyślane i zgodne z prawdą odpowiedzi na pytania.
-                                </Typography>
-                                <SurveyForm formData={data.form} handleSubmit={handleFormSubmit} />
-                            </>
-                        }
-                    </AdoptionApplicationFirstStep>
+        <Paper className={classes.mainPaper} variant="outlined">
+            <AdoptionApplicationFirstStep description={data?.description} title={data?.name} handleSubmit={handleIdSubmit}>
+                {data && data.form && adoptionStepsData &&
+                    <>
+                        <AdoptionStepper adoptionSteps={adoptionStepsData.map((step) => step.name)} currentStep={1} />
+                        <Typography variant="h6">WAŻNE!</Typography>
+                        <Typography className={classes.typography}>
+                            Wypełnienie ankiety nie jest jednoznaczne z tym, że zwierzę zostanie Państwu wyadoptowane.
+                            Na decyzję o wydaniu zwierzaka do adopcji składa się wiele czynników m.in. ankieta. Szukamy dla 
+                            zwierząt dobrych domów biorąc pod uwagę ich usposobienie, charakter,wielkość. W przypadku wyrażenia 
+                            zgody na adopcję niniejsza ankieta będzie integralną częścią zobowiązania adopcyjnego/umowy.
+                            <br />Prosimy tym samym o przemyślane i zgodne z prawdą odpowiedzi na pytania.
+                        </Typography>
+                        <SurveyForm formData={data.form} handleSubmit={handleFormSubmit} />
+                    </>
+                }
+            </AdoptionApplicationFirstStep>
                 </Paper>
-            </Grid>
-        </>
     )
 }
 

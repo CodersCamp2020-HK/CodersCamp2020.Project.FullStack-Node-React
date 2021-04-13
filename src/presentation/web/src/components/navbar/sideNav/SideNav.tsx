@@ -69,7 +69,7 @@ const SideNavList: React.FC<Props> = ({ name, role }) => {
     };
 
     const textUser = [
-        { key: 1, path: '/account/adoption', name: 'Adopcja', icon: <PetsIcon color="primary" /> },
+        { key: 1, path: '/account/adoption/step', name: 'Adopcja', icon: <PetsIcon color="primary" /> },
         { key: 2, path: '/account/volunteer', name: 'Wolontariusz', icon: <FavoriteIcon color="primary" /> },
         { key: 3, path: '/account/profile', name: 'Mój profil', icon: <PersonIcon color="primary" /> },
         { key: 4, path: '/auth/logout', name: 'Wyloguj', icon: <InputIcon color="primary" /> },
