@@ -16,6 +16,7 @@ import LoginForm from '../components/auth/loginForm/LoginForm';
 import CheckAdoptionStep from '../components/checkAdoptionStep/CheckAdoptionStep';
 import FirstStep from '../components/firstStep/FirstStep';
 import InvitationForSignAgreementPage from './InvitationSuccessAdoption';
+import CongratulationPage from '../components/congratulationPage/CongratulationPage';
 
 
 const MyAcc = () => {
@@ -23,12 +24,14 @@ const MyAcc = () => {
     const { appState } = useContext(AppCtx);
     const { role, userName } = appState;
     return (
+        // <>
         <GridContainer spacing={2} align="flex-start" justify="center">
             <Grid item xs={12} sm="auto">
                 <SideNavList role={role!} name={userName!} />
             </Grid>
-            <Grid item xs={12} sm>
+            <Grid container item xs={12} sm justify='center' alignItems='center'>
                 <Switch>
+                    <ProtectedRoute exact path={`${path}/adoption/step/5`} component={CongratulationPage} />
                     <ProtectedRoute exact path={`${path}/adoption/step/4`} component={InvitationForSignAgreementPage} />
                     <ProtectedRoute exact path={`${path}/adoption/step/1`} component={FirstStep} />
                     <ProtectedRoute exact path={`${path}/adoption/step`} component={CheckAdoptionStep} />
@@ -47,3 +50,4 @@ const MyAcc = () => {
 };
 
 export default MyAcc;
+

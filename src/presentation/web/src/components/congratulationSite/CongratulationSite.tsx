@@ -11,7 +11,8 @@ const useStyles = makeStyles({
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: '2rem 0'
+        padding: '4rem 0',
+        minWidth: '30vw',
     },
     descriptionLine: {
         fontWeight: 'bold',
@@ -22,6 +23,7 @@ const useStyles = makeStyles({
     },
     margin: {
         marginTop: '1rem',
+        textAlign: 'center',
     },
     iconWrapper: {
         marginTop: '1rem',
@@ -34,8 +36,16 @@ const useStyles = makeStyles({
         opacity: 0.87,
     },
     media: {
-        height: 300,
-        width: 400,
+        minHeight: 400,
+        minWidth: 500,
+        [theme.breakpoints.down('md')]: {
+            minHeight: 250,
+            minWidth: 350,
+        },
+        [theme.breakpoints.down('sm')]: {
+            minHeight: 200,
+            minWidth: 300,
+        },
     },
     link: {
         color: theme.palette.info.dark,
@@ -50,7 +60,7 @@ interface Props {
 const CongratulationSite: React.FC<Props> = ({ photoURL, name }) => {
     const classes = useStyles();
     return (
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
             <Paper
                 className={classes.mainWrapper}
                 variant="outlined">

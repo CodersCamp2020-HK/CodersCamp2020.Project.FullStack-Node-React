@@ -18,7 +18,6 @@ const Adoption = () => {
                 <Route exact path={`${path}/step/1`}>
                     <FirstStep />
                 </Route>
-                <ProtectedRoute exact path={`${path}/step/5`} component={CongratulationPage} />
                 <Route exact path={`${path}`}>
                     <PageAdopt />;
                 </Route>
