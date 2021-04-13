@@ -5,6 +5,7 @@ import ApiError from '@infrastructure/ApiError';
 import { validate } from 'class-validator';
 import Animal from '@infrastructure/postgres/Animal';
 import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
+import VolunteerHireStep from '@infrastructure/postgres/VolunteerHireStep';
 
 interface Question {
     question: string;
@@ -21,6 +22,7 @@ export class FormService {
         private formRepository: Repository<Form>,
         private animalRepository: Repository<Animal>,
         private adoptionStepRepository: Repository<AdoptionStep>,
+        private volunteerHireStepRepository: Repository<VolunteerHireStep>,
     ) {}
 
     public async create(formCreationParams: FormCreationParams): Promise<void> {
@@ -60,6 +62,18 @@ export class FormService {
     public async getAll(): Promise<Form[]> {
         const form = await this.formRepository.find({ relations: ['questions'] });
         if (!form) throw new ApiError('Not Found', 404, 'Surveys not found in database');
+        return form;
+    }
+
+    public async getVolunteerForm(step: number): Promise<VolunteerHireStep> {
+        const form = await this.volunteerHireStepRepository
+            .createQueryBuilder('step')
+            .leftJoinAndSelect('step.form', 'form')
+            .leftJoinAndSelect('form.questions', 'questions')
+            .where('step.number = :number', { number: step })
+            .andWhere('form IS NOT NULL')
+            .getOne();
+        if (!form) throw new ApiError('Not Found', 404, 'Form not found in database');
         return form;
     }
 }
