@@ -69,11 +69,11 @@ export default class User {
     @Column({ default: false })
     activated!: boolean;
 
-    @Column({ default: null, nullable: true })
-    adoptionStep?: number;
+    @Column({ default: 1 })
+    adoptionStep!: number;
 
-    @Column({ default: null, nullable: true })
-    volunteerStep?: number;
+    @Column({ default: 1 })
+    volunteerStep!: number;
 
     @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, {
         cascade: true,

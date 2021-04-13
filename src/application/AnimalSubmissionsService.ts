@@ -9,6 +9,10 @@ import OrganizationUser, { UserType } from '@infrastructure/postgres/Organizatio
 import User from '@infrastructure/postgres/User';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
+import { Inject } from 'typescript-ioc';
+import { UsersService } from './UsersService';
+import { AdoptionStepService } from './AdoptionStepService';
+import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
 
 export enum FormStatus {
     IN_PROGRESS = 'inProgress',
@@ -65,7 +69,12 @@ export class AnimalSubmissionsService {
         private animalAnswerRepository: Repository<FormAnimalAnswer>,
         private organizationUserRepository: Repository<OrganizationUser>,
         private userRepository: Repository<User>,
+        private adoptionStepRepository: Repository<AdoptionStep>,
     ) {}
+    @Inject
+    private usersService!: UsersService;
+    @Inject
+    private adoptionStepService!: AdoptionStepService;
 
     public async adoptWillingnessCounter(petName: string): Promise<AdoptersCount> {
         const count = await this.animalSubmissionRepository
@@ -164,7 +173,9 @@ export class AnimalSubmissionsService {
         { status, submissionId }: ChangeStatusForAdoptionFormParams,
         user: IUserInfo,
     ): Promise<void> {
-        const submission = await this.animalSubmissionRepository.findOne(submissionId, { relations: ['reviewer'] });
+        const submission = await this.animalSubmissionRepository.findOne(submissionId, {
+            relations: ['reviewer', 'applicant', 'animal'],
+        });
         if (!submission) throw new ApiError('Not Found', 404, `Submission with id: ${submissionId} not found!`);
         const organizationUser = await this.organizationUserRepository.findOne(
             {
@@ -183,6 +194,15 @@ export class AnimalSubmissionsService {
             },
             reviewDate: new Date(),
         };
+
+        const currentStep = submission.applicant.adoptionStep;
+        if (status === AnimalFormStatus.ACCEPTED) {
+            const steps = await this.adoptionStepService.getAllSteps(submission.animal.id);
+            if (steps.length > 0 && currentStep + 1 < steps.length) {
+                await this.usersService.updateFormSteps(user.id, { adoptionStep: currentStep + 1 }, user);
+            }
+        }
+
         this.animalSubmissionRepository.save(updatedSubmission);
     }
 
@@ -256,6 +276,10 @@ export class AnimalSubmissionsService {
         });
         submission.answers = answersList;
 
+        const nextSubmission = await this.adoptionStepRepository.findOne({
+            where: { number: stepNumber + 1 },
+        });
+        if (nextSubmission) await this.usersService.updateFormSteps(user.id, { adoptionStep: stepNumber + 1 }, user);
         await this.animalSubmissionRepository.save(submission);
     }
 
