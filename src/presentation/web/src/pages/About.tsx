@@ -1,9 +1,14 @@
 import React from 'react';
-// import Invitation from '../components/invitationForSignAgreement/Invitation';
+import { Route, useRouteMatch } from 'react-router-dom';
+import AboutUs from "../components/aboutUs/aboutUs";
 
-const About = () => (
-    <div>O nas</div>
-        // <Invitation />
+const About = () => {
+    const { path } = useRouteMatch();
+    return (
+        <Route exact path={`${path}`}>
+            <AboutUs />
+        </Route>
     );
+};
 
 export default About;
