@@ -1,16 +1,16 @@
-import React from 'react'
-import { makeStyles } from '@material-ui/core/styles';
-import { Form, FormQuestion } from '../../../client/index';
-import { useForm, UseFormMethods } from 'react-hook-form';
 import Button from '@material-ui/core/Button';
-import CheckboxGroup from '../../common/checkboxGroup/CheckboxGroup';
-import Grid from '@material-ui/core/Grid';
-import isArray from '../../../utils/IsArray';
-import RadioGroup from '../../common/radioGroup/RadioGroup';
+import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import isStringOrUndefined from '../../../utils/IsStringOrUndefined';
 import { ClassNameMap } from '@material-ui/styles';
+import React from 'react';
+import { useForm, UseFormMethods } from 'react-hook-form';
+import { Form, FormQuestion } from '../../../client/index';
+import isArray from '../../../utils/IsArray';
+import isStringOrUndefined from '../../../utils/IsStringOrUndefined';
+import CheckboxGroup from '../../common/checkboxGroup/CheckboxGroup';
+import RadioGroup from '../../common/radioGroup/RadioGroup';
+import LoadingCircleSmall from '../../loadingCircleSmall/LoadingCircleSmall';
 
 interface SurveyFormProps {
     handleSubmit: (data: any) => void;
@@ -192,12 +192,13 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ handleSubmit: submitCb, formDat
             {
                 !disabled &&
                     <Button
+                        disabled={methods.formState.isSubmitting}
                         className={classes.submit}
                         size="medium"
                         variant="contained"
                         color="primary"
                         type="submit">
-                            Wyślij formularz
+                            Wyślij formularz {methods.formState.isSubmitting && <LoadingCircleSmall size={20} />}
                     </Button>
             }
         </form>

@@ -13,6 +13,7 @@ interface Props{
 const useStyles = makeStyles((theme: Theme) => createStyles({
     root: {
       width: '100%',
+      boxSizing: 'border-box'
     },
     button: {
         marginRight: theme.spacing(1),

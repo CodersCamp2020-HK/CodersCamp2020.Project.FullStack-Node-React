@@ -28,21 +28,6 @@ export const seedFormAnimalSubmission = (): DeepPartial<FormAnimalSubmission>[] 
             submissionDate: faker.date.past(),
             reviewDate: faker.date.past(),
             animal: { id: 2 },
-            applicant: { id: 2 },
-            reviewer: { user: { id: 1 }, organization: { id: 1 } },
-            adoptionStep: {
-                organization: { id: 1 },
-                specie: { id: 2 },
-                number: 1,
-            },
-        },
-        {
-            id: 3,
-            status: randomStatus,
-            reason: faker.lorem.sentence(),
-            submissionDate: faker.date.past(),
-            reviewDate: faker.date.past(),
-            animal: { id: 2 },
             applicant: { id: 3 },
             reviewer: { user: { id: 1 }, organization: { id: 1 } },
             adoptionStep: {

@@ -1,13 +1,14 @@
 import { Button, Grid, Link, Paper, TextField, Theme, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/styles';
-import React, { useState, useContext } from 'react';
+import jwt from 'jsonwebtoken';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link as RouterLink, Redirect } from 'react-router-dom';
-import { useLoginUser } from '../../../client';
-import AuthPaper from '../authPaper/AuthPaper';
 import { AppCtx } from '../../../App';
-import jwt from 'jsonwebtoken';
+import { useLoginUser } from '../../../client';
 import { UserType } from '../../../client/index';
+import LoadingCircleSmall from '../../loadingCircleSmall/LoadingCircleSmall';
+import AuthPaper from '../authPaper/AuthPaper';
 
 interface IFormValues {
     'E-mail': string;
@@ -77,7 +78,7 @@ const LoginForm = () => {
 
     const [loginError, setLoginError] = useState<string>(null!);
     const [fireRedirect, setFireRedirect] = useState<boolean>(false);
-    const { error, mutate: auth } = useLoginUser({});
+    const { error, mutate: auth, loading } = useLoginUser({});
 
     const { register, handleSubmit, errors } = useForm<IFormValues>();
     const onSubmit = async (data: IFormValues) => {
@@ -139,8 +140,9 @@ const LoginForm = () => {
                         fullWidth
                         color="primary"
                         type="submit"
+                        disabled={loading}
                     >
-                        Zaloguj się
+                        Zaloguj się {loading && <LoadingCircleSmall size={20} />}
                     </Button>
                     {loginError && (
                         <Typography className={classes.loginError} variant="body2" color="primary">
