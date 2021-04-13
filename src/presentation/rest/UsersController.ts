@@ -2,6 +2,7 @@ import {
     ApiKey,
     EmailResetPassword,
     UserCreationParams,
+    UserGetFormSteps,
     UserLoginParams,
     UserResetPasswordParams,
     UsersService,
@@ -301,13 +302,13 @@ export class UsersController extends Controller {
      * @param petName
      * @param adopterEmail
      */
-    @Post('sendVisitConfirmationMessage')
     @Response('401', 'Unauthorized')
     @Response(400, 'Bad request')
     @Response<ApiError>(404, 'Not Found')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(201, ' Email sent')
     @Security('jwt', ['admin', 'employee'])
+    @Post('sendVisitConfirmationMessage')
     public async sendVisitConfirmationEmail(
         @Query() petName: string,
         @Query() adopterEmail: Email,
@@ -323,5 +324,20 @@ export class UsersController extends Controller {
         } else {
             throw new ApiError('Not found', 404, 'User not found');
         }
+    }
+
+    @Security('jwt', ['admin', 'employee', 'normal', 'volunteer'])
+    @Response(401, 'Unauthorized')
+    @Response(404, 'Not Found')
+    @SuccessResponse(200, 'OK')
+    @Get('/steps/{userId}')
+    public async getUserSteps(
+        @Path() userId: number,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<UserGetFormSteps> {
+        console.log(request.user);
+        const steps = await this.usersService.getFormSteps(userId, request.user as IUserInfo);
+        this.setStatus(200);
+        return steps;
     }
 }
