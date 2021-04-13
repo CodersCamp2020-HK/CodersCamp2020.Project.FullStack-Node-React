@@ -70,10 +70,10 @@ export default class User {
     activated!: boolean;
 
     @Column({ default: 1 })
-    adoptionStep?: number;
+    adoptionStep!: number;
 
     @Column({ default: 1 })
-    volunteerStep?: number;
+    volunteerStep!: number;
 
     @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, {
         cascade: true,

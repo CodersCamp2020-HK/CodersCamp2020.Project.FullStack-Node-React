@@ -1,13 +1,10 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { AnimalAnswer, PostAnimalSubmissionParams, useGetAllAdoptionSteps, useGetForm, usePostAnimalSubmission } from '../../client';
 import useQuery from '../../utils/UseQuery';
 import { useHistory } from "react-router-dom";
-import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import AdoptionApplicationFirstStep, { Inputs } from '../adoptionApplicationFirstStep/AdoptionApplicationFirstStep';
-import { AppCtx } from '../../App';
-import SideNav from '../navbar/sideNav/SideNav';
 import SurveyForm from '../forms/surveyForm/SurveyForm';
 import { Theme, makeStyles } from '@material-ui/core/styles';
 import AdoptionStepper from '../common/stepper/AdoptionStepper';
@@ -46,12 +43,10 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const FirstStep = () => {
-    const { appState } = useContext(AppCtx);
     const history = useHistory();
     const id = useQuery().get('id');
     const classes = useStyles();
 
-    const { role, userName } = appState;
     const animalId = id ? parseInt(id) : 1;
     const requestOptions = { headers: { access_token: localStorage.getItem('apiKey') ?? '' } };
 
@@ -61,7 +56,6 @@ const FirstStep = () => {
         requestOptions,
     });
     console.log(adoptionStepsData);
-
     const handleIdSubmit = async ({ numerEwidencyjny: id }: Inputs) => {
         try {
             refetch({ pathParams: { animalId: id } });
