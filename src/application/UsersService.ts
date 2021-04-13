@@ -51,8 +51,6 @@ export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname' | 'birthD
 
 export type UserGetFormSteps = Pick<User, 'adoptionStep' | 'volunteerStep'>;
 
-export type UserGetFormSteps = Pick<User, 'adoptionStep' | 'volunteerStep'>;
-
 export class UsersService {
     @Inject
     emailService!: EmailService;
