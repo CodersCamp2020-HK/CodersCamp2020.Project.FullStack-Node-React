@@ -7,7 +7,7 @@ import { Link as RouterLink, Redirect } from 'react-router-dom';
 import { AppCtx } from '../../../App';
 import { useLoginUser } from '../../../client';
 import { UserType } from '../../../client/index';
-import LoadingCircleSmall from '../../loadingCircleSmall';
+import LoadingCircleSmall from '../../loadingCircleSmall/LoadingCircleSmall';
 import AuthPaper from '../authPaper/AuthPaper';
 
 interface IFormValues {
@@ -142,7 +142,7 @@ const LoginForm = () => {
                         type="submit"
                         disabled={loading}
                     >
-                        Zaloguj się  {loading && <LoadingCircleSmall size={8} />}
+                        Zaloguj się {loading && <LoadingCircleSmall size={8} />}
                     </Button>
                     {loginError && (
                         <Typography className={classes.loginError} variant="body2" color="primary">
