@@ -5,13 +5,12 @@ const useStyles = makeStyles({
     wrapper: {
         marginTop: 40,
         display: 'flex',
-        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
     },
 });
 
-const LoadingCircle = ({size}: {size: number | string}) => {
+const LoadingCircle = ({size}: {size?: number | string}) => {
     const styles = useStyles();
     return (
         <div className={styles.wrapper}>
