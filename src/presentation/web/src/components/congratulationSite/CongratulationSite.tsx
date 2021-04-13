@@ -49,7 +49,6 @@ interface Props {
 
 const CongratulationSite: React.FC<Props> = ({ photoURL, name }) => {
     const classes = useStyles();
-    console.log(photoURL);
     return (
         <Grid item xs={12} md={6}>
             <Paper
