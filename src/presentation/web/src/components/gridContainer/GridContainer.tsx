@@ -25,7 +25,7 @@ const GridContainer: React.FC<Props> = ({ children, align, justify, spacing }) =
     const classes = useStyles({ align, justify, spacing });
     return (
         <Container className={classes.container}>
-            <Grid container spacing={spacing}>
+            <Grid container justify={justify} alignItems={align} spacing={spacing}>
                 {children}
             </Grid>
         </Container>

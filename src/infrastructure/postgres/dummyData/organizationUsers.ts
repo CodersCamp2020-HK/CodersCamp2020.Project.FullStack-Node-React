@@ -8,7 +8,7 @@ export const organizationUsers: DeepPartial<OrganizationUser>[] = [
         user: { id: 1 },
     },
     {
-        role: UserType.EMPLOYEE,
+        role: UserType.NORMAL,
         organization: { id: 1 },
         user: { id: 2 },
     },

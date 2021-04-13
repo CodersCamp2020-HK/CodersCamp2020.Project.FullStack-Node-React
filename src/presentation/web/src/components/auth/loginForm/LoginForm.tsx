@@ -94,14 +94,6 @@ const LoginForm = () => {
                     role: decodedToken.role,
                     userName: decodedToken.name,
                 });
-                localStorage.setItem(
-                    'userData',
-                    JSON.stringify({
-                        userId: decodedToken.id,
-                        role: decodedToken.role,
-                        userName: decodedToken.name,
-                    }),
-                );
             }
             setFireRedirect(true);
         } catch (error) {
