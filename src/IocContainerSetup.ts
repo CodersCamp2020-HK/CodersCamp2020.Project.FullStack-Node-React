@@ -54,6 +54,7 @@ Container.bind(FormService)
                 getConnection().getRepository(Form),
                 getConnection().getRepository(Animal),
                 getConnection().getRepository(AdoptionStep),
+                getConnection().getRepository(VolunteerHireStep),
             ),
     )
     .scope(Scope.Local);
