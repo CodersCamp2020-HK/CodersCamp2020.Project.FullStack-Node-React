@@ -1,7 +1,8 @@
 import { Button, makeStyles, Theme, Typography } from '@material-ui/core';
 import { format, set as updateDate } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import { AppCtx } from '../../../App';
 import { useCreateVisit } from '../../../client/index';
 import Calendar from '../../calendar/Calendar';
 import TimePicker from '../../timePicker/TimePicker';
@@ -37,6 +38,7 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
     const { errors, setValue, register, handleSubmit } = useForm<VisitData>({ mode: 'all' });
     const { mutate: createVisit } = useCreateVisit({});
     const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
+    const { appState, setAppState } = useContext(AppCtx);
 
     const handleDate = (date: Date) => {
         setSelected((previous) => ({ ...previous, date }));
@@ -59,7 +61,7 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
             const requestBody = {
                 date: selectedDate.toISOString(),
                 animalId,
-                userId: 1,
+                userId: appState.userId,
             }
             try {
                 await createVisit(requestBody, {
