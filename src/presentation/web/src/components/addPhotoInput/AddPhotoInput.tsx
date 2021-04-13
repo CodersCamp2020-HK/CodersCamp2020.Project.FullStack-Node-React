@@ -14,7 +14,8 @@ interface PhotosBase {
 }
 
 interface PhotoInputProps {
-    photosFromDb?: AnimalPhoto[]
+    photosFromDb?: AnimalPhoto[];
+    getPhotos?: (photos: Photos, deletedPhotosFromDb?: AnimalPhoto[]) => any;
 }
 
 const useStyles = makeStyles((theme: Theme) => ({
@@ -52,7 +53,7 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-const AddPhotoInput = ({photosFromDb}: PhotoInputProps) => {
+const AddPhotoInput = ({photosFromDb, getPhotos}: PhotoInputProps) => {
     const [photos, setPhotos] = useState<Photos>({ fromDb: photosFromDb ? photosFromDb : [], fromUser: [] });
     const [base64Photos, setBase64Photos] = useState<PhotosBase>({ fromDb: [], fromUser: [] });
     const inputRef = React.useRef<HTMLInputElement>(null!);
@@ -63,7 +64,6 @@ const AddPhotoInput = ({photosFromDb}: PhotoInputProps) => {
         if(photosFromDb) {
             base64Photos = photosFromDb.map((photo) => (Buffer.from(photo.buffer).toString('base64')))
         }
-        console.log(photosFromDb);
         setBase64Photos((prev) => ({
             ...prev,
             fromDb: base64Photos,
@@ -91,8 +91,20 @@ const AddPhotoInput = ({photosFromDb}: PhotoInputProps) => {
             }));
         };
 
+        if (getPhotos) {
+            if(photosFromDb) {
+                const deletedPhotos = photosFromDb.filter((photo) => {
+                    return !photos.fromDb.includes(photo)
+                })
+                getPhotos(photos, deletedPhotos);
+            }
+            else {
+                getPhotos(photos)
+            }
+        }
+
         saveAsState();
-    }, [photos]);
+    }, [photos, getPhotos, photosFromDb]);
 
     const handleCapture = ({ currentTarget, target }: React.ChangeEvent<HTMLInputElement>) => {
         const uploadedFiles = currentTarget.files as FileList;
