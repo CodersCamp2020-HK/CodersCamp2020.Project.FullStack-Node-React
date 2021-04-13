@@ -3,6 +3,7 @@ import MuiListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListSubheader from '@material-ui/core/ListSubheader';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import FavoriteIcon from '@material-ui/icons/Favorite';
@@ -12,17 +13,31 @@ import PersonIcon from '@material-ui/icons/Person';
 import PetsIcon from '@material-ui/icons/Pets';
 import ReceiptIcon from '@material-ui/icons/Receipt';
 import React from 'react';
-import theme from '../../themes/theme';
-import { UserType } from '../../client/index';
+import theme from '../../../themes/theme';
+import { UserType } from '../../../client/index';
 import { Link as RouterLink } from 'react-router-dom';
 import { Hidden, Link } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
-        // maxWidth: 257,
         color: theme.palette.primary.main,
         backgroundColor: theme.palette.background.default,
+    },
+    list: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            flexWrap: 'wrap',
+            paddingTop: 8,
+        },
+    },
+    listItemIcon: {
+        [theme.breakpoints.down('xs')]: {
+            minWidth: 'inherit',
+        },
     },
 }));
 
@@ -40,6 +55,8 @@ const ListItem = withStyles({
         '&.Mui-selected svg': {
             fill: theme.palette.common.white,
         },
+        // width: 300,
+        // backgroundColor: 'blue',
     },
 })(MuiListItem);
 
@@ -74,12 +91,15 @@ const SideNavList: React.FC<Props> = ({ name, role }) => {
         role === 'normal' ? textUser : role === 'employee' ? textWorker : role === 'volunteer' ? textUser : textAdmin;
 
     return (
-        <div className={classes.root}>
+        <Paper className={classes.root} variant="outlined" square={false}>
             <List
+                className={classes.list}
                 subheader={
-                    <ListSubheader color="primary">
-                        <h3>Cześć {name}!</h3>
-                    </ListSubheader>
+                    <Hidden xsDown>
+                        <ListSubheader color="primary">
+                            <h3>Cześć {name}!</h3>
+                        </ListSubheader>
+                    </Hidden>
                 }
                 component="nav"
             >
@@ -90,13 +110,15 @@ const SideNavList: React.FC<Props> = ({ name, role }) => {
                             selected={selectedIndex === t.key}
                             onClick={(event) => handleListItemClick(event, t.key)}
                         >
-                            <ListItemIcon>{t.icon}</ListItemIcon>
-                            <ListItemText primary={t.name} />
+                            <ListItemIcon className={classes.listItemIcon}>{t.icon}</ListItemIcon>
+                            <Hidden xsDown>
+                                <ListItemText primary={t.name} />
+                            </Hidden>
                         </ListItem>
                     </Link>
                 ))}
             </List>
-        </div>
+        </Paper>
     );
 };
 

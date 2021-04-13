@@ -1,5 +1,5 @@
 import ApiError from '@infrastructure/ApiError';
-import { Controller, Get, Response, Route, Security, SuccessResponse, Tags, Example, Query } from 'tsoa';
+import { Controller, Get, Response, Route, Security, SuccessResponse, Tags, Example, Path } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { DeepPartial } from 'typeorm';
 import { AdoptionStepService } from '@application/AdoptionStepService';
@@ -13,7 +13,7 @@ export class AdoptionStepController extends Controller {
 
     /**
      * Get all adoption steps
-     * @param specie Get adoption steps for given specie
+     * @param animalId Get adoption steps for animal's id
      */
     @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
     @Response<ApiError>(401, 'Unauthorized')
@@ -33,8 +33,8 @@ export class AdoptionStepController extends Controller {
             description: 'Step 2 description lorem ipsum',
         },
     ])
-    @Get('')
-    public async getAllAdoptionSteps(@Query() specie?: string): Promise<AdoptionStep[]> {
-        return await this.adoptionStepService.getAllSteps(specie);
+    @Get('{animalId}')
+    public async getAllAdoptionSteps(@Path() animalId: number): Promise<AdoptionStep[]> {
+        return await this.adoptionStepService.getAllSteps(animalId);
     }
 }

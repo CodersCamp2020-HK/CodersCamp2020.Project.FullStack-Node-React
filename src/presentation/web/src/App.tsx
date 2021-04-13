@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
 import Footer from './components/footer/Footer';
-import GridContainer from './components/gridContainer/GridContainer';
 import Navbar from './components/navbar/navbar/Navbar';
 import About from './pages/About';
 import Adoption from './pages/Adoption';
@@ -11,20 +10,12 @@ import AnimalInfo from './pages/AnimalInfo';
 import Auth from './pages/Auth';
 import Contact from './pages/Contact';
 import Donation from './pages/Donation';
-import FormRoute from './pages/FormRoute';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import theme from './themes/theme';
 import { UserType } from './client/index';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import jwt from 'jsonwebtoken';
-import Volunteer from './pages/Volunteer';
-import Volunteers from './pages/Volunteers';
-import Users from './pages/Users';
-import Animals from './pages/Animals';
-import Applications from './pages/Applications';
-import Profile from './pages/Profile';
-import Calendar from './pages/Calendar';
 import MyAcc from './pages/MyAcc';
 
 const useStyles = makeStyles({
@@ -118,21 +109,6 @@ const App: React.FC = () => {
                             </Route>
                             <Route path="/account">
                                 <MyAcc />
-                            </Route>
-
-                            {/* <ProtectedRoute path="/account" component={MyAcc} /> */}
-
-                            {/* <ProtectedRoute exact path="/profile" component={Profile} />
-                            <ProtectedRoute exact path="/volunteer" component={Volunteer} />
-                            <ProtectedRoute exact path="/adoption" component={Adoption} />
-                            <ProtectedRoute exact path="/animals" component={Animals} />
-                            <ProtectedRoute exact path="/applications" component={Applications} />
-                            <ProtectedRoute exact path="/calendar" component={Calendar} />
-                            <ProtectedRoute exact path="/volunteers" component={Volunteers} />
-                            <ProtectedRoute exact path="/users" component={Users} /> */}
-
-                            <Route path="/form">
-                                <ProtectedRoute path="/form" component={FormRoute} />
                             </Route>
                             <Route path="/animals/:animalId">
                                 <AnimalInfo />

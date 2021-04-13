@@ -1,10 +1,10 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
-import SurveyForm from "./SurveyForm";
 import { AdoptionStep, ApiError, useGetForm } from "../../../client";
 import { UseGetReturn } from "restful-react";
 import userEvent from '@testing-library/user-event'
 import { act } from "react-dom/test-utils";
+import SurveyForm from "./SurveyForm";
 
 interface IUseGetFormParams {
     animalId: number;
@@ -77,7 +77,7 @@ const setup = (data: IUseGetFormParams) => {
 describe('Given: SurveyForm() with questions and submit', () => {
     beforeEach(() => {
         const mockFormData = setup(useGetFormParams);
-        render(<SurveyForm handleSubmit={mockHandleSubmit} formData={mockFormData} />)
+        render(<SurveyForm handleSubmit={mockHandleSubmit} formData={mockFormData.data?.form!} />)
     })
 
     describe('When: form is loaded', () => {
@@ -137,7 +137,7 @@ const defaultValues = {
 describe('Given: SurveyForm() with questions, submit and default values', () => {
     beforeEach(() => {
         const mockFormData = setup(useGetFormParams);
-        render(<SurveyForm handleSubmit={mockHandleSubmit} formData={mockFormData} defaultValues={defaultValues} />)
+        render(<SurveyForm handleSubmit={mockHandleSubmit} formData={mockFormData.data?.form!} defaultValues={defaultValues} />)
     })
 
     describe('When: form is loaded', () => {
