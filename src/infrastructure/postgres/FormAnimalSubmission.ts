@@ -13,7 +13,7 @@ export enum AnimalFormStatus {
 }
 
 @Entity('FormAnimalSubmissions')
-@Index(['animal', 'applicant', 'adoptionStep'], { unique: true })
+@Index(['applicant', 'adoptionStep.number'], { unique: true })
 export default class FormAnimalSubmission {
     @PrimaryGeneratedColumn()
     id!: number;
