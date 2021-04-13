@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { AppCtx } from '../../../App';
 import { useCreateVisit } from '../../../client/index';
 import Calendar from '../../calendar/Calendar';
+import LoadingCircleSmall from '../../loadingCircleSmall/LoadingCircleSmall';
 import TimePicker from '../../timePicker/TimePicker';
 
 const POSSIBLE_TIMES = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
@@ -36,7 +37,7 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
         time: undefined,
     });
     const { errors, setValue, register, handleSubmit } = useForm<VisitData>({ mode: 'all' });
-    const { mutate: createVisit } = useCreateVisit({});
+    const { mutate: createVisit, loading } = useCreateVisit({});
     const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
     const { appState, setAppState } = useContext(AppCtx);
 
@@ -117,8 +118,8 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
             <Typography variant="subtitle1" color="error">
                 {serverErrorMessage !== '' && serverErrorMessage}
             </Typography>
-            <Button className={styles.submit} variant="contained" color="primary" size="large" type="submit">
-                Potwierdź datę spotkania
+            <Button disabled={loading} className={styles.submit} variant="contained" color="primary" size="large" type="submit">
+                Potwierdź datę spotkania {loading && <LoadingCircleSmall size={20} />}
             </Button>
         </form>
     );
