@@ -53,17 +53,22 @@ const useStyles = makeStyles((theme: Theme) => ({
 }));
 
 const AddPhotoInput = ({photosFromDb}: PhotoInputProps) => {
-    const [photos, setPhotos] = useState<Photos>({ fromDb: photosFromDb || [], fromUser: [] });
+    const [photos, setPhotos] = useState<Photos>({ fromDb: photosFromDb ? photosFromDb : [], fromUser: [] });
     const [base64Photos, setBase64Photos] = useState<PhotosBase>({ fromDb: [], fromUser: [] });
     const inputRef = React.useRef<HTMLInputElement>(null!);
     const styles = useStyles();
 
     useEffect(() => {
+        let base64Photos: string[] = [];
+        if(photosFromDb) {
+            base64Photos = photosFromDb.map((photo) => (Buffer.from(photo.buffer).toString('base64')))
+        }
+        console.log(photosFromDb);
         setBase64Photos((prev) => ({
             ...prev,
-            fromDb: [],
+            fromDb: base64Photos,
         }));
-    }, [])
+    }, [photosFromDb])
 
     useEffect(() => {
         const convertPhotosToBase64 = async () => {
@@ -115,9 +120,31 @@ const AddPhotoInput = ({photosFromDb}: PhotoInputProps) => {
 
     const showAddedPhotos = () => {
         return base64Photos.fromUser.map((img, index) => (
-            <Card className={styles.cardPhoto}>
-                <CardMedia key={index} className={styles.photo} component="img" src={`data:image/png;base64, ${img}`} />
+            <Card key={index} className={styles.cardPhoto}>
+                <CardMedia className={styles.photo} component="img" src={`data:image/png;base64, ${img}`} />
                 <Fab className={styles.trash} color="secondary" onClick={() => deletePhoto(index)}>
+                    <Delete />
+                </Fab>
+            </Card>
+        ));
+    };
+
+    const deleteDbPhoto = (id: number) => {
+        setPhotos((prev) => ({
+            ...prev,
+            fromDb: prev.fromDb.filter((photo, index) => (index !== id))
+        }))
+        setBase64Photos((prev) => ({
+            ...prev,
+            fromDb: prev.fromDb.filter((photo, index) => (index !== id))
+        }))
+    }
+
+    const showPhotosFromDb = () => {
+        return base64Photos.fromDb.map((img, index) => (
+            <Card key={index} className={styles.cardPhoto}>
+                <CardMedia className={styles.photo} component="img" src={`data:image/png;base64, ${img}`} />
+                <Fab className={styles.trash} color="secondary" onClick={() => deleteDbPhoto(index)}>
                     <Delete />
                 </Fab>
             </Card>
@@ -144,6 +171,7 @@ const AddPhotoInput = ({photosFromDb}: PhotoInputProps) => {
                 </Paper>
             </label>
             {base64Photos.fromUser.length > 0 && showAddedPhotos()}
+            {base64Photos.fromDb.length > 0 && showPhotosFromDb()}
         </div>
     );
 };
