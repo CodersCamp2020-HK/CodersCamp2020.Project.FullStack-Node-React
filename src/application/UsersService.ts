@@ -290,4 +290,20 @@ export class UsersService {
 
         return steps;
     }
+
+    public async updateFormSteps(
+        id: number,
+        updatedSteps: Partial<UserGetFormSteps>,
+        currentUser: IUserInfo,
+    ): Promise<void> {
+        const user = await this.userRepository.findOne(id);
+        if (!user) throw new ApiError('Not found', 404, `User with id: ${id} not found!`);
+
+        if (currentUser.id !== id && currentUser.role !== UserType.ADMIN)
+            throw new ApiError('Unauthorized', 401, `Invalid token`);
+
+        const updatedUser = { ...user, ...updatedSteps };
+
+        await this.userRepository.save(updatedUser);
+    }
 }

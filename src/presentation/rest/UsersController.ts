@@ -335,9 +335,22 @@ export class UsersController extends Controller {
         @Path() userId: number,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<UserGetFormSteps> {
-        console.log(request.user);
         const steps = await this.usersService.getFormSteps(userId, request.user as IUserInfo);
         this.setStatus(200);
         return steps;
+    }
+
+    @Security('jwt', ['admin', 'employee', 'normal', 'volunteer'])
+    @Response(401, 'Unauthorized')
+    @Response(404, 'Not Found')
+    @SuccessResponse(204, 'Updated')
+    @Patch('/steps/{userId}')
+    public async updatetUserSteps(
+        @Path() userId: number,
+        @Body() requestBody: Partial<UserGetFormSteps>,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        await this.usersService.updateFormSteps(userId, requestBody, request.user as IUserInfo);
+        this.setStatus(204);
     }
 }
