@@ -227,4 +227,13 @@ export class AnimalsService {
 
         return animalPhotos;
     }
+
+    public async deletePhoto(photoId: number): Promise<void> {
+        const animalPhoto = await this.animalPhotos.findOne(photoId);
+        if (!animalPhoto) {
+            throw new ApiError('Not found', 404, 'Image not found');
+        }
+        await this.animalPhotos.remove(animalPhoto);
+        return;
+    }
 }

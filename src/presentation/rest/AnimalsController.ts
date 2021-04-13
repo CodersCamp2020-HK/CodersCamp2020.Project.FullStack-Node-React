@@ -304,4 +304,19 @@ export class AnimalsController extends Controller {
     public async getAnimalPhotos(@Path() animalId: number): Promise<AnimalPhoto[]> {
         return await this.animalsService.getPhotos(animalId);
     }
+
+    /**
+     *
+     * @param photoId Remove photo with given id
+     */
+    @Security('jwt', ['admin', 'employee'])
+    @Response<Error>(500, 'Internal Server Error')
+    @Response(400, 'Bad request')
+    @Response('401', 'Unauthorized')
+    @Response(404, 'Photo not found')
+    @SuccessResponse(200, ' Photo deleted')
+    @Delete('photos/{photoId}')
+    public async removePhoto(@Path() photoId: number): Promise<void> {
+        return await this.animalsService.deletePhoto(photoId);
+    }
 }
