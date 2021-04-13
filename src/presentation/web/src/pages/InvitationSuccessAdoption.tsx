@@ -3,6 +3,7 @@ import React from 'react';
 import { useGetAllAdoptionSteps } from '../client';
 import AdoptionStepper from '../components/common/stepper/AdoptionStepper';
 import Invitation from '../components/invitationForSignAgreement/Invitation';
+import LoadingCircle from '../components/loadingCircle/LoadingCircle';
 
 interface Props{
     animalId: number,
@@ -19,20 +20,16 @@ const useStyle = makeStyles((theme: Theme) => ({
     },
 }))
 
-const invitationForSignAgreementPage: React.FC<Props> = ( {animalId, currentStep}) => {
+const InvitationForSignAgreementPage: React.FC<Props> = ( {animalId, currentStep}) => {
     const { data: adoptionStepsData } = useGetAllAdoptionSteps({ animalId: animalId, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } });
     const classes = useStyle();
 
-    if (adoptionStepsData) {
-        return (
-            <Grid item sm>
-                <Paper className={classes.mainWrapper} variant='outlined'>
-                    <AdoptionStepper adoptionSteps={adoptionStepsData.map((step) => step.name)} currentStep={currentStep} />
-                    <Invitation />
-                </Paper>
-            </Grid>
-        )
-    }
-}
+        return <>{!adoptionStepsData ?  <LoadingCircle /> : (<Grid item sm>
+            <Paper className={classes.mainWrapper} variant='outlined'>
+                <AdoptionStepper adoptionSteps={adoptionStepsData.map((step) => step.name)} currentStep={currentStep} />
+                <Invitation />
+            </Paper>
+        </Grid>)}</>;    
+};
 
-export default invitationForSignAgreementPage;
+export default InvitationForSignAgreementPage;

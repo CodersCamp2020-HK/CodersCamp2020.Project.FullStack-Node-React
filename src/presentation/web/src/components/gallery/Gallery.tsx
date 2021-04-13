@@ -1,12 +1,12 @@
-import React, { useContext, useState, useEffect } from 'react';
-import GalleryPage from '../galleryPage/GalleryPage';
-import { MemoryRouter, Route } from 'react-router';
-import { BrowserRouter as Router, Link, useLocation } from 'react-router-dom';
+import { makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
-import { useGet } from 'restful-react';
-import { useGetAnimals, GetAnimalsQueryParams, useGetForm } from '../../client/index';
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useEffect, useState } from 'react';
+import { Route } from 'react-router';
+import { Link } from 'react-router-dom';
+import { GetAnimalsQueryParams, useGetAnimals } from '../../client/index';
+import GalleryPage from '../galleryPage/GalleryPage';
+import LoadingCircle from '../loadingCircle/LoadingCircle';
 
 interface Props {
     query: GetAnimalsQueryParams;
@@ -46,7 +46,7 @@ const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage }) => {
         setCurrentPage(value);
     };
 
-    return (
+    return loading ? <LoadingCircle size={70} /> : (
         <div className={classes.gallery}>
             <GalleryPage query={query} currentPage={currentPage} />
             <Route>

@@ -5,6 +5,7 @@ import { useGetAllWillignessesToAdoptCount, useGetAnimal } from '../../client/in
 import formatActiveLevel from '../../utils/formatText/formatActiveLevel';
 import formatDate from '../../utils/formatText/formatDate';
 import formatSize from '../../utils/formatText/formatSize';
+import LoadingCircle from '../loadingCircle/LoadingCircle';
 
 interface AnimalInfoCardProps {
     animalId: number;
@@ -26,8 +27,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
     const history = useHistory();
-    const { data: animal } = useGetAnimal({ animalId });
-    const { data: aplicantNumber } = useGetAllWillignessesToAdoptCount({
+    const { data: animal, loading } = useGetAnimal({ animalId });
+    const { data: aplicantNumber, loading: loadingAplicant } = useGetAllWillignessesToAdoptCount({
         queryParams: {
             petName: animal?.name as string,
         },
@@ -72,6 +73,7 @@ const AnimalInfoCard = ({ animalId }: AnimalInfoCardProps) => {
     }
     return (
         <Paper className={styles.paper}>
+            {loading && <LoadingCircle size={70} />}
             <Typography style={{ textAlign: 'center' }} variant="h2">
                 {animal && animal.name}
             </Typography>

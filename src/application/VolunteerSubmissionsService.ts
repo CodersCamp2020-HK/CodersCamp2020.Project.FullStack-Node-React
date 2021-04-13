@@ -5,9 +5,13 @@ import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
 import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
 import OrganizationUser, { UserType } from '@infrastructure/postgres/OrganizationUser';
+import VolunteerHireStep from '@infrastructure/postgres/VolunteerHireStep';
 import { Repository } from 'typeorm';
+import { Inject } from 'typescript-ioc';
 import hasDuplicates from 'utils/HasDuplicates';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
+import { UsersService } from './UsersService';
+import { VolunteerHireStepService } from './VolunteerHireStepService';
 
 export interface ChangeStatusForVolunterFormParams {
     status: VolunteerFormStatus;
@@ -36,7 +40,12 @@ export class VolunteerSubmissionsService {
         private volunteerSubmissionRepository: Repository<FormVolunteerSubmission>,
         private volunteerAnswerRepository: Repository<FormVolunteerAnswer>,
         private organizationUserRepository: Repository<OrganizationUser>,
+        private volunteerHireStepRepository: Repository<VolunteerHireStep>,
     ) {}
+    @Inject
+    private usersService!: UsersService;
+    @Inject
+    private volunteerHireStepService!: VolunteerHireStepService;
 
     public async changeStatusForVolunteerForm(
         changeStatusParams: ChangeStatusForVolunterFormParams,
@@ -45,7 +54,7 @@ export class VolunteerSubmissionsService {
         const submission = await this.volunteerSubmissionRepository.findOne(
             { user: { id: changeStatusParams.userId } },
             {
-                relations: ['reviewer'],
+                relations: ['reviewer', 'user'],
             },
         );
         if (!submission)
@@ -68,6 +77,15 @@ export class VolunteerSubmissionsService {
             },
             reviewDate: new Date(),
         };
+
+        const currentStep = submission.user.volunteerStep;
+        if (changeStatusParams.status === VolunteerFormStatus.ACCEPTED) {
+            const steps = await this.volunteerHireStepService.getAll();
+            if (steps.length > 0 && currentStep + 1 < steps.length) {
+                await this.usersService.updateFormSteps(user.id, { volunteerStep: currentStep + 1 }, user);
+            }
+        }
+
         this.volunteerSubmissionRepository.save(updatedSubmission);
     }
 
@@ -155,6 +173,11 @@ export class VolunteerSubmissionsService {
             },
             answers: answersList,
         });
+
+        const nextStep = await this.volunteerHireStepRepository.findOne({
+            where: { number: stepNumber + 1 },
+        });
+        if (nextStep) await this.usersService.updateFormSteps(user.id, { volunteerStep: stepNumber + 1 }, user);
 
         await this.volunteerSubmissionRepository.save(submission);
     }
