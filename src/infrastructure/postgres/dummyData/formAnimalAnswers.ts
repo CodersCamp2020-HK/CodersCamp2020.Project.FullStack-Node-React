@@ -21,23 +21,13 @@ export const seedFormAnimalAnswer = (): DeepPartial<FormAnimalAnswer>[] => {
         },
         {
             question: { id: 3 },
-            answer: { type: AnswerType.RADIO, answer: 'Tak' },
+            answer: { type: AnswerType.RADIO, answer: 'Nie' },
             submission: { id: 2 },
         },
         {
             question: { id: 4 },
-            answer: { type: AnswerType.RADIO, answer: 'Nie wiem' },
+            answer: { type: AnswerType.RADIO, answer: 'Nie' },
             submission: { id: 2 },
-        },
-        {
-            question: { id: 3 },
-            answer: { type: AnswerType.RADIO, answer: 'Nie' },
-            submission: { id: 3 },
-        },
-        {
-            question: { id: 4 },
-            answer: { type: AnswerType.RADIO, answer: 'Nie' },
-            submission: { id: 3 },
         },
     ];
     return formAnimalAnswer;
