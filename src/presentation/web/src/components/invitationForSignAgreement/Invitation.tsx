@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, makeStyles, Paper, SvgIcon, Theme, Typography, useTheme } from '@material-ui/core';
+import { Grid, makeStyles, Paper, SvgIcon, Theme, Typography } from '@material-ui/core';
 import { DoneOutline } from '@material-ui/icons';
 
 
