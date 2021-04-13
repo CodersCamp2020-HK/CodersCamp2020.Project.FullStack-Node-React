@@ -16,13 +16,28 @@ import React from 'react';
 import theme from '../../../themes/theme';
 import { UserType } from '../../../client/index';
 import { Link as RouterLink } from 'react-router-dom';
-import { Link } from '@material-ui/core';
+import { Hidden, Link } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',
         color: theme.palette.primary.main,
         backgroundColor: theme.palette.background.default,
+    },
+    list: {
+        [theme.breakpoints.down('xs')]: {
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+            flexWrap: 'wrap',
+            paddingTop: 8,
+        },
+    },
+    listItemIcon: {
+        [theme.breakpoints.down('xs')]: {
+            minWidth: 'inherit',
+        },
     },
 }));
 
@@ -40,6 +55,8 @@ const ListItem = withStyles({
         '&.Mui-selected svg': {
             fill: theme.palette.common.white,
         },
+        // width: 300,
+        // backgroundColor: 'blue',
     },
 })(MuiListItem);
 
@@ -76,10 +93,13 @@ const SideNavList: React.FC<Props> = ({ name, role }) => {
     return (
         <Paper className={classes.root} variant="outlined" square={false}>
             <List
+                className={classes.list}
                 subheader={
-                    <ListSubheader color="primary">
-                        <h3>Cześć {name}!</h3>
-                    </ListSubheader>
+                    <Hidden xsDown>
+                        <ListSubheader color="primary">
+                            <h3>Cześć {name}!</h3>
+                        </ListSubheader>
+                    </Hidden>
                 }
                 component="nav"
             >
@@ -90,8 +110,10 @@ const SideNavList: React.FC<Props> = ({ name, role }) => {
                             selected={selectedIndex === t.key}
                             onClick={(event) => handleListItemClick(event, t.key)}
                         >
-                            <ListItemIcon>{t.icon}</ListItemIcon>
-                            <ListItemText primary={t.name} />
+                            <ListItemIcon className={classes.listItemIcon}>{t.icon}</ListItemIcon>
+                            <Hidden xsDown>
+                                <ListItemText primary={t.name} />
+                            </Hidden>
                         </ListItem>
                     </Link>
                 ))}
