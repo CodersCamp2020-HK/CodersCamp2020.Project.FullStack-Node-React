@@ -5,7 +5,7 @@ import AboutUs from "../components/aboutUs/aboutUs";
 const About = () => {
     const { path } = useRouteMatch();
     return (
-        <Route exact path={`${path}/aboutus`}>
+        <Route exact path={`${path}`}>
             <AboutUs />
         </Route>
     );
