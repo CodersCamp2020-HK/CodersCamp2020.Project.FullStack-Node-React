@@ -122,7 +122,7 @@ const AddPhotoInput = ({photosFromDb}: PhotoInputProps) => {
         return base64Photos.fromUser.map((img, index) => (
             <Card key={index} className={styles.cardPhoto}>
                 <CardMedia className={styles.photo} component="img" src={`data:image/png;base64, ${img}`} />
-                <Fab className={styles.trash} color="secondary" onClick={() => deletePhoto(index)}>
+                <Fab size='small' className={styles.trash} color="secondary" onClick={() => deletePhoto(index)}>
                     <Delete />
                 </Fab>
             </Card>
@@ -144,7 +144,7 @@ const AddPhotoInput = ({photosFromDb}: PhotoInputProps) => {
         return base64Photos.fromDb.map((img, index) => (
             <Card key={index} className={styles.cardPhoto}>
                 <CardMedia className={styles.photo} component="img" src={`data:image/png;base64, ${img}`} />
-                <Fab className={styles.trash} color="secondary" onClick={() => deleteDbPhoto(index)}>
+                <Fab size='small' className={styles.trash} color="secondary" onClick={() => deleteDbPhoto(index)}>
                     <Delete />
                 </Fab>
             </Card>
