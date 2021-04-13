@@ -24,7 +24,7 @@ const MyAcc = () => {
     const { role, userName } = appState;
     return (
         <GridContainer spacing={2} align="flex-start" justify="center">
-            <Grid item xs={12} sm="auto">
+            <Grid item xs={12} sm={4} md={3} lg={2}>
                 <SideNavList role={role!} name={userName!} />
             </Grid>
             <Grid item xs={12} sm>

@@ -38,7 +38,11 @@ const useStyles = makeStyles<Theme>((theme: Theme) => ({
     },
     button: {
         marginBottom: '2rem',
-        minWidth: 300
+        minWidth: 300,
+        [theme.breakpoints.down('sm')]: {
+            width: '70%',
+            minWidth: 170
+        }
     }
 }))
 
