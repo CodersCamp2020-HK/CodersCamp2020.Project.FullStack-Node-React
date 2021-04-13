@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import RegisterForm from '../../forms/registerForm/RegisterForm';
 import { AppCtx } from '../../../App';
 import { useGetUser, useUpdateUser } from '../../../client';
@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import { Theme, makeStyles } from '@material-ui/core';
 import SvgIcon from '@material-ui/core/SvgIcon'
 import PersonOutlineRoundedIcon from '@material-ui/icons/PersonOutlineRounded';
+import { Redirect, Link } from 'react-router-dom';
 
 const useStyles = makeStyles<Theme>((theme: Theme) => ({
     paper: {
@@ -42,6 +43,7 @@ const useStyles = makeStyles<Theme>((theme: Theme) => ({
 }))
 
 const ProfilePage = () => {
+    const [fireRedirectChangePass, setFireRedirectChangePass] = useState(false);
     const classes = useStyles();
     const { appState, setAppState } = useContext(AppCtx);
     const { data: userData, loading } = useGetUser({ userId: appState.userId!, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } });
@@ -69,15 +71,16 @@ const ProfilePage = () => {
                     phone: userData.phone,
                     birthDate: new Date(year, month, date)
                 }} hiddenPassword={true}>
-                    <Button className={classes.button} size="large" variant="outlined" color="primary">
+                    <Button className={classes.button} size="large" variant="outlined" color="primary" onClick={() => setFireRedirectChangePass(true)}>
                         Zmień hasło
-                    </Button>
+                    </Button> 
                     <Button className={classes.button} size="large" variant="outlined" color="primary">
                         Usuń konto
                     </Button>
                     <Button className={classes.button} size="large" variant="contained" color="primary" type="submit">
                         Zapisz zmiany
                     </Button>
+                    {fireRedirectChangePass && <Redirect to="/auth/change"/>}
                 </RegisterForm>
             </Paper>
         )

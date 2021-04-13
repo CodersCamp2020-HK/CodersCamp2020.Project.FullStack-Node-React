@@ -7,7 +7,6 @@ import RegisterPage from '../components/auth/registerPage/RegisterPage';
 import ActivationSent from '../components/auth/activationSent/ActivationSent';
 import GridContainer from '../components/gridContainer/GridContainer';
 import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
-import Profile from './Profile';
 import Logout from './Logout';
 
 const Auth: React.FC = () => {
