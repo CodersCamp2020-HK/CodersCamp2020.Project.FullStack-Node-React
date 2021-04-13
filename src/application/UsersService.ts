@@ -47,7 +47,7 @@ export type UserResetPasswordParams = {
     repPassword: Password;
 };
 
-export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname'>;
+export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname' | 'birthDate' | 'mail'>;
 
 export class UsersService {
     @Inject

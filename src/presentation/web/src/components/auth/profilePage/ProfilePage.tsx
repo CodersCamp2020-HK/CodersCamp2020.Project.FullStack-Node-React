@@ -43,12 +43,16 @@ const useStyles = makeStyles<Theme>((theme: Theme) => ({
 
 const ProfilePage = () => {
     const classes = useStyles();
-    const { appState } = useContext(AppCtx);
-    const { data: userData, loading } = useGetUser({ userId: appState.userId!, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } })
-    const { mutate } = useUpdateUser({ userId: appState.userId! })
+    const { appState, setAppState } = useContext(AppCtx);
+    const { data: userData, loading } = useGetUser({ userId: appState.userId!, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } });
+    const { mutate } = useUpdateUser({ userId: appState.userId!, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } });
 
     const handleSubmit = async (data: any) => {
-        console.log(data);
+        try {
+            mutate(data);
+        } catch (error) {
+            console.error(error);
+        }
     }
     if (!loading && userData && userData.birthDate)  {
         const [year, month, date] = userData.birthDate.split('-').map((value) => parseInt(value))
