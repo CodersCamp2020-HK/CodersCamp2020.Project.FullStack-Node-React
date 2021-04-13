@@ -166,6 +166,7 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues }
                     data-testid="phoneInput"
                 />
                 <Button
+                disabled={formState.isSubmitting}
                     className={classes.submit}
                     fullWidth
                     size="large"
