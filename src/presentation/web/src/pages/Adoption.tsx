@@ -12,7 +12,6 @@ const Adoption = () => {
     return (
         <GridContainer justify="center" align="flex-start" spacing={2}>
             <Switch>
-                    <ProtectedRoute exact path={`${path}/step/4`} component={InvitationForSignAgreementPage} />
                 <Route exact path={`${path}`}>
                     <PageAdopt />;
                 </Route>
