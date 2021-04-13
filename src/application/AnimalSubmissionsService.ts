@@ -275,9 +275,7 @@ export class AnimalSubmissionsService {
         const nextSubmission = await this.animalSubmissionRepository.findOne({
             where: { adoptionStep: stepNumber + 1 },
         });
-        if (nextSubmission) {
-            await this.usersService.updateFormSteps(user.id, { adoptionStep: stepNumber + 1 }, user);
-        }
+        if (nextSubmission) await this.usersService.updateFormSteps(user.id, { adoptionStep: stepNumber + 1 }, user);
         await this.animalSubmissionRepository.save(submission);
     }
 }
