@@ -142,7 +142,7 @@ const LoginForm = () => {
                         type="submit"
                         disabled={loading}
                     >
-                        Zaloguj się {loading && <LoadingCircleSmall size={8} />}
+                        Zaloguj się {loading && <LoadingCircleSmall size={20} />}
                     </Button>
                     {loginError && (
                         <Typography className={classes.loginError} variant="body2" color="primary">
