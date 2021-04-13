@@ -11,6 +11,7 @@ import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuild
 import { Inject } from 'typescript-ioc';
 import { UsersService } from './UsersService';
 import { AdoptionStepService } from './AdoptionStepService';
+import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
 
 export enum FormStatus {
     IN_PROGRESS = 'inProgress',
@@ -66,6 +67,7 @@ export class AnimalSubmissionsService {
         private animalRepository: Repository<Animal>,
         private animalAnswerRepository: Repository<FormAnimalAnswer>,
         private organizationUserRepository: Repository<OrganizationUser>,
+        private adoptionStepRepository: Repository<AdoptionStep>,
     ) {}
     @Inject
     private usersService!: UsersService;
@@ -272,8 +274,8 @@ export class AnimalSubmissionsService {
         });
         submission.answers = answersList;
 
-        const nextSubmission = await this.animalSubmissionRepository.findOne({
-            where: { adoptionStep: stepNumber + 1 },
+        const nextSubmission = await this.adoptionStepRepository.findOne({
+            where: { number: stepNumber + 1 },
         });
         if (nextSubmission) await this.usersService.updateFormSteps(user.id, { adoptionStep: stepNumber + 1 }, user);
         await this.animalSubmissionRepository.save(submission);

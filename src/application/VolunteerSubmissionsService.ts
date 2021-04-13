@@ -5,6 +5,7 @@ import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
 import FormVolunteerAnswer from '@infrastructure/postgres/FormVolunteerAnswer';
 import FormVolunteerSubmission, { VolunteerFormStatus } from '@infrastructure/postgres/FormVolunteerSubmission';
 import OrganizationUser, { UserType } from '@infrastructure/postgres/OrganizationUser';
+import VolunteerHireStep from '@infrastructure/postgres/VolunteerHireStep';
 import { Repository } from 'typeorm';
 import { Inject } from 'typescript-ioc';
 import hasDuplicates from 'utils/HasDuplicates';
@@ -38,6 +39,7 @@ export class VolunteerSubmissionsService {
         private volunteerSubmissionRepository: Repository<FormVolunteerSubmission>,
         private volunteerAnswerRepository: Repository<FormVolunteerAnswer>,
         private organizationUserRepository: Repository<OrganizationUser>,
+        private volunteerHireStepRepository: Repository<VolunteerHireStep>,
     ) {}
     @Inject
     private usersService!: UsersService;
@@ -160,10 +162,10 @@ export class VolunteerSubmissionsService {
             answers: answersList,
         });
 
-        const nextSubmission = await this.volunteerSubmissionRepository.findOne({
-            where: { step: stepNumber + 1 },
+        const nextStep = await this.volunteerHireStepRepository.findOne({
+            where: { number: stepNumber + 1 },
         });
-        if (nextSubmission) await this.usersService.updateFormSteps(user.id, { volunteerStep: stepNumber + 1 }, user);
+        if (nextStep) await this.usersService.updateFormSteps(user.id, { volunteerStep: stepNumber + 1 }, user);
 
         await this.volunteerSubmissionRepository.save(submission);
     }

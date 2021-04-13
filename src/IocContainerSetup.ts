@@ -81,6 +81,7 @@ Container.bind(AnimalSubmissionsService).factory(
             getConnection().getRepository(Animal),
             getConnection().getRepository(FormAnimalAnswer),
             getConnection().getRepository(OrganizationUser),
+            getConnection().getRepository(AdoptionStep),
         ),
 );
 Container.bind(VolunteerSubmissionsService).factory(
@@ -89,6 +90,7 @@ Container.bind(VolunteerSubmissionsService).factory(
             getConnection().getRepository(FormVolunteerSubmission),
             getConnection().getRepository(FormVolunteerAnswer),
             getConnection().getRepository(OrganizationUser),
+            getConnection().getRepository(VolunteerHireStep),
         ),
 );
 Container.bind(AdoptionStepService).factory(
