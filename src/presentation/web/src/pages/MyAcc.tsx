@@ -15,6 +15,7 @@ import Calendar from './Calendar';
 import LoginForm from '../components/auth/loginForm/LoginForm';
 import CheckAdoptionStep from '../components/checkAdoptionStep/CheckAdoptionStep';
 import FirstStep from '../components/firstStep/FirstStep';
+import InvitationForSignAgreementPage from './InvitationSuccessAdoption';
 
 
 const MyAcc = () => {
@@ -28,6 +29,7 @@ const MyAcc = () => {
             </Grid>
             <Grid item xs={12} sm>
                 <Switch>
+                    <ProtectedRoute exact path={`${path}/adoption/step/4`} component={InvitationForSignAgreementPage} />
                     <ProtectedRoute exact path={`${path}/adoption/step/1`} component={FirstStep} />
                     <ProtectedRoute exact path={`${path}/adoption/step`} component={CheckAdoptionStep} />
                     <ProtectedRoute exact path={`${path}/volunteer`} component={Volunteer} />
