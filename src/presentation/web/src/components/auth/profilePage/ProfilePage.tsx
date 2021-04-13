@@ -59,7 +59,8 @@ const ProfilePage = () => {
     }
     const handleDeleteAccountButton = async () => {
         try {
-            await deleteUser(appState.userId!);
+            console.log('Nie działa')
+            // await deleteUser(appState.userId!);
         } catch (error) {
             console.error(error);
         }
