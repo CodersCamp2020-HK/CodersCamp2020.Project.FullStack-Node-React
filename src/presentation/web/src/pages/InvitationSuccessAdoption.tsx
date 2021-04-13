@@ -1,4 +1,4 @@
-import { Grid, makeStyles, Paper, Theme } from '@material-ui/core';
+import { makeStyles, Paper, Theme } from '@material-ui/core';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { useGetAllAdoptionSteps } from '../client';
