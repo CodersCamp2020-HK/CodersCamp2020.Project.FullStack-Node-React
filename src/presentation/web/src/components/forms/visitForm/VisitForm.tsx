@@ -1,6 +1,6 @@
 import { Button, makeStyles, Theme, Typography } from '@material-ui/core';
 import { format, set as updateDate } from 'date-fns';
-import React, { useState, useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { AppCtx } from '../../../App';
 import { useCreateVisit } from '../../../client/index';
@@ -61,20 +61,21 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
             const requestBody = {
                 date: selectedDate.toISOString(),
                 animalId,
-                userId: appState.userId,
-            }
+                userId: appState.userId as number,
+            };
             try {
                 await createVisit(requestBody, {
-                    headers: [['content-type', 'application/json'],['access_token', localStorage.getItem('apiKey') as string]]
-                })
-            } catch(e) {
-                if(e.status == 400 || e.status == 401) {
+                    headers: [
+                        ['content-type', 'application/json'],
+                        ['access_token', localStorage.getItem('apiKey') as string],
+                    ],
+                });
+            } catch (e) {
+                if (e.status == 400 || e.status == 401) {
                     setServerErrorMessage('Brak uprawnień!');
-                }
-                else if(e.status == 404) {
+                } else if (e.status == 404) {
                     setServerErrorMessage('Nie znaleziono zwierzęcia!');
-                }
-                else {
+                } else {
                     setServerErrorMessage('Błąd serwera! Spróbuj ponownie poźniej');
                 }
             }
