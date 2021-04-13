@@ -11,6 +11,7 @@ import { Inject } from 'typescript-ioc';
 import hasDuplicates from 'utils/HasDuplicates';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 import { UsersService } from './UsersService';
+import { VolunteerHireStepService } from './VolunteerHireStepService';
 
 export interface ChangeStatusForVolunterFormParams {
     status: VolunteerFormStatus;
@@ -43,6 +44,8 @@ export class VolunteerSubmissionsService {
     ) {}
     @Inject
     private usersService!: UsersService;
+    @Inject
+    private volunteerHireStepService!: VolunteerHireStepService;
 
     public async changeStatusForVolunteerForm(
         changeStatusParams: ChangeStatusForVolunterFormParams,
@@ -51,7 +54,7 @@ export class VolunteerSubmissionsService {
         const submission = await this.volunteerSubmissionRepository.findOne(
             { user: { id: changeStatusParams.userId } },
             {
-                relations: ['reviewer'],
+                relations: ['reviewer', 'user'],
             },
         );
         if (!submission)
@@ -74,6 +77,15 @@ export class VolunteerSubmissionsService {
             },
             reviewDate: new Date(),
         };
+
+        const currentStep = submission.user.volunteerStep;
+        if (changeStatusParams.status === VolunteerFormStatus.ACCEPTED) {
+            const steps = await this.volunteerHireStepService.getAll();
+            if (steps.length > 0 && currentStep + 1 < steps.length) {
+                await this.usersService.updateFormSteps(user.id, { volunteerStep: currentStep + 1 }, user);
+            }
+        }
+
         this.volunteerSubmissionRepository.save(updatedSubmission);
     }
 
