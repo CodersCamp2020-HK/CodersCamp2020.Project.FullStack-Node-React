@@ -5,6 +5,7 @@ import ApiError from '@infrastructure/ApiError';
 import Form from '@infrastructure/postgres/Form';
 import { ValidateErrorJSON } from '@application/UsersErrors';
 import AdoptionStep from '@infrastructure/postgres/AdoptionStep';
+import VolunteerHireStep from '@infrastructure/postgres/VolunteerHireStep';
 
 @Tags('Form')
 @Route('forms')
@@ -37,9 +38,22 @@ export class FormController extends Controller {
     @Response<ApiError>(404, 'Survey not found')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'ok')
-    @Get('{animalId}')
+    @Get('/animal/{animalId}')
     public async getForm(@Path() animalId: number): Promise<AdoptionStep> {
         return this.formService.get(animalId);
+    }
+
+    /**
+     * Supply a step number for volunteer and get form
+     * @param step number of step for form
+     */
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<ApiError>(404, 'Survey not found')
+    @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse(200, 'ok')
+    @Get('/volunteer/{step}')
+    public async getVolunteerForm(@Path() step: number): Promise<VolunteerHireStep> {
+        return this.formService.getVolunteerForm(step);
     }
 
     /**

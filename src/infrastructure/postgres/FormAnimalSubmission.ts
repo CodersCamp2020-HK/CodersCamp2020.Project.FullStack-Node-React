@@ -13,15 +13,15 @@ export enum AnimalFormStatus {
 }
 
 @Entity('FormAnimalSubmissions')
-@Index(['animal', 'applicant', 'adoptionStep'], { unique: true })
+@Index(['applicant', 'adoptionStep.number'], { unique: true })
 export default class FormAnimalSubmission {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @ManyToOne(() => Animal, (animal) => animal.submissions, { nullable: false, onDelete: 'CASCADE' })
+    @ManyToOne(() => Animal, (animal) => animal.submissions, { nullable: false })
     animal!: Animal;
 
-    @ManyToOne(() => User, (user) => user.animalSubmissions, { nullable: false, onDelete: 'CASCADE' })
+    @ManyToOne(() => User, (user) => user.animalSubmissions, { nullable: false })
     applicant!: User;
 
     @ManyToOne(() => AdoptionStep, (step) => step.submissions, { nullable: false })
@@ -34,7 +34,7 @@ export default class FormAnimalSubmission {
     @Column({ nullable: true, default: null })
     reason?: string;
 
-    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews, { nullable: true, onDelete: 'CASCADE' })
+    @ManyToOne(() => OrganizationUser, (user) => user.animalReviews, { nullable: true })
     reviewer?: OrganizationUser;
 
     @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission, { cascade: true })

@@ -8,6 +8,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import plLocale from 'date-fns/locale/pl';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import differenceInYears from 'date-fns/differenceInYears'
+import LoadingCircleSmall from '../../loadingCircleSmall/LoadingCircleSmall';
 
 export interface Inputs {
     name: string;
@@ -166,6 +167,7 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues }
                     data-testid="phoneInput"
                 />
                 <Button
+                disabled={formState.isSubmitting}
                     className={classes.submit}
                     fullWidth
                     size="large"
@@ -173,7 +175,7 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues }
                     color="primary"
                     type="submit"
                     data-testid="formSubmit">
-                        Zarejestruj się
+                        Zarejestruj się {formState.isSubmitting && <LoadingCircleSmall size={20} />}
                 </Button>
             </form>
         </MuiPickersUtilsProvider>
