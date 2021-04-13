@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import { Link as RouterLink } from 'react-router-dom';
+import LoadingCircleSmall from '../../loadingCircleSmall/LoadingCircleSmall';
 import AuthPaper from '../authPaper/AuthPaper';
 import { useUpdateUserPassword } from '../../../client';
 import { AppCtx } from '../../../App';
@@ -87,13 +88,14 @@ const ChangePassword: React.FC = () => {
                     helperText={errors.repPassword && errors.repPassword.message}
                 />
                 <Button
+                    disabled={formState.isSubmitting}
                     className={classes.submit}
                     fullWidth
                     size="large"
                     variant="contained"
                     color="primary"
                     type="submit">
-                        Zresetuj hasło
+                        Zresetuj hasło {formState.isSubmitting && <LoadingCircleSmall size={20} />}
                 </Button>
                 </form>
                 <Link className={classes.link} component={RouterLink} to="/auth">Wróć do logowania</Link>
