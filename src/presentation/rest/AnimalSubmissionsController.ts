@@ -127,6 +127,7 @@ export class AnimalSubmissionsController extends Controller {
         @Body() requestBody: PostAnimalSubmissionParams,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
-        return await this.submissionService.createAnimalSubmission(requestBody, request);
+        await this.submissionService.createAnimalSubmission(requestBody, request);
+        this.setStatus(204);
     }
 }
