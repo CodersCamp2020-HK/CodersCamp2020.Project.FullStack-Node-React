@@ -6,6 +6,7 @@ import FormAnimalAnswer from '@infrastructure/postgres/FormAnimalAnswer';
 import FormAnimalSubmission, { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
 import OrganizationUser, { UserType } from '@infrastructure/postgres/OrganizationUser';
+import User from '@infrastructure/postgres/User';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
 import { Inject } from 'typescript-ioc';
@@ -67,6 +68,7 @@ export class AnimalSubmissionsService {
         private animalRepository: Repository<Animal>,
         private animalAnswerRepository: Repository<FormAnimalAnswer>,
         private organizationUserRepository: Repository<OrganizationUser>,
+        private userRepository: Repository<User>,
         private adoptionStepRepository: Repository<AdoptionStep>,
     ) {}
     @Inject
@@ -279,5 +281,18 @@ export class AnimalSubmissionsService {
         });
         if (nextSubmission) await this.usersService.updateFormSteps(user.id, { adoptionStep: stepNumber + 1 }, user);
         await this.animalSubmissionRepository.save(submission);
+    }
+
+    public async deleteAnimalSubmission(userId: number, request: IAuthUserInfoRequest): Promise<void> {
+        const currentUser = request.user as IUserInfo;
+        const user = await this.userRepository.findOne(userId);
+        if (!user) {
+            throw new ApiError('Not found', 404, 'User does not exist');
+        }
+
+        if (currentUser.role === UserType.ADMIN || currentUser.id === userId) {
+            await this.animalSubmissionRepository.delete({ applicant: { id: userId } });
+            return;
+        }
     }
 }

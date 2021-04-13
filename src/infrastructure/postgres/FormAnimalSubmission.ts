@@ -37,7 +37,7 @@ export default class FormAnimalSubmission {
     @ManyToOne(() => OrganizationUser, (user) => user.animalReviews, { nullable: true })
     reviewer?: OrganizationUser;
 
-    @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission, { cascade: true })
+    @OneToMany(() => FormAnimalAnswer, (answers) => answers.submission)
     answers!: FormAnimalAnswer[];
 
     @IsDate()

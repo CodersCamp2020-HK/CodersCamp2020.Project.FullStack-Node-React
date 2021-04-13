@@ -81,6 +81,7 @@ Container.bind(AnimalSubmissionsService).factory(
             getConnection().getRepository(Animal),
             getConnection().getRepository(FormAnimalAnswer),
             getConnection().getRepository(OrganizationUser),
+            getConnection().getRepository(User),
             getConnection().getRepository(AdoptionStep),
         ),
 );
