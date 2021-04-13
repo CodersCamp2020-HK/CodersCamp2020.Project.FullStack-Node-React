@@ -227,8 +227,8 @@ export class UsersController extends Controller {
     @SuccessResponse(200, ' User deleted')
     @Delete('{userId}')
     public async deleteUser(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {
-        this.setStatus(200);
         await this.usersService.delete(userId, request);
+        this.setStatus(200);
     }
 
     /**

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import RegisterForm from '../../forms/registerForm/RegisterForm';
 import { AppCtx } from '../../../App';
-import { useGetUser, useUpdateUser } from '../../../client';
+import { useDeleteUser, useGetUser, useUpdateUser } from '../../../client';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
@@ -43,18 +43,28 @@ const useStyles = makeStyles<Theme>((theme: Theme) => ({
 }))
 
 const ProfilePage = () => {
+    const apiKey = { requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } };
     const classes = useStyles();
     const { appState, setAppState } = useContext(AppCtx);
-    const { data: userData, loading } = useGetUser({ userId: appState.userId!, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } });
-    const { mutate } = useUpdateUser({ userId: appState.userId!, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } });
+    const { data: userData, loading } = useGetUser({ userId: appState.userId!, ...apiKey});
+    const { mutate: updateUser } = useUpdateUser({ userId: appState.userId!, ...apiKey});
+    const { mutate: deleteUser } = useDeleteUser({ ...apiKey })
 
     const handleSubmit = async (data: any) => {
         try {
-            mutate(data);
+            await updateUser(data);
         } catch (error) {
             console.error(error);
         }
     }
+    const handleDeleteAccountButton = async () => {
+        try {
+            await deleteUser(appState.userId!);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     if (!loading && userData && userData.birthDate)  {
         const [year, month, date] = userData.birthDate.split('-').map((value) => parseInt(value))
         return (
@@ -73,7 +83,7 @@ const ProfilePage = () => {
                     <Button component={Link} to="/auth/change" className={classes.button} size="large" variant="outlined" color="primary">
                         Zmień hasło
                     </Button> 
-                    <Button className={classes.button} size="large" variant="outlined" color="primary">
+                    <Button className={classes.button} size="large" variant="outlined" color="primary" onClick={handleDeleteAccountButton}>
                         Usuń konto
                     </Button>
                     <Button className={classes.button} size="large" variant="contained" color="primary" type="submit">
