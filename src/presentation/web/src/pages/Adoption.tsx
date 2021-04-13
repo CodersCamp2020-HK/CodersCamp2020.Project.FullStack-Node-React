@@ -2,6 +2,9 @@ import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import PageAdopt from '../components/pageAdopt/PageAdopt';
 import GridContainer from '../components/gridContainer/GridContainer';
+import InvitationForSignAgreementPage from './InvitationSuccessAdoption';
+import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
+import FirstStep from '../components/firstStep/FirstStep';
 
 const Adoption = () => {
     const { path } = useRouteMatch();
