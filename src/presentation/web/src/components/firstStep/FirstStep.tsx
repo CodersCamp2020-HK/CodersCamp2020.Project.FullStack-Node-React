@@ -66,6 +66,7 @@ const FirstStep = () => {
         requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } },
     });
     const { data: adoptionStepsData, refetch: adoptionStepsRefetch } = useGetAllAdoptionSteps({
+        animalId,
         lazy: !id,
         requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } },
     });
