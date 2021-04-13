@@ -2,9 +2,10 @@ import { Button, Grid, Link, TextField, Theme, Typography, useTheme } from '@mat
 import { makeStyles } from '@material-ui/styles';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useMutate } from 'restful-react';
 import AuthPaper from '../authPaper/AuthPaper';
+import LoadingCircleSmall from '../../loadingCircleSmall/LoadingCircleSmall';
 
 interface Email {
     'E-mail': string;
@@ -40,6 +41,7 @@ const useStyle = makeStyles<Theme>((theme) => ({
 
 const ForgetPassword = () => {
     const classes = useStyle();
+    const history = useHistory();
 
     const { error, mutate: sendResetLink } = useMutate({
         verb: 'POST',
@@ -48,13 +50,14 @@ const ForgetPassword = () => {
 
     const [emailError, setEmailError] = useState<string>(null!);
 
-    const { register, handleSubmit, errors } = useForm<Email>();
+    const { register, handleSubmit, errors, formState } = useForm<Email>();
     const onSubmit = async (data: Email) => {
         try {
             const response = await sendResetLink({
                 email: data['E-mail'],
             });
             setEmailError('');
+            history.push('/auth/link');
         } catch (error) {
             if (error.status == 404) {
                 setEmailError('Podany e-mail nie istnieje w bazie');
@@ -86,6 +89,7 @@ const ForgetPassword = () => {
                         helperText={errors['E-mail'] && 'E-mail jest wymagany'}
                     />
                     <Button
+                        disabled={formState.isSubmitting}
                         className={classes.submit}
                         variant="contained"
                         size="large"
@@ -93,7 +97,7 @@ const ForgetPassword = () => {
                         color="primary"
                         type="submit"
                     >
-                        Zresetuj hasło
+                        Zresetuj hasło {formState.isSubmitting && <LoadingCircleSmall size={20} />}
                     </Button>
                     <Typography variant="body2" color='error'>{emailError}</Typography>
                 </form>
