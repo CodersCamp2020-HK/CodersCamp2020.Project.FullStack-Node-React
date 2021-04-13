@@ -8,6 +8,8 @@ import { AnswerForm } from '@infrastructure/postgres/FormQuestion';
 import OrganizationUser, { UserType } from '@infrastructure/postgres/OrganizationUser';
 import { Repository } from 'typeorm';
 import OptionalWhereSelectQueryBuilder from 'utils/OptionalWhereSelectQueryBuilder';
+import { Inject } from 'typescript-ioc';
+import { UsersService } from './UsersService';
 
 export enum FormStatus {
     IN_PROGRESS = 'inProgress',
@@ -64,6 +66,8 @@ export class AnimalSubmissionsService {
         private animalAnswerRepository: Repository<FormAnimalAnswer>,
         private organizationUserRepository: Repository<OrganizationUser>,
     ) {}
+    @Inject
+    private usersService!: UsersService;
 
     public async adoptWillingnessCounter(petName: string): Promise<AdoptersCount> {
         const count = await this.animalSubmissionRepository
@@ -254,6 +258,12 @@ export class AnimalSubmissionsService {
         });
         submission.answers = answersList;
 
+        const nextSubmission = await this.animalSubmissionRepository.findOne({
+            where: { adoptionStep: stepNumber + 1 },
+        });
+        if (nextSubmission) {
+            await this.usersService.updateFormSteps(user.id, { adoptionStep: stepNumber + 1 }, user);
+        }
         await this.animalSubmissionRepository.save(submission);
     }
 }
