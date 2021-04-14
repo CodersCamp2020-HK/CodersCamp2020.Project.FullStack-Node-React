@@ -75,11 +75,11 @@ const isUserInfo = (user: unknown): user is IUserInfo => {
 
 const LoginForm = () => {
     const classes = useStyle();
-    const { appState, setAppState } = useContext(AppCtx);
+    const { setAppState } = useContext(AppCtx);
 
     const [loginError, setLoginError] = useState<string>(null!);
     const [fireRedirect, setFireRedirect] = useState<boolean>(false);
-    const { error: dbError, mutate: auth, loading } = useLoginUser({});
+    const { mutate: auth, loading } = useLoginUser({});
 
     const { register, handleSubmit, errors } = useForm<IFormValues>();
     const onSubmit = async (data: IFormValues) => {

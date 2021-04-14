@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles<Theme>((theme: Theme) => ({
     paper: {
+        width: '100%',
         backgroundColor: theme.palette.background.paper,
         padding: '2rem 4rem',
         display: 'flex',
