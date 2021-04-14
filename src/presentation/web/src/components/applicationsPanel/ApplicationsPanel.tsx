@@ -49,6 +49,9 @@ const useStyles = makeStyles((theme) => ({
     },
     button: {
         width: '20rem',
+    },
+    textField: {
+        marginBottom: '1.5rem'
     }
 }))
 
@@ -93,6 +96,8 @@ const SingleApplication: React.FC<SingleApplicationProps> = ({ answers, submissi
 }
 
 const AnimalInfo: React.FC<AnimalInfoProps> = ({ animal }) => {
+    const classes = useStyles();
+
     const plLabels = new Map([
         ['name', 'Imię'],
         ['age', 'Wiek'],
@@ -121,14 +126,27 @@ const AnimalInfo: React.FC<AnimalInfoProps> = ({ animal }) => {
     const values = Object.values(allAnimalProps);
     return <> {keys.map((key, index) => {
         return (<TextField
+                    className={classes.textField}
                     key={key}
                     disabled={true}
                     label={plLabels.get(key) ?? key}
                     defaultValue={plLabels.get(values[index].toString()) ?? values[index]} 
                 />);
         })} 
-        <TextField key={admissionToShelter} disabled={true} label={'Data przyjęcia w schronisku'} defaultValue={formatDate(admissionToShelter)} />
-        <TextField key={description} disabled={true} label={'Opis'} defaultValue={description} />
+        <TextField
+            className={classes.textField}
+            key={admissionToShelter}
+            disabled={true}
+            label={'Data przyjęcia w schronisku'}
+            defaultValue={formatDate(admissionToShelter)}
+        />
+        <TextField
+            className={classes.textField}
+            key={description}
+            disabled={true}
+            label={'Opis'}
+            defaultValue={description}
+        />
     </>
 }
 
