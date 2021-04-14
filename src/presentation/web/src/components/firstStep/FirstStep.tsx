@@ -31,6 +31,7 @@ const pushAnswersToArray = (data: any, animalId: number, stepNumber: number) => 
 
 const useStyles = makeStyles((theme: Theme) => ({
     mainPaper: {
+        width: '100%',
         variant: 'outlined',
         backgroundColor: theme.palette.background.paper,
         padding: '20px 50px',
