@@ -70,7 +70,12 @@ const Home = () => {
                         <FilterPanel />
                     </FormContex.Provider>
                     <Container>
-                        <Gallery query={query} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+                        <Gallery
+                            galleryType={1}
+                            query={query}
+                            currentPage={currentPage}
+                            setCurrentPage={setCurrentPage}
+                        />
                     </Container>
                 </div>
             </Route>

@@ -15,7 +15,11 @@ import Calendar from './Calendar';
 import LoginForm from '../components/auth/loginForm/LoginForm';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = () => {};
+const useStyles = makeStyles({
+    wrapper: {
+        minHeight: 'inherit',
+    },
+});
 
 const MyAcc = () => {
     const classes = useStyles();
@@ -23,11 +27,11 @@ const MyAcc = () => {
     const { appState } = useContext(AppCtx);
     const { role, userName } = appState;
     return (
-        <GridContainer spacing={2} align="flex-start" justify="center">
+        <GridContainer marginBottom={50} marginTop={50} spacing={2} align="flex-start" justify="center">
             <Grid item xs={12} sm="auto">
                 <SideNavList role={role!} name={userName!} />
             </Grid>
-            <Grid item xs={12} sm>
+            <Grid container alignItems="flex-start" justify="center" item xs={12} sm className={classes.wrapper}>
                 <Switch>
                     <ProtectedRoute exact path={`${path}/volunteer`} component={Volunteer} />
                     <ProtectedRoute exact path={`${path}/volunteers`} component={Volunteers} />

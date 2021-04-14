@@ -86,7 +86,7 @@ const useStyles = makeStyles({
 const ContactPage: React.FC = () => {
     const classes = useStyles();
     return (
-        <GridContainer spacing={2} align="center" justify="center">
+        <GridContainer marginBottom={0} marginTop={0} spacing={2} align="center" justify="center">
             <Grid container item xs={12} className={classes.wrapper}>
                 <Grid item xs={12} sm={6} className={classes.info}>
                     <div className={classes.lockBackground}>

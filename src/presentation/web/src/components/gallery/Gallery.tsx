@@ -8,7 +8,10 @@ import { useGet } from 'restful-react';
 import { useGetAnimals, GetAnimalsQueryParams, useGetForm } from '../../client/index';
 import { makeStyles } from '@material-ui/core/styles';
 
+type GalleryType = 1 | 2 | 3;
+
 interface Props {
+    galleryType: GalleryType;
     query: GetAnimalsQueryParams;
     currentPage: number;
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
@@ -27,7 +30,7 @@ const useStyle = makeStyles({
     },
 });
 
-const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage }) => {
+const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage, galleryType }) => {
     const classes = useStyle();
     const { data, loading } = useGetAnimals({ queryParams: { ...query, count: true } });
     const [pages, setPages] = useState(1);
@@ -48,7 +51,7 @@ const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage }) => {
 
     return (
         <div className={classes.gallery}>
-            <GalleryPage query={query} currentPage={currentPage} />
+            <GalleryPage query={query} currentPage={currentPage} galleryType={galleryType} />
             <Route>
                 {({ location }) => {
                     const query = new URLSearchParams(location.search);
