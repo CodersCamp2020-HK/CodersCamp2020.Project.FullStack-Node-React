@@ -112,7 +112,7 @@ export class AnimalSubmissionsController extends Controller {
     @Response<ApiError>(404, 'Submission Not Found')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'ok')
-    @Get('{id}')
+    @Get('/user/{id}')
     public async getAnimalSubmission(
         @Path() id: number,
         @Request() request: IAuthUserInfoRequest,
@@ -142,5 +142,14 @@ export class AnimalSubmissionsController extends Controller {
     ): Promise<void> {
         await this.deleteAnimalSubmission(userId, request);
         this.setStatus(204);
+    }
+
+    @Security('jwt', ['admin', 'employee'])
+    @Response<ApiError>(404, 'Submission Not Found')
+    @Response<Error>(500, 'Internal Server Error')
+    @SuccessResponse(200, 'ok')
+    @Get('{animalId}')
+    public async getAnimalSubmissionByAnimalId(@Path() animalId: number): Promise<FormAnimalSubmission[]> {
+        return await this.submissionService.getAnimalSubmissionByAnimalId(animalId);
     }
 }
