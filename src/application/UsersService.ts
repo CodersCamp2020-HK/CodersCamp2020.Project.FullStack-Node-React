@@ -1,4 +1,4 @@
-import ApiError from '@infrastructure/ApiError';
+import ApiError, { ErrorCodes } from '@infrastructure/ApiError';
 import OrganizationUser, { UserType } from '@infrastructure/postgres/OrganizationUser';
 import User, { Email, Password, UUID } from '@infrastructure/postgres/User';
 import { PasswordRequirementsError } from './UsersErrors';
@@ -47,7 +47,7 @@ export type UserResetPasswordParams = {
     repPassword: Password;
 };
 
-export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname'>;
+export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname' | 'birthDate' | 'mail'>;
 
 export type UserGetFormSteps = Pick<User, 'adoptionStep' | 'volunteerStep'>;
 
@@ -160,6 +160,8 @@ export class UsersService {
     public async login(userLoginParams: UserLoginParams): Promise<ApiKey> {
         const user = await this.userRepository.findOne({ where: { mail: userLoginParams.mail } });
         if (!user) throw new ApiError('Bad Request', 400, `Wrong email or password!`);
+        if (!user.activated) throw new ApiError('Bad Request', 400, 'User not activated', ErrorCodes.UserNotActivated);
+
         const organizationUser = await this.organizationUserRepository.findOne({
             user: { id: user.id },
             organization: { id: 1 },
@@ -305,5 +307,11 @@ export class UsersService {
         const updatedUser = { ...user, ...updatedSteps };
 
         await this.userRepository.save(updatedUser);
+    }
+
+    public async getUserByEmail({ email }: EmailResetPassword): Promise<User> {
+        const user = await this.userRepository.findOne({ mail: email });
+        if (!user) throw new ApiError('Not Found', 400, `User with email: ${email} not found`);
+        return user;
     }
 }

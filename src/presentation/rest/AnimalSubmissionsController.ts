@@ -21,6 +21,7 @@ import {
     Security,
     Post,
     Request,
+    Delete,
 } from 'tsoa';
 import { Inject } from 'typescript-ioc';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
@@ -128,6 +129,18 @@ export class AnimalSubmissionsController extends Controller {
         @Request() request: IAuthUserInfoRequest,
     ): Promise<void> {
         await this.submissionService.createAnimalSubmission(requestBody, request);
+        this.setStatus(204);
+    }
+
+    @Security('jwt', ['admin', 'normal', 'volunteer', 'employee'])
+    @Response<ApiError>(404, 'Not Found')
+    @SuccessResponse(204, 'Deleted')
+    @Delete('{userId}')
+    public async deleteAnimalSubmission(
+        @Path() userId: number,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        await this.deleteAnimalSubmission(userId, request);
         this.setStatus(204);
     }
 }

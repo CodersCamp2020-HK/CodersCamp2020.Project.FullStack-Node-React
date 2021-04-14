@@ -1,5 +1,14 @@
 import React from 'react';
+import { Route, useRouteMatch } from 'react-router-dom';
+import AboutUs from "../components/aboutUs/aboutUs";
 
-const About = () => <div>O nas</div>;
+const About = () => {
+    const { path } = useRouteMatch();
+    return (
+        <Route exact path={`${path}`}>
+            <AboutUs />
+        </Route>
+    );
+};
 
 export default About;
