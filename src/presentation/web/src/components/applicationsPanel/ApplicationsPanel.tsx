@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Animal, AnimalFormStatus, FormAnimalAnswer, useChangeFormStatusForAdoption, useGetAnimalSubmission } from '../../client';
+import { Animal, AnimalFormStatus, FormAnimalAnswer, FormAnimalSubmission, useChangeFormStatusForAdoption, useGetAnimalSubmission, useGetAnimalSubmissionByAnimalId } from '../../client';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -10,6 +10,7 @@ import LoadingCircle from '../loadingCircle/LoadingCircle';
 import SurveyForm from '../forms/surveyForm/SurveyForm';
 import mapAnswersToQuestions from '../../utils/MapAnswersToQuestions';
 import LoadingCircleSmall from '../loadingCircleSmall/LoadingCircleSmall';
+import formatDate from '../../utils/formatText/formatDate';
 
 interface SingleApplicationProps {
     answers: FormAnimalAnswer[];
@@ -92,14 +93,42 @@ const SingleApplication: React.FC<SingleApplicationProps> = ({ answers, submissi
 }
 
 const AnimalInfo: React.FC<AnimalInfoProps> = ({ animal }) => {
-    const labels = new Map()
-    const { additionalInfo: _, description, ...allAnimalProps }  = { ...animal, ...animal.additionalInfo, ...animal.specie };
+    const plLabels = new Map([
+        ['name', 'Imię'],
+        ['age', 'Wiek'],
+        ['readyForAdoption', 'Gotowy do adopcji'],
+        ['specie', 'Gatunek'],
+        ['activeLevel', 'Aktywność'],
+        ['size', 'Rozmiar'],
+        ['specialDiet', 'Specjalna dieta'],
+        ['admissionToShelter', 'Data przyjęcia w schronisku'],
+        ['description', 'Opis'],
+        ['acceptsKids', 'Akceptuje dzieci'],
+        ['acceptsOtherAnimals', 'Akceptuje inne zwierzęta'],
+        ['false', 'Nie'],
+        ['true', 'Tak'],
+        ['dog', 'Pies'],
+        ['cat', 'Kot'],
+        ['low', 'Niska'],
+        ['medium', 'Średnia'],
+        ['high', 'Wysoka'],
+        ['small', 'Mały'],
+        ['medium', 'Średniu'],
+        ['large', 'Duży'],
+    ])
+    const { additionalInfo: _, description, admissionToShelter, ...allAnimalProps }  = { ...animal, ...animal.additionalInfo, ...animal.specie };
     const keys = Object.keys(allAnimalProps);
     const values = Object.values(allAnimalProps);
     return <> {keys.map((key, index) => {
-        return (<TextField key={key} disabled={true} label={key} defaultValue={values[index]} />);
+        return (<TextField
+                    key={key}
+                    disabled={true}
+                    label={plLabels.get(key) ?? key}
+                    defaultValue={plLabels.get(values[index].toString()) ?? values[index]} 
+                />);
         })} 
-        <TextField key={description} disabled={true} label={'opis'} defaultValue={description} />
+        <TextField key={admissionToShelter} disabled={true} label={'Data przyjęcia w schronisku'} defaultValue={formatDate(admissionToShelter)} />
+        <TextField key={description} disabled={true} label={'Opis'} defaultValue={description} />
     </>
 }
 
@@ -115,6 +144,8 @@ const ApplicationsPanel = () => {
         data: submissionData,
         loading: loadingSubmissions
     } = useGetAnimalSubmission({ userId: 2, requestOptions });
+
+    const { data } = useGetAnimalSubmissionByAnimalId({ animalId: 2, requestOptions })
 
     return (
         <Paper className={classes.paper} square={false}>
