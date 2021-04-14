@@ -156,6 +156,9 @@ const LoginForm = () => {
                 <Link component={RouterLink} className={classes.forgetPassword} to="/auth/forget">
                     <Typography variant="body2">Zapomniałeś hasła?</Typography>
                 </Link>
+                <Link component={RouterLink} className={classes.forgetPassword} to="/auth/send/activation/link">
+                    <Typography variant="body2">Nie otrzymałeś linku aktywacyjnego?</Typography>
+                </Link>
             </AuthPaper>
             <Paper
                 className={classes.paper}
