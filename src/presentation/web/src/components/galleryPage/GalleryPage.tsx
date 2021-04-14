@@ -13,7 +13,6 @@ interface Props {
 
 const GalleryPage: React.FC<Props> = ({ query, currentPage, galleryType }) => {
     const { data } = useGetAnimals({ queryParams: { ...query, page: currentPage, perPage: 6 } });
-    console.log(data);
     return (
         <Grid container spacing={3}>
             {data instanceof Array &&

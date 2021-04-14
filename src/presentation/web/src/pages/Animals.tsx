@@ -22,14 +22,16 @@ const useStyles = makeStyles({
     form: {
         display: 'flex',
         flexWrap: 'wrap',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
         alignItems: 'center',
     },
-    formControl: { width: 200 },
-    textField: { width: 200 },
-    checkbox: {
-        width: 200,
-        margin: 0,
+    inputs: {
+        minWidth: 200,
+        margin: '0px 0px 20px 0px',
+    },
+    paper: {
+        minHeight: 'inherit',
+        padding: 20,
     },
 });
 
@@ -58,16 +60,15 @@ const localTheme = createMuiTheme({
     },
 });
 
-const initialQuery: GetAnimalsQueryParams = {
-    specie: 'cat',
-    minAge: 1,
-    maxAge: 100,
-    readyForAdoption: true,
-    temporaryHome: true,
-    acceptsOtherAnimals: true,
-    acceptsKids: true,
-    activeLevel: 'high',
-    size: 'large',
+const initialQuery: GetAnimalsQueryParams = {};
+
+const filterData = (data: Record<string, any>) => {
+    const optionalData: any = {};
+    for (const key in data) {
+        if (!data[key] || data[key] === 'unknown') continue;
+        optionalData[key] = data[key];
+    }
+    return optionalData;
 };
 
 const Animals = () => {
@@ -76,15 +77,15 @@ const Animals = () => {
     const classes = useStyles();
     const { handleSubmit, control, register } = useForm<GetAnimalsQueryParams>();
     const onSubmit = (data: GetAnimalsQueryParams) => {
-        console.log(data);
-        setQuery(data);
+        console.log(filterData(data));
+        setQuery(filterData(data));
     };
     return (
-        <Paper>
+        <Paper className={classes.paper}>
             <form onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                 <ThemeProvider theme={localTheme}>
                     <TextField
-                        className={classes.textField}
+                        className={classes.inputs}
                         color="secondary"
                         id="minAge"
                         name="minAge"
@@ -104,7 +105,7 @@ const Animals = () => {
                         variant="outlined"
                     />
                     <TextField
-                        className={classes.textField}
+                        className={classes.inputs}
                         color="secondary"
                         id="maxAge"
                         name="maxAge"
@@ -123,78 +124,8 @@ const Animals = () => {
                         }}
                         variant="outlined"
                     />
-                    <Controller
-                        name="readyForAdoption"
-                        control={control}
-                        defaultValue={false}
-                        render={(props) => (
-                            <FormControlLabel
-                                className={classes.checkbox}
-                                control={
-                                    <Checkbox
-                                        onChange={(e) => props.onChange(e.target.checked)}
-                                        checked={props.value}
-                                    />
-                                }
-                                label="Gotowy do adopcji"
-                            />
-                        )}
-                    />
 
-                    <Controller
-                        name="temporaryHome"
-                        control={control}
-                        defaultValue={false}
-                        render={(props) => (
-                            <FormControlLabel
-                                className={classes.checkbox}
-                                control={
-                                    <Checkbox
-                                        onChange={(e) => props.onChange(e.target.checked)}
-                                        checked={props.value}
-                                    />
-                                }
-                                label="Dom tymczasowy"
-                            />
-                        )}
-                    />
-                    <Controller
-                        name="acceptsKids"
-                        control={control}
-                        defaultValue={false}
-                        render={(props) => (
-                            <FormControlLabel
-                                className={classes.checkbox}
-                                control={
-                                    <Checkbox
-                                        onChange={(e) => props.onChange(e.target.checked)}
-                                        checked={props.value}
-                                    />
-                                }
-                                label="Akceptuje dzieci"
-                            />
-                        )}
-                    />
-
-                    <Controller
-                        name="acceptsOtherAnimals"
-                        control={control}
-                        defaultValue={false}
-                        render={(props) => (
-                            <FormControlLabel
-                                className={classes.checkbox}
-                                control={
-                                    <Checkbox
-                                        onChange={(e) => props.onChange(e.target.checked)}
-                                        checked={props.value}
-                                    />
-                                }
-                                label="Akceptuje inne zwierzęta"
-                            />
-                        )}
-                    />
-
-                    <FormControl variant="outlined" color="secondary" className={classes.formControl}>
+                    <FormControl variant="outlined" color="secondary" className={classes.inputs}>
                         <InputLabel id="activeLevel">Poziom aktywności</InputLabel>
                         <Controller
                             control={control}
@@ -216,7 +147,7 @@ const Animals = () => {
                         />
                     </FormControl>
 
-                    <FormControl variant="outlined" color="secondary" className={classes.formControl}>
+                    <FormControl variant="outlined" color="secondary" className={classes.inputs}>
                         <InputLabel id="size">Rozmiar</InputLabel>
                         <Controller
                             control={control}
@@ -234,7 +165,7 @@ const Animals = () => {
                         />
                     </FormControl>
 
-                    <FormControl variant="outlined" color="secondary" className={classes.formControl}>
+                    <FormControl variant="outlined" color="secondary" className={classes.inputs}>
                         <InputLabel id="specie">Gatunek</InputLabel>
                         <Controller
                             control={control}
@@ -243,15 +174,87 @@ const Animals = () => {
                             label="Gatunek"
                             as={
                                 <Select labelId="specie" id="demo-simple-select-outlined" label="Gatunek">
-                                    <MenuItem value="cat">Cat</MenuItem>
-                                    <MenuItem value="dog">Dog</MenuItem>
+                                    <MenuItem value="cat">Kot</MenuItem>
+                                    <MenuItem value="dog">Pies</MenuItem>
+                                    <MenuItem value="unknown">Obojętnie</MenuItem>
                                 </Select>
                             }
                         />
                     </FormControl>
+
+                    <Controller
+                        name="readyForAdoption"
+                        control={control}
+                        defaultValue={false}
+                        render={(props) => (
+                            <FormControlLabel
+                                className={classes.inputs}
+                                control={
+                                    <Checkbox
+                                        onChange={(e) => props.onChange(e.target.checked)}
+                                        checked={props.value}
+                                    />
+                                }
+                                label="Gotowy do adopcji"
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        name="temporaryHome"
+                        control={control}
+                        defaultValue={false}
+                        render={(props) => (
+                            <FormControlLabel
+                                className={classes.inputs}
+                                control={
+                                    <Checkbox
+                                        onChange={(e) => props.onChange(e.target.checked)}
+                                        checked={props.value}
+                                    />
+                                }
+                                label="Dom tymczasowy"
+                            />
+                        )}
+                    />
+                    <Controller
+                        name="acceptsKids"
+                        control={control}
+                        defaultValue={false}
+                        render={(props) => (
+                            <FormControlLabel
+                                className={classes.inputs}
+                                control={
+                                    <Checkbox
+                                        onChange={(e) => props.onChange(e.target.checked)}
+                                        checked={props.value}
+                                    />
+                                }
+                                label="Akceptuje dzieci"
+                            />
+                        )}
+                    />
+
+                    <Controller
+                        name="acceptsOtherAnimals"
+                        control={control}
+                        defaultValue={false}
+                        render={(props) => (
+                            <FormControlLabel
+                                className={classes.inputs}
+                                control={
+                                    <Checkbox
+                                        onChange={(e) => props.onChange(e.target.checked)}
+                                        checked={props.value}
+                                    />
+                                }
+                                label="Akceptuje inne zwierzęta"
+                            />
+                        )}
+                    />
                 </ThemeProvider>
 
-                <Button size="large" color="secondary" variant="contained" type="submit">
+                <Button className={classes.inputs} size="large" color="secondary" variant="contained" type="submit">
                     Filtruj zwierzaki
                 </Button>
             </form>
