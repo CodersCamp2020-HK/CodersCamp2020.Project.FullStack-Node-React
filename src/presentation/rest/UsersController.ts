@@ -2,6 +2,7 @@ import {
     ApiKey,
     EmailResetPassword,
     UserCreationParams,
+    UserGetFormSteps,
     UserLoginParams,
     UserResetPasswordParams,
     UsersService,
@@ -45,6 +46,7 @@ import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService'
 import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import { omit } from '../../utils/omit';
 import { DeepPartial } from 'typeorm';
+import * as useragent from 'express-useragent';
 
 interface uuidResponse {
     uuid: string;
@@ -156,10 +158,13 @@ export class UsersController extends Controller {
     @Response(404, 'Link is not valid or expired')
     @Response<Error>(500, 'Internal Server Error')
     @Get('activate/{generatedUUID}')
-    public async activateUser(@Path() generatedUUID: string): Promise<void> {
-        const uuid = await this.usersService.activateUser(generatedUUID);
-        this.setStatus(200);
-        return uuid;
+    public async activateUser(@Path() generatedUUID: string, @Request() request: ExRequest): Promise<void> {
+        await this.usersService.activateUser(generatedUUID);
+        const source = request.headers['user-agent'];
+        if (!source) return this.setStatus(200);
+        const ua = useragent.parse(source);
+        if (ua.browser === 'uknown') return this.setStatus(200);
+        request.res?.redirect(request.protocol + '://' + request.get('host') + '/auth');
     }
 
     /**
@@ -172,7 +177,7 @@ export class UsersController extends Controller {
     @Post('{userId}/sendActivationLink')
     public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<string> {
         try {
-            const ACTIVATION_PATH = request.get('host') + '/api/users/activate/';
+            const ACTIVATION_PATH = request.protocol + '://' + request.get('host') + '/api/users/activate/';
             const createdUser = await this.usersService.get(userId);
             const personalUUID = await this.usersService.createUUID(userId, LinkType.activation);
             const message = new ActivationMessage(ACTIVATION_PATH + personalUUID).message;
@@ -227,8 +232,8 @@ export class UsersController extends Controller {
     @SuccessResponse(200, ' User deleted')
     @Delete('{userId}')
     public async deleteUser(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {
-        this.setStatus(200);
         await this.usersService.delete(userId, request);
+        this.setStatus(200);
     }
 
     /**
@@ -276,7 +281,7 @@ export class UsersController extends Controller {
         @Body() email: EmailResetPassword,
         @Request() request: ExRequest,
     ): Promise<void> {
-        const ACTIVATION_PATH = request.get('host') + '/api/users/reset/';
+        const ACTIVATION_PATH = request.protocol + '://' + request.get('host') + '/auth/reset/';
         return await this.usersService.sendResetPasswordLink(email, ACTIVATION_PATH);
     }
 
@@ -301,13 +306,13 @@ export class UsersController extends Controller {
      * @param petName
      * @param adopterEmail
      */
-    @Post('sendVisitConfirmationMessage')
     @Response('401', 'Unauthorized')
     @Response(400, 'Bad request')
     @Response<ApiError>(404, 'Not Found')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(201, ' Email sent')
     @Security('jwt', ['admin', 'employee'])
+    @Post('sendVisitConfirmationMessage')
     public async sendVisitConfirmationEmail(
         @Query() petName: string,
         @Query() adopterEmail: Email,
@@ -323,5 +328,33 @@ export class UsersController extends Controller {
         } else {
             throw new ApiError('Not found', 404, 'User not found');
         }
+    }
+
+    @Security('jwt', ['admin', 'employee', 'normal', 'volunteer'])
+    @Response(401, 'Unauthorized')
+    @Response(404, 'Not Found')
+    @SuccessResponse(200, 'OK')
+    @Get('/steps/{userId}')
+    public async getUserSteps(
+        @Path() userId: number,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<UserGetFormSteps> {
+        const steps = await this.usersService.getFormSteps(userId, request.user as IUserInfo);
+        this.setStatus(200);
+        return steps;
+    }
+
+    @Security('jwt', ['admin', 'employee', 'normal', 'volunteer'])
+    @Response(401, 'Unauthorized')
+    @Response(404, 'Not Found')
+    @SuccessResponse(204, 'Updated')
+    @Patch('/steps/{userId}')
+    public async updatetUserSteps(
+        @Path() userId: number,
+        @Body() requestBody: Partial<UserGetFormSteps>,
+        @Request() request: IAuthUserInfoRequest,
+    ): Promise<void> {
+        await this.usersService.updateFormSteps(userId, requestBody, request.user as IUserInfo);
+        this.setStatus(204);
     }
 }

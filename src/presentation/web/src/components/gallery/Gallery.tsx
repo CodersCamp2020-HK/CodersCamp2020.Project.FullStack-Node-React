@@ -1,11 +1,10 @@
 import React, { useContext, useState, useEffect } from 'react';
 import GalleryPage from '../galleryPage/GalleryPage';
-import { MemoryRouter, Route } from 'react-router';
-import { BrowserRouter as Router, Link, useLocation, useRouteMatch, useHistory } from 'react-router-dom';
+import { BrowserRouter as Router, Link, useLocation, useRouteMatch, useHistory, Route } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
-import { useGet } from 'restful-react';
-import { useGetAnimals, GetAnimalsQueryParams, useGetForm } from '../../client/index';
+import { GetAnimalsQueryParams, useGetAnimals } from '../../client/index';
+import LoadingCircle from '../loadingCircle/LoadingCircle';
 import { makeStyles } from '@material-ui/core/styles';
 
 type GalleryType = 1 | 2 | 3;
@@ -55,7 +54,9 @@ const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage, galleryT
         setCurrentPage(value);
     };
 
-    return (
+    return loading ? (
+        <LoadingCircle size={70} />
+    ) : (
         <div className={classes.gallery}>
             <GalleryPage query={query} currentPage={currentPage} galleryType={galleryType} />
             <Route>

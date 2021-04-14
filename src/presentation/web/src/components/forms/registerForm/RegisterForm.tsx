@@ -8,6 +8,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import plLocale from 'date-fns/locale/pl';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import differenceInYears from 'date-fns/differenceInYears'
+import LoadingCircleSmall from '../../loadingCircleSmall/LoadingCircleSmall';
 
 export interface Inputs {
     name: string;
@@ -22,6 +23,7 @@ export interface Inputs {
 interface Props {
     handleSubmit: (data: any) => Promise<any>;
     defaultValues?: Partial<Inputs>;
+    hiddenPassword?: boolean;
 }
 
 const useStyle = makeStyles({
@@ -37,10 +39,17 @@ const useStyle = makeStyles({
         },
         paddingBottom: 50,
         position: 'relative'
+    },
+    form: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%'
     }
 })
 
-const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues }) => {
+const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues, hiddenPassword = false, children}) => {
     const classes = useStyle();
 
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -73,7 +82,7 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues }
 
     return (
         <MuiPickersUtilsProvider utils={DateFnsUtils} locale={plLocale}>
-            <form onSubmit={handleSubmit(submitCb)} noValidate>
+            <form className={classes.form} onSubmit={handleSubmit(submitCb)} noValidate>
                 <TextField
                     className={classes.textField}
                     id="name"
@@ -108,31 +117,35 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues }
                     helperText={errors.mail && errors.mail.message}
                     data-testid="mailInput"
                 />
-                <TextField
-                    className={classes.textField}
-                    id="password"
-                    name="password"
-                    label="Hasło"
-                    type="password"
-                    required
-                    onChange={validateRepeatPassword}
-                    inputRef={register({ required: 'Hasło jest wymagane!', pattern: { value: passwordPattern, message: 'Hasło musi zawierać co najmniej 8 znaków, jedną małą literę, jedną wielką literę, jedną liczbę oraz jeden znak specjalny (@$!%*?&)!' } })}
-                    error={errors.hasOwnProperty('password')}
-                    helperText={errors.password && errors.password.message}
-                    data-testid="passwordInput"
-                />
-                <TextField
-                    className={classes.textField}
-                    id="repPassword"
-                    name="repPassword"
-                    label="Powtórz hasło"
-                    type="password"
-                    required
-                    inputRef={register({ required: 'Powtórzone hasło jest wymagane!', validate: { repeatPassword } })}
-                    error={errors.hasOwnProperty('repPassword')}
-                    helperText={errors.repPassword && errors.repPassword.message}
-                    data-testid="repPasswordInput"
-                />
+                {!hiddenPassword &&
+                    <>
+                        <TextField
+                            className={classes.textField}
+                            id="password"
+                            name="password"
+                            label="Hasło"
+                            type="password"
+                            required
+                            onChange={validateRepeatPassword}
+                            inputRef={register({ required: 'Hasło jest wymagane!', pattern: { value: passwordPattern, message: 'Hasło musi zawierać co najmniej 8 znaków, jedną małą literę, jedną wielką literę, jedną liczbę oraz jeden znak specjalny (@$!%*?&)!' } })}
+                            error={errors.hasOwnProperty('password')}
+                            helperText={errors.password && errors.password.message}
+                            data-testid="passwordInput"
+                        />
+                        <TextField
+                            className={classes.textField}
+                            id="repPassword"
+                            name="repPassword"
+                            label="Powtórz hasło"
+                            type="password"
+                            required
+                            inputRef={register({ required: 'Powtórzone hasło jest wymagane!', validate: { repeatPassword } })}
+                            error={errors.hasOwnProperty('repPassword')}
+                            helperText={errors.repPassword && errors.repPassword.message}
+                            data-testid="repPasswordInput"
+                        />
+                    </>
+                }
                 <KeyboardDatePicker
                     disableFuture
                     required
@@ -165,16 +178,18 @@ const RegisterForm: React.FC<Props> = ({ handleSubmit: submitCb, defaultValues }
                     helperText={errors.phone && errors.phone.message}
                     data-testid="phoneInput"
                 />
-                <Button
-                    className={classes.submit}
-                    fullWidth
-                    size="large"
-                    variant="contained"
-                    color="primary"
-                    type="submit"
-                    data-testid="formSubmit">
-                        Zarejestruj się
-                </Button>
+                {children ?? 
+                    <Button
+                        disabled={formState.isSubmitting}
+                        className={classes.submit}
+                        fullWidth
+                        size="large"
+                        variant="contained"
+                        color="primary"
+                        type="submit"
+                        data-testid="formSubmit">
+                        Zarejestruj się {formState.isSubmitting && <LoadingCircleSmall size={20} />}
+                </Button>}
             </form>
         </MuiPickersUtilsProvider>
     )

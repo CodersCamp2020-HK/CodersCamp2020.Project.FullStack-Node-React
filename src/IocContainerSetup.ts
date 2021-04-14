@@ -54,6 +54,7 @@ Container.bind(FormService)
                 getConnection().getRepository(Form),
                 getConnection().getRepository(Animal),
                 getConnection().getRepository(AdoptionStep),
+                getConnection().getRepository(VolunteerHireStep),
             ),
     )
     .scope(Scope.Local);
@@ -80,6 +81,8 @@ Container.bind(AnimalSubmissionsService).factory(
             getConnection().getRepository(Animal),
             getConnection().getRepository(FormAnimalAnswer),
             getConnection().getRepository(OrganizationUser),
+            getConnection().getRepository(User),
+            getConnection().getRepository(AdoptionStep),
         ),
 );
 Container.bind(VolunteerSubmissionsService).factory(
@@ -88,6 +91,7 @@ Container.bind(VolunteerSubmissionsService).factory(
             getConnection().getRepository(FormVolunteerSubmission),
             getConnection().getRepository(FormVolunteerAnswer),
             getConnection().getRepository(OrganizationUser),
+            getConnection().getRepository(VolunteerHireStep),
         ),
 );
 Container.bind(AdoptionStepService).factory(
