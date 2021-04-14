@@ -5,6 +5,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
 import theme from '../../themes/theme';
 import React from 'react';
+import { useGetAnimalSubmission } from "../../client/index";
 
 const useStyles = makeStyles({
     mainWrapper: {
@@ -56,7 +57,7 @@ const useStyles = makeStyles({
 
 const MeetDateConfirmed: React.FC = () => {
     const classes = useStyles();
-    const date = 'wstawic date z backendu';
+    const date = useGetAnimalSubmission({});
     return (
         <Grid item xs={12}>
             <Paper className={`${classes.mainWrapper} ${classes.margin}}`} variant="outlined">
