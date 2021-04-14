@@ -6,6 +6,7 @@ import PaginationItem from '@material-ui/lab/PaginationItem';
 import { GetAnimalsQueryParams, useGetAnimals } from '../../client/index';
 import LoadingCircle from '../loadingCircle/LoadingCircle';
 import { makeStyles } from '@material-ui/core/styles';
+import NotFoundResults from '../notFoundResults/NotFoundResults';
 
 type GalleryType = 1 | 2 | 3;
 
@@ -31,14 +32,10 @@ const useStyle = makeStyles({
 
 const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage, galleryType }) => {
     const { path } = useRouteMatch();
-    const location = useLocation();
-    const history = useHistory();
-    // console.log(path);
-    // console.log(location);
-    // console.log(history);
     const classes = useStyle();
     const { data, loading } = useGetAnimals({ queryParams: { ...query, count: true } });
     const [pages, setPages] = useState(1);
+    const [animalsCount, setAnimalsCount] = useState(0);
 
     interface MyData {
         count: number;
@@ -47,6 +44,7 @@ const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage, galleryT
     useEffect(() => {
         if (data !== null) {
             setPages(Math.ceil(((data as unknown) as MyData).count / 6));
+            setAnimalsCount(((data as unknown) as MyData).count);
         }
     }, [data]);
 
@@ -56,6 +54,8 @@ const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage, galleryT
 
     return loading ? (
         <LoadingCircle size={70} />
+    ) : animalsCount === 0 ? (
+        <NotFoundResults />
     ) : (
         <div className={classes.gallery}>
             <GalleryPage query={query} currentPage={currentPage} galleryType={galleryType} />
