@@ -35,7 +35,7 @@ export const localTheme = createMuiTheme({
             root: {
                 color: '#ffffff',
                 '&$focused': {
-                    color: '#ffffff',
+                    color: '#00FF00',
                 },
             },
         },

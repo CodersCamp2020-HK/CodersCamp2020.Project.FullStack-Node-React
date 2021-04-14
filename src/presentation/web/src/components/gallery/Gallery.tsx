@@ -1,14 +1,16 @@
-import { makeStyles } from '@material-ui/core/styles';
+import React, { useContext, useState, useEffect } from 'react';
+import GalleryPage from '../galleryPage/GalleryPage';
+import { BrowserRouter as Router, Link, useLocation, useRouteMatch, useHistory, Route } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
-import React, { useEffect, useState } from 'react';
-import { Route } from 'react-router';
-import { Link } from 'react-router-dom';
 import { GetAnimalsQueryParams, useGetAnimals } from '../../client/index';
-import GalleryPage from '../galleryPage/GalleryPage';
 import LoadingCircle from '../loadingCircle/LoadingCircle';
+import { makeStyles } from '@material-ui/core/styles';
+
+type GalleryType = 1 | 2 | 3;
 
 interface Props {
+    galleryType: GalleryType;
     query: GetAnimalsQueryParams;
     currentPage: number;
     setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
@@ -27,7 +29,13 @@ const useStyle = makeStyles({
     },
 });
 
-const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage }) => {
+const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage, galleryType }) => {
+    const { path } = useRouteMatch();
+    const location = useLocation();
+    const history = useHistory();
+    // console.log(path);
+    // console.log(location);
+    // console.log(history);
     const classes = useStyle();
     const { data, loading } = useGetAnimals({ queryParams: { ...query, count: true } });
     const [pages, setPages] = useState(1);
@@ -46,9 +54,11 @@ const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage }) => {
         setCurrentPage(value);
     };
 
-    return loading ? <LoadingCircle size={70} /> : (
+    return loading ? (
+        <LoadingCircle size={70} />
+    ) : (
         <div className={classes.gallery}>
-            <GalleryPage query={query} currentPage={currentPage} />
+            <GalleryPage query={query} currentPage={currentPage} galleryType={galleryType} />
             <Route>
                 {({ location }) => {
                     const query = new URLSearchParams(location.search);
@@ -63,7 +73,7 @@ const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage }) => {
                             renderItem={(item) => (
                                 <PaginationItem
                                     component={Link}
-                                    to={`/${item.page === 1 ? '' : `?page=${item.page}`}`}
+                                    to={`${path}${item.page === 1 ? `` : `?page=${item.page}`}`}
                                     {...item}
                                 />
                             )}
