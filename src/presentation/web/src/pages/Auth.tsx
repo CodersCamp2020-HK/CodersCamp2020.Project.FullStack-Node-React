@@ -9,6 +9,7 @@ import GridContainer from '../components/gridContainer/GridContainer';
 import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
 import ResetPassword from '../components/auth/resetPassword/ResetPassword';
 import Logout from './Logout';
+import ActivationAccForm from '../components/auth/activationAccForm/ActivationAccForm';
 
 const Auth: React.FC = () => {
     const { path } = useRouteMatch();
@@ -16,6 +17,7 @@ const Auth: React.FC = () => {
     return (
         <GridContainer marginBottom={0} marginTop={0} spacing={2} align="center" justify="center">
             <Switch>
+                <Route exact path={`${path}/send/activation/link`} component={ActivationAccForm} />
                 <Route exact path={`${path}/link`} component={ActivationSent} />
                 <Route exact path={`${path}/register`} component={RegisterPage} />
                 <Route exact path={`${path}/forget`} component={ForgetPassword} />

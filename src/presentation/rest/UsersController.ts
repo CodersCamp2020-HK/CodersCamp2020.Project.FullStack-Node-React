@@ -48,10 +48,6 @@ import { omit } from '../../utils/omit';
 import { DeepPartial } from 'typeorm';
 import * as useragent from 'express-useragent';
 
-interface uuidResponse {
-    uuid: string;
-}
-
 @Tags('Users')
 @Route('users')
 export class UsersController extends Controller {
@@ -131,12 +127,11 @@ export class UsersController extends Controller {
         @Body() requestBody: UserCreationParams,
         @Res() badRequestResponse: TsoaResponse<400, { reason: string }>,
         @Request() request: ExRequest,
-    ): Promise<uuidResponse> {
+    ): Promise<void> {
         try {
             const createdUser = await this.usersService.create(requestBody);
-            const uuid = await this.sendActivationLink(createdUser.id, request);
+            await this.sendActivationLink({ email: createdUser.mail }, request);
             this.setStatus(201);
-            return { uuid };
         } catch (error) {
             if (
                 error instanceof UniqueUserEmailError ||
@@ -174,18 +169,17 @@ export class UsersController extends Controller {
      */
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'Sent')
-    @Post('{userId}/sendActivationLink')
-    public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<string> {
+    @Post('sendActivationLink')
+    public async sendActivationLink(@Body() body: EmailResetPassword, @Request() request: ExRequest): Promise<void> {
         try {
             const ACTIVATION_PATH = request.protocol + '://' + request.get('host') + '/api/users/activate/';
-            const createdUser = await this.usersService.get(userId);
-            const personalUUID = await this.usersService.createUUID(userId, LinkType.activation);
+            const user = await this.usersService.getUserByEmail(body);
+            const personalUUID = await this.usersService.createUUID(user.id, LinkType.activation);
             const message = new ActivationMessage(ACTIVATION_PATH + personalUUID).message;
 
-            await this.emailService.sendEmail(createdUser.mail, message);
+            await this.emailService.sendEmail(user.mail, message);
 
             this.setStatus(200);
-            return personalUUID;
         } catch (error) {
             throw error;
         }
