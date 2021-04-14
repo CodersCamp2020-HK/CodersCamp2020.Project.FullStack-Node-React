@@ -25,6 +25,7 @@ const useStyles = makeStyles({
 });
 
 const MyAcc = () => {
+    const classes = useStyles();
     const { path } = useRouteMatch();
     const { appState } = useContext(AppCtx);
     const { role, userName } = appState;
