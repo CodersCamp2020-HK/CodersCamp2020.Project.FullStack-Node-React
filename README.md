@@ -1,6 +1,6 @@
 # CodersCamp 2020 | Projekt zespołowy | FullStack — Node.js + React | Strona schroniska dla zwierząt
 
-**CodersCamp (coderscamp.edu.pl) - Największy otwarty kurs programowania webowego**
+![logo](https://user-images.githubusercontent.com/74919839/114769195-2d7a0e00-9d6a-11eb-9766-dec3f001d8fe.png)
 
 ## Zespół projektowy
 
@@ -32,9 +32,14 @@ Szablon projektu dostępny jest [TUTAJ](https://github.com/CodersCamp2020/Coders
 
 Celem projektu było napisanie w pełni funkcjonalnego REST API wykorzystując dotychczas nabytą wiedzę z następujących technologi: html, css, javascript, typescript, nodejs, reactjs.
 
-Zespół projektowy zdecydował się na stworzenie aplikacji schroniska dla zwierząt o nazwie Złapki. 
+Zespół projektowy zdecydował się na stworzenie aplikacji schroniska dla zwierząt o nazwie Złapki. Aplikacja ma na celu usprawnienie działania schroniska dla zwierząt zarówno od strony osoby chcącej zaadoptować zwierzę jak i od strony pracowników schroniska, któzy zajmują się obsługą wniosków adopcyjnych i stanem zwierząt w schronisku. 
 
-Aplikacja ma na celu usprawnienie działania schroniska dla zwierząt zarówno od strony osoby chcącej zaadoptować zwierzę jak i od strony pracowników schroniska, któzy zajmują się obsługą wniosków adopcyjnych i stanem zwierząt w schronisku. 
+#### Główne funkcjonalności
+
+- Wyszukiwanie i filtrowanie zwierząt gotowych do adopcji (Każdy użytkownik)
+- Wysyłanie formularzy adopcyjnych (Osoba zalogowana do schroniska)
+- Wbsługa bazy zwierząt (Pracownik schroniska)
+- Rozpatrywanie wniosków adopcyjnych (Pracownik schroniska)
 
 ## Projekt graficzny 
 
@@ -42,25 +47,27 @@ Utowrzony został szablon graficzny aplikacji w programie Figma.
 
 [Link do Figmy](https://www.figma.com/file/DKIdy7VNeGNmGy5RNB8v9P/Schronisko?node-id=6363%3A15378)
 
-## Wymagania funkcjonalne
+## Wykorzystywane technologie
 
-### Aplikacja umożliwia:
+W trakcie developmentu wykorzystujemy:
 
--   założenie konta przez użytkownika, 
--   aktywacja konta użytkownika przy pomocy otrzymanego maila
--   wysyłanie powiadomień przy pomocy skrzynki pocztowej,
--   autoryzacja i uwierzytelnianie użytkownika,
--   operacje typu CRUD dla użytkownika, zwierząt, formularzy, wniosków
--   wyszukiwanie i filtrowanie zwierząt gotowych do adopcji
--   wyświetlanie szczegółowych informacji na temat wybranego zwierzęcia
--   złożenie formularza adopcyjnego,
--   złożenie formularza kandydata na wolontariusza,
--   utworzenie formularza kandydata na wolontariusza,
--   wybór daty spotkania w schornisku,
+-   NodeJS
+-   Swagger
+-   Tsoa
+-   Docker
+-   Heroku
+-   TypeORM
+-   PostgreSQL
+-   GitHub workflow
+-   React JS
+-   React Router
+-   Restful React
+-   React Hook Form
+-   Material UI
 
-### Wymagania funkcjonalne (szczegółowo):
+## Wymagania funkcjonalne (szczegółowo):
 
-#### Rejestracja/Logowanie: 
+### Rejestracja/Logowanie: 
 
 1. Użytkownik ma możliwość zarejestrować się w systemie, podając imię, nazwisko, hasło, powtórzone hasło, telefon, datę urodzenia i adres e-mail.
 2. Użytkownik ma możliwość zalogować się w systemie, podając adres e-mail i hasło.
@@ -70,17 +77,17 @@ Utowrzony został szablon graficzny aplikacji w programie Figma.
 6. Użytkownik ma możliwość wylogowania się. 
 7. Użytkownik ma możliwość usunięcia konta.
 
-#### Wyszukiwanie zwierząt: 
+### Wyszukiwanie zwierząt: 
 1. Użytkownik może przeglądać wszystkie zwierzęta znajdujące się w schronisku i czekające na adopcje. 
 2. Użytkownik może ustawić filtry wyszukiwania, które pozwolą mu wybrać zwierzęcie takie jakie poszukje i pasujące do jego stylu życia.
 3. Użytkownik może zapoznać się ze wszystkimi informacjami na temat wybranego zwierzęcia- szczegółowa karta zwierzecia z przeglądaniem galerii zdjęć. 
 
-#### O schronisku:
+### O schronisku:
 1. Na stronie internetowej można znaleźć informację na temat dokłądnego procesu adopcynego zwierzęcia. 
 2. Na stronie internetowej można przeczytać informacje na temat schroniska Złapki i zespołu je tworzącego. 
 3. Na stronie internetowej można znaleźć informacje kontaktowe do schroniska, wraz z mapą oznaczającą dokładne położenie schroniska.
 
-#### Wniosek adopcyjny:
+### Wniosek adopcyjny:
 1. Użytkownik po zalogowaniu sie na konto może złożyć wniosek adopcyjny na jedno wybrane zwierzę. 
 2. Użytkownik może cały czas obserwować na jakim etapie procesu adopcyjnego znajduje się jego wniosek (Stepper)
 3. Użytkownik może wypełnić formularz adopcyjny, różny dla pasa i kota. 
@@ -89,19 +96,19 @@ Utowrzony został szablon graficzny aplikacji w programie Figma.
 6. Użytkonwik przy każdej zmianie statusu wniosku zostaje powiadomiony mailowo. 
 7. Użytkownik zostaje powiadomiony mailowo, jeżeli jego wniosek nie został rozpatrzony pozytywnie lub gdy zwierzę zostało zaadoptowane przez inną osobę.
 
-#### Wniosek o zostanie wolontariuszem:
+### Wniosek o zostanie wolontariuszem:
 1. Użytkownik po zalogowaniu sie na konto może złożyć wniosek o zostanie wolontariuszem. 
 2. Użytkownik może cały czas obserwować na jakim etapie znajduje się jego wniosek (Stepper)
 3. Użytkownik może wypełnić formularz o zostanie wolontariuszem. 
 4. Użytkownik ma wgląd w wysłany formularz o zostanie wolontariuszem. 
 
-#### Zarządzanie bazą zwierząt:
+### Zarządzanie bazą zwierząt:
 1. Pracownik schroniska ma możliwość dodawania zwierząt do bazy zwierząt (razem z załączeniem zdjęć zwierząt).
 2. Pracownik schroniska ma możliwosć uaktualniania informacji o zwierzęciu.
 3. Pracownik schroniska ma możliwość usuwania zwierzęcia z bazy zwierząt. 
 4. Pracownik schroniska ma możliwość filtrowania zwierząt w bazie.
 
-#### Zarządzanie wnioskami o adopcje:
+### Zarządzanie wnioskami o adopcje:
 1. Pracownik schroniska ma wgląd we wszystkie wnioski adopcyjne.
 2. Pracownik schroniska może filtrować wnioski adopcyjne.
 3. Pracownik schroniska może przeglądać wnioski adopcyjne przypisane do zwierzęcia. 
@@ -109,38 +116,17 @@ Utowrzony został szablon graficzny aplikacji w programie Figma.
 5. Pracownik schroniska może zaakaceptować albo odrzucić wniosek. 
 6. Pracownik schroniska może potwierdzić zaadoptowanie zwierzęcia. 
 
-#### Zarządzanie wnioskami o adopcje:
+### Zarządzanie wnioskami o adopcje:
 1. Pracownik schroniska ma wgląd we wszystkie wnioski o zostanie wolontariuszem.
 2. Pracownik schroniska może filtrować o zostanie wolontariuszem.
 4. Pracownik schroniska ma wgląd w wypełniony formularz wolontariusza i w informacje o użytkowniku składającym formularz.
 5. Pracownik schroniska może zaakaceptować albo odrzucić wniosek. 
 
-#### Przykładowa funkcjonalność bazy danych aplikacji
-
-![apiheroku](https://user-images.githubusercontent.com/56504859/112295862-9f43c800-8c94-11eb-94a5-1d25bc7a737d.gif)
-
-### Projekt graficzny 
-
-Utowrzony został szablon graficzny aplikacji w programie Figma. 
-
-[Link do Figmy](https://www.figma.com/file/DKIdy7VNeGNmGy5RNB8v9P/Schronisko?node-id=6363%3A15378)
-
 ## Development aplikacji
 
-### Wykorzystywane technologie
+### Przykładowa funkcjonalność bazy danych aplikacji
 
-W trakcie developmentu wykorzystujemy:
-
--   NodeJS
--   Swagger
--   Tsoa
--   Docker
--   Heroku
--   ReactJS
--   TypeORM
--   PostgreSQL
--   GitHub workflow
--   Material UI
+![apiheroku](https://user-images.githubusercontent.com/56504859/112295862-9f43c800-8c94-11eb-94a5-1d25bc7a737d.gif)
 
 ### Schemat bazy danych
 
