@@ -295,4 +295,34 @@ export class AnimalSubmissionsService {
             return;
         }
     }
+
+    public async getAnimalSubmissionByAnimalId(animalId: number): Promise<FormAnimalSubmission[]> {
+        const submissions = await this.animalSubmissionRepository
+            .createQueryBuilder('submission')
+            .leftJoinAndSelect('submission.animal', 'animal')
+            .leftJoinAndSelect('submission.applicant', 'applicant')
+            .leftJoinAndSelect('submission.answers', 'answers')
+            .leftJoinAndSelect('answers.question', 'question')
+            .leftJoinAndSelect('question.form', 'form')
+            .where('animal.id = :id', { id: animalId })
+            .select([
+                'animal.name',
+                'submission.status',
+                'submission.reason',
+                'submission.reviewer',
+                'submission.submissionDate',
+                'submission.reviewDate',
+                'question',
+                'answers',
+                'applicant.name',
+                'applicant.surname',
+                'form.id',
+            ])
+            .getMany();
+
+        if (submissions.length === 0)
+            throw new ApiError('Not Found', 404, `Submissions for animal with id ${animalId} not found`);
+
+        return submissions;
+    }
 }
