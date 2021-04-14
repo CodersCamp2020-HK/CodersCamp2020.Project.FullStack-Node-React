@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 const ActivationAccForm = () => {
     const emailPattern = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    const { register, handleSubmit, errors, formState } = useForm<Inputs>();
+    const { register, handleSubmit, errors, formState, setError } = useForm<Inputs>();
     const { mutate: sendLink } = useSendActivationLink({});
     const classes = useStyles()
     const [fireRedirect, setFireRedirect] = useState(false);
@@ -41,7 +41,11 @@ const ActivationAccForm = () => {
             await sendLink({ email: mail });
             setFireRedirect(true);
         } catch (error) {
-            console.error(error)
+            if (error.status == 400) {
+                setError('mail', { message: 'Nie znaleziono adresu email' })
+            } else {
+                console.error(error);
+            }
         }
     }
 
