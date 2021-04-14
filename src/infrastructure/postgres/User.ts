@@ -69,6 +69,12 @@ export default class User {
     @Column({ default: false })
     activated!: boolean;
 
+    @Column({ default: 1 })
+    adoptionStep!: number;
+
+    @Column({ default: 1 })
+    volunteerStep!: number;
+
     @OneToMany(() => AnimalDonation, (animalDonation) => animalDonation.users, {
         cascade: true,
         onDelete: 'CASCADE',
@@ -95,20 +101,15 @@ export default class User {
 
     @OneToMany(() => FormAnimalSubmission, (submission) => submission.applicant, {
         nullable: true,
-        onDelete: 'CASCADE',
     })
-    animalSubmissions!: FormAnimalSubmission[];
+    animalSubmissions?: FormAnimalSubmission[];
 
     @OneToMany(() => OrganizationUser, (organizationUser) => organizationUser.user, {
         nullable: true,
-        cascade: true,
-        onDelete: 'CASCADE',
     })
     organizationUsers?: OrganizationUser[];
 
     @OneToMany(() => FormVolunteerSubmission, (submission) => submission.user, {
-        cascade: true,
-        onDelete: 'CASCADE',
         nullable: true,
     })
     volunteerSubmission?: FormVolunteerSubmission[];

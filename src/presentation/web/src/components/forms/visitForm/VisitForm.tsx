@@ -1,9 +1,11 @@
 import { Button, makeStyles, Theme, Typography } from '@material-ui/core';
 import { format, set as updateDate } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { AppCtx } from '../../../App';
 import { useCreateVisit } from '../../../client/index';
 import Calendar from '../../calendar/Calendar';
+import LoadingCircleSmall from '../../loadingCircleSmall/LoadingCircleSmall';
 import TimePicker from '../../timePicker/TimePicker';
 
 const POSSIBLE_TIMES = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00'];
@@ -35,8 +37,9 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
         time: undefined,
     });
     const { errors, setValue, register, handleSubmit } = useForm<VisitData>({ mode: 'all' });
-    const { mutate: createVisit } = useCreateVisit({});
+    const { mutate: createVisit, loading } = useCreateVisit({});
     const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
+    const { appState, setAppState } = useContext(AppCtx);
 
     const handleDate = (date: Date) => {
         setSelected((previous) => ({ ...previous, date }));
@@ -59,20 +62,21 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
             const requestBody = {
                 date: selectedDate.toISOString(),
                 animalId,
-                userId: 1,
-            }
+                userId: appState.userId as number,
+            };
             try {
                 await createVisit(requestBody, {
-                    headers: [['content-type', 'application/json'],['access_token', localStorage.getItem('apiKey') as string]]
-                })
-            } catch(e) {
-                if(e.status == 400 || e.status == 401) {
+                    headers: [
+                        ['content-type', 'application/json'],
+                        ['access_token', localStorage.getItem('apiKey') as string],
+                    ],
+                });
+            } catch (e) {
+                if (e.status == 400 || e.status == 401) {
                     setServerErrorMessage('Brak uprawnień!');
-                }
-                else if(e.status == 404) {
+                } else if (e.status == 404) {
                     setServerErrorMessage('Nie znaleziono zwierzęcia!');
-                }
-                else {
+                } else {
                     setServerErrorMessage('Błąd serwera! Spróbuj ponownie poźniej');
                 }
             }
@@ -114,8 +118,8 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
             <Typography variant="subtitle1" color="error">
                 {serverErrorMessage !== '' && serverErrorMessage}
             </Typography>
-            <Button className={styles.submit} variant="contained" color="primary" size="large" type="submit">
-                Potwierdź datę spotkania
+            <Button disabled={loading} className={styles.submit} variant="contained" color="primary" size="large" type="submit">
+                Potwierdź datę spotkania {loading && <LoadingCircleSmall size={20} />}
             </Button>
         </form>
     );

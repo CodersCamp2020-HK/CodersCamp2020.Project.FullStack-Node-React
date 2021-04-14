@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Theme, makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -6,7 +6,10 @@ import Grid from '@material-ui/core/Grid';
 import Link from '@material-ui/core/Link';
 import TextField from '@material-ui/core/TextField';
 import { Link as RouterLink } from 'react-router-dom';
+import LoadingCircleSmall from '../../loadingCircleSmall/LoadingCircleSmall';
 import AuthPaper from '../authPaper/AuthPaper';
+import { useUpdateUserPassword } from '../../../client';
+import { AppCtx } from '../../../App';
 
 
 interface Inputs {
@@ -40,6 +43,8 @@ const useStyle = makeStyles<Theme>((theme) => ({
 
 const ChangePassword: React.FC = () => {
     const classes = useStyle();
+    const { appState } = useContext(AppCtx);
+    const { mutate: changePassword } = useUpdateUserPassword({ userId: appState.userId!, requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } }  })
 
     const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     const { register, errors, trigger, formState, getValues, handleSubmit } = useForm<Inputs>();
@@ -49,9 +54,9 @@ const ChangePassword: React.FC = () => {
     }
     const repeatPassword = (value: string) => value === getValues().password || 'Hasła muszą być takie same!'
 
-    const onSubmit = async ({ password, repPassword }: Inputs) => {
+    const onSubmit = async (data: Inputs) => {
         try {
-            console.log(password, repPassword);
+            await changePassword(data);
         } catch (error) {
             console.error(error);
         }
@@ -83,13 +88,14 @@ const ChangePassword: React.FC = () => {
                     helperText={errors.repPassword && errors.repPassword.message}
                 />
                 <Button
+                    disabled={formState.isSubmitting}
                     className={classes.submit}
                     fullWidth
                     size="large"
                     variant="contained"
                     color="primary"
                     type="submit">
-                        Zresetuj hasło
+                        Zresetuj hasło {formState.isSubmitting && <LoadingCircleSmall size={20} />}
                 </Button>
                 </form>
                 <Link className={classes.link} component={RouterLink} to="/auth">Wróć do logowania</Link>

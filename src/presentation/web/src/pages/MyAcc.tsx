@@ -3,7 +3,7 @@ import GridContainer from '../components/gridContainer/GridContainer';
 import { AppCtx } from '../App';
 import Grid from '@material-ui/core/Grid';
 import SideNavList from '../components/navbar/sideNav/SideNav';
-import { Switch, useRouteMatch, Route } from 'react-router-dom';
+import { Switch, useRouteMatch } from 'react-router-dom';
 import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
 import Volunteer from './Volunteer';
 import Volunteers from './Volunteers';
@@ -13,6 +13,10 @@ import Applications from './Applications';
 import Profile from './Profile';
 import Calendar from './Calendar';
 import LoginForm from '../components/auth/loginForm/LoginForm';
+import CheckAdoptionStep from '../components/checkAdoptionStep/CheckAdoptionStep';
+import FirstStep from '../components/firstStep/FirstStep';
+import InvitationForSignAgreementPage from './InvitationSuccessAdoption';
+
 
 const MyAcc = () => {
     const { path } = useRouteMatch();
@@ -20,11 +24,14 @@ const MyAcc = () => {
     const { role, userName } = appState;
     return (
         <GridContainer spacing={2} align="flex-start" justify="center">
-            <Grid item xs={3}>
+            <Grid item xs={12} sm={4} md={3} lg={2}>
                 <SideNavList role={role!} name={userName!} />
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={12} sm>
                 <Switch>
+                    <ProtectedRoute exact path={`${path}/adoption/step/4`} component={InvitationForSignAgreementPage} />
+                    <ProtectedRoute exact path={`${path}/adoption/step/1`} component={FirstStep} />
+                    <ProtectedRoute exact path={`${path}/adoption/step`} component={CheckAdoptionStep} />
                     <ProtectedRoute exact path={`${path}/volunteer`} component={Volunteer} />
                     <ProtectedRoute exact path={`${path}/volunteers`} component={Volunteers} />
                     <ProtectedRoute exact path={`${path}/users`} component={Users} />

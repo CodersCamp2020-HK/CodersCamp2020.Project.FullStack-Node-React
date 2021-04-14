@@ -47,7 +47,9 @@ export type UserResetPasswordParams = {
     repPassword: Password;
 };
 
-export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname'>;
+export type UserUpdateParams = Pick<User, 'name' | 'phone' | 'surname' | 'birthDate' | 'mail'>;
+
+export type UserGetFormSteps = Pick<User, 'adoptionStep' | 'volunteerStep'>;
 
 export class UsersService {
     @Inject
@@ -276,5 +278,32 @@ export class UsersService {
             .message;
 
         this.emailService.sendEmail(adopter.mail, message);
+    }
+
+    public async getFormSteps(id: number, currentUser: IUserInfo): Promise<UserGetFormSteps> {
+        const user = await this.userRepository.findOne(id);
+        if (!user) throw new ApiError('Not Found', 404, `User with id: ${id} not found`);
+
+        if (currentUser.id !== id && currentUser.role !== UserType.ADMIN)
+            throw new ApiError('Unauthorized', 401, `Invalid token`);
+        const steps: UserGetFormSteps = { adoptionStep: user.adoptionStep, volunteerStep: user.volunteerStep };
+
+        return steps;
+    }
+
+    public async updateFormSteps(
+        id: number,
+        updatedSteps: Partial<UserGetFormSteps>,
+        currentUser: IUserInfo,
+    ): Promise<void> {
+        const user = await this.userRepository.findOne(id);
+        if (!user) throw new ApiError('Not found', 404, `User with id: ${id} not found!`);
+
+        if (currentUser.id !== id && currentUser.role !== UserType.ADMIN)
+            throw new ApiError('Unauthorized', 401, `Invalid token`);
+
+        const updatedUser = { ...user, ...updatedSteps };
+
+        await this.userRepository.save(updatedUser);
     }
 }
