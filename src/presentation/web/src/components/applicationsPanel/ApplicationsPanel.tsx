@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Animal, AnimalFormStatus, FormAnimalAnswer, FormAnimalSubmission, useChangeFormStatusForAdoption, useGetAnimalSubmission, useGetAnimalSubmissionByAnimalId } from '../../client';
+import { Animal, AnimalFormStatus, FormAnimalAnswer, useChangeFormStatusForAdoption, useGetAnimalSubmission } from '../../client';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -144,6 +144,7 @@ const ApplicationsPanel = () => {
         data: submissionData,
         loading: loadingSubmissions
     } = useGetAnimalSubmission({ userId: 2, requestOptions });
+    console.log(submissionData);
 
     return (
         <Paper className={classes.paper} square={false}>
