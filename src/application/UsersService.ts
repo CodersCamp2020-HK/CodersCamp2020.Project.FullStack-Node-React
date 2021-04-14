@@ -308,4 +308,10 @@ export class UsersService {
 
         await this.userRepository.save(updatedUser);
     }
+
+    public async getUserByEmail({ email }: EmailResetPassword): Promise<User> {
+        const user = await this.userRepository.findOne({ mail: email });
+        if (!user) throw new ApiError('Not Found', 400, `User with email: ${email} not found`);
+        return user;
+    }
 }
