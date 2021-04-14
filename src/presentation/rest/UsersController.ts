@@ -1,3 +1,10 @@
+import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
+import {
+    InvalidEmailFormatError,
+    PasswordRequirementsError,
+    UniqueUserEmailError,
+    ValidateErrorJSON,
+} from '@application/UsersErrors';
 import {
     ApiKey,
     EmailResetPassword,
@@ -8,45 +15,38 @@ import {
     UsersService,
     UserUpdateParams,
 } from '@application/UsersService';
+import ActivationMessage from '@infrastructure/ActivationMessage';
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import { EmailService } from '@infrastructure/EmailService';
+import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import User, { Email } from '@infrastructure/postgres/User';
+import { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
+import { Request as ExRequest } from 'express';
+import * as useragent from 'express-useragent';
 import {
     Body,
     Controller,
     Delete,
+    Example,
     Get,
     Patch,
     Path,
     Post,
     Put,
+    Query,
+    Request,
     Res,
     Response,
-    Request,
     Route,
     Security,
     SuccessResponse,
     Tags,
     TsoaResponse,
-    Query,
-    Example,
 } from 'tsoa';
-import { Inject } from 'typescript-ioc';
-import {
-    InvalidEmailFormatError,
-    PasswordRequirementsError,
-    UniqueUserEmailError,
-    ValidateErrorJSON,
-} from '@application/UsersErrors';
-import { Request as ExRequest } from 'express';
-import { EmailService } from '@infrastructure/EmailService';
-import { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
-import ActivationMessage from '@infrastructure/ActivationMessage';
-import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
-import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
-import { omit } from '../../utils/omit';
 import { DeepPartial } from 'typeorm';
-import * as useragent from 'express-useragent';
+import { Inject } from 'typescript-ioc';
+import { omit } from '../../utils/omit';
 
 @Tags('Users')
 @Route('users')
@@ -163,8 +163,8 @@ export class UsersController extends Controller {
     }
 
     /**
-     * Send activation link to user with unique ID with information about
-     * @param userId Unique ID of user
+     * Send activation link to user with unique email with information about
+     * @param body Unique email of user
      * @param request Information from express
      */
     @Response<Error>(500, 'Internal Server Error')
