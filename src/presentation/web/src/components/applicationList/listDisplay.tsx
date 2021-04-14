@@ -30,24 +30,24 @@ const ListDisplay = () => {
     const animalId = id ? parseInt(id) : 2;
     const { data: listData } = useGetAnimalSubmissionByAnimalId ({ animalId ,requestOptions });
 
-    // console.log(listData);
+    console.log(listData);
     // if (listData) console.log(listData[0].answers[0].question.form.id);
     // if (listData) console.log(listData[0].applicant.name);
     // if (listData) console.log(listData[0].applicant.surname);
     // if (listData) console.log(listData[0].submissionDate)
 
-    const shorterListData = ( data: UseGetAnimalSubmissionByAnimalIdProps[] ) => {
-        if (data)
-        return data.map((one, index) => ({
-            dateOfSubmission: one[index].submissionDate,
-            name: one[index].applicant.name,
-            surname: one[index].applicant.surname,
-            applicationNumber: one[index].answers[0].question.form.id,
-        }))
-    };
+    // const shorterListData = ( data: UseGetAnimalSubmissionByAnimalIdProps[] ) => {
+    //     if (data)
+    //     return data.map((one, index) => ({
+    //         dateOfSubmission: one[index].submissionDate,
+    //         name: one[index].applicant.name,
+    //         surname: one[index].applicant.surname,
+    //         applicationNumber: one[index].answers[0].question.form.id,
+    //     }))
+    // };
     // var result = arr.map(person => ({ value: person.id, text: person.name }));
     // console.log(result)
-    const dataToProps = shorterListData(listData);
+    // const dataToProps = shorterListData(listData);
 
     const listDataMock: ListData[] = [
         {dateOfSubmission: '22/03/2022', name: 'Waldek', surname: 'Złoty', applicationNumber: 1},
@@ -57,7 +57,7 @@ const ListDisplay = () => {
 
     return(
         <Paper className={classes.mainWrapper}>
-            {dataToProps && <ListOfApplications listData={listDataMock}/>}
+            {listData && <ListOfApplications listData={listDataMock}/>}
         </Paper>
     )  
 };
