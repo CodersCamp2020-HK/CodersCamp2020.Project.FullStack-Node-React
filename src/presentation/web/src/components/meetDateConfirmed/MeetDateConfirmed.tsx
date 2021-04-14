@@ -1,11 +1,11 @@
 import react from 'react';
 import { makeStyles } from '@material-ui/styles';
-import { Card, CardActionArea, CardMedia, Link, Grid, Paper, SvgIcon, Typography } from '@material-ui/core';
+import { Link, Grid, Paper, Typography } from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import CalendarTodayOutlinedIcon from '@material-ui/icons/CalendarTodayOutlined';
 import theme from '../../themes/theme';
 import React from 'react';
-import { useGetAnimalSubmission } from "../../client/index";
+import { useGetAnimalSubmission } from "../../client";
 
 const useStyles = makeStyles({
     mainWrapper: {
@@ -57,7 +57,9 @@ const useStyles = makeStyles({
 
 const MeetDateConfirmed: React.FC = () => {
     const classes = useStyles();
-    const date = useGetAnimalSubmission({});
+    const requestOptions = { headers: { access_token: localStorage.getItem('apiKey') ?? '' } };
+    const { data, loading } = useGetAnimalSubmission({ userId: 3, requestOptions });
+    if (data) console.log(data);
     return (
         <Grid item xs={12}>
             <Paper className={`${classes.mainWrapper} ${classes.margin}}`} variant="outlined">
@@ -69,7 +71,7 @@ const MeetDateConfirmed: React.FC = () => {
                         </div>
                         <Typography variant='h5'>Data spotkania</Typography>
                         <Typography variant='subtitle1'>Ustaliłeś(aś) datę spotkania w schronisku na:</Typography>
-                        <Typography variant='h6'>{date}</Typography>
+                        <Typography variant='h6'>{3}</Typography>
                     </Paper>
                 </div>
                 <Typography className={classes.margin} variant='subtitle1'>Przychodząc do nas zarezerwuj sobie kilka godzin na oglądanie i poznanie naszych zwierzęt.</Typography>
@@ -80,6 +82,7 @@ const MeetDateConfirmed: React.FC = () => {
                         Zobacz na mapie.
                         </Link></Typography>
                 </div>
+                {data && <span>{JSON.stringify(data)}</span>}
             </Paper>
         </Grid>
     )
