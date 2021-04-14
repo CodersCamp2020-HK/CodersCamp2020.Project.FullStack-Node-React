@@ -1,5 +1,5 @@
 import { Avatar, makeStyles, Theme, Typography } from '@material-ui/core';
-import { Check } from '@material-ui/icons';
+import { HourglassEmpty } from '@material-ui/icons';
 import { format } from 'date-fns';
 import React from 'react';
 
@@ -28,7 +28,7 @@ const WaitingForVisitConfirmation = ({ acceptedFormDate, acceptingWorkerName, en
     return (
         <div className={styles.wrapper}>
             <Avatar className={styles.avatar}>
-                <Check />
+                <HourglassEmpty />
             </Avatar>
             <Typography variant="h5">Oczekiwanie na potwierdzenie wizyty przez składającego wniosek.</Typography>
             <Typography className={styles.text} variant="subtitle1">Data zaakceptowania wniosku adopcyjnego:</Typography>
