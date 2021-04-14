@@ -7,6 +7,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
 import { Link as RouterLink } from 'react-router-dom';
+import formatDate from '../../utils/formatText/formatDate';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -20,23 +21,29 @@ const useStyles = makeStyles((theme) => ({
             boxShadow: '0px 0px 8px 0px rgba(0,0,0,0.1)',
         },
     },
-    content: {
+    content1: {
         height: 200,
     },
+    content2: {},
     media: {
         height: 300,
     },
 }));
+
+type GalleryType = 1 | 2 | 3;
 
 interface Props {
     id: number;
     name: string;
     description: string;
     photoURL: string;
+    galleryType: GalleryType;
+    admissionToShelter: string;
 }
 
-const AnimalCard: React.FC<Props> = ({ id, name, description, photoURL }) => {
+const AnimalCard: React.FC<Props> = ({ id, name, description, photoURL, galleryType, admissionToShelter }) => {
     const classes = useStyles();
+
     return (
         <Link component={RouterLink} to={`animals/${id}`}>
             <Card className={classes.root}>
@@ -46,14 +53,27 @@ const AnimalCard: React.FC<Props> = ({ id, name, description, photoURL }) => {
                         image={`data:image/png;base64,${photoURL}`}
                         title="Adoptuj mnie"
                     />
-                    <CardContent className={classes.content}>
-                        <Typography color="textPrimary" gutterBottom variant="h5" component="h2">
-                            {name}
-                        </Typography>
-                        <Typography variant="subtitle1" color="textPrimary" component="p">
-                            {description}
-                        </Typography>
-                    </CardContent>
+                    {galleryType === 1 ? (
+                        <CardContent className={classes.content1}>
+                            <Typography color="textPrimary" gutterBottom variant="h5" component="h2">
+                                {name}
+                            </Typography>
+                            <Typography variant="subtitle1" color="textPrimary" component="p">
+                                {description}
+                            </Typography>
+                        </CardContent>
+                    ) : galleryType === 2 ? (
+                        <CardContent className={classes.content2}>
+                            <Typography variant="subtitle1" color="textPrimary" component="p">
+                                {`Numer Ewidencyjny: ${id}`}
+                            </Typography>
+                            <Typography variant="subtitle1" color="textPrimary" component="p">
+                                {`Data przyjęcia: ${formatDate(admissionToShelter)}`}
+                            </Typography>
+                        </CardContent>
+                    ) : (
+                        galleryType === 3 && <div></div>
+                    )}
                 </CardActionArea>
             </Card>
         </Link>

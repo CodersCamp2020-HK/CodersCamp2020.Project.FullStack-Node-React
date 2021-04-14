@@ -10,7 +10,7 @@ const Adoption = () => {
     const { path } = useRouteMatch();
 
     return (
-        <GridContainer justify="center" align="flex-start" spacing={2}>
+        <GridContainer marginBottom={0} marginTop={0} spacing={2} align="center" justify="center">
             <Switch>
                 <Route exact path={`${path}`}>
                     <PageAdopt />;

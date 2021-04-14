@@ -25,7 +25,7 @@ const AnimalInfo = () => {
     }
 
     return (
-        <GridContainer spacing={2} align="center" justify="center">
+        <GridContainer marginBottom={0} marginTop={0} spacing={2} align="center" justify="center">
             <Grid item xs={12} sm={8}>
                 {loading ? <LoadingCircle size={70} /> : <Slider photos={[...photos]} />}
                 <AnimalInfoDescription animalId={(animalId as unknown) as number} />
