@@ -1,7 +1,8 @@
 import React from 'react';
+import ApplicationsPanel from '../components/applicationsPanel/ApplicationsPanel';
 
 const Applications = () => {
-    return <div>Applications</div>;
+    return <ApplicationsPanel />;
 };
 
 export default Applications;

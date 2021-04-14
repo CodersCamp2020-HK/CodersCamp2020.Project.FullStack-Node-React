@@ -63,7 +63,7 @@ const isUserInfo = (user: unknown): user is IUserInfo => {
 
 const apiKey = localStorage.getItem('apiKey') !== null ? localStorage.getItem('apiKey') : null;
 
-const decodedToken = apiKey !== null && process.env.JWT_KEY !== undefined ? jwt.verify(apiKey, process.env.JWT_KEY) : null;
+const decodedToken = apiKey !== null ? jwt.decode(apiKey) : null;
 
 const initialAppState =
     decodedToken && isUserInfo(decodedToken)
