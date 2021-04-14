@@ -45,6 +45,7 @@ const useStyle = makeStyles<Theme>((theme) => ({
     forgetPassword: {
         alignSelf: 'flex-end',
         color: theme.palette.info.dark,
+        marginBottom: '.7rem'
     },
     submit: {
         filter:
@@ -78,7 +79,7 @@ const LoginForm = () => {
 
     const [loginError, setLoginError] = useState<string>(null!);
     const [fireRedirect, setFireRedirect] = useState<boolean>(false);
-    const { error, mutate: auth, loading } = useLoginUser({});
+    const { error: dbError, mutate: auth, loading } = useLoginUser({});
 
     const { register, handleSubmit, errors } = useForm<IFormValues>();
     const onSubmit = async (data: IFormValues) => {
@@ -98,7 +99,10 @@ const LoginForm = () => {
             }
             setFireRedirect(true);
         } catch (error) {
-            if (error.status == 400 || error.status == 422) {
+            if (error.data.message === 'User not activated') {
+                setLoginError('Konto nie zostało aktywowane');
+            }
+            else if (error.status == 400 || error.status == 422) {
                 setLoginError('Błędny e-mail lub hasło!');
             } else {
                 setLoginError('Błąd serwera! Spróbuj ponownie później.');
@@ -152,6 +156,9 @@ const LoginForm = () => {
                 </form>
                 <Link component={RouterLink} className={classes.forgetPassword} to="/auth/forget">
                     <Typography variant="body2">Zapomniałeś hasła?</Typography>
+                </Link>
+                <Link component={RouterLink} className={classes.forgetPassword} to="/auth/send/activation/link">
+                    <Typography variant="body2">Nie otrzymałeś linku aktywacyjnego?</Typography>
                 </Link>
             </AuthPaper>
             <Paper
