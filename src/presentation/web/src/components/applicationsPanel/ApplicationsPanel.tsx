@@ -65,10 +65,10 @@ const SingleApplication: React.FC<SingleApplicationProps> = ({ answers, submissi
     return (
         <>
             <SurveyForm
-            questions={answers.map((answer) => answer.question)}
-            defaultValues={mapAnswersToQuestions(answers)}
-            handleSubmit={() => {}}
-            disabled={true}
+                questions={answers.map((answer) => answer.question)}
+                defaultValues={mapAnswersToQuestions(answers)}
+                handleSubmit={() => {}}
+                disabled={true}
             />
             <div className={classes.buttonWrapper}>
                 <Button
@@ -144,8 +144,6 @@ const ApplicationsPanel = () => {
         data: submissionData,
         loading: loadingSubmissions
     } = useGetAnimalSubmission({ userId: 2, requestOptions });
-
-    const { data } = useGetAnimalSubmissionByAnimalId({ animalId: 2, requestOptions })
 
     return (
         <Paper className={classes.paper} square={false}>
