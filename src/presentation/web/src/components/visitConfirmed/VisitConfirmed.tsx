@@ -35,11 +35,11 @@ const VisitConfirmed = ({ date, adopter, worker }: VisitConfirmedProps) => {
             <Typography className={styles.title} variant="h5">
                 Wizyta w schronisku potwierdzona
             </Typography>
-            <Typography variant="h6">Data spotkania w schronisku dla {adopter} potwierdzona na: </Typography>
+            <Typography variant="subtitle1">Data spotkania w schronisku dla {adopter} potwierdzona na: </Typography>
             <Typography className={styles.contentSection} variant="h6">
                 {format(date, 'dd/MM/yyyy, HH:mm')}
             </Typography>
-            <Typography variant="h6">Pracownik akceptujący wniosek adopcyjny:</Typography>
+            <Typography variant="subtitle1">Pracownik akceptujący wniosek adopcyjny:</Typography>
             <Typography variant="h6">{worker}</Typography>
             <Calendar readOnly defaultSelected={date} name="calendar" />
         </div>
