@@ -97,7 +97,7 @@ const ApplicationsPanel = () => {
     const { 
         data: submissionData,
         loading: loadingSubmissions
-    } = useGetAnimalSubmission({ id: 1, requestOptions });
+    } = useGetAnimalSubmission({ userId: 1, requestOptions });
     console.log(submissionData);
 
     return (
