@@ -60,13 +60,14 @@ const localTheme = createMuiTheme({
 
 const initialQuery: GetAnimalsQueryParams = {
     specie: 'cat',
-    // minAge: 1,
-    // maxAge: 100,
-    // readyForAdoption: true,
-    // temporaryHome: false,
-    // acceptsOtherAnimals: false,
-    // activeLevel: 'medium',
-    size: 'small',
+    minAge: 1,
+    maxAge: 100,
+    readyForAdoption: true,
+    temporaryHome: true,
+    acceptsOtherAnimals: true,
+    acceptsKids: true,
+    activeLevel: 'high',
+    size: 'large',
 };
 
 const Animals = () => {
@@ -75,6 +76,7 @@ const Animals = () => {
     const classes = useStyles();
     const { handleSubmit, control, register } = useForm<GetAnimalsQueryParams>();
     const onSubmit = (data: GetAnimalsQueryParams) => {
+        console.log(data);
         setQuery(data);
     };
     return (
@@ -236,13 +238,13 @@ const Animals = () => {
                         <InputLabel id="specie">Gatunek</InputLabel>
                         <Controller
                             control={control}
-                            defaultValue="Cat"
+                            defaultValue="cat"
                             name="specie"
                             label="Gatunek"
                             as={
                                 <Select labelId="specie" id="demo-simple-select-outlined" label="Gatunek">
-                                    <MenuItem value="Cat">Cat</MenuItem>
-                                    <MenuItem value="Dog">Dog</MenuItem>
+                                    <MenuItem value="cat">Cat</MenuItem>
+                                    <MenuItem value="dog">Dog</MenuItem>
                                 </Select>
                             }
                         />

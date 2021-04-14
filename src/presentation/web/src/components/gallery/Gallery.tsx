@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import GalleryPage from '../galleryPage/GalleryPage';
 import { MemoryRouter, Route } from 'react-router';
-import { BrowserRouter as Router, Link, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Link, useLocation, useRouteMatch, useHistory } from 'react-router-dom';
 import Pagination from '@material-ui/lab/Pagination';
 import PaginationItem from '@material-ui/lab/PaginationItem';
 import { useGet } from 'restful-react';
@@ -31,6 +31,12 @@ const useStyle = makeStyles({
 });
 
 const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage, galleryType }) => {
+    const { path } = useRouteMatch();
+    const location = useLocation();
+    const history = useHistory();
+    // console.log(path);
+    // console.log(location);
+    // console.log(history);
     const classes = useStyle();
     const { data, loading } = useGetAnimals({ queryParams: { ...query, count: true } });
     const [pages, setPages] = useState(1);
@@ -66,7 +72,7 @@ const Gallery: React.FC<Props> = ({ query, currentPage, setCurrentPage, galleryT
                             renderItem={(item) => (
                                 <PaginationItem
                                     component={Link}
-                                    to={`/${item.page === 1 ? '' : `?page=${item.page}`}`}
+                                    to={`${path}${item.page === 1 ? `` : `?page=${item.page}`}`}
                                     {...item}
                                 />
                             )}
