@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, Theme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,16 +8,22 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { ListData } from './listDisplay';
+import { Button } from '@material-ui/core';
 
 interface Props{
     listData: ListData[],
 };
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => ({
     table: {
       minWidth: 650,
     },
-  });
+    button: {
+      background: theme.palette.secondary.main,
+      color: '#FFF',
+      borderRadius: 21,
+    }
+  }));
 
 function createData(dateOfSubmission: string, name: string, surname: string, applicationNumber: number) {
     return { dateOfSubmission, name, surname, applicationNumber };
@@ -52,6 +58,9 @@ const ListOfApplications = (props:Props) => {
                 </TableCell>
                 <TableCell align="right">{ row.name } { row.surname }</TableCell>
                 <TableCell align="right">{ row.applicationNumber }</TableCell>
+                <TableCell align="right">
+                  <Button className={classes.button}>Zobacz wniosek</Button>
+                </TableCell>
                 </TableRow>
             ))}
             </TableBody>
