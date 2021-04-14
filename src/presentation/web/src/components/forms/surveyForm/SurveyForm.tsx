@@ -5,7 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import { ClassNameMap } from '@material-ui/styles';
 import React from 'react';
 import { useForm, UseFormMethods } from 'react-hook-form';
-import { Form, FormQuestion } from '../../../client/index';
+import { FormQuestion } from '../../../client/index';
 import isArray from '../../../utils/IsArray';
 import isStringOrUndefined from '../../../utils/IsStringOrUndefined';
 import CheckboxGroup from '../../common/checkboxGroup/CheckboxGroup';
@@ -14,7 +14,7 @@ import LoadingCircleSmall from '../../loadingCircleSmall/LoadingCircleSmall';
 
 interface SurveyFormProps {
     handleSubmit: (data: any) => void;
-    formData: Form;
+    questions: FormQuestion[];
     defaultValues?: Record<string, string | string[]>;
     disabled?: boolean;
 }
@@ -178,7 +178,7 @@ const GenerateInputs = ({ questions, methods, defaultValues, disabled = false, c
     })
 }
 
-const SurveyForm: React.FC<SurveyFormProps> = ({ handleSubmit: submitCb, formData, defaultValues, disabled }) => {
+const SurveyForm: React.FC<SurveyFormProps> = ({ handleSubmit: submitCb, questions, defaultValues, disabled }) => {
     const classes = useStyles();
 
     const methods = useForm<Record<string, string | string[]>>({
@@ -188,7 +188,7 @@ const SurveyForm: React.FC<SurveyFormProps> = ({ handleSubmit: submitCb, formDat
 
     return (
         <form noValidate className={classes.form} onSubmit={methods.handleSubmit(submitCb)}>
-            {GenerateInputs({ questions: formData.questions, methods, defaultValues, disabled, classes })}
+            {GenerateInputs({ questions, methods, defaultValues, disabled, classes })}
             {
                 !disabled &&
                     <Button

@@ -65,6 +65,8 @@ const FirstStep = () => {
         requestOptions,
     });
 
+    console.log(getFormData);
+
     const handleIdSubmit = async ({ numerEwidencyjny: id }: Inputs) => {
         try {
             getForm({ pathParams: { animalId: id } });
@@ -99,7 +101,7 @@ const FirstStep = () => {
                             zgody na adopcję niniejsza ankieta będzie integralną częścią zobowiązania adopcyjnego/umowy.
                             <br />Prosimy tym samym o przemyślane i zgodne z prawdą odpowiedzi na pytania.
                         </Typography>
-                        <SurveyForm formData={getFormData.form} handleSubmit={handleFormSubmit} />
+                        <SurveyForm questions={getFormData.form.questions} handleSubmit={handleFormSubmit} />
                     </>
                 }
                 {getFormLoading || adoptionStepsLoading &&
