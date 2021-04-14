@@ -24,16 +24,15 @@ function createData(dateOfSubmission: string, name: string, surname: string, app
   }
   
 const Rows = ( props: Props ) => {
-      props.listData.map((prop) => {
+      return props.listData.map((prop) => {
         return (createData(prop.dateOfSubmission, prop.name, prop.surname, prop.applicationNumber));
         })
     };
 
 const ListOfApplications = (props:Props) => {
     const classes = useStyles();
-    const rows = Rows(props.listData);
-    console.log(rows);
-    console.log(props.listData)
+    const rows = Rows(props);
+    // console.log(rows);
 
     return (
     <Table className={classes.table} aria-label="simple table">
