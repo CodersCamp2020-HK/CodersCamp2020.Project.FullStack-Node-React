@@ -78,7 +78,7 @@ const LoginForm = () => {
 
     const [loginError, setLoginError] = useState<string>(null!);
     const [fireRedirect, setFireRedirect] = useState<boolean>(false);
-    const { error, mutate: auth, loading } = useLoginUser({});
+    const { error: dbError, mutate: auth, loading } = useLoginUser({});
 
     const { register, handleSubmit, errors } = useForm<IFormValues>();
     const onSubmit = async (data: IFormValues) => {
@@ -98,7 +98,10 @@ const LoginForm = () => {
             }
             setFireRedirect(true);
         } catch (error) {
-            if (error.status == 400 || error.status == 422) {
+            if (error.data.message === 'User not activated') {
+                setLoginError('Konto nie zostało aktywowane');
+            }
+            else if (error.status == 400 || error.status == 422) {
                 setLoginError('Błędny e-mail lub hasło!');
             } else {
                 setLoginError('Błąd serwera! Spróbuj ponownie później.');
