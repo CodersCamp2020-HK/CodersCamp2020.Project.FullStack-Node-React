@@ -45,6 +45,7 @@ const useStyle = makeStyles<Theme>((theme) => ({
     forgetPassword: {
         alignSelf: 'flex-end',
         color: theme.palette.info.dark,
+        marginBottom: '.7rem'
     },
     submit: {
         filter:

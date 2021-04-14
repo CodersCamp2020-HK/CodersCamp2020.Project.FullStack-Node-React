@@ -37,8 +37,12 @@ const ActivationAccForm = () => {
     const [fireRedirect, setFireRedirect] = useState(false);
 
     const onSubmit = async ({ mail }: Inputs) => {
-        await sendLink({ email: mail });
-        setFireRedirect(true);
+        try {
+            await sendLink({ email: mail });
+            setFireRedirect(true);
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return (
