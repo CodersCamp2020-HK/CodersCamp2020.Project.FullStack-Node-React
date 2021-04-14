@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
+import { Animal, AnimalFormStatus, FormAnimalAnswer, useChangeFormStatusForAdoption, useGetAnimalSubmission } from '../../client';
+import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Paper from '@material-ui/core/Paper';
-import { AnimalFormStatus, FormAnimalAnswer, useChangeFormStatusForAdoption, useGetAnimalSubmission } from '../../client';
-import { useHistory } from 'react-router-dom';
+import TextField from '@material-ui/core/TextField';
 import LoadingCircle from '../loadingCircle/LoadingCircle';
 import SurveyForm from '../forms/surveyForm/SurveyForm';
 import mapAnswersToQuestions from '../../utils/MapAnswersToQuestions';
@@ -13,6 +14,10 @@ import LoadingCircleSmall from '../loadingCircleSmall/LoadingCircleSmall';
 interface SingleApplicationProps {
     answers: FormAnimalAnswer[];
     submissionId: number;
+}
+
+interface AnimalInfoProps {
+    animal: Animal;
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -86,6 +91,18 @@ const SingleApplication: React.FC<SingleApplicationProps> = ({ answers, submissi
     )
 }
 
+const AnimalInfo: React.FC<AnimalInfoProps> = ({ animal }) => {
+    const labels = new Map()
+    const { additionalInfo: _, description, ...allAnimalProps }  = { ...animal, ...animal.additionalInfo, ...animal.specie };
+    const keys = Object.keys(allAnimalProps);
+    const values = Object.values(allAnimalProps);
+    return <> {keys.map((key, index) => {
+        return (<TextField key={key} disabled={true} label={key} defaultValue={values[index]} />);
+        })} 
+        <TextField key={description} disabled={true} label={'opis'} defaultValue={description} />
+    </>
+}
+
 const ApplicationsPanel = () => {
     const requestOptions = { headers: { access_token: localStorage.getItem('apiKey') ?? '' } };
     const { location } = useHistory();
@@ -97,8 +114,7 @@ const ApplicationsPanel = () => {
     const { 
         data: submissionData,
         loading: loadingSubmissions
-    } = useGetAnimalSubmission({ userId: 1, requestOptions });
-    console.log(submissionData);
+    } = useGetAnimalSubmission({ userId: 2, requestOptions });
 
     return (
         <Paper className={classes.paper} square={false}>
@@ -115,9 +131,9 @@ const ApplicationsPanel = () => {
                     O adoptującym
                 </Button>
             </ButtonGroup>
-            {!loadingSubmissions && submissionData && selectedBtn === 1
-                ? <SingleApplication answers={submissionData.answers} submissionId={1} />
-                : <LoadingCircle />}
+            {submissionData && selectedBtn === 1 && <SingleApplication answers={submissionData.answers} submissionId={1} />}
+            {submissionData && selectedBtn === 2 && <AnimalInfo animal={submissionData.animal} />}
+            {loadingSubmissions && <LoadingCircle />}
             
         </Paper>
     )
