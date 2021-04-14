@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Animal, AnimalFormStatus, FormAnimalAnswer, useChangeFormStatusForAdoption, useGetAnimalSubmission } from '../../client';
+import { Animal, AnimalFormStatus, FormAnimalAnswer, useChangeFormStatusForAdoption, useGetAnimalSubmission, User } from '../../client';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
@@ -20,6 +20,38 @@ interface SingleApplicationProps {
 interface AnimalInfoProps {
     animal: Animal;
 }
+
+interface ApplicantInfoProps {
+    applicant: User;
+}
+
+const PL_LABELS = new Map([
+    ['name', 'Imię'],
+    ['age', 'Wiek'],
+    ['readyForAdoption', 'Gotowy do adopcji'],
+    ['specie', 'Gatunek'],
+    ['activeLevel', 'Aktywność'],
+    ['size', 'Rozmiar'],
+    ['specialDiet', 'Specjalna dieta'],
+    ['admissionToShelter', 'Data przyjęcia w schronisku'],
+    ['description', 'Opis'],
+    ['acceptsKids', 'Akceptuje dzieci'],
+    ['acceptsOtherAnimals', 'Akceptuje inne zwierzęta'],
+    ['false', 'Nie'],
+    ['true', 'Tak'],
+    ['dog', 'Pies'],
+    ['cat', 'Kot'],
+    ['low', 'Niska'],
+    ['medium', 'Średnia'],
+    ['high', 'Wysoka'],
+    ['small', 'Mały'],
+    ['medium', 'Średniu'],
+    ['large', 'Duży'],
+    ['surname', 'Nazwisko'],
+    ['phone', 'Nr telefonu'],
+    ['mail', 'E-mail'],
+    ['birthDate', 'Data urodzenia'],
+])
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -95,32 +127,33 @@ const SingleApplication: React.FC<SingleApplicationProps> = ({ answers, submissi
     )
 }
 
+const ApplicantInfo: React.FC<ApplicantInfoProps> = ({ applicant }) => {
+    const { birthDate, ...userInfo } = applicant;
+    const classes = useStyles();
+    const keys = Object.keys(userInfo);
+    const values = Object.values(userInfo);
+
+    return <> {keys.map((key, index) => {
+        return (<TextField
+                    className={classes.textField}
+                    key={key}
+                    disabled={true}
+                    label={PL_LABELS.get(key) ?? key}
+                    defaultValue={PL_LABELS.get(values[index].toString()) ?? values[index]} 
+                />)
+        })}
+        <TextField
+                className={classes.textField}
+                key={birthDate}
+                disabled={true}
+                label={'Data urodzenia'}
+                defaultValue={formatDate(birthDate)}
+        />
+    </>
+}
+
 const AnimalInfo: React.FC<AnimalInfoProps> = ({ animal }) => {
     const classes = useStyles();
-
-    const plLabels = new Map([
-        ['name', 'Imię'],
-        ['age', 'Wiek'],
-        ['readyForAdoption', 'Gotowy do adopcji'],
-        ['specie', 'Gatunek'],
-        ['activeLevel', 'Aktywność'],
-        ['size', 'Rozmiar'],
-        ['specialDiet', 'Specjalna dieta'],
-        ['admissionToShelter', 'Data przyjęcia w schronisku'],
-        ['description', 'Opis'],
-        ['acceptsKids', 'Akceptuje dzieci'],
-        ['acceptsOtherAnimals', 'Akceptuje inne zwierzęta'],
-        ['false', 'Nie'],
-        ['true', 'Tak'],
-        ['dog', 'Pies'],
-        ['cat', 'Kot'],
-        ['low', 'Niska'],
-        ['medium', 'Średnia'],
-        ['high', 'Wysoka'],
-        ['small', 'Mały'],
-        ['medium', 'Średniu'],
-        ['large', 'Duży'],
-    ])
     const { additionalInfo: _, description, admissionToShelter, ...allAnimalProps }  = { ...animal, ...animal.additionalInfo, ...animal.specie };
     const keys = Object.keys(allAnimalProps);
     const values = Object.values(allAnimalProps);
@@ -129,8 +162,8 @@ const AnimalInfo: React.FC<AnimalInfoProps> = ({ animal }) => {
                     className={classes.textField}
                     key={key}
                     disabled={true}
-                    label={plLabels.get(key) ?? key}
-                    defaultValue={plLabels.get(values[index].toString()) ?? values[index]} 
+                    label={PL_LABELS.get(key) ?? key}
+                    defaultValue={PL_LABELS.get(values[index].toString()) ?? values[index]} 
                 />);
         })} 
         <TextField
@@ -162,7 +195,6 @@ const ApplicationsPanel = () => {
         data: submissionData,
         loading: loadingSubmissions
     } = useGetAnimalSubmission({ userId: 2, requestOptions });
-    console.log(submissionData);
 
     return (
         <Paper className={classes.paper} square={false}>
@@ -181,6 +213,7 @@ const ApplicationsPanel = () => {
             </ButtonGroup>
             {submissionData && selectedBtn === 1 && <SingleApplication answers={submissionData.answers} submissionId={1} />}
             {submissionData && selectedBtn === 2 && <AnimalInfo animal={submissionData.animal} />}
+            {submissionData && selectedBtn === 3 && <ApplicantInfo applicant={submissionData.applicant} />}
             {loadingSubmissions && <LoadingCircle />}
             
         </Paper>
