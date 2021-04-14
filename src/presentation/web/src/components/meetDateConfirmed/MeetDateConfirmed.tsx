@@ -24,14 +24,14 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        marginTop: '24',
+        padding: '1rem',
     },
     dateWrapper: {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: '0 2rem',
+        padding: '1rem 5rem',
     },
     iconWrapper: {
         backgroundColor: theme.palette.secondary.dark,
@@ -65,32 +65,32 @@ const MeetDateConfirmed: React.FC = () => {
     const { data, loading, error } = useGetAnimalSubmission({ userId: 2, requestOptions });
     if (error) console.error(error);
     if (data) console.log(data);
-    return <> 
-        {data && !loading 
-            ? 
-                <Paper className={`${classes.mainWrapper} ${classes.margin}}`} variant="outlined">
-                    <Typography className={classes.margin} variant='h4'>Adoptuj zwierzaka!</Typography>
-                    <div className={classes.insideWrapper}>
-                        <Paper className={classes.dateWrapper} variant="outlined">
-                            <div className={classes.iconWrapper}>
-                                <CalendarTodayOutlinedIcon className={classes.icon} />
-                            </div>
-                            <Typography variant='h5'>Data spotkania</Typography>
-                            <Typography variant='subtitle1'>Ustaliłeś(aś) datę spotkania w schronisku na:</Typography>
-                            <Typography variant='h6'>{formatDate(data.submissionDate)}</Typography>
-                        </Paper>
-                    </div>
-                    <Typography className={classes.margin} variant='subtitle1'>Przychodząc do nas zarezerwuj sobie kilka godzin na oglądanie i poznanie naszych zwierzęt.</Typography>
-                    <Typography variant='subtitle1'>Nie śpiesz się – adopcja to często decyzja na najbliższych kilkanaście lat.</Typography>
-                    <Typography className={classes.margin} variant='body2'>W razie chęci przełożenia daty spotkania prosimy o kontakt telefoniczny bezpośrednio ze schroniskiem.</Typography>
-                    <div className={classes.footer}>
-                        <Typography className={classes.margin} variant='body1'>Jak do nas dotrzeć? <Link component={RouterLink} to={`/contact`} className={classes.link} variant='body2'>
-                            Zobacz na mapie.
+    return <>
+        {data && !loading
+            ?
+            <Paper className={`${classes.mainWrapper} ${classes.margin}}`} variant="outlined">
+                <Typography className={classes.margin} variant='h4'>Adoptuj zwierzaka!</Typography>
+                <div className={`${classes.insideWrapper} ${classes.margin}`}>
+                    <Paper className={classes.dateWrapper} variant="outlined">
+                        <div className={classes.iconWrapper}>
+                            <CalendarTodayOutlinedIcon className={classes.icon} />
+                        </div>
+                        <Typography variant='h5'>Data spotkania</Typography>
+                        <Typography className={classes.margin} variant='subtitle1'>Ustaliłeś(aś) datę spotkania w schronisku na:</Typography>
+                        <Typography variant='h6'>{formatDate(data.submissionDate)}</Typography>
+                    </Paper>
+                </div>
+                <Typography className={classes.margin} variant='subtitle1'>Przychodząc do nas zarezerwuj sobie kilka godzin na oglądanie i poznanie naszych zwierzęt.</Typography>
+                <Typography variant='subtitle1'>Nie śpiesz się – adopcja to często decyzja na najbliższych kilkanaście lat.</Typography>
+                <Typography className={classes.margin} variant='body2'>W razie chęci przełożenia daty spotkania prosimy o kontakt telefoniczny bezpośrednio ze schroniskiem.</Typography>
+                <div className={classes.footer}>
+                    <Typography className={classes.margin} variant='body1'>Jak do nas dotrzeć? <Link component={RouterLink} to={`/contact`} className={classes.link} variant='body2'>
+                        Zobacz na mapie.
                             </Link></Typography>
-                    </div>
-                </Paper>
+                </div>
+            </Paper>
             :
-                <LoadingCircle />
+            <LoadingCircle />
         }
     </>
 };
