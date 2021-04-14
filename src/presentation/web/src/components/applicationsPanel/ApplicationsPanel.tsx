@@ -7,6 +7,7 @@ import { FormAnimalAnswer, useGetAnimalSubmission } from '../../client';
 import { useHistory } from 'react-router-dom';
 import LoadingCircle from '../loadingCircle/LoadingCircle';
 import SurveyForm from '../forms/surveyForm/SurveyForm';
+import mapAnswersToQuestions from '../../utils/MapAnswersToQuestions';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -27,13 +28,6 @@ const useStyles = makeStyles((theme) => ({
     },
     disabled: {}
 }))
-
-const mapAnswersToQuestions = (answers: FormAnimalAnswer[]) => {
-    const answeredQuestion: Record<string, string | string[]> = {};
-    answers.forEach((answer) => answeredQuestion[`question${answer.question.id}`] = answer.answer.answer)
-
-    return answeredQuestion
-}
 
 const ApplicationsPanel = () => {
     const requestOptions = { headers: { access_token: localStorage.getItem('apiKey') ?? '' } };
