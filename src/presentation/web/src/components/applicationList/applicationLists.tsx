@@ -10,7 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import { ListData } from './listDisplay';
 
 interface Props{
-    dataList: ListData[],
+    listData: ListData[],
 };
 
 const useStyles = makeStyles({
@@ -24,14 +24,16 @@ function createData(dateOfSubmission: string, name: string, surname: string, app
   }
   
 const Rows = ( props: Props ) => {
-      props.dataList.map((prop) => {
+      props.listData.map((prop) => {
         return (createData(prop.dateOfSubmission, prop.name, prop.surname, prop.applicationNumber));
         })
     };
 
-const ListOfApplications= (props:Props) => {
+const ListOfApplications = (props:Props) => {
     const classes = useStyles();
-    const rows = Rows(props);
+    const rows = Rows(props.listData);
+    console.log(rows);
+    console.log(props.listData)
 
     return (
     <Table className={classes.table} aria-label="simple table">

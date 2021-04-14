@@ -1,7 +1,11 @@
 import React from 'react';
+import ListDisplay from '../components/applicationList/listDisplay';
 
 const Donation = () => {
-    return <div>Dontaion page</div>;
+    return (
+    <ListDisplay />
+    // <div>Dontaion page</div>;
+    )
 };
 
 export default Donation;

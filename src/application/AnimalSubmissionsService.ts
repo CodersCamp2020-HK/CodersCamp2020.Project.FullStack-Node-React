@@ -218,6 +218,8 @@ export class AnimalSubmissionsService {
             .leftJoinAndSelect('submission.applicant', 'applicant')
             .leftJoinAndSelect('submission.answers', 'answers')
             .leftJoinAndSelect('answers.question', 'question')
+            .leftJoinAndSelect('submission.adoptionStep', 'step')
+            .leftJoinAndSelect('step.form', 'form')
             .where('submission.id = :id', { id })
             .select([
                 'animal.name',
@@ -228,6 +230,9 @@ export class AnimalSubmissionsService {
                 'submission.reviewDate',
                 'question',
                 'answers',
+                'applicant.name',
+                'applicant.surname',
+                'form.id',
             ])
             .getOne();
 
