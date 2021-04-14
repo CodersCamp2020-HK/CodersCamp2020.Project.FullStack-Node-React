@@ -1,3 +1,10 @@
+import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
+import {
+    InvalidEmailFormatError,
+    PasswordRequirementsError,
+    UniqueUserEmailError,
+    ValidateErrorJSON,
+} from '@application/UsersErrors';
 import {
     ApiKey,
     EmailResetPassword,
@@ -8,49 +15,38 @@ import {
     UsersService,
     UserUpdateParams,
 } from '@application/UsersService';
+import ActivationMessage from '@infrastructure/ActivationMessage';
 import ApiError from '@infrastructure/ApiError';
 import { IAuthUserInfoRequest, IUserInfo } from '@infrastructure/Auth';
+import { EmailService } from '@infrastructure/EmailService';
+import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
 import User, { Email } from '@infrastructure/postgres/User';
+import { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
+import { Request as ExRequest } from 'express';
+import * as useragent from 'express-useragent';
 import {
     Body,
     Controller,
     Delete,
+    Example,
     Get,
     Patch,
     Path,
     Post,
     Put,
+    Query,
+    Request,
     Res,
     Response,
-    Request,
     Route,
     Security,
     SuccessResponse,
     Tags,
     TsoaResponse,
-    Query,
-    Example,
 } from 'tsoa';
-import { Inject } from 'typescript-ioc';
-import {
-    InvalidEmailFormatError,
-    PasswordRequirementsError,
-    UniqueUserEmailError,
-    ValidateErrorJSON,
-} from '@application/UsersErrors';
-import { Request as ExRequest } from 'express';
-import { EmailService } from '@infrastructure/EmailService';
-import { LinkType } from '@infrastructure/TemporaryUserActivationInfoStore';
-import ActivationMessage from '@infrastructure/ActivationMessage';
-import { AnimalSubmissionsService } from '@application/AnimalSubmissionsService';
-import { AnimalFormStatus } from '@infrastructure/postgres/FormAnimalSubmission';
-import { omit } from '../../utils/omit';
 import { DeepPartial } from 'typeorm';
-import * as useragent from 'express-useragent';
-
-interface uuidResponse {
-    uuid: string;
-}
+import { Inject } from 'typescript-ioc';
+import { omit } from '../../utils/omit';
 
 @Tags('Users')
 @Route('users')
@@ -131,12 +127,11 @@ export class UsersController extends Controller {
         @Body() requestBody: UserCreationParams,
         @Res() badRequestResponse: TsoaResponse<400, { reason: string }>,
         @Request() request: ExRequest,
-    ): Promise<uuidResponse> {
+    ): Promise<void> {
         try {
             const createdUser = await this.usersService.create(requestBody);
-            const uuid = await this.sendActivationLink(createdUser.id, request);
+            await this.sendActivationLink({ email: createdUser.mail }, request);
             this.setStatus(201);
-            return { uuid };
         } catch (error) {
             if (
                 error instanceof UniqueUserEmailError ||
@@ -168,24 +163,23 @@ export class UsersController extends Controller {
     }
 
     /**
-     * Send activation link to user with unique ID with information about
-     * @param userId Unique ID of user
+     * Send activation link to user with unique email with information about
+     * @param body Unique email of user
      * @param request Information from express
      */
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'Sent')
-    @Post('{userId}/sendActivationLink')
-    public async sendActivationLink(@Path() userId: number, @Request() request: ExRequest): Promise<string> {
+    @Post('sendActivationLink')
+    public async sendActivationLink(@Body() body: EmailResetPassword, @Request() request: ExRequest): Promise<void> {
         try {
             const ACTIVATION_PATH = request.protocol + '://' + request.get('host') + '/api/users/activate/';
-            const createdUser = await this.usersService.get(userId);
-            const personalUUID = await this.usersService.createUUID(userId, LinkType.activation);
+            const user = await this.usersService.getUserByEmail(body);
+            const personalUUID = await this.usersService.createUUID(user.id, LinkType.activation);
             const message = new ActivationMessage(ACTIVATION_PATH + personalUUID).message;
 
-            await this.emailService.sendEmail(createdUser.mail, message);
+            await this.emailService.sendEmail(user.mail, message);
 
             this.setStatus(200);
-            return personalUUID;
         } catch (error) {
             throw error;
         }
