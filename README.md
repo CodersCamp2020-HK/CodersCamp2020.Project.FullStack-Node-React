@@ -47,24 +47,6 @@ Utowrzony został szablon graficzny aplikacji w programie Figma.
 
 [Link do Figmy](https://www.figma.com/file/DKIdy7VNeGNmGy5RNB8v9P/Schronisko?node-id=6363%3A15378)
 
-## Wykorzystywane technologie
-
-W trakcie developmentu wykorzystujemy:
-
--   NodeJS
--   Swagger
--   Tsoa
--   Docker
--   Heroku
--   TypeORM
--   PostgreSQL
--   GitHub workflow
--   React JS
--   React Router
--   Restful React
--   React Hook Form
--   Material UI
-
 ## Wymagania funkcjonalne (szczegółowo):
 
 ### Rejestracja/Logowanie: 
@@ -122,6 +104,23 @@ W trakcie developmentu wykorzystujemy:
 4. Pracownik schroniska ma wgląd w wypełniony formularz wolontariusza i w informacje o użytkowniku składającym formularz.
 5. Pracownik schroniska może zaakaceptować albo odrzucić wniosek. 
 
+## Wykorzystywane technologie
+
+W trakcie developmentu wykorzystujemy:
+
+-   NodeJS
+-   Swagger
+-   Tsoa
+-   Docker
+-   Heroku
+-   TypeORM
+-   PostgreSQL
+-   GitHub workflow
+-   React JS
+-   React Router
+-   Restful React
+-   React Hook Form
+-   Material UI
 ## Development aplikacji
 
 ### Przykładowa funkcjonalność bazy danych aplikacji
