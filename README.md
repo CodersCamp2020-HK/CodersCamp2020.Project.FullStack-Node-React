@@ -21,7 +21,9 @@ Zachęcamy do odwiedzenia profili członków zespołu, w celu zapoznania się z 
 
 ## Demo
 
-Wersja demonstracyjna aplikacji jest dostępna [TUTAJ](https://coders-camp-schronisko.herokuapp.com/api).
+Wersja demonstracyjna aplikacji jest dostępna [TUTAJ](https://coders-camp-schronisko.herokuapp.com/).
+
+Opis REST API aplikacji jest dostępny [TUTAJ](https://coders-camp-schronisko.herokuapp.com/api).
 
 Front-end aplikacji znajduje się tutaj: [TUTAJ](https://github.com/CodersCamp2020-HK/CodersCamp2020.Project.FullStack-Node-React/tree/master/src/presentation/web).
 
@@ -32,13 +34,13 @@ Szablon projektu dostępny jest [TUTAJ](https://github.com/CodersCamp2020/Coders
 
 Celem projektu było napisanie w pełni funkcjonalnego REST API wykorzystując dotychczas nabytą wiedzę z następujących technologi: html, css, javascript, typescript, nodejs, reactjs.
 
-Zespół projektowy zdecydował się na stworzenie aplikacji schroniska dla zwierząt o nazwie Złapki. Aplikacja ma na celu usprawnienie działania schroniska dla zwierząt zarówno od strony osoby chcącej zaadoptować zwierzę jak i od strony pracowników schroniska, któzy zajmują się obsługą wniosków adopcyjnych i stanem zwierząt w schronisku. 
+Zespół projektowy zdecydował się na stworzenie aplikacji schroniska dla zwierząt o nazwie Złapki. Aplikacja ma na celu usprawnienie działania schroniska dla zwierząt zarówno od strony osoby chcącej zaadoptować zwierzę jak i od strony pracowników schroniska, którzy zajmują się obsługą wniosków adopcyjnych i stanem zwierząt w schronisku. 
 
 #### Główne funkcjonalności
 
 - Wyszukiwanie i filtrowanie zwierząt gotowych do adopcji (Każdy użytkownik)
 - Wysyłanie formularzy adopcyjnych (Osoba zalogowana do schroniska)
-- Wbsługa bazy zwierząt (Pracownik schroniska)
+- Obsługa bazy zwierząt (Pracownik schroniska)
 - Rozpatrywanie wniosków adopcyjnych (Pracownik schroniska)
 
 ## Projekt graficzny 
@@ -65,7 +67,7 @@ Utowrzony został szablon graficzny aplikacji w programie Figma.
 3. Użytkownik może zapoznać się ze wszystkimi informacjami na temat wybranego zwierzęcia- szczegółowa karta zwierzecia z przeglądaniem galerii zdjęć. 
 
 ### O schronisku:
-1. Na stronie internetowej można znaleźć informację na temat dokłądnego procesu adopcynego zwierzęcia. 
+1. Na stronie internetowej można znaleźć informację na temat dokładnego procesu adopcyjnego zwierzęcia. 
 2. Na stronie internetowej można przeczytać informacje na temat schroniska Złapki i zespołu je tworzącego. 
 3. Na stronie internetowej można znaleźć informacje kontaktowe do schroniska, wraz z mapą oznaczającą dokładne położenie schroniska.
 
@@ -139,7 +141,7 @@ Aby uruchomić aplikację na lokalnej maszynie, wykonaj następujące kroki:
 2. Uruchom kontenery z bazą danych oraz narzędziem pgAdmin: `docker-compose up`
 3. Wystartuj serwer developerski `npm run dev`
 
-Aplikacja będzie dostępna pod adresem [localhost:3080/](http://localhost:3080), natomiast API pod adresem [localhost:8000/](http://localhost:8000/api)
+Aplikacja będzie dostępna pod adresem [localhost:3000/](http://localhost:3000), natomiast API pod adresem [localhost:8000/](http://localhost:8000/api)
 
 Kod produkcyjny aplikacji umieszczamy w katalogu `build`.
 
