@@ -1,8 +1,8 @@
-import React from 'react';
 import { makeStyles, Paper, Theme } from '@material-ui/core';
-import ListOfApplications from './applicationLists';
+import React from 'react';
+import { FormAnimalSubmission, useGetAnimalSubmissionByAnimalId } from '../../client';
 import useQuery from '../../utils/UseQuery';
-import { useGetAnimalSubmissionByAnimalId, UseGetAnimalSubmissionByAnimalIdProps } from '../../client';
+import ListOfApplications from './applicationLists';
 
 const useStyle = makeStyles((theme: Theme) => ({
     mainWrapper: {
@@ -36,18 +36,16 @@ const ListDisplay = () => {
     // if (listData) console.log(listData[0].applicant.surname);
     // if (listData) console.log(listData[0].submissionDate)
 
-    // const shorterListData = ( data: UseGetAnimalSubmissionByAnimalIdProps[] ) => {
-    //     if (data)
-    //     return data.map((one, index) => ({
-    //         dateOfSubmission: one[index].submissionDate,
-    //         name: one[index].applicant.name,
-    //         surname: one[index].applicant.surname,
-    //         applicationNumber: one[index].answers[0].question.form.id,
-    //     }))
-    // };
-    // var result = arr.map(person => ({ value: person.id, text: person.name }));
-    // console.log(result)
-    // const dataToProps = shorterListData(listData);
+    const shorterListData = ( data: FormAnimalSubmission[] ) => {
+        if (data)
+        return data.map((oneSubmission, index) => ({
+            dateOfSubmission: oneSubmission.submissionDate,
+            name: oneSubmission.applicant.name,
+            surname: oneSubmission.applicant.surname,
+            applicationNumber: oneSubmission.answers[0].question.form.id,
+        }))
+    };
+    const dataToProps: ListData[] = shorterListData(listData as FormAnimalSubmission[]) as ListData[];
 
     const listDataMock: ListData[] = [
         {dateOfSubmission: '22/03/2022', name: 'Waldek', surname: 'Złoty', applicationNumber: 1},
@@ -57,7 +55,7 @@ const ListDisplay = () => {
 
     return(
         <Paper className={classes.mainWrapper}>
-            {listData && <ListOfApplications listData={listDataMock}/>}
+            {listData && <ListOfApplications listData={dataToProps}/>}
         </Paper>
     )  
 };
