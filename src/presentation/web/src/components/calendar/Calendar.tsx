@@ -22,7 +22,8 @@ const useStyles = makeStyles((theme: Theme) => ({
         },
     },
     paper: {
-        width: '60%',
+        width: '100%',
+        marginTop: '2rem',
 
         '& .MuiPickersCalendarHeader-daysHeader': {
             borderBottom: '1px solid rgba(0, 0, 0, 0.38)',

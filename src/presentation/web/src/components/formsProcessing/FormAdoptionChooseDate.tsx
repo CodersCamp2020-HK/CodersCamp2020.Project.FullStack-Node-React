@@ -6,13 +6,11 @@ import {
     Paper,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import Calendar from "../calendar/Calendar";
 import { useGetAllAdoptionSteps, useGetAllVisits, useGetAnimalSubmission } from "../../client";
 import { useHistory } from "react-router-dom";
 import AdoptionStepper from "../common/stepper/AdoptionStepper";
 import LoadingCircle from "../loadingCircle/LoadingCircle";
 import { AppCtx } from "../../App";
-import TimePicker from "../timePicker/TimePicker";
 import VisitForm from "../forms/visitForm/VisitForm";
 
 interface StepperWrapperProps {

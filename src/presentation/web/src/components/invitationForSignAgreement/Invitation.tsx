@@ -37,7 +37,7 @@ const Invitation = () => {
                 {` Pamiętaj, żeby wziąć ze sobą:
                 -smycz
                 -obrożę
-                -kaganiec ( w przypadku dużych psów )
+                -kaganiec (w przypadku dużych psów)
                 -dowód osobisty
                 -transporter (do adopcji kota)
                 `}

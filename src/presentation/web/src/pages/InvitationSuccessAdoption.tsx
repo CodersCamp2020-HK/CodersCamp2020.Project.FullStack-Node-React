@@ -1,14 +1,15 @@
 import { makeStyles, Paper, Theme } from '@material-ui/core';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { useGetAllAdoptionSteps } from '../client';
+import { AppCtx } from '../App';
+import { useGetAllAdoptionSteps, useGetAnimalSubmission } from '../client';
 import AdoptionStepper from '../components/common/stepper/AdoptionStepper';
 import Invitation from '../components/invitationForSignAgreement/Invitation';
 import LoadingCircle from '../components/loadingCircle/LoadingCircle';
 import useQuery from '../utils/UseQuery';
 
 const useStyle = makeStyles((theme: Theme) => ({
-    mainWrapper: {
+    paper: {
         width: '100%',
         display: 'flex',
         flexDirection: 'column',
@@ -18,21 +19,50 @@ const useStyle = makeStyles((theme: Theme) => ({
     },
 }))
 
-const InvitationForSignAgreementPage: React.FC = () => {
-    const id = useQuery().get('id');
-    const { location } = useHistory();
-    const currentStep = parseInt(location.pathname.split('/').slice(-1).join(''));
-    console.log(id);
-    console.log(currentStep);
-    const { data: adoptionStepsData } = useGetAllAdoptionSteps({ animalId: parseInt(id!), requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } } });
-    const classes = useStyle();
+interface StepperWrapperProps {
+    animalId: number;
+}
 
-        return <>{!adoptionStepsData ?  <LoadingCircle /> : (
-            <Paper className={classes.mainWrapper} variant='outlined'>
+const StepperWrapper: React.FC<StepperWrapperProps> = ({ animalId }) => {
+    const classes = useStyle();
+    const requestOptions = { headers: { access_token: localStorage.getItem('apiKey') ?? '' } };
+
+    const { location } = useHistory();
+    const { data: adoptionStepsData, loading: adoptionStepsLoading } = useGetAllAdoptionSteps({ animalId, requestOptions });
+
+    const currentStep = parseInt(location.pathname.split('/').slice(-1).join(''));
+    return <>{
+        !adoptionStepsLoading && adoptionStepsData 
+        ?
+            <>
                 <AdoptionStepper adoptionSteps={adoptionStepsData.map((step) => step.name)} currentStep={currentStep} />
-                <Invitation />
-            </Paper>
-        )}</>;    
+            </>
+        :
+            <LoadingCircle />
+        }
+    </>  
+}
+
+const InvitationForSignAgreementPage: React.FC = () => {
+    const requestOptions = { headers: { access_token: localStorage.getItem('apiKey') ?? '' } };
+
+    const classes = useStyle();
+    const { appState } = useContext(AppCtx);
+    const { data: submissionData, loading: submissionLoading } = useGetAnimalSubmission({ userId: appState.userId!, requestOptions });
+
+    return (
+        <Paper className={classes.paper}>
+            {!submissionLoading && submissionData 
+                ? 
+                    <>
+                        <StepperWrapper animalId={submissionData.animal.id} />
+                        <Invitation />
+                    </>
+                :
+                    <LoadingCircle />
+            }
+        </Paper>
+    );
 };
 
 export default InvitationForSignAgreementPage;
