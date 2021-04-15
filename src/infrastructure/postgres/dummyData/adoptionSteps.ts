@@ -26,9 +26,17 @@ export const seedAdoptionStep = (): DeepPartial<AdoptionStep>[] => {
             specie: { id: 1 },
         },
         {
+            name: 'Oczekiwanie na spotkanie',
+            description:
+                'Przychodząc do nas zarezerwuj sobie kilka godzin na oglądanie i poznanie naszych zwierząt. Nie spiesz - adopcja to czesto decyznja na najbliszych kilkanaście lat.',
+            number: 4,
+            organization: { id: 1 },
+            specie: { id: 1 },
+        },
+        {
             name: 'Podpisanie umowy',
             description: 'Aby sfinalizować adopcję należy dopełnić wszystkich formalności',
-            number: 4,
+            number: 5,
             organization: { id: 1 },
             specie: { id: 1 },
         },
@@ -55,9 +63,17 @@ export const seedAdoptionStep = (): DeepPartial<AdoptionStep>[] => {
             specie: { id: 2 },
         },
         {
+            name: 'Oczekiwanie na spotkanie',
+            description:
+                'Przychodząc do nas zarezerwuj sobie kilka godzin na oglądanie i poznanie naszych zwierząt. Nie spiesz - adopcja to czesto decyznja na najbliszych kilkanaście lat.',
+            number: 4,
+            organization: { id: 1 },
+            specie: { id: 2 },
+        },
+        {
             name: 'Podpisanie umowy',
             description: 'Aby sfinalizować adopcję należy dopełnić wszystkich formalności',
-            number: 4,
+            number: 5,
             organization: { id: 1 },
             specie: { id: 2 },
         },

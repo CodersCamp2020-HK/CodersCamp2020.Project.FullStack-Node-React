@@ -75,7 +75,7 @@ const FormAdoptionChooseDate = () => {
     return (
         <Paper className={classes.paper}>
             {!submissionLoading && !visitsLoading && visitsData && submissionData 
-                ? 
+                ?   
                     <>  
                         <StepperWrapper animalId={submissionData.animal.id} />
                         {submissionData.reviewer?.user.name

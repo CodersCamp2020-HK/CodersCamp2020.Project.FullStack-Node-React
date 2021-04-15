@@ -39,7 +39,7 @@ const Step = () => {
     return (
         <StepCtx.Provider value={{ stepState, setStepState }}>
             <Switch>
-                <ProtectedRoute exact path={`${path}/4`} component={InvitationForSignAgreementPage} />
+                <ProtectedRoute exact path={`${path}/5`} component={InvitationForSignAgreementPage} />
                 <ProtectedRoute exact path={`${path}/3`} component={FormAdoptionChooseDate} />
                 <ProtectedRoute exact path={`${path}/2`} component={FormProcessing} />
                 <ProtectedRoute exact path={`${path}/1`} component={FirstStep} />
