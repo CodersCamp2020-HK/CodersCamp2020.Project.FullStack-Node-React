@@ -6,7 +6,7 @@ export const seedVolunteerHireStep = (): DeepPartial<VolunteerHireStep>[] => {
         {
             name: 'Krok 1 - wypełnienie formularza',
             description: 'Formularz wymagany do przyjęcia kandydata na wolontariusza',
-            form: { id: 3 },
+            form: { id: 2 },
             organization: { id: 1 },
             number: 1,
         },

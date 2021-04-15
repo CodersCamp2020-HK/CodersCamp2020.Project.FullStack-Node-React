@@ -74,19 +74,22 @@ const FormAdoptionChooseDate = () => {
     const { data: submissionData, loading: submissionLoading } = useGetAnimalSubmission({ userId: appState.userId!, requestOptions });
     const { data: visitsData, loading: visitsLoading } = useGetAllVisits({ requestOptions });
 
-    const handleDate = (date: Date) => {
-        console.log(date.getFullYear);
-        console.log(visitsData![0].date);
-    };
-
     return (
         <Paper className={classes.paper}>
             {!submissionLoading && !visitsLoading && visitsData && submissionData 
                 ? 
                     <>  
-                        <Typography variant="body1">
-                            Pracownik akceptujący(a): {submissionData.reviewer?.user.name}
-                        </Typography>
+                        <StepperWrapper animalId={submissionData.animal.id} />
+                        {submissionData.reviewer?.user.name
+                            ?
+                                <Typography variant="body1">
+                                    Pracownik akceptujący(a): {submissionData.reviewer?.user.name}
+                                </Typography>
+                            :
+                                <Typography variant="body1">
+                                    Wniosek został akceptowany przez pracownika
+                                </Typography>
+                        }
                         <Divider className={classes.divider} />
                         <Typography variant="body1" >
                             Zaznacz na kalendarzu datę i godzinę wizyty w schronisku. Musi się ona
