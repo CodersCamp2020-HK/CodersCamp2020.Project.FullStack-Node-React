@@ -12,6 +12,7 @@ import AdoptionStepper from "../common/stepper/AdoptionStepper";
 import LoadingCircle from "../loadingCircle/LoadingCircle";
 import { AppCtx } from "../../App";
 import VisitForm from "../forms/visitForm/VisitForm";
+import formatDate from "../../utils/formatText/formatDate";
 
 interface StepperWrapperProps {
     animalId: number;
@@ -34,7 +35,7 @@ const useStyle = makeStyles((theme: Theme) => ({
     },
 }));
 
-const StepperWrapper: React.FC<StepperWrapperProps> = ({ animalId, reviewDate }) => {
+const StepperWrapper: React.FC<StepperWrapperProps> = ({ animalId, reviewDate, children }) => {
     const classes = useStyle();
     const requestOptions = { headers: { access_token: localStorage.getItem('apiKey') ?? '' } };
 
@@ -57,6 +58,8 @@ const StepperWrapper: React.FC<StepperWrapperProps> = ({ animalId, reviewDate })
                 <Typography variant="body1">
                     Data zaakceptowania wniosku: {reviewDate}
                 </Typography>
+                {children}
+                <VisitForm animalId={animalId} numberOfSteps={adoptionStepsData.length} />
             </>
         :
             <LoadingCircle />
@@ -76,8 +79,7 @@ const FormAdoptionChooseDate = () => {
         <Paper className={classes.paper}>
             {!submissionLoading && !visitsLoading && visitsData && submissionData 
                 ?   
-                    <>  
-                        <StepperWrapper animalId={submissionData.animal.id} />
+                    <StepperWrapper animalId={submissionData.animal.id} reviewDate={formatDate(submissionData.reviewDate!)}>
                         {submissionData.reviewer?.user.name
                             ?
                                 <Typography variant="body1">
@@ -96,8 +98,7 @@ const FormAdoptionChooseDate = () => {
                             prawdopodobnie zwierzę zostanie przydzielone innej osobie ubiegającej się,
                             a ty będziesz musiał(a) rozpocząć proces adopcyjny od początku.
                         </Typography>
-                        <VisitForm animalId={submissionData.animal.id} />
-                    </>
+                    </StepperWrapper>
                 :
                     <LoadingCircle />
             }

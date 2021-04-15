@@ -118,4 +118,23 @@ export class CalendarService {
         if (!visitFromDB) throw new ApiError('Not Found', 404, `Animal with id: ${id} not found in database`);
         await this.calendarRepository.delete(id);
     }
+
+    public async getByUserId(userId: number, user: IUserInfo): Promise<Calendar> {
+        if (user.role == UserType.NORMAL || user.role == UserType.VOLUNTEER) {
+            if (userId != user.id) {
+                throw new ApiError('Unauthorized', 401, 'User and volunteer can only create own calendar');
+            }
+        }
+
+        const visit = await this.calendarRepository
+            .createQueryBuilder('calendar')
+            .leftJoin('calendar.user', 'user')
+            .leftJoin('calendar.animal', 'animal')
+            .select(['calendar', 'user.id', 'user.name', 'user.surname', 'animal.id', 'animal.name'])
+            .where('user.id = :userId', { userId })
+            .getOne();
+        if (!visit) throw new ApiError('Not Found', 404, `Visit for user with id: ${userId} not found in database`);
+
+        return visit;
+    }
 }
