@@ -66,6 +66,8 @@ const FirstStep = () => {
         requestOptions,
     });
 
+    console.log(getFormData);
+
     const handleIdSubmit = async ({ numerEwidencyjny: id }: Inputs) => {
         try {
             getForm({ pathParams: { animalId: id } });

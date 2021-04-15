@@ -41,7 +41,7 @@ export class AnimalSubmissionsController extends Controller {
      * @param userName Gives name of user that applied for animal
      * @param reviewerName Gives name of shelter worker that who deals with the user application
      */
-    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Security('jwt', ['admin', 'employee'])
     @Response<ApiError>(404, 'Submissions Not Found')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
