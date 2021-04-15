@@ -74,8 +74,12 @@ const Slider = ({ photos }: SliderProps) => {
                     onChangeIndex={(index) => setSlideIndex(index)}
                 >
                     {photos.map((photo, index) => (
-                        <Card>
-                            <CardMedia className={classes.image} component="img" image={`data:image/png;base64, ${photo}`} />
+                        <Card key={index}>
+                            <CardMedia
+                                className={classes.image}
+                                component="img"
+                                image={`data:image/png;base64, ${photo}`}
+                            />
                         </Card>
                     ))}
                 </SwipeableViews>
@@ -86,6 +90,7 @@ const Slider = ({ photos }: SliderProps) => {
             <Container style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {photos.map((photo, index) => (
                     <GoPrimitiveDot
+                        key={index}
                         className={index == slideIndex ? classes.dotActive : classes.dot}
                         onClick={() => setSlideIndex(index)}
                     />
