@@ -7,6 +7,7 @@ import AnimalInfoDescription from '../components/animalInfoDescription/AnimalInf
 import Slider from '../components/slider/Slider';
 import GridContainer from '../components/gridContainer/GridContainer';
 import LoadingCircle from '../components/loadingCircle/LoadingCircle';
+import NotFound from '../pages/NotFound'
 
 const AnimalInfo = () => {
     let { animalId } = useParams<{ animalId?: string | undefined }>();
@@ -24,7 +25,7 @@ const AnimalInfo = () => {
         photos.push(...base64Array);
     }
 
-    return (
+    return !animal || animal.readyForAdoption === false ? <NotFound /> : (
         <GridContainer marginBottom={0} marginTop={0} spacing={2} align="center" justify="center">
             <Grid item xs={12} sm={8}>
                 {loading ? <LoadingCircle size={70} /> : <Slider photos={[...photos]} />}
