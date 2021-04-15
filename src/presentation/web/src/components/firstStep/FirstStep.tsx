@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AnimalAnswer, PostAnimalSubmissionParams, useGetAllAdoptionSteps, useGetForm, usePostAnimalSubmission } from '../../client';
 import useQuery from '../../utils/UseQuery';
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 import Paper from '@material-ui/core/Paper';
 import { makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
@@ -65,6 +65,7 @@ const FirstStep = () => {
     const { mutate: postSubmission } = usePostAnimalSubmission({
         requestOptions,
     });
+    const [fireRedirect, setFireRedirect] = useState<boolean>(false);
 
     const currentStep = parseInt(history.location.pathname.split('/').slice(-1).join(''));
 
@@ -82,6 +83,7 @@ const FirstStep = () => {
             if (getFormData) {
                 const answers: PostAnimalSubmissionParams = pushAnswersToArray(formData, animalId, getFormData.number);
                 await postSubmission(answers);
+                setFireRedirect(true);
             }
         } catch (error) {
             console.error(error);
@@ -109,6 +111,7 @@ const FirstStep = () => {
                     <LoadingCircle />
                 }
             </AdoptionApplicationFirstStep>
+            {fireRedirect && <Redirect to={'/account/adoption/step'} />}
         </Paper>
     )
 }

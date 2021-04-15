@@ -2,7 +2,7 @@ import { Button, makeStyles, Theme, Typography } from '@material-ui/core';
 import { format, set as updateDate } from 'date-fns';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { AppCtx } from '../../../App';
 import { useCreateVisit, useUpdatetUserSteps } from '../../../client/index';
 import Calendar from '../../calendar/Calendar';
@@ -40,6 +40,7 @@ const VisitForm = ({ animalId, numberOfSteps }: VisitFormProps) => {
         date: undefined,
         time: undefined,
     });
+    const [fireRedirect, setFireRedirect] = useState<boolean>(false);
     const { errors, setValue, register, handleSubmit } = useForm<VisitData>({ mode: 'all' });
     const { mutate: createVisit, loading } = useCreateVisit({});
     const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
@@ -86,6 +87,7 @@ const VisitForm = ({ animalId, numberOfSteps }: VisitFormProps) => {
                             ['access_token', localStorage.getItem('apiKey') as string],
                         ],
                     });
+                    setFireRedirect(true);
                 }
             } catch (e) {
                 if (e.status == 400 || e.status == 401) {
@@ -137,6 +139,7 @@ const VisitForm = ({ animalId, numberOfSteps }: VisitFormProps) => {
             <Button disabled={loading} className={styles.submit} variant="contained" color="primary" size="large" type="submit">
                 Potwierdź datę spotkania {loading && <LoadingCircleSmall size={20} />}
             </Button>
+            {fireRedirect && <Redirect to={'/account/adoption/step'} />}
         </form>
     );
 };

@@ -199,7 +199,11 @@ export class AnimalSubmissionsService {
         if (status === AnimalFormStatus.ACCEPTED) {
             const steps = await this.adoptionStepService.getAllSteps(submission.animal.id);
             if (steps.length > 0 && currentStep + 1 < steps.length) {
-                await this.usersService.updateFormSteps(user.id, { adoptionStep: currentStep + 1 }, user);
+                await this.usersService.updateFormSteps(
+                    submission.applicant.id,
+                    { adoptionStep: currentStep + 1 },
+                    user,
+                );
             }
         }
 
@@ -217,6 +221,7 @@ export class AnimalSubmissionsService {
             .leftJoinAndSelect('submission.applicant', 'applicant')
             .leftJoinAndSelect('submission.answers', 'answers')
             .leftJoinAndSelect('answers.question', 'question')
+            .leftJoinAndSelect('question.form', 'form')
             .leftJoinAndSelect('submission.animal', 'animal')
             .leftJoinAndSelect('animal.specie', 'species')
             .leftJoinAndSelect('animal.additionalInfo', 'info')
