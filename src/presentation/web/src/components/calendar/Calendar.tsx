@@ -22,8 +22,7 @@ const useStyles = makeStyles((theme: Theme) => ({
         },
     },
     paper: {
-        padding: theme.spacing(2),
-        // width: '100%',
+        width: '60%',
 
         '& .MuiPickersCalendarHeader-daysHeader': {
             borderBottom: '1px solid rgba(0, 0, 0, 0.38)',

@@ -5,6 +5,7 @@ import CheckAdoptionStep from '../components/checkAdoptionStep/CheckAdoptionStep
 import FirstStep from '../components/firstStep/FirstStep';
 import InvitationForSignAgreementPage from './InvitationSuccessAdoption';
 import FormProcessing from '../components/formsProcessing/formProcessing';
+import FormAdoptionChooseDate from '../components/formsProcessing/FormAdoptionChooseDate';
 
 interface IStepState {
     currentStep: number;
@@ -39,6 +40,7 @@ const Step = () => {
         <StepCtx.Provider value={{ stepState, setStepState }}>
             <Switch>
                 <ProtectedRoute exact path={`${path}/4`} component={InvitationForSignAgreementPage} />
+                <ProtectedRoute exact path={`${path}/3`} component={FormAdoptionChooseDate} />
                 <ProtectedRoute exact path={`${path}/2`} component={FormProcessing} />
                 <ProtectedRoute exact path={`${path}/1`} component={FirstStep} />
                 <ProtectedRoute exact path={`${path}`} component={CheckAdoptionStep} />

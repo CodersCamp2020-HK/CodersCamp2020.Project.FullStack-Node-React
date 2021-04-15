@@ -80,16 +80,16 @@ export class CalendarService {
             throw new ApiError('Unauthorized', 401, 'User already has a visit in this time');
         }
 
-        const potentialOtherUserVisit = await this.calendarRepository.findOne({
-            where: {
-                animal: { id: animal },
-                date: date,
-            },
-        });
+        // const potentialOtherUserVisit = await this.calendarRepository.findOne({
+        //     where: {
+        //         animal: { id: animal },
+        //         date: date,
+        //     },
+        // });
 
-        if (potentialOtherUserVisit) {
-            throw new ApiError('Unauthorized', 401, 'Someone other has a visit with this animal in this time');
-        }
+        // if (potentialOtherUserVisit) {
+        //     throw new ApiError('Unauthorized', 401, 'Someone other has a visit with this animal in this time');
+        // }
 
         const animalFromDB = await this.animalRepository.findOne(animal);
         if (!animalFromDB) throw new ApiError('Not Found', 404, `Animal with id: ${animal} not found in database`);

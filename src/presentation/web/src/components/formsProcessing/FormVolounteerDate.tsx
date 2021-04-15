@@ -23,7 +23,7 @@ const useStyle = makeStyles((theme: Theme) => ({
   },
 }));
 
-const FormAdoptionChooseDate = (props: Props) => {
+const FormVolunteerChooseDate = (props: Props) => {
   const classes = useStyle();
   const theme = useTheme();
 
@@ -47,4 +47,4 @@ const FormAdoptionChooseDate = (props: Props) => {
   );
 };
 
-export default FormAdoptionChooseDate;
+export default FormVolunteerChooseDate;
