@@ -63,7 +63,7 @@ export default async function seedDatabase(): Promise<void> {
     await getConnection().getRepository(AnimalThumbnailPhoto).save(seedAnimalThumbnailPhoto(10));
 
     await getConnection().getRepository(Specie).save(species);
-    await getConnection().getRepository(Animal).save(seedAnimals(10));
+    await getConnection().getRepository(Animal).save(seedAnimals());
     await getConnection().getRepository(AnimalPhoto).save(seedAnimalPhoto(10));
     await getConnection().getRepository(Localization).save(seedLocalizations(5));
     await getConnection()
