@@ -11,8 +11,8 @@ interface AnimalInfoCardProps {
     animalId: number;
 }
 
-export const ADOPTION_PROCESS_PAGE = 'adoption';
-export const ADOPT_PAGE = 'account/adoption/step/1';
+export const ADOPTION_PROCESS_PAGE = '/adoption';
+export const ADOPT_PAGE = '/account/adoption/step/1';
 
 const useStyles = makeStyles((theme: Theme) => ({
     paper: {
