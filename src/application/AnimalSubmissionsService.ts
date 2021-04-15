@@ -231,6 +231,7 @@ export class AnimalSubmissionsService {
                 'answers',
                 'applicant.name',
                 'applicant.surname',
+                'form.id',
                 'applicant.phone',
                 'applicant.mail',
                 'applicant.birthDate',
@@ -326,6 +327,7 @@ export class AnimalSubmissionsService {
             .select([
                 'animal.name',
                 'submission.status',
+                'submission.id',
                 'submission.reason',
                 'submission.reviewer',
                 'submission.submissionDate',
