@@ -206,23 +206,22 @@ export class AnimalSubmissionsService {
         this.animalSubmissionRepository.save(updatedSubmission);
     }
 
-    public async getAnimalSubmission(id: number, currentUser: IUserInfo): Promise<FormAnimalSubmission> {
+    public async getAnimalSubmission(userId: number, currentUser: IUserInfo): Promise<FormAnimalSubmission> {
         if (currentUser.role == UserType.NORMAL || currentUser.role == UserType.VOLUNTEER) {
-            if (id != currentUser.id) {
+            if (userId !== currentUser.id) {
                 throw new ApiError('Unauthorized', 401, 'User and volunteer can only get own submission');
             }
         }
         const submission = await this.animalSubmissionRepository
             .createQueryBuilder('submission')
-            .leftJoinAndSelect('submission.animal', 'animal')
             .leftJoinAndSelect('submission.applicant', 'applicant')
             .leftJoinAndSelect('submission.answers', 'answers')
             .leftJoinAndSelect('answers.question', 'question')
-            .leftJoinAndSelect('submission.adoptionStep', 'step')
-            .leftJoinAndSelect('step.form', 'form')
-            .where('submission.id = :id', { id })
+            .leftJoinAndSelect('submission.animal', 'animal')
+            .leftJoinAndSelect('animal.specie', 'species')
+            .leftJoinAndSelect('animal.additionalInfo', 'info')
+            .where('applicant.id = :id', { id: userId })
             .select([
-                'animal.name',
                 'submission.status',
                 'submission.reason',
                 'submission.reviewer',
@@ -233,10 +232,24 @@ export class AnimalSubmissionsService {
                 'applicant.name',
                 'applicant.surname',
                 'form.id',
+                'applicant.phone',
+                'applicant.mail',
+                'applicant.birthDate',
+                'species.specie',
+                'animal.name',
+                'animal.age',
+                'info.size',
+                'info.activeLevel',
+                'info.acceptsKids',
+                'info.acceptsOtherAnimals',
+                'animal.readyForAdoption',
+                'info.admissionToShelter',
+                'info.specialDiet',
+                'animal.description',
             ])
             .getOne();
 
-        if (!submission) throw new ApiError('Not Found', 404, `Submission with ${id} not found`);
+        if (!submission) throw new ApiError('Not Found', 404, `Submission for user with id: ${userId} not found`);
 
         return submission;
     }

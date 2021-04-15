@@ -41,7 +41,7 @@ export class AnimalSubmissionsController extends Controller {
      * @param userName Gives name of user that applied for animal
      * @param reviewerName Gives name of shelter worker that who deals with the user application
      */
-    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Security('jwt', ['admin', 'employee'])
     @Response<ApiError>(404, 'Submissions Not Found')
     @Response<ApiError>(401, 'Unauthorized')
     @Response<Error>(500, 'Internal Server Error')
@@ -112,12 +112,12 @@ export class AnimalSubmissionsController extends Controller {
     @Response<ApiError>(404, 'Submission Not Found')
     @Response<Error>(500, 'Internal Server Error')
     @SuccessResponse(200, 'ok')
-    @Get('/user/{id}')
+    @Get('/user/{userId}')
     public async getAnimalSubmission(
-        @Path() id: number,
+        @Path() userId: number,
         @Request() request: IAuthUserInfoRequest,
     ): Promise<FormAnimalSubmission> {
-        return await this.submissionService.getAnimalSubmission(id, request.user as IUserInfo);
+        return await this.submissionService.getAnimalSubmission(userId, request.user as IUserInfo);
     }
 
     @Security('jwt', ['admin', 'normal'])

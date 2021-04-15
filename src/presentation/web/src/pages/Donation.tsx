@@ -1,11 +1,8 @@
 import React from 'react';
-import ListDisplay from '../components/applicationList/listDisplay';
+import { Redirect } from 'react-router-dom'
 
 const Donation = () => {
-    return (
-    <ListDisplay />
-    // <div>Dontaion page</div>;
-    )
+    return <div><Redirect to='/work-in-progress' /></div>;
 };
 
 export default Donation;

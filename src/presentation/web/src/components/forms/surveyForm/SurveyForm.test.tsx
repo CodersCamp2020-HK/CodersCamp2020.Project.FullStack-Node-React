@@ -77,7 +77,7 @@ const setup = (data: IUseGetFormParams) => {
 describe('Given: SurveyForm() with questions and submit', () => {
     beforeEach(() => {
         const mockFormData = setup(useGetFormParams);
-        render(<SurveyForm handleSubmit={mockHandleSubmit} formData={mockFormData.data?.form!} />)
+        render(<SurveyForm handleSubmit={mockHandleSubmit} questions={mockFormData.data?.form?.questions!} />)
     })
 
     describe('When: form is loaded', () => {
@@ -137,7 +137,7 @@ const defaultValues = {
 describe('Given: SurveyForm() with questions, submit and default values', () => {
     beforeEach(() => {
         const mockFormData = setup(useGetFormParams);
-        render(<SurveyForm handleSubmit={mockHandleSubmit} formData={mockFormData.data?.form!} defaultValues={defaultValues} />)
+        render(<SurveyForm handleSubmit={mockHandleSubmit} questions={mockFormData.data?.form?.questions!} defaultValues={defaultValues} />)
     })
 
     describe('When: form is loaded', () => {

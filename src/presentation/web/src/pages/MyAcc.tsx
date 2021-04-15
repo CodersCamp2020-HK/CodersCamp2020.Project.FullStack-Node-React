@@ -17,6 +17,7 @@ import CheckAdoptionStep from '../components/checkAdoptionStep/CheckAdoptionStep
 import FirstStep from '../components/firstStep/FirstStep';
 import InvitationForSignAgreementPage from './InvitationSuccessAdoption';
 import { makeStyles } from '@material-ui/core/styles';
+import MeetDateConfirmed from "../components/meetDateConfirmed/MeetDateConfirmed";
 
 const useStyles = makeStyles({
     wrapper: {
@@ -37,6 +38,7 @@ const MyAcc = () => {
             <Grid container alignItems="flex-start" justify="center" item xs={12} sm className={classes.wrapper}>
                 <Switch>
                     <ProtectedRoute exact path={`${path}/adoption/step/4`} component={InvitationForSignAgreementPage} />
+                    <ProtectedRoute exact path={`${path}/adoption/step/3`} component={MeetDateConfirmed} />
                     <ProtectedRoute exact path={`${path}/adoption/step/1`} component={FirstStep} />
                     <ProtectedRoute exact path={`${path}/adoption/step`} component={CheckAdoptionStep} />
                     <ProtectedRoute exact path={`${path}/volunteer`} component={Volunteer} />
