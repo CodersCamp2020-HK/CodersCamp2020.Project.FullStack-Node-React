@@ -17,6 +17,7 @@ import { UserType } from './client/index';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import jwt from 'jsonwebtoken';
 import MyAcc from './pages/MyAcc';
+import PageInProgress from './pages/PageInProgress';
 
 const useStyles = makeStyles({
     wrapper: {
@@ -35,7 +36,7 @@ const initialContext = {
         userId: null,
         userName: null,
     },
-    setAppState: () => {},
+    setAppState: () => { },
 };
 
 export const AppCtx = React.createContext<AppContextInterface>(initialContext);
@@ -68,15 +69,15 @@ const decodedToken = apiKey !== null ? jwt.decode(apiKey) : null;
 const initialAppState =
     decodedToken && isUserInfo(decodedToken)
         ? {
-              role: decodedToken.role,
-              userId: decodedToken.id,
-              userName: decodedToken.name,
-          }
+            role: decodedToken.role,
+            userId: decodedToken.id,
+            userName: decodedToken.name,
+        }
         : {
-              role: null,
-              userId: null,
-              userName: null,
-          };
+            role: null,
+            userId: null,
+            userName: null,
+        };
 
 const App: React.FC = () => {
     const classes = useStyles();
@@ -113,7 +114,9 @@ const App: React.FC = () => {
                             <Route path="/animals/:animalId">
                                 <AnimalInfo />
                             </Route>
-
+                            <Route path="/work-in-progress">
+                                <PageInProgress />
+                            </Route>
                             <Route path="*">
                                 <NotFound />
                             </Route>
