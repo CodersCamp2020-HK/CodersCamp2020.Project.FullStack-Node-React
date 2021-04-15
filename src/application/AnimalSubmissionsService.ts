@@ -235,6 +235,7 @@ export class AnimalSubmissionsService {
                 'applicant.mail',
                 'applicant.birthDate',
                 'species.specie',
+                'animal.id',
                 'animal.name',
                 'animal.age',
                 'info.size',

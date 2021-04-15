@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useState } from "react";
 import {
     Paper,
@@ -6,13 +6,21 @@ import {
     Theme,
     Typography,
     Button,
+    Card,
+    CardActionArea,
+    CardMedia
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { useGetAnimalSubmission } from "../../client";
+import { useGetAnimal, useGetAnimalSubmission } from "../../client";
 import { AppCtx } from "../../App";
 import LoadingCircle from "../loadingCircle/LoadingCircle";
 import SurveyForm from "../forms/surveyForm/SurveyForm";
 import mapAnswersToQuestions from "../../utils/MapAnswersToQuestions";
+import formatDate from "../../utils/formatText/formatDate";
+
+interface PhotoProps {
+    animalId: number;
+}
 
 const useStyle = makeStyles((theme: Theme) => ({
     paper: {
@@ -35,7 +43,35 @@ const useStyle = makeStyles((theme: Theme) => ({
             marginTop: theme.spacing(2),
         },
     },
+    root: {
+        maxWidth: 345,
+    },
+    media: {
+        width: 300,
+        height: 200
+    }
 }));
+
+const Photo: React.FC<PhotoProps> = ({ animalId }) => {
+    const classes = useStyle();
+    const { data: animalData, loading: animalLoading } = useGetAnimal({ animalId });
+
+    return <>{
+        !animalLoading && animalData 
+        ?
+            <Card className={classes.root}>
+                <CardActionArea>
+                    <CardMedia
+                        className={classes.media}
+                        image={`data:image/png;base64,${Buffer.from(animalData.thumbnail.buffer, 'binary').toString('base64')}`}
+                    />
+                </CardActionArea>
+            </Card>
+        :
+            <LoadingCircle />
+        }
+    </>   
+}
 
 const FormProcessing = () => {
     const requestOptions = { headers: { access_token: localStorage.getItem('apiKey') ?? '' } };
@@ -44,24 +80,28 @@ const FormProcessing = () => {
     const { appState } = useContext(AppCtx);
     const classes = useStyle();
     const [showApplication, setShowApplication] = useState(false);
-    const { data, loading } = useGetAnimalSubmission({ userId: appState.userId!, requestOptions });
+    const { data: submissionData, loading: submissionLoading } = useGetAnimalSubmission({ userId: appState.userId!, requestOptions });
 
     return (
         <Paper className={classes.paper}>
-            {!loading && data 
+            {!submissionLoading && submissionData 
                 ? 
                     <>
-                        <Typography variant="h5" align="center">
+                        <Typography variant="h5">
                             Rozpatrujemy twój wniosek
                         </Typography>
-                        <Typography variant="body1" align="center">
+                        <Typography variant="body1">
                             {'OPIS KROKU'}
                         </Typography>
                         <Divider className={classes.divider} />
-                        <Typography variant="body1" align="center">
-                            Data wysłania wniosku: {data.submissionDate}
+                        <Typography variant="body1">
+                            Data wysłania wniosku: {formatDate(submissionData.submissionDate)}
                         </Typography>
                         <Divider className={classes.divider} />
+                        <Typography variant="body1">
+                            {submissionData.animal.name}
+                        </Typography>
+                        <Photo animalId={submissionData.animal.id} />
                         <div className={classes.buttonsWrapper}>
                             <Button
                             variant="outlined"
@@ -76,8 +116,8 @@ const FormProcessing = () => {
                         <Divider className={classes.divider} />
                         {showApplication && 
                             <SurveyForm
-                                questions={data.answers.map((answer) => answer.question)}
-                                defaultValues={mapAnswersToQuestions(data.answers)}
+                                questions={submissionData.answers.map((answer) => answer.question)}
+                                defaultValues={mapAnswersToQuestions(submissionData.answers)}
                                 handleSubmit={() => {}}
                                 disabled={true}
                             />
