@@ -1,10 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
 import CheckAdoptionStep from '../components/checkAdoptionStep/CheckAdoptionStep';
 import FirstStep from '../components/firstStep/FirstStep';
 import InvitationForSignAgreementPage from './InvitationSuccessAdoption';
-import { makeStyles } from '@material-ui/core/styles';
 import FormProcessing from '../components/formsProcessing/FormProcessing';
 
 const Step = () => {

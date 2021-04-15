@@ -11,6 +11,8 @@ import { makeStyles } from "@material-ui/styles";
 import { useGetAnimalSubmission } from "../../client";
 import { AppCtx } from "../../App";
 import LoadingCircle from "../loadingCircle/LoadingCircle";
+import SurveyForm from "../forms/surveyForm/SurveyForm";
+import mapAnswersToQuestions from "../../utils/MapAnswersToQuestions";
 
 const useStyle = makeStyles((theme: Theme) => ({
     paper: {
@@ -72,7 +74,14 @@ const FormProcessing = () => {
                             </Button>
                         </div>
                         <Divider className={classes.divider} />
-                        {showApplication && <div>Lololololol</div>}
+                        {showApplication && 
+                            <SurveyForm
+                                questions={data.answers.map((answer) => answer.question)}
+                                defaultValues={mapAnswersToQuestions(data.answers)}
+                                handleSubmit={() => {}}
+                                disabled={true}
+                            />
+                        }
                     </>
                 :
                     <LoadingCircle />
