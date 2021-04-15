@@ -55,12 +55,12 @@ const FirstStep = () => {
     const { data: getFormData, refetch: getForm, loading: getFormLoading } = useGetForm({
         animalId,
         lazy: !id,
-        requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } },
+        requestOptions,
     });
     const { data: adoptionStepsData, refetch: adoptionStepsRefetch, loading: adoptionStepsLoading } = useGetAllAdoptionSteps({
         animalId,
         lazy: !id,
-        requestOptions: { headers: { access_token: localStorage.getItem('apiKey') ?? '' } },
+        requestOptions,
     });
     const { mutate: postSubmission } = usePostAnimalSubmission({
         requestOptions,
