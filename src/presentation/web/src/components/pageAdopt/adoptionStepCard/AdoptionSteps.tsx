@@ -38,7 +38,7 @@ const stepsArray = [
     {
         id: 6,
         color: 'primary',
-        title: 'Powitaj Adopciakia w swoim domu!',
+        title: 'Powitaj Adopciaka w swoim domu!',
         description: 'Bez obaw - po adopcji pozostaniesz w stałym kontakcie z doradcą adopcyjnym.',
     },
 ];

@@ -5,10 +5,18 @@ import * as path from 'path';
 
 export const seedAnimalThumbnailPhoto = (amount: number): DeepPartial<AnimalThumbnailPhoto>[] => {
     const animalThumbnailPhoto: DeepPartial<AnimalThumbnailPhoto>[] = [];
-    for (let i = 0; i < amount; i++) {
-        const buffer = fs.readFileSync(path.join(__dirname, './dog.png'));
+    for (let i = 0; i < amount / 2; i++) {
+        const buffer = fs.readFileSync(path.join(__dirname, `./dog${i + 1}.png`));
         animalThumbnailPhoto.push({
             buffer: buffer,
+            animal: { id: i + 1 },
+        });
+    }
+    for (let i = 0; i < amount / 2; i++) {
+        const buffer = fs.readFileSync(path.join(__dirname, `./cat${i + 1}.png`));
+        animalThumbnailPhoto.push({
+            buffer: buffer,
+            animal: { id: amount / 2 + i },
         });
     }
     return animalThumbnailPhoto;
@@ -16,13 +24,23 @@ export const seedAnimalThumbnailPhoto = (amount: number): DeepPartial<AnimalThum
 
 export const seedAnimalPhoto = (amount: number): DeepPartial<AnimalPhoto>[] => {
     const animalPhoto: DeepPartial<AnimalPhoto>[] = [];
-    for (let i = 0; i < amount; i++) {
-        const buf = Buffer.from('hello world', 'utf8');
+    for (let i = 0; i < amount / 2; i++) {
+        const buffer = fs.readFileSync(path.join(__dirname, `./dogg${i + 1}.png`));
 
         animalPhoto.push({
-            buffer: buf,
-            animal: { id: 1 },
+            buffer: buffer,
+            animal: { id: i + 1 },
         });
     }
+
+    for (let i = 0; i < amount / 2; i++) {
+        const buffer = fs.readFileSync(path.join(__dirname, `./catt${i + 1}.png`));
+
+        animalPhoto.push({
+            buffer: buffer,
+            animal: { id: amount / 2 + i },
+        });
+    }
+
     return animalPhoto;
 };
