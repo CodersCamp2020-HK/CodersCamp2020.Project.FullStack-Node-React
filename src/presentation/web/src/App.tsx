@@ -36,7 +36,7 @@ const initialContext = {
         userId: null,
         userName: null,
     },
-    setAppState: () => {},
+    setAppState: () => { },
 };
 
 export const AppCtx = React.createContext<AppContextInterface>(initialContext);
@@ -69,15 +69,15 @@ const decodedToken = apiKey !== null ? jwt.decode(apiKey) : null;
 const initialAppState =
     decodedToken && isUserInfo(decodedToken)
         ? {
-              role: decodedToken.role,
-              userId: decodedToken.id,
-              userName: decodedToken.name,
-          }
+            role: decodedToken.role,
+            userId: decodedToken.id,
+            userName: decodedToken.name,
+        }
         : {
-              role: null,
-              userId: null,
-              userName: null,
-          };
+            role: null,
+            userId: null,
+            userName: null,
+        };
 
 const App: React.FC = () => {
     const classes = useStyles();
