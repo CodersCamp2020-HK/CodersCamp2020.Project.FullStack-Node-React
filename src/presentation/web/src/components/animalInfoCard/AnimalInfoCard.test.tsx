@@ -111,7 +111,7 @@ describe('Render animal card', () => {
         await act(() => {
             fireEvent.click(adoptionStepButton);
         });
-        expect(window.location.pathname).toBe('/' + ADOPTION_PROCESS_PAGE);
+        expect(window.location.pathname).toBe(ADOPTION_PROCESS_PAGE);
     });
 
     it('redirects to animal adoption after click second button', async () => {
@@ -119,6 +119,6 @@ describe('Render animal card', () => {
         await act(() => {
             fireEvent.click(adoptionButton);
         });
-        expect(window.location.pathname).toBe('/' + ADOPT_PAGE);
+        expect(window.location.pathname).toBe(ADOPT_PAGE);
     });
 });
