@@ -17,6 +17,7 @@ import { UserType } from './client/index';
 import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import jwt from 'jsonwebtoken';
 import MyAcc from './pages/MyAcc';
+import PageInProgress from './pages/PageInProgress';
 
 const useStyles = makeStyles({
     wrapper: {
@@ -113,7 +114,9 @@ const App: React.FC = () => {
                             <Route path="/animals/:animalId">
                                 <AnimalInfo />
                             </Route>
-
+                            <Route path="/work-in-progress">
+                                <PageInProgress />
+                            </Route>
                             <Route path="*">
                                 <NotFound />
                             </Route>
