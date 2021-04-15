@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     content1: {
-        height: 200,
+        height: 195,
     },
     content2: {},
     media: {
