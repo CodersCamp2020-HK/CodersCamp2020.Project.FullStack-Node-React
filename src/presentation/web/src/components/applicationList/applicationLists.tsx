@@ -25,20 +25,24 @@ const useStyles = makeStyles((theme: Theme) => ({
     }
   }));
 
-function createData(dateOfSubmission: string, name: string, surname: string, applicationNumber: number) {
-    return { dateOfSubmission, name, surname, applicationNumber };
+function createData(dateOfSubmission: string, name: string, surname: string, applicationNumber: number, animalId: number, submissionId: number) {
+    return { dateOfSubmission, name, surname, applicationNumber, submissionId, animalId };
   }
   
 const Rows = ( props: Props ) => {
       return props.listData.map((prop) => {
-        return (createData(prop.dateOfSubmission, prop.name, prop.surname, prop.applicationNumber));
+        return (createData(prop.dateOfSubmission, prop.name, prop.surname, prop.applicationNumber, prop.animalId, prop.submissionId, ));
         })
     };
+
+const showApplication = (animalId: number, submissionId: number) => {
+  console.log('Animal id: ', animalId)
+  console.log('Submission id: ', submissionId)
+}    
 
 const ListOfApplications = (props:Props) => {
     const classes = useStyles();
     const rows = Rows(props);
-    // console.log(rows);
 
     return (
     <Table className={classes.table} aria-label="simple table">
@@ -59,7 +63,7 @@ const ListOfApplications = (props:Props) => {
                 <TableCell align="right">{ row.name } { row.surname }</TableCell>
                 <TableCell align="right">{ row.applicationNumber }</TableCell>
                 <TableCell align="right">
-                  <Button className={classes.button}>Zobacz wniosek</Button>
+                  <Button onClick={() => showApplication(row.animalId, row.submissionId)} className={classes.button}>Zobacz wniosek</Button>
                 </TableCell>
                 </TableRow>
             ))}

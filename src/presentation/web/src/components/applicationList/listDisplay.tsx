@@ -20,6 +20,8 @@ export interface ListData{
     name: string,
     surname: string,
     applicationNumber: number,
+    animalId: number,
+    submissionId: number,
 };
 
 const ListDisplay = () => {
@@ -31,11 +33,6 @@ const ListDisplay = () => {
     const { data: listData } = useGetAnimalSubmissionByAnimalId ({ animalId ,requestOptions });
 
     console.log(listData);
-    // if (listData) console.log(listData[0].answers[0].question.form.id);
-    // if (listData) console.log(listData[0].applicant.name);
-    // if (listData) console.log(listData[0].applicant.surname);
-    // if (listData) console.log(listData[0].submissionDate)
-
     const shorterListData = ( data: FormAnimalSubmission[] ) => {
         if (data)
         return data.map((oneSubmission, index) => ({
@@ -43,15 +40,12 @@ const ListDisplay = () => {
             name: oneSubmission.applicant.name,
             surname: oneSubmission.applicant.surname,
             applicationNumber: oneSubmission.answers[0].question.form.id,
+            animalId,
+            submissionId: oneSubmission.id,
+
         }))
     };
     const dataToProps: ListData[] = shorterListData(listData as FormAnimalSubmission[]) as ListData[];
-
-    const listDataMock: ListData[] = [
-        {dateOfSubmission: '22/03/2022', name: 'Waldek', surname: 'Złoty', applicationNumber: 1},
-        {dateOfSubmission: '22/03/2022', name: 'Waldek', surname: 'Złoty', applicationNumber: 2},
-        {dateOfSubmission: '22/03/2022', name: 'Waldek', surname: 'Złoty', applicationNumber: 3},
-    ];
 
     return(
         <Paper className={classes.mainWrapper}>
