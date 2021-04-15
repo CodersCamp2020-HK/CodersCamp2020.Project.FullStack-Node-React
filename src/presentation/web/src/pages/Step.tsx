@@ -4,7 +4,7 @@ import ProtectedRoute from '../components/protectedRoute/ProtectedRoute';
 import CheckAdoptionStep from '../components/checkAdoptionStep/CheckAdoptionStep';
 import FirstStep from '../components/firstStep/FirstStep';
 import InvitationForSignAgreementPage from './InvitationSuccessAdoption';
-import FormProcessing from '../components/formsProcessing/FormProcessing';
+import FormProcessing from '../components/formsProcessing/formProcessing';
 
 const Step = () => {
     const { path } = useRouteMatch();
