@@ -66,7 +66,7 @@ const FirstStep = () => {
         requestOptions,
     });
 
-    console.log(getFormData);
+    const currentStep = parseInt(history.location.pathname.split('/').slice(-1).join(''));
 
     const handleIdSubmit = async ({ numerEwidencyjny: id }: Inputs) => {
         try {
@@ -93,7 +93,7 @@ const FirstStep = () => {
             <AdoptionApplicationFirstStep description={getFormData?.description} title={getFormData?.name} handleSubmit={handleIdSubmit}>
                 {getFormData && getFormData.form && adoptionStepsData &&
                     <>
-                        <AdoptionStepper adoptionSteps={adoptionStepsData.map((step) => step.name)} currentStep={1} />
+                        <AdoptionStepper adoptionSteps={adoptionStepsData.map((step) => step.name)} currentStep={currentStep} />
                         <Typography variant="h6">WAŻNE!</Typography>
                         <Typography className={classes.typography}>
                             Wypełnienie ankiety nie jest jednoznaczne z tym, że zwierzę zostanie Państwu wyadoptowane.

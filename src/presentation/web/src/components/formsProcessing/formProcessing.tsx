@@ -11,12 +11,14 @@ import {
     CardMedia
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { useGetAnimal, useGetAnimalSubmission } from "../../client";
+import { useGetAllAdoptionSteps, useGetAnimal, useGetAnimalSubmission } from "../../client";
 import { AppCtx } from "../../App";
 import LoadingCircle from "../loadingCircle/LoadingCircle";
 import SurveyForm from "../forms/surveyForm/SurveyForm";
 import mapAnswersToQuestions from "../../utils/MapAnswersToQuestions";
 import formatDate from "../../utils/formatText/formatDate";
+import AdoptionStepper from "../common/stepper/AdoptionStepper";
+import { useHistory } from "react-router-dom";
 
 interface PhotoProps {
     animalId: number;
@@ -73,6 +75,31 @@ const Photo: React.FC<PhotoProps> = ({ animalId }) => {
     </>   
 }
 
+const StepperWrapper: React.FC<PhotoProps> = ({ animalId }) => {
+    const requestOptions = { headers: { access_token: localStorage.getItem('apiKey') ?? '' } };
+
+    const { location } = useHistory();
+    const { data: adoptionStepsData, loading: adoptionStepsLoading } = useGetAllAdoptionSteps({ animalId, requestOptions });
+
+    const currentStep = parseInt(location.pathname.split('/').slice(-1).join(''));
+    return <>{
+        !adoptionStepsLoading && adoptionStepsData 
+        ?
+            <>
+                <Typography variant="h4">
+                    {adoptionStepsData[currentStep - 1].name}
+                </Typography>
+                <AdoptionStepper adoptionSteps={adoptionStepsData.map((step) => step.name)} currentStep={currentStep} />
+                <Typography variant="body1">
+                    {adoptionStepsData[currentStep - 1].description}
+                </Typography>
+            </>
+        :
+            <LoadingCircle />
+        }
+    </>  
+}
+
 const FormProcessing = () => {
     const requestOptions = { headers: { access_token: localStorage.getItem('apiKey') ?? '' } };
     const handleButton = () => setShowApplication(!showApplication);
@@ -86,13 +113,8 @@ const FormProcessing = () => {
         <Paper className={classes.paper}>
             {!submissionLoading && submissionData 
                 ? 
-                    <>
-                        <Typography variant="h5">
-                            Rozpatrujemy twój wniosek
-                        </Typography>
-                        <Typography variant="body1">
-                            {'OPIS KROKU'}
-                        </Typography>
+                    <>  
+                        <StepperWrapper animalId={submissionData.animal.id} />
                         <Divider className={classes.divider} />
                         <Typography variant="body1">
                             Data wysłania wniosku: {formatDate(submissionData.submissionDate)}
