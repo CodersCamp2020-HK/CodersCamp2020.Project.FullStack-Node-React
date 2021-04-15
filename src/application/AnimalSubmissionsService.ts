@@ -313,6 +313,7 @@ export class AnimalSubmissionsService {
             .select([
                 'animal.name',
                 'submission.status',
+                'submission.id',
                 'submission.reason',
                 'submission.reviewer',
                 'submission.submissionDate',
