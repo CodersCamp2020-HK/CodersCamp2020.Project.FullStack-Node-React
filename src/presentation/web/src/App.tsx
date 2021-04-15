@@ -14,7 +14,6 @@ import Home from './pages/Home';
 import NotFound from './pages/NotFound';
 import theme from './themes/theme';
 import { UserType } from './client/index';
-import ProtectedRoute from './components/protectedRoute/ProtectedRoute';
 import jwt from 'jsonwebtoken';
 import MyAcc from './pages/MyAcc';
 import PageInProgress from './pages/PageInProgress';

@@ -131,4 +131,26 @@ export class CalendarController extends Controller {
     public async deleteVisit(@Path() visitId: number, @Request() request: IAuthUserInfoRequest): Promise<void> {
         return await this.calendarService.delete(visitId, request.user as IUserInfo);
     }
+
+    @Security('jwt', ['normal', 'volunteer', 'admin', 'employee'])
+    @Response<Error>(500, 'Internal Server Error')
+    @Response<ApiError>(404, 'Not Found')
+    @SuccessResponse(200, 'ok')
+    @Example<DeepPartial<Calendar>>({
+        id: 1,
+        date: '2021-03-26T20:10:31.934Z',
+        user: {
+            id: 1,
+            name: 'Jan',
+            surname: 'Kowalski',
+        },
+        animal: {
+            id: 1,
+            name: 'Puszek',
+        },
+    })
+    @Get('users/{userId}')
+    public async getVisitByUserId(@Path() userId: number, @Request() request: IAuthUserInfoRequest): Promise<Calendar> {
+        return await this.calendarService.getByUserId(userId, request.user as IUserInfo);
+    }
 }

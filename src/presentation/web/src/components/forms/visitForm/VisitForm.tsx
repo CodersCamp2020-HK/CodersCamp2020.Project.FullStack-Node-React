@@ -2,8 +2,9 @@ import { Button, makeStyles, Theme, Typography } from '@material-ui/core';
 import { format, set as updateDate } from 'date-fns';
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { Redirect, useHistory } from 'react-router-dom';
 import { AppCtx } from '../../../App';
-import { useCreateVisit } from '../../../client/index';
+import { useCreateVisit, useUpdatetUserSteps } from '../../../client/index';
 import Calendar from '../../calendar/Calendar';
 import LoadingCircleSmall from '../../loadingCircleSmall/LoadingCircleSmall';
 import TimePicker from '../../timePicker/TimePicker';
@@ -12,6 +13,7 @@ const POSSIBLE_TIMES = ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '1
 
 interface VisitFormProps {
     animalId: number;
+    numberOfSteps: number;
 }
 
 interface VisitData {
@@ -30,16 +32,20 @@ const useStyles = makeStyles((theme: Theme) => ({
     },
 }));
 
-const VisitForm = ({ animalId }: VisitFormProps) => {
+const VisitForm = ({ animalId, numberOfSteps }: VisitFormProps) => {
+    const { location } = useHistory();
+    const currentStep = parseInt(location.pathname.split('/').slice(-1).join(''));
     const styles = useStyles();
     const [selected, setSelected] = useState<VisitData>({
         date: undefined,
         time: undefined,
     });
+    const [fireRedirect, setFireRedirect] = useState<boolean>(false);
     const { errors, setValue, register, handleSubmit } = useForm<VisitData>({ mode: 'all' });
     const { mutate: createVisit, loading } = useCreateVisit({});
     const [serverErrorMessage, setServerErrorMessage] = useState<string>('');
     const { appState, setAppState } = useContext(AppCtx);
+    const { mutate: updateSteps } = useUpdatetUserSteps({ userId: appState.userId! });
 
     const handleDate = (date: Date) => {
         setSelected((previous) => ({ ...previous, date }));
@@ -71,6 +77,18 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
                         ['access_token', localStorage.getItem('apiKey') as string],
                     ],
                 });
+                if (currentStep < numberOfSteps) {
+                    await updateSteps({
+                        adoptionStep: currentStep + 1 
+                    },
+                    {
+                        headers: [
+                            ['content-type', 'application/json'],
+                            ['access_token', localStorage.getItem('apiKey') as string],
+                        ],
+                    });
+                    setFireRedirect(true);
+                }
             } catch (e) {
                 if (e.status == 400 || e.status == 401) {
                     setServerErrorMessage('Brak uprawnień!');
@@ -121,6 +139,7 @@ const VisitForm = ({ animalId }: VisitFormProps) => {
             <Button disabled={loading} className={styles.submit} variant="contained" color="primary" size="large" type="submit">
                 Potwierdź datę spotkania {loading && <LoadingCircleSmall size={20} />}
             </Button>
+            {fireRedirect && <Redirect to={'/account/adoption/step'} />}
         </form>
     );
 };

@@ -8,7 +8,6 @@ const CheckAdoptionStep = () => {
     const { appState } = useContext(AppCtx);
     const requestOptions = { headers: { access_token: localStorage.getItem('apiKey') ?? '' } };
     const { data, loading } = useGetUserSteps({ userId: appState.userId!, requestOptions })
-    console.log(data);
 
     if (!loading && data) {
         return <Redirect to={`step/${data.adoptionStep}`} />

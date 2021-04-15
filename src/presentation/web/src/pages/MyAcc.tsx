@@ -13,11 +13,8 @@ import Applications from './Applications';
 import Profile from './Profile';
 import Calendar from './Calendar';
 import LoginForm from '../components/auth/loginForm/LoginForm';
-import CheckAdoptionStep from '../components/checkAdoptionStep/CheckAdoptionStep';
-import FirstStep from '../components/firstStep/FirstStep';
-import InvitationForSignAgreementPage from './InvitationSuccessAdoption';
 import { makeStyles } from '@material-ui/core/styles';
-import MeetDateConfirmed from "../components/meetDateConfirmed/MeetDateConfirmed";
+import Step from './Step';
 
 const useStyles = makeStyles({
     wrapper: {
@@ -37,10 +34,7 @@ const MyAcc = () => {
             </Grid>
             <Grid container alignItems="flex-start" justify="center" item xs={12} sm className={classes.wrapper}>
                 <Switch>
-                    <ProtectedRoute exact path={`${path}/adoption/step/4`} component={InvitationForSignAgreementPage} />
-                    <ProtectedRoute exact path={`${path}/adoption/step/3`} component={MeetDateConfirmed} />
-                    <ProtectedRoute exact path={`${path}/adoption/step/1`} component={FirstStep} />
-                    <ProtectedRoute exact path={`${path}/adoption/step`} component={CheckAdoptionStep} />
+                    <ProtectedRoute path={`${path}/adoption/step`} component={Step} />
                     <ProtectedRoute exact path={`${path}/volunteer`} component={Volunteer} />
                     <ProtectedRoute exact path={`${path}/volunteers`} component={Volunteers} />
                     <ProtectedRoute exact path={`${path}/users`} component={Users} />

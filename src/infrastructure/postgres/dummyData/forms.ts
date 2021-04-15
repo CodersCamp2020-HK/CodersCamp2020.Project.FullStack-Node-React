@@ -5,14 +5,10 @@ export const seedForms = (): DeepPartial<Form>[] => {
     const form: DeepPartial<Form>[] = [
         {
             id: 1,
-            name: 'Formularz adopcji psa',
+            name: 'Formularz adopcyjny',
         },
         {
             id: 2,
-            name: 'Formularz adopcji kota',
-        },
-        {
-            id: 3,
             name: 'Formularz na wolontariusza',
         },
     ];
