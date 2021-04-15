@@ -39,7 +39,7 @@ const ListDisplay = () => {
             dateOfSubmission: oneSubmission.submissionDate,
             name: oneSubmission.applicant.name,
             surname: oneSubmission.applicant.surname,
-            applicationNumber: oneSubmission.answers[0].question.form.id,
+            //applicationNumber: oneSubmission.answers[0].question.form.id,
             animalId,
             submissionId: oneSubmission.id,
 
